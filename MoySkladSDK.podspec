@@ -14,18 +14,18 @@ Pod::Spec.new do |s|
   s.version      = "1.2.1"
   s.summary      = "Client to MoySklad JSON API"
 
-  s.homepage     = "https://github.com/MoySklad/MoySkladSDK-iOS"
+  s.homepage     = "https://github.com/MoySklad/moysklad-ios-sdk"
 
   s.license = { :type => "MIT", :file => "LICENSE" }
 
   s.author    = "Lognex"
 
-  s.source       = { :git => "https://github.com/MoySklad/MoySkladSDK-iOS.git", :tag => "v#{s.version}" }
+  s.source       = { :git => "https://github.com/MoySklad/moysklad-ios-sdk.git", :tag => "v#{s.version}" }
 
   s.source_files = "MoySkladSDK/**/*.{swift}"
   s.resources = "Localizable.strings"
 
   s.dependency 'Alamofire', '~> 4.4.0'
-  s.dependency 'RxSwift', '~> 3.2.0'	
+  s.dependency 'RxSwift', '~> 3.2.0'
 
 end

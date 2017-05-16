@@ -4,7 +4,7 @@
 
 #### Установка
 
-SDK использует Alamofire ( ~> 4.4.0) и RxSwift (~> 3.2.0), поэтому эти две библиотеки так же должны быть добавлены в приложение. 
+SDK использует Alamofire (=> 4.4.0) и RxSwift (=> 3.2.0), поэтому эти две библиотеки так же должны быть добавлены в приложение.
 
 ##### Установка через CocoaPods
 Добавить в Podfile
@@ -15,7 +15,7 @@ pod "MoySkladSDK"
 ##### Установка через Carthage
 Добавить следующую строчку в cartfile
 ```
-git "https://bitbucket.org/moysklad/com.lognex.mobile.ios.mistructs.git" ~> 1.0
+git "https://github.com/MoySklad/moysklad-ios-sdk.git" ~> 1.0
 ```
 и выполнить
 ```

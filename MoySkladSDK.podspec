@@ -11,16 +11,16 @@ Pod::Spec.new do |s|
   s.platform = :ios
   s.ios.deployment_target = '9.0'
   s.name         = "MoySkladSDK"
-  s.version      = "1.2.0"
+  s.version      = "1.2.1"
   s.summary      = "Client to MoySklad JSON API"
 
-  s.homepage     = "https://bitbucket.org/moysklad/com.lognex.mobile.ios.mistructs"
+  s.homepage     = "https://github.com/MoySklad/MoySkladSDK-iOS"
 
   s.license = { :type => "MIT", :file => "LICENSE" }
 
   s.author    = "Lognex"
 
-  s.source       = { :git => "https://bitbucket.org/moysklad/com.lognex.mobile.ios.mistructs.git", :tag => "v#{s.version}" }
+  s.source       = { :git => "https://github.com/MoySklad/MoySkladSDK-iOS.git", :tag => "v#{s.version}" }
 
   s.source_files = "MoySkladSDK/**/*.{swift}"
   s.resources = "Localizable.strings"

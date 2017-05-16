@@ -1,0 +1,56 @@
+/* 
+  Localizable.strings
+  MoySkladSDK
+
+  Created by Anton Efimenko on 20.04.17.
+  Copyright © 2017 Andrey Parshakov. All rights reserved.
+*/
+
+"incorrectRegistrationResponse" = "Неизвестный ответ на запрос регистрации";
+"incorrectLoginResponse" = "Неизвестный ответ на запрос входа в систему";
+"incorrectStockAllResponse" = "Неизвестный ответ на запрос остатков";
+"incorrectProductFolderResponse" = "Неизвестный ответ на запрос групп товаров";
+"incorrectStoreResponse" = "Неизвестный ответ на запрос складов";
+"incorrectProjectResponse" = "Неизвестный ответ на запрос проектов";
+"incorrectGroupResponse" = "Неизвестный ответ на запрос отделов";
+"incorrectCurrencyResponse" = "Неизвестный ответ на запрос валют";
+"incorrectContractResponse" = "Неизвестный ответ на запрос договоров";
+"incorrectCustomEntityResponse" = "Неизвестный ответ на запрос пользовательского справочника";
+"incorrectEmployeeResponse" = "Неизвестный ответ на запрос сотрудников";
+"incorrectCounterpartyResponse" = "Неизвестный ответ на запрос контрагентов";
+"incorrectStockByStoreResponse" = "Неизвестный ответ на запрос остатков по складам";
+"incorrectDocumentStockResponse" = "Неизвестный ответ на запрос остатков по документу";
+"incorrectProductResponse" = "Неизвестный ответ на запрос продукта";
+"incorrectBundleResponse" = "Неизвестный ответ на запрос комплекта";
+"incorrectVariantResponse" = "Неизвестный ответ на запрос модификации";
+"incorrectServiceResponse" = "Неизвестный ответ на запрос услуги";
+"incorrectSalesByProductResponse" = "Неизвестный ответ на запрос прибыльности по товарам";
+"incorrectCompanySettingsResponse" = "Неизвестный ответ на запрос настроек компании при входе в систему";
+"incorrectDashboardResponse" = "Неизвестный ответ на запрос показателей";
+"incorrectOrganizationResponse" = "Неизвестный ответ на запрос организаций";
+"incorrectCustomerOrderPositionsResponse" = "Неизвестный ответ на запрос позиций по заказу покупателя";
+"incorrectInvoiceOutPositionsResponse" = "Неизвестный ответ на запрос позиций по счету покупателя";
+"incorrectDemandsPositionsResponse" = "Неизвестный ответ на запрос позиций по отгрузке";
+"incorrectCounterpartyMetadataResponse" = "Неизвестный ответ на запрос метаданных для контрагентов";
+"incorrectCustomerOrderMetadataResponse" = "Неизвестный ответ на запрос метаданных для заказов покупателей";
+"incorrectInvoiceOutMetadataResponse" = "Неизвестный ответ на запрос метаданных для счетов покупателей";
+"incorrectDemandsMetadataResponse" = "Неизвестный ответ на запрос метаданных для отгрузок";
+"incorrectDemandsResponse" = "Ошибка при обработке отгрузок, возвращенных сервером";
+"incorrectInvoicesOutResponse" = "Ошибка при обработке счетов покупателей, возвращенных сервером";
+"incorrectCustomerOrdersResponse" = "Ошибка при обработке заказов покупателей, возвращенных сервером";
+"incorrectAssortmentResponse" = "Ошибка при обработке товаров, возвращенных сервером";
+"incorrectCustomerOrderTemplateResponse" = "Неизвестный ответ при запросе шаблона заказа покупателя";
+"incorrectDemandTemplateResponse" = "Неизвестный ответ при запросе шаблона отгрузки";
+"incorrectInvoiceOutTemplateResponse" = "Неизвестный ответ при запросе шаблона счета покупателя";
+"incorrectTemplateResponse" = "Неизвестный ответ при запросе шаблонов печатной формы";
+"incorrecDocumentFromTemplateResponse" = "Неизвестный ответ при запросе документа из шаблона печатной формы";
+"incorrecDownloadDocumentResponse" = "Неизвестный ответ при скачивании документа из шаблона печатной формы";
+"unauthorizedError" = "Ошибка аутентификации: Неправильный пароль или имя пользователя";
+"unknownDocumentType" = "Неизвестный тип документа";
+"unknownObjectType" = "Неизвестный тип объекта";
+"preconditionFailedError" = "Ошибка формирования печатной формы";
+"genericDeserializationError" = "Ошибка при обработке ответа от сервера";
+"documentTooManyPositions" = "Работа с документами с более чем 100 позициями не поддерживается";
+"emptyDocumentId" = "У документа отсутствует атрибут id";
+"emptyObjectId" = "У объекта отсутствует атрибут id";
+"notOnline" = "Нет соединения с интернетом";

@@ -301,7 +301,7 @@ final class HttpClient {
 					return
 				}
 				
-				guard dataResponse.response?.statusCode == 200 else {
+				guard dataResponse.response?.statusCode == 200 || dataResponse.response?.statusCode == 201 else {
                     observer.onError(convertToError(httpCode: dataResponse.response?.statusCode ?? -1, errorDict: responseDict));
                     return
                 }

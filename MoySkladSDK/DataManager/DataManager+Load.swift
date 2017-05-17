@@ -107,8 +107,7 @@ extension DataManager {
                                        stateId: StateIdParameter? = nil,
                                        withPrevious: [groupedMoment<T>]? = nil)
         -> Observable<[groupedMoment<T>]> where T: MSGeneralDocument, T: DictConvertable, T.Element: MSGeneralDocument   {
-            return DataManager.load(docType: docType, auth: auth, offset: offset, expanders: expanders, filter: filter, search: search,
-                                    organizationId: organizationId, stateId: stateId, orderBy: OrderBy(field: .moment))
+            return DataManager.load(docType: docType, auth: auth, offset: offset, expanders: expanders, filter: filter, search: search,organizationId: organizationId, stateId: stateId, orderBy: Order(OrderArgument(field: .moment)))
                 .flatMapLatest { result -> Observable<[groupedMoment<T>]> in
                     let grouped = DataManager.groupByDate2(data: result, withPrevious: withPrevious)
                     return Observable.just(grouped)
@@ -134,7 +133,7 @@ extension DataManager {
                             search: Search? = nil,
                             organizationId: OrganizationIdParameter? = nil,
                             stateId: StateIdParameter? = nil,
-                            orderBy: OrderBy? = nil) -> Observable<[MSEntity<T.Element>]> where T: MSGeneralDocument, T: DictConvertable  {
+                            orderBy: Order? = nil) -> Observable<[MSEntity<T.Element>]> where T: MSGeneralDocument, T: DictConvertable  {
         
         let urlParameters: [UrlParameter] = mergeUrlParameters(search, stateId, organizationId, offset, filter, orderBy, CompositeExpander(expanders))
         

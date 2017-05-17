@@ -16,6 +16,7 @@ public enum OrderByDirection : String {
 /**
  Represents Order by instruction
 */
+@available(*, deprecated, message: "use Order")
 public struct OrderBy : UrlParameter {
     public let field: EntityField
     public let direction: OrderByDirection

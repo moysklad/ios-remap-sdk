@@ -45,6 +45,7 @@ enum LocalizedStrings : String {
     case incorrectDemandTemplateResponse
     case incorrectInvoiceOutTemplateResponse
     case incorrecDocumentFromTemplateResponse
+    case incorrecPublicationFromTemplateResponse
     case incorrecDownloadDocumentResponse
     case unauthorizedError
     case preconditionFailedError

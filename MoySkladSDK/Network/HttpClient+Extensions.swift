@@ -85,6 +85,7 @@ extension HttpClient {
     
     static func create(_ request: MSApiRequest,
                        auth: Auth,
+                       urlPathComponents: [String] = [],
                        urlParameters: [UrlParameter] = [],
                        body: [String: Any], 
                        contentType: HttpRequestContentType = .json) -> Observable<Dictionary<String,AnyObject>?> {
@@ -92,6 +93,7 @@ extension HttpClient {
 		let router = HttpRouter.create(apiRequest: request,
 		                               method: .post,
 		                               contentType: contentType,
+		                               urlPathComponents: urlPathComponents,
 		                               httpBody: body,
 		                               headers: auth.header,
 		                               urlParameters: urlParameters)

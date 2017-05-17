@@ -1041,6 +1041,29 @@ public struct DataManager {
     }
     
     /**
+     Load link to created publication for document from template.
+     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#публикация-документов)
+     - parameter auth: Authentication information
+     - parameter docType: Document type for which publication should be loaded
+     - parameter id: Id of document
+     - parameter meta: Document template metadata
+     - returns: Observable sequence with http link to publication
+     */
+    public static func publicationFromTemplate<T: MSGeneralDocument>(auth: Auth, docType: T.Type, id: String, meta: MSMeta) -> Observable<String> {
+        let urlPathComponents: [String] = [id, "publication"]
+        let body = meta.dictionaryForTemplate()
+        return HttpClient.create(loadUrl(type: docType), auth: auth, urlPathComponents: urlPathComponents, body: body, contentType: .json).flatMapLatest { result -> Observable<String> in
+            guard let result = result else {
+                return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecPublicationFromTemplateResponse.value))
+            }
+            guard let res = result["href"] as? String else {
+                return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecPublicationFromTemplateResponse.value))
+            }
+            return Observable.just(res)
+        }
+    }
+    
+    /**
      Load file disk
      - parameter url: URL of file that should be loaded
      - returns: Observable sequence with URL to downloaded file

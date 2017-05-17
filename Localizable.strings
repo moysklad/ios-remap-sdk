@@ -45,6 +45,7 @@
 "incorrectTemplateResponse" = "Неизвестный ответ при запросе шаблонов печатной формы";
 "incorrecDocumentFromTemplateResponse" = "Неизвестный ответ при запросе документа из шаблона печатной формы";
 "incorrecDownloadDocumentResponse" = "Неизвестный ответ при скачивании документа из шаблона печатной формы";
+"incorrecPublicationFromTemplateResponse" = "Неизвестный ответ при запросе публикации из шаблона печатной формы";
 "unauthorizedError" = "Ошибка аутентификации: Неправильный пароль или имя пользователя";
 "unknownDocumentType" = "Неизвестный тип документа";
 "unknownObjectType" = "Неизвестный тип объекта";

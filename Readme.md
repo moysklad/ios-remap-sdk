@@ -9,13 +9,13 @@ SDK использует Alamofire (=> 4.4.0) и RxSwift (=> 3.2.0), поэто�
 ### Установка через CocoaPods
 Добавить в Podfile
 ```
-pod "MoySkladSDK"
+pod "moysklad-ios-remap-sdk"
 ```
 
 ### Установка через Carthage
 Добавить следующую строчку в cartfile
 ```
-git "https://github.com/MoySklad/moysklad-ios-sdk.git" ~> 1.0
+github "moysklad/ios-remap-sdk" ~> 1.0
 ```
 и выполнить
 ```

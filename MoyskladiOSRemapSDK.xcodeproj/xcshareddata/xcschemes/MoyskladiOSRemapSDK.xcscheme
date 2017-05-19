@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "55C05BEB1E028F24008F4254"
-               BuildableName = "MoySkladSDK.framework"
-               BlueprintName = "MoySkladSDK"
-               ReferencedContainer = "container:MoySkladSDK.xcodeproj">
+               BuildableName = "MoyskladiOSRemapSDK.framework"
+               BlueprintName = "MoyskladiOSRemapSDK"
+               ReferencedContainer = "container:MoyskladiOSRemapSDK.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "55C05BF41E028F24008F4254"
-               BuildableName = "MoySkladSDKTests.xctest"
-               BlueprintName = "MoySkladSDKTests"
-               ReferencedContainer = "container:MoySkladSDK.xcodeproj">
+               BuildableName = "MoyskladiOSRemapSDKTests.xctest"
+               BlueprintName = "MoyskladiOSRemapSDKTests"
+               ReferencedContainer = "container:MoyskladiOSRemapSDK.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,9 +43,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "55C05BEB1E028F24008F4254"
-            BuildableName = "MoySkladSDK.framework"
-            BlueprintName = "MoySkladSDK"
-            ReferencedContainer = "container:MoySkladSDK.xcodeproj">
+            BuildableName = "MoyskladiOSRemapSDK.framework"
+            BlueprintName = "MoyskladiOSRemapSDK"
+            ReferencedContainer = "container:MoyskladiOSRemapSDK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -65,9 +65,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "55C05BEB1E028F24008F4254"
-            BuildableName = "MoySkladSDK.framework"
-            BlueprintName = "MoySkladSDK"
-            ReferencedContainer = "container:MoySkladSDK.xcodeproj">
+            BuildableName = "MoyskladiOSRemapSDK.framework"
+            BlueprintName = "MoyskladiOSRemapSDK"
+            ReferencedContainer = "container:MoyskladiOSRemapSDK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -83,9 +83,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "55C05BEB1E028F24008F4254"
-            BuildableName = "MoySkladSDK.framework"
-            BlueprintName = "MoySkladSDK"
-            ReferencedContainer = "container:MoySkladSDK.xcodeproj">
+            BuildableName = "MoyskladiOSRemapSDK.framework"
+            BlueprintName = "MoyskladiOSRemapSDK"
+            ReferencedContainer = "container:MoyskladiOSRemapSDK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

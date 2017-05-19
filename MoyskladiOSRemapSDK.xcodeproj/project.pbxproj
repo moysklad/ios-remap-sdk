@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		55C05BF61E028F24008F4254 /* MoySkladSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C05BEC1E028F24008F4254 /* MoySkladSDK.framework */; };
+		55C05BF61E028F24008F4254 /* MoyskladiOSRemapSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C05BEC1E028F24008F4254 /* MoyskladiOSRemapSDK.framework */; };
 		55C05BFB1E028F24008F4254 /* MoyskaldStructsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05BFA1E028F24008F4254 /* MoyskaldStructsTests.swift */; };
 		55C05BFD1E028F24008F4254 /* MoyskaldStructs.h in Headers */ = {isa = PBXBuildFile; fileRef = 55C05BEF1E028F24008F4254 /* MoyskaldStructs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55C05C3F1E028F9B008F4254 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C071E028F9B008F4254 /* Extensions.swift */; };
@@ -106,10 +106,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		55C05BEC1E028F24008F4254 /* MoySkladSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoySkladSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		55C05BEC1E028F24008F4254 /* MoyskladiOSRemapSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoyskladiOSRemapSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		55C05BEF1E028F24008F4254 /* MoyskaldStructs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoyskaldStructs.h; sourceTree = "<group>"; };
 		55C05BF01E028F24008F4254 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		55C05BF51E028F24008F4254 /* MoySkladSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoySkladSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		55C05BF51E028F24008F4254 /* MoyskladiOSRemapSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoyskladiOSRemapSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55C05BFA1E028F24008F4254 /* MoyskaldStructsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoyskaldStructsTests.swift; sourceTree = "<group>"; };
 		55C05BFC1E028F24008F4254 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55C05C071E028F9B008F4254 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -211,7 +211,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55C05BF61E028F24008F4254 /* MoySkladSDK.framework in Frameworks */,
+				55C05BF61E028F24008F4254 /* MoyskladiOSRemapSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,8 +232,8 @@
 		55C05BED1E028F24008F4254 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				55C05BEC1E028F24008F4254 /* MoySkladSDK.framework */,
-				55C05BF51E028F24008F4254 /* MoySkladSDKTests.xctest */,
+				55C05BEC1E028F24008F4254 /* MoyskladiOSRemapSDK.framework */,
+				55C05BF51E028F24008F4254 /* MoyskladiOSRemapSDKTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -439,9 +439,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		55C05BEB1E028F24008F4254 /* MoySkladSDK */ = {
+		55C05BEB1E028F24008F4254 /* MoyskladiOSRemapSDK */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 55C05C001E028F24008F4254 /* Build configuration list for PBXNativeTarget "MoySkladSDK" */;
+			buildConfigurationList = 55C05C001E028F24008F4254 /* Build configuration list for PBXNativeTarget "MoyskladiOSRemapSDK" */;
 			buildPhases = (
 				55C05BE71E028F24008F4254 /* Sources */,
 				55C05BE81E028F24008F4254 /* Frameworks */,
@@ -452,14 +452,14 @@
 			);
 			dependencies = (
 			);
-			name = MoySkladSDK;
+			name = MoyskladiOSRemapSDK;
 			productName = MoyskaldStructs;
-			productReference = 55C05BEC1E028F24008F4254 /* MoySkladSDK.framework */;
+			productReference = 55C05BEC1E028F24008F4254 /* MoyskladiOSRemapSDK.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		55C05BF41E028F24008F4254 /* MoySkladSDKTests */ = {
+		55C05BF41E028F24008F4254 /* MoyskladiOSRemapSDKTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 55C05C031E028F24008F4254 /* Build configuration list for PBXNativeTarget "MoySkladSDKTests" */;
+			buildConfigurationList = 55C05C031E028F24008F4254 /* Build configuration list for PBXNativeTarget "MoyskladiOSRemapSDKTests" */;
 			buildPhases = (
 				55C05BF11E028F24008F4254 /* Sources */,
 				55C05BF21E028F24008F4254 /* Frameworks */,
@@ -470,9 +470,9 @@
 			dependencies = (
 				55C05BF81E028F24008F4254 /* PBXTargetDependency */,
 			);
-			name = MoySkladSDKTests;
+			name = MoyskladiOSRemapSDKTests;
 			productName = MoyskaldStructsTests;
-			productReference = 55C05BF51E028F24008F4254 /* MoySkladSDKTests.xctest */;
+			productReference = 55C05BF51E028F24008F4254 /* MoyskladiOSRemapSDKTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -497,7 +497,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 55C05BE61E028F24008F4254 /* Build configuration list for PBXProject "MoySkladSDK" */;
+			buildConfigurationList = 55C05BE61E028F24008F4254 /* Build configuration list for PBXProject "MoyskladiOSRemapSDK" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -509,8 +509,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				55C05BEB1E028F24008F4254 /* MoySkladSDK */,
-				55C05BF41E028F24008F4254 /* MoySkladSDKTests */,
+				55C05BEB1E028F24008F4254 /* MoyskladiOSRemapSDK */,
+				55C05BF41E028F24008F4254 /* MoyskladiOSRemapSDKTests */,
 			);
 		};
 /* End PBXProject section */
@@ -634,7 +634,7 @@
 /* Begin PBXTargetDependency section */
 		55C05BF81E028F24008F4254 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 55C05BEB1E028F24008F4254 /* MoySkladSDK */;
+			target = 55C05BEB1E028F24008F4254 /* MoyskladiOSRemapSDK */;
 			targetProxy = 55C05BF71E028F24008F4254 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -816,7 +816,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		55C05BE61E028F24008F4254 /* Build configuration list for PBXProject "MoySkladSDK" */ = {
+		55C05BE61E028F24008F4254 /* Build configuration list for PBXProject "MoyskladiOSRemapSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				55C05BFE1E028F24008F4254 /* Debug */,
@@ -825,7 +825,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		55C05C001E028F24008F4254 /* Build configuration list for PBXNativeTarget "MoySkladSDK" */ = {
+		55C05C001E028F24008F4254 /* Build configuration list for PBXNativeTarget "MoyskladiOSRemapSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				55C05C011E028F24008F4254 /* Debug */,
@@ -834,7 +834,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		55C05C031E028F24008F4254 /* Build configuration list for PBXNativeTarget "MoySkladSDKTests" */ = {
+		55C05C031E028F24008F4254 /* Build configuration list for PBXNativeTarget "MoyskladiOSRemapSDKTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				55C05C041E028F24008F4254 /* Debug */,

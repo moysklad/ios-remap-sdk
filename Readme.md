@@ -1,6 +1,6 @@
-# ios-remap-sdk
+# moysklad-ios-remap-sdk
 
-`ios-remap-sdk` - клиент к REST API сервиса МойСклад. Описание REST API можно найти по этой [ссылке](https://online.moysklad.ru/api/remap/1.1/doc/index.html).
+`moysklad-ios-remap-sdk` - клиент к REST API сервиса МойСклад. Описание REST API можно найти по этой [ссылке](https://online.moysklad.ru/api/remap/1.1/doc/index.html).
 
 ## Установка
 

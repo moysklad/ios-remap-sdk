@@ -1,21 +1,21 @@
-# MoySkladSDK
+# ios-remap-sdk
 
-`MoySkladSDK` - клиент к REST API сервиса МойСклад. Описание REST API можно найти по этой [ссылке](https://online.moysklad.ru/api/remap/1.1/doc/index.html).
+`ios-remap-sdk` - клиент к JSON API сервиса МойСклад. Описание JSON API можно найти по этой [ссылке](https://online.moysklad.ru/api/remap/1.1/doc/index.html).
 
 ## Установка
 
-SDK использует Alamofire (=> 4.4.0) и RxSwift (=> 3.2.0), поэтому эти две библиотеки так же должны быть добавлены в приложение.
+SDK использует Alamofire (=> 4.4.0) и RxSwift (=> 3.2.0), поэтому эти две библиотеки также должны быть добавлены в приложение.
 
 ### Установка через CocoaPods
 Добавить в Podfile
 ```
-pod "MoySkladSDK"
+pod "moysklad-ios-remap-sdk"
 ```
 
 ### Установка через Carthage
 Добавить следующую строчку в cartfile
 ```
-git "https://github.com/MoySklad/moysklad-ios-sdk.git" ~> 1.0
+github "moysklad/ios-remap-sdk" ~> 1.0
 ```
 и выполнить
 ```

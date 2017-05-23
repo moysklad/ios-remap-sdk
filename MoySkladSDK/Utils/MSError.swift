@@ -30,6 +30,30 @@ public struct MSErrorStruct: Error {
     }
 }
 
+extension MSErrorStruct: Equatable {
+    public static func ==(lhs: MSErrorStruct, rhs: MSErrorStruct) -> Bool {
+        return lhs.code == rhs.code && lhs.httpStatusCode == rhs.httpStatusCode
+    }
+}
+
+extension MSErrorStruct {
+    public static func accessDenied() -> MSErrorStruct {
+        return MSErrorStruct.init(error: LocalizedStrings.accessDenied.value,
+                                  message: nil,
+                                  parameter: nil,
+                                  code: MSErrorCode.accessDenied,
+                                  httpStatusCode: 403)
+    }
+    
+    public static func accessDeniedRate() -> MSErrorStruct {
+        return MSErrorStruct.init(error: LocalizedStrings.accessDeniedRate.value,
+                                  message: nil,
+                                  parameter: nil,
+                                  code: MSErrorCode.accessDenied,
+                                  httpStatusCode: 403)
+    }
+}
+
 public struct MSErrorCode {
     public static let generic = 1_000_000
     public static let unauthorized = 1056
@@ -38,7 +62,7 @@ public struct MSErrorCode {
 }
 
 extension MSError {
-    static func preconditionFailedError() -> MSError {
+    public static func preconditionFailedError() -> MSError {
         return MSError.errors([MSErrorStruct.init(error: LocalizedStrings.preconditionFailedError.value,
                                                   message: nil,
                                                   parameter: nil,
@@ -46,7 +70,7 @@ extension MSError {
                                                   httpStatusCode: 412)])
     }
     
-    static func unauthorizedError() -> MSError {
+    public static func unauthorizedError() -> MSError {
         return MSError.errors([MSErrorStruct.init(error: LocalizedStrings.unauthorizedError.value,
                                                   message: nil,
                                                   parameter: nil,

@@ -62,6 +62,9 @@ enum LocalizedStrings : String {
     case unknownObjectType
     case incorrectCounterpartyMetadataResponse
     
+    case accessDeniedRate
+    case accessDenied
+    
     var value: String {
         return NSLocalizedString(rawValue, tableName: nil, bundle: Bundle(for: MSCustomerOrder.self), value: "", comment: "")
 }

@@ -211,6 +211,13 @@ public struct DataManager {
                 let deserialized = result.msArray("rows").map { MSCurrency.from(dict: $0) }
                 
                 return Observable.just(deserialized.map { $0?.value() }.removeNils())
+            }.catchError { error in
+                switch error {
+                case MSError.errors(let e):
+                    guard let first = e.first, first == MSErrorStruct.accessDenied() else { return Observable.error(error) }
+                    return Observable.error(MSError.errors([MSErrorStruct.accessDeniedRate()]))
+                default: return Observable.error(error)
+                }
         }
         
         // комбинируем все ответы от запросов и возвращаем LogInInfo

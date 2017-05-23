@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.platform = :ios
   s.ios.deployment_target = '9.0'
   s.name         = "moysklad-ios-remap-sdk"
-  s.version      = "1.2.4"
+  s.version      = "1.2.5"
   s.summary      = "Client to MoySklad JSON API"
 
   s.homepage     = "https://github.com/moysklad/ios-remap-sdk"

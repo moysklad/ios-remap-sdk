@@ -8,6 +8,37 @@
 
 import Foundation
 
+public protocol MSGeneralCounterparty : class, Metable {
+    var meta: MSMeta { get }
+    var id: MSID { get }
+    var accountId: String { get }
+    var owner: MSEntity<MSEmployee>? { get set }
+    var shared: Bool { get }
+    var group: MSEntity<MSGroup> { get set }
+    var info : MSInfo { get set }
+    var code: String? { get set }
+    var externalCode: String? { get }
+    var archived: Bool? { get }
+    var actualAddress: String? { get set }
+    var companyType: MSCompanyType { get set }
+    var email: String? { get set }
+    var phone: String? { get set }
+    var fax: String? { get set }
+    var legalTitle: String? { get set }
+    var legalAddress: String? { get set }
+    var inn: String? { get set }
+    var kpp: String? { get set }
+    var ogrn: String? { get set }
+    var ogrnip: String? { get set }
+    var okpo: String? { get set }
+    var certificateNumber: String? { get set }
+    var certificateDate: Date? { get set }
+    var accounts: [MSEntity<MSAccount>] { get set }
+    var agentInfo: MSAgentInfo { get set }
+    func copyAgent() -> MSGeneralCounterparty
+    func dictionary(metaOnly: Bool) -> [String: Any]
+}
+
 public enum MSCompanyType : String {
 	case legal
 	case entrepreneur
@@ -62,7 +93,7 @@ public class MSAgentInfo {
  
  For more information, see API reference for [counterparty](https://online.moysklad.ru/api/remap/1.1/doc/index.html#контрагент-контрагенты) and [organization](https://online.moysklad.ru/api/remap/1.1/doc/index.html#юрлицо)
 */
-public class MSAgent : Metable {
+public class MSAgent : Metable, MSGeneralCounterparty {
 	public let meta: MSMeta
 	public let id: MSID
 	public let accountId: String
@@ -142,6 +173,39 @@ public class MSAgent : Metable {
         self.certificateDate = certificateDate
         self.accounts = accounts
         self.agentInfo = agentInfo
+    }
+    
+    public func copy() -> MSAgent {
+        return MSAgent(meta: meta,
+                       id: id,
+                       accountId: accountId,
+                       owner: owner,
+                       shared: shared,
+                       group: group,
+                       info : info,
+                       code: code,
+                       externalCode: externalCode,
+                       archived: archived,
+                       actualAddress: actualAddress,
+                       companyType: companyType,
+                       email: email,
+                       phone: phone,
+                       fax: fax,
+                       legalTitle: legalTitle,
+                       legalAddress: legalAddress,
+                       inn: inn,
+                       kpp: kpp,
+                       ogrn: ogrn,
+                       ogrnip: ogrnip,
+                       okpo: okpo,
+                       certificateNumber: certificateNumber,
+                       certificateDate: certificateDate,
+                       accounts: accounts,
+                       agentInfo: agentInfo)
+    }
+    
+    public func copyAgent() -> MSGeneralCounterparty {
+        return copy()
     }
 }
 

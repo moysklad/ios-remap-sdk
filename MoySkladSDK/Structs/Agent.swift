@@ -35,6 +35,7 @@ public protocol MSGeneralCounterparty : class, Metable {
     var certificateDate: Date? { get set }
     var accounts: [MSEntity<MSAccount>] { get set }
     var agentInfo: MSAgentInfo { get set }
+    var salesAmount: Money { get }
     func copyAgent() -> MSGeneralCounterparty
     func dictionary(metaOnly: Bool) -> [String: Any]
 }
@@ -120,6 +121,7 @@ public class MSAgent : Metable, MSGeneralCounterparty {
 	public var certificateDate: Date?
 	public var accounts: [MSEntity<MSAccount>]
 	public var agentInfo: MSAgentInfo
+    public var salesAmount: Money
     
     public init(meta: MSMeta,
     id: MSID,
@@ -146,7 +148,8 @@ public class MSAgent : Metable, MSGeneralCounterparty {
     certificateNumber: String?,
     certificateDate: Date?,
     accounts: [MSEntity<MSAccount>],
-    agentInfo: MSAgentInfo) {
+    agentInfo: MSAgentInfo,
+    salesAmount: Money) {
         self.meta = meta
         self.id = id
         self.accountId = accountId
@@ -173,6 +176,7 @@ public class MSAgent : Metable, MSGeneralCounterparty {
         self.certificateDate = certificateDate
         self.accounts = accounts
         self.agentInfo = agentInfo
+        self.salesAmount = salesAmount
     }
     
     public func copy() -> MSAgent {
@@ -201,7 +205,8 @@ public class MSAgent : Metable, MSGeneralCounterparty {
                        certificateNumber: certificateNumber,
                        certificateDate: certificateDate,
                        accounts: accounts,
-                       agentInfo: agentInfo)
+                       agentInfo: agentInfo,
+                       salesAmount: salesAmount)
     }
     
     public func copyAgent() -> MSGeneralCounterparty {

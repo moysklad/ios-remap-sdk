@@ -9,9 +9,9 @@
 import Foundation
 
 public struct MSStatisticsContext {
-    public let employee: MSStatisticsEmployee
+    public let employee: MSStatisticsEmployee?
     
-    public init(employee: MSStatisticsEmployee) {
+    public init(employee: MSStatisticsEmployee?) {
         self.employee = employee
     }
 }

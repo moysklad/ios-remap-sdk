@@ -10,10 +10,10 @@ import Foundation
 
 public struct MSStatisticsData {
     public let moment: Date
-    public let values : Array<MSStatisticsValues>
+    public let values : MSStatisticsValues
     
     public init(moment: Date,
-                values : Array<MSStatisticsValues>) {
+                values : MSStatisticsValues) {
         self.moment = moment
         self.values = values
     }

@@ -53,4 +53,5 @@ public enum MSObjectType : String {
     case bundlecomponent
     case embeddedtemplate
     case customtemplate
+    case ordersstatistics
 }

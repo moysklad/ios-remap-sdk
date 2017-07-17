@@ -136,7 +136,7 @@ extension MSMeta {
         guard let type = MSObjectType(rawValue: dict["type"] as? String ?? "") else {
             return nil
         }
-        return MSMeta(name: parent["name"] as? String ?? "", href: dict["href"] as? String ?? "", type: type)
+        return MSMeta(name: parent["name"] as? String ?? "", href: dict["href"] as? String ?? "", metadataHref: dict["metadataHref"] as? String ?? "", type: type)
     }
     
     public func dictionary() -> Dictionary<String, Any> {

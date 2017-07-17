@@ -27,7 +27,7 @@ public class MSMeta {
 	public let mediaType : MediaType
     
     public init(name: String,
-        href : Href, // Ссылка на объект
+    href : Href, // Ссылка на объект
     metadataHref : Href = "", // Ссылка на метаданные сущности (Другой вид метаданных. Присутствует не во всех сущностях)
     type : MSObjectType,
     offset : MSOffset = MSOffset.empty(),

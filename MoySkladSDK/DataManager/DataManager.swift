@@ -229,8 +229,6 @@ public struct DataManager {
                                         currenciesRequest,
                                         counterpartyMetadata(auth: auth),
                                         resultSelector: { result in
-                                            print("counterparty states: \(result.6.states.count)")
-                                            print("counterparty tags: \(result.6.tags.count)")
                                             return LogInInfo(employee: result.0,
                                                              companySettings: result.1,
                                                              states: [MSObjectType.customerorder: result.2.states,

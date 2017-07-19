@@ -43,7 +43,7 @@ extension MSAgent : DictConvertable {
 		        ogrnip: dict.value("ogrnip"),
 		        okpo: dict.value("okpo"),
 		        certificateNumber: dict.value("certificateNumber"),
-		        certificateDate: Date.fromMSDate(dict.value("") ?? ""),
+		        certificateDate: Date.fromMSDate(dict.value("certificateDate") ?? ""),
 		        accounts: dict.msValue("accounts").msArray("rows").map { MSAccount.from(dict: $0) }.flatMap { $0 },
 		        agentInfo: MSAgentInfo.from(dict: dict),
                 salesAmount: Money(minorUnits: dict.value("salesAmount") ?? 0)

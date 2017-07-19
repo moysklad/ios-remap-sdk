@@ -94,7 +94,7 @@ public class MSAgentInfo {
  
  For more information, see API reference for [counterparty](https://online.moysklad.ru/api/remap/1.1/doc/index.html#контрагент-контрагенты) and [organization](https://online.moysklad.ru/api/remap/1.1/doc/index.html#юрлицо)
 */
-public class MSAgent : Metable, MSGeneralCounterparty {
+public class MSAgent : Metable {
 	public let meta: MSMeta
 	public let id: MSID
 	public let accountId: String
@@ -209,7 +209,7 @@ public class MSAgent : Metable, MSGeneralCounterparty {
                        salesAmount: salesAmount)
     }
     
-    public func copyAgent() -> MSGeneralCounterparty {
+    public func copyAgent() -> MSAgent {
         return copy()
     }
 }

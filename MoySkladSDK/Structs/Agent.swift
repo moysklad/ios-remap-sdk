@@ -57,7 +57,7 @@ public class MSAgentInfo {
 	
 	// Counterparty fields
     public var tags: [String]
-    public var contactpersons: MSMeta?
+    public var contactpersons: [MSEntity<MSContactPerson>]
     public var discounts: MSMeta?
     public var state: MSEntity<MSState>?
     
@@ -70,7 +70,7 @@ public class MSAgentInfo {
     
     // Counterparty fields
     tags: [String],
-    contactpersons: MSMeta?,
+    contactpersons: [MSEntity<MSContactPerson>],
     discounts: MSMeta?,
     state: MSEntity<MSState>?) {
         self.isEgaisEnable = isEgaisEnable

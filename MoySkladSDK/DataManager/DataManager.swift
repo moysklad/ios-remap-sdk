@@ -1081,4 +1081,29 @@ public struct DataManager {
             return Observable.just(result)
         }
     }
+    
+    /**
+     Load counterparty contacts.
+     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc#контрагент-контактное-лицо-get)
+     - parameter auth: Authentication information
+     - parameter id: Id of counterparty
+     - returns: Observable sequence with contacts
+     */
+    public static func counterpartyContacts(auth: Auth, id: String) -> Observable<[MSEntity<MSContactPerson>]> {
+        let urlPathComponents: [String] = [id, "contactpersons"]
+        return HttpClient.get(.counterparty, auth: auth, urlPathComponents: urlPathComponents, urlParameters: [])
+            .flatMapLatest { result -> Observable<[MSEntity<MSContactPerson>]> in
+                guard let results = result?.msArray("rows") else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecContactPersonsResponse.value))
+                }
+                
+                var contacts = [MSEntity<MSContactPerson>]()
+                results.forEach({ contact in
+                    guard let contact = MSContactPerson.from(dict: contact) else { return }
+                    contacts.append(contact)
+                })
+                
+                return Observable.just(contacts)
+        }
+    }
 }

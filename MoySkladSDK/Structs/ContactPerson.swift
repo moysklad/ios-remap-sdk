@@ -9,15 +9,15 @@
 import Foundation
 
 public class MSContactPerson: Metable {
-    public let meta: MSMeta
-    public let id: MSID
-    public let info: MSInfo
-    public let accountId: String
-    public let externalCode: String
-    public let email: String?
-    public let phone: String?
-    public let position: String?
-    public let agent: MSMeta?
+    public var meta: MSMeta
+    public var id: MSID
+    public var info: MSInfo
+    public var accountId: String
+    public var externalCode: String
+    public var email: String?
+    public var phone: String?
+    public var position: String?
+    public var agent: MSMeta?
     
     public init(
         meta: MSMeta,

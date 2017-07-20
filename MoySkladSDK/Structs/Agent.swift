@@ -94,7 +94,7 @@ public class MSAgentInfo {
  
  For more information, see API reference for [counterparty](https://online.moysklad.ru/api/remap/1.1/doc/index.html#контрагент-контрагенты) and [organization](https://online.moysklad.ru/api/remap/1.1/doc/index.html#юрлицо)
 */
-public class MSAgent : Metable {
+public class MSAgent : MSAttributedEntity, Metable {
 	public let meta: MSMeta
 	public let id: MSID
 	public let accountId: String
@@ -122,7 +122,6 @@ public class MSAgent : Metable {
 	public var accounts: [MSEntity<MSAccount>]
 	public var agentInfo: MSAgentInfo
     public var salesAmount: Money
-    public var attributes: [MSEntity<MSAttribute>]?
     public var report: MSEntity<MSAgentReport>?
     
     public init(meta: MSMeta,
@@ -181,8 +180,8 @@ public class MSAgent : Metable {
         self.accounts = accounts
         self.agentInfo = agentInfo
         self.salesAmount = salesAmount
-        self.attributes = attributes
         self.report = report
+        super.init(attributes: attributes)
     }
     
     public func copy() -> MSAgent {

@@ -9,21 +9,21 @@
 import Foundation
 
 public class MSAgentReport: Metable {
-    public let meta: MSMeta
-    public let agent: MSEntity<MSAgent>
-    public let firstDemandDate: Date?
-    public let lastDemandDate: Date?
-    public let demandsCount: Int
-    public let demandsSum: Money
-    public let averageReceipt: Money
-    public let returnsCount: Int
-    public let returnsSum: Money
-    public let discountsSum: Money
-    public let balance: Money
-    public let profit: Money
-    public let lastEventDate: Date?
-    public let lastEventText: String?
-    public let updated: Date?
+    public var meta: MSMeta
+    public var agent: MSEntity<MSAgent>
+    public var firstDemandDate: Date?
+    public var lastDemandDate: Date?
+    public var demandsCount: Int
+    public var demandsSum: Money
+    public var averageReceipt: Money
+    public var returnsCount: Int
+    public var returnsSum: Money
+    public var discountsSum: Money
+    public var balance: Money
+    public var profit: Money
+    public var lastEventDate: Date?
+    public var lastEventText: String?
+    public var updated: Date?
     
     init(
         meta: MSMeta,

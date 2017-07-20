@@ -106,6 +106,26 @@ extension DataManager {
     }
     
     /**
+     Load counterparty by Id
+     - parameter Id: Id of counterparty to load
+     - parameter auth: Authentication information
+     - parameter documentId: counterparty Id
+     - parameter expanders: Additional objects to include into request
+     */
+    public static func loadReportById(auth: Auth, counterpartyId: UUID) -> Observable<MSEntity<MSAgentReport>> {
+        return HttpClient.get(.counterpartyReport, auth: auth, urlPathComponents: [counterpartyId.uuidString])
+            .flatMapLatest { result -> Observable<MSEntity<MSAgentReport>> in
+                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyReportResponse.value)) }
+                
+                guard let deserialized = MSAgentReport.from(dict: result) else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyReportResponse.value))
+                }
+                
+                return Observable.just(deserialized)
+        }
+    }
+    
+    /**
      Load documents and group by document moment
      - parameter docType: Type of document
      - parameter auth: Authentication information

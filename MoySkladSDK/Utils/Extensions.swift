@@ -200,19 +200,25 @@ public extension Date {
         return Date.msHourAndMinuteFormatter.string(from: self)
     }
     
+    public func toShortDateAndTime() -> String {
+        return Date.msShortDateAndTimeFormatter.string(from: self)
+    }
+    
+    public static var msShortDateAndTimeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "d MMMM H:mm"
+        return formatter
+    }()
+    
     public static var msShortDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMMM"
-        formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
-        formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
     
     public static var msHourAndMinuteFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "H:mm"
-        formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
-        formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
     
@@ -233,8 +239,6 @@ public extension Date {
     static var msLongDateTimeFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMMM yyyy HH:mm"
-        formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
-        formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
     

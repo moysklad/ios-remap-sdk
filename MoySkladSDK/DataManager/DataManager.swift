@@ -1097,13 +1097,9 @@ public struct DataManager {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecContactPersonsResponse.value))
                 }
                 
-                var contacts = [MSEntity<MSContactPerson>]()
-                results.forEach({ contact in
-                    guard let contact = MSContactPerson.from(dict: contact) else { return }
-                    contacts.append(contact)
-                })
-                
-                return Observable.just(contacts)
+                return Observable.just(results.flatMap({ (contact) -> MSEntity<MSContactPerson>? in
+                    return MSContactPerson.from(dict: contact)
+                }))
         }
     }
 }

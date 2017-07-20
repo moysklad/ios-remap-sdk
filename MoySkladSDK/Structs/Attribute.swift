@@ -8,6 +8,14 @@
 
 import Foundation
 
+public class MSAttributedEntity {
+    public var attributes: [MSEntity<MSAttribute>]?
+    
+    public init(attributes: [MSEntity<MSAttribute>]?) {
+        self.attributes = attributes
+    }
+}
+
 public protocol MSAttributeType {
     var meta: MSMeta { get }
     var id: String { get }

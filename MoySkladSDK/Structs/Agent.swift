@@ -122,6 +122,7 @@ public class MSAgent : Metable {
 	public var accounts: [MSEntity<MSAccount>]
 	public var agentInfo: MSAgentInfo
     public var salesAmount: Money
+    public var attributes: [MSEntity<MSAttribute>]?
     public var report: MSEntity<MSAgentReport>?
     
     public init(meta: MSMeta,
@@ -151,6 +152,7 @@ public class MSAgent : Metable {
     accounts: [MSEntity<MSAccount>],
     agentInfo: MSAgentInfo,
     salesAmount: Money,
+    attributes: [MSEntity<MSAttribute>]?,
     report: MSEntity<MSAgentReport>?) {
         self.meta = meta
         self.id = id
@@ -179,6 +181,7 @@ public class MSAgent : Metable {
         self.accounts = accounts
         self.agentInfo = agentInfo
         self.salesAmount = salesAmount
+        self.attributes = attributes
         self.report = report
     }
     
@@ -209,7 +212,9 @@ public class MSAgent : Metable {
                        certificateDate: certificateDate,
                        accounts: accounts,
                        agentInfo: agentInfo,
-                       salesAmount: salesAmount, report: report)
+                       salesAmount: salesAmount,
+                       attributes: attributes,
+                       report: report)
     }
     
     public func copyAgent() -> MSAgent {

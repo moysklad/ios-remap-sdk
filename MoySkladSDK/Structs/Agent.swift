@@ -219,6 +219,40 @@ public class MSAgent : MSAttributedEntity, Metable {
     public func copyAgent() -> MSAgent {
         return copy()
     }
+    
+    public static func empty() -> MSAgent {
+        return MSAgent(
+            meta: MSMeta(name: "", href: "", type: .counterparty),
+            id: MSID(msID: nil, syncID: nil),
+            accountId: "",
+            owner: nil,
+            shared: false,
+            group: MSEntity.entity(MSGroup(meta: MSMeta(name: "", href: "", type: .group), name: "")),
+            info: MSInfo(version: 0, updated: nil, deleted: nil, name: "", description: nil),
+            code: nil,
+            externalCode: nil,
+            archived: nil,
+            actualAddress: nil,
+            companyType: .legal,
+            email: nil,
+            phone: nil,
+            fax: nil,
+            legalTitle: nil,
+            legalAddress: nil,
+            inn: nil,
+            kpp: nil,
+            ogrn: nil,
+            ogrnip: nil,
+            okpo: nil,
+            certificateNumber: nil,
+            certificateDate: nil,
+            accounts: [],
+            agentInfo: MSAgentInfo(isEgaisEnable: nil, fsrarId: nil, payerVat: false, utmUrl: nil, director: nil, chiefAccountant: nil, tags: [], contactpersons: [], discounts: nil, state: nil),
+            salesAmount: Money(minorUnits: 0),
+            attributes: nil,
+            report: nil
+        )
+    }
 }
 
 

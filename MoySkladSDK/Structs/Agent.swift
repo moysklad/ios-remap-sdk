@@ -220,7 +220,7 @@ public class MSAgent : MSAttributedEntity, Metable {
         return copy()
     }
     
-    public static func empty() -> MSAgent {
+    public static func empty(withState state: MSEntity<MSState>? = nil) -> MSAgent {
         return MSAgent(
             meta: MSMeta(name: "", href: "", type: .counterparty),
             id: MSID(msID: nil, syncID: nil),
@@ -247,7 +247,7 @@ public class MSAgent : MSAttributedEntity, Metable {
             certificateNumber: nil,
             certificateDate: nil,
             accounts: [],
-            agentInfo: MSAgentInfo(isEgaisEnable: nil, fsrarId: nil, payerVat: false, utmUrl: nil, director: nil, chiefAccountant: nil, tags: [], contactpersons: [], discounts: nil, state: nil),
+            agentInfo: MSAgentInfo(isEgaisEnable: nil, fsrarId: nil, payerVat: false, utmUrl: nil, director: nil, chiefAccountant: nil, tags: [], contactpersons: [], discounts: nil, state: state),
             salesAmount: Money(minorUnits: 0),
             attributes: nil,
             report: nil

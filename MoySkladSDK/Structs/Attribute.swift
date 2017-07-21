@@ -8,7 +8,11 @@
 
 import Foundation
 
-public class MSAttributedEntity {
+protocol MSAttributed {
+    var attributes: [MSEntity<MSAttribute>]? { get set }
+}
+
+public class MSAttributedEntity: MSAttributed {
     public var attributes: [MSEntity<MSAttribute>]?
     
     public init(attributes: [MSEntity<MSAttribute>]?) {

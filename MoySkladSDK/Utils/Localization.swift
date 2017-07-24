@@ -47,6 +47,7 @@ enum LocalizedStrings : String {
     case incorrecDocumentFromTemplateResponse
     case incorrecPublicationFromTemplateResponse
     case incorrecDownloadDocumentResponse
+    case incorrecContactPersonsResponse
     case unauthorizedError
     case preconditionFailedError
     case incorrectSalesByProductResponse
@@ -61,6 +62,7 @@ enum LocalizedStrings : String {
     case emptyObjectId
     case unknownObjectType
     case incorrectCounterpartyMetadataResponse
+    case incorrectCounterpartyReportResponse
     
     case accessDeniedRate
     case accessDenied

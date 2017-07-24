@@ -247,6 +247,18 @@ public extension Date {
         return Date.msLongDateTimeFormatter.string(from: self)
     }
     
+    func toMSLongDate() -> String {
+        return Date.msLongDateFormatter.string(from: self)
+    }
+    
+    static var msLongDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMMM yyyy"
+        formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
+        formatter.locale = Locale(identifier: "ru_RU")
+        return formatter
+    }()
+    
     static var msCalendar: Calendar = {
         var cal = Calendar(identifier: .gregorian)
         cal.firstWeekday = 2

@@ -131,7 +131,7 @@ public struct DataManager {
         return Observable.just((states: statesWithoutNills, attributes: attrsWithoutNills))
     }
     
-    static func deserializeCounterpartyMetadata(json: [String:Any], incorrectJsonError: Error) -> Observable<(states: [MSState], tags: [String])> {
+    static func deserializeCounterpartyMetadata(json: [String:Any], incorrectJsonError: Error) -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> {
         let deserializedStates = json.msArray("states").map { MSState.from(dict: $0) }
         let statesWithoutNills = deserializedStates.map { $0?.value() }.removeNils()
         
@@ -139,7 +139,14 @@ public struct DataManager {
             return Observable.error(incorrectJsonError)
         }
         
-        return Observable.just((states: statesWithoutNills, tags: json.value("groups") ?? []))
+        let deserializedAttrs = json.msArray("attributes").map { MSAttributeDefinition.from(dict: $0) }
+        let attrsWithoutNills = deserializedAttrs.removeNils()
+        
+        guard attrsWithoutNills.count == deserializedAttrs.count else {
+            return Observable.error(incorrectJsonError)
+        }
+        
+        return Observable.just((states: statesWithoutNills, tags: json.value("groups") ?? [], attributes: attrsWithoutNills))
     }
     
     static func deserializeArray<T:Metable>(json: [String:Any],
@@ -229,8 +236,6 @@ public struct DataManager {
                                         currenciesRequest,
                                         counterpartyMetadata(auth: auth),
                                         resultSelector: { result in
-                                            print("counterparty states: \(result.6.states.count)")
-                                            print("counterparty tags: \(result.6.tags.count)")
                                             return LogInInfo(employee: result.0,
                                                              companySettings: result.1,
                                                              states: [MSObjectType.customerorder: result.2.states,
@@ -239,7 +244,8 @@ public struct DataManager {
                                                                            MSObjectType.counterparty: result.6.states],
                                                              documentAttributes:[MSObjectType.customerorder: result.2.attributes,
                                                                               MSObjectType.invoiceout: result.3.attributes,
-                                                                              MSObjectType.demand: result.4.attributes],
+                                                                              MSObjectType.demand: result.4.attributes,
+                                                                              MSObjectType.counterparty: result.6.attributes],
                                                              currencies: result.5.toDictionary { $0.meta.href.withoutParameters() },
                                                              counterpartyTags: result.6.tags)
                                             
@@ -284,9 +290,9 @@ public struct DataManager {
      - parameter auth: Authentication information
      - returns: Metadata for object
     */
-    public static func counterpartyMetadata(auth: Auth) -> Observable<(states: [MSState], tags: [String])> {
+    public static func counterpartyMetadata(auth: Auth) -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> {
         return HttpClient.get(.counterpartymetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
-            .flatMapLatest { result -> Observable<(states: [MSState], tags: [String])> in
+            .flatMapLatest { result -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> in
                 guard let result = result else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyMetadataResponse.value))
                 }
@@ -1081,6 +1087,27 @@ public struct DataManager {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecDownloadDocumentResponse.value))
             }
             return Observable.just(result)
+        }
+    }
+    
+    /**
+     Load counterparty contacts.
+     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc#контрагент-контактное-лицо-get)
+     - parameter auth: Authentication information
+     - parameter id: Id of counterparty
+     - returns: Observable sequence with contacts
+     */
+    public static func counterpartyContacts(auth: Auth, id: String) -> Observable<[MSEntity<MSContactPerson>]> {
+        let urlPathComponents: [String] = [id, "contactpersons"]
+        return HttpClient.get(.counterparty, auth: auth, urlPathComponents: urlPathComponents, urlParameters: [])
+            .flatMapLatest { result -> Observable<[MSEntity<MSContactPerson>]> in
+                guard let results = result?.msArray("rows") else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecContactPersonsResponse.value))
+                }
+                
+                return Observable.just(results.flatMap({ (contact) -> MSEntity<MSContactPerson>? in
+                    return MSContactPerson.from(dict: contact)
+                }))
         }
     }
 }

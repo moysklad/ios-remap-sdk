@@ -42,6 +42,8 @@ public enum ExpandPath : String {
     case assortment
     case factureout = "factureOut"
     case components
+    case notes
+    case contactpersons
 }
 
 public protocol Expandable {

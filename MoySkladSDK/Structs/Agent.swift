@@ -87,6 +87,19 @@ public class MSAgentInfo {
         self.state = state
     
     }
+    
+    func copy() -> MSAgentInfo {
+        return MSAgentInfo(isEgaisEnable: isEgaisEnable,
+                           fsrarId: fsrarId,
+                           payerVat: payerVat,
+                           utmUrl: utmUrl,
+                           director: director,
+                           chiefAccountant: chiefAccountant,
+                           tags: tags,
+                           contactpersons: contactpersons,
+                           discounts: discounts,
+                           state: state)
+    }
 }
 
 /**
@@ -210,7 +223,7 @@ public class MSAgent : MSAttributedEntity, Metable {
                        certificateNumber: certificateNumber,
                        certificateDate: certificateDate,
                        accounts: accounts,
-                       agentInfo: agentInfo,
+                       agentInfo: agentInfo.copy(),
                        salesAmount: salesAmount,
                        attributes: attributes,
                        report: report)

@@ -40,4 +40,16 @@ public class MSContactPerson: Metable {
         self.position = position
         self.agent = agent
     }
+    
+    public func copy() -> MSContactPerson {
+        return MSContactPerson(meta: meta,
+                               id: id,
+                               info: info,
+                               accountId: accountId,
+                               externalCode: externalCode,
+                               email: email,
+                               phone: phone,
+                               position: position,
+                               agent: agent)
+    }
 }

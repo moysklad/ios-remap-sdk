@@ -12,12 +12,18 @@ extension MSAgent {
     public func dictionary(metaOnly: Bool = true) -> Dictionary<String, Any> {
         var dict = [String: Any]()
         
-        dict["meta"] = meta.dictionary()
+        if meta.href.characters.count > 0 {
+            dict["meta"] = meta.dictionary()
+        }
         
         guard !metaOnly else { return dict }
         
         dict.merge(info.dictionary())
-        dict.merge(id.dictionary())
+        
+        let idDict = id.dictionary()
+        if !idDict.isEmpty {
+            dict.merge(idDict)
+        }
         
         dict["accounts"] = serialize(entities: self.accounts,
                                       parent: self,
@@ -35,7 +41,6 @@ extension MSAgent {
         dict["externalCode"] = self.externalCode ?? ""
         dict["fax"] = self.fax ?? ""
         
-        dict["group"] = serialize(entity: group)
         dict["inn"] = self.inn ?? ""
         dict["kpp"] = self.kpp ?? ""
         dict["legalAddress"] = self.legalAddress ?? ""
@@ -45,7 +50,10 @@ extension MSAgent {
         dict["archived"] = self.archived
         
         dict["okpo"] = self.okpo ?? ""
-        dict["owner"] = serialize(entity: owner)
+        if meta.href.characters.count > 0 {
+            dict["owner"] = serialize(entity: owner)
+            dict["group"] = serialize(entity: group)
+        }
         dict["phone"] = self.phone ?? ""
         //dict["shared"] = self.shared
         dict["tags"] = agentInfo.tags

@@ -117,7 +117,7 @@ public class MSAgent : MSAttributedEntity, Metable {
 	public var info : MSInfo
 	public var code: String?
 	public let externalCode: String?
-	public let archived: Bool?
+	public var archived: Bool?
 	public var actualAddress: String?
 	public var companyType: MSCompanyType
 	public var email: String?

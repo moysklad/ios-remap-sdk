@@ -456,6 +456,42 @@ public struct DataManager {
     }
     
     /**
+     Load counterparties with report.
+     Also see API reference [ for counterparties](https://online.moysklad.ru/api/remap/1.1/doc/index.html#контрагент) and [ counterparty reports](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-показатели-контрагентов-показатели-контрагентов)
+     - parameter offset: Desired data offset
+     - parameter expanders: Additional objects to include into request
+     - parameter filter: Filter for request
+     - parameter search: Additional string for filtering by name
+     */
+    public static func counterpartiesWithReport(auth: Auth,
+                                      offset: MSOffset? = nil,
+                                      expanders: [Expander] = [],
+                                      filter: Filter? = nil,
+                                      search: Search? = nil)
+        -> Observable<[MSEntity<MSAgent>]> {
+            let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter)
+            
+            return HttpClient.get(.counterparty, auth: auth, urlParameters: urlParameters)
+                .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
+                    guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
+                    
+                    return deserializeArray(json: result,
+                                            incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value),
+                                            deserializer: { MSAgent.from(dict: $0) })
+            }
+                .flatMapLatest { counterparties -> Observable<[MSEntity<MSAgent>]> in
+                    return loadReportsForCounterparties(auth: auth, counterparties: counterparties)
+                        .flatMapLatest { reports -> Observable<[MSEntity<MSAgent>]> in
+                            let new = counterparties.toDictionary({ $0.objectMeta().objectId })
+                            reports.forEach {
+                                new[$0.value()?.agent.objectMeta().objectId ?? ""]?.value()?.report = $0
+                            }
+                            return .just(Array(new.values))
+                    }
+            }
+    }
+    
+    /**
      Load Assortment and group result by product folder
      - parameter auth: Authentication information
      - parameter offset: Desired data offset

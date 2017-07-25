@@ -140,7 +140,7 @@ extension MSMeta {
     }
     
     public func dictionary() -> Dictionary<String, Any> {
-        return ["href":href, "mediaType":mediaType, "metadataHref":metadataHref, "type":type.rawValue]
+        return ["href":href.withoutParameters(), "mediaType":mediaType, "metadataHref":metadataHref, "type":type.rawValue]
     }
 }
 

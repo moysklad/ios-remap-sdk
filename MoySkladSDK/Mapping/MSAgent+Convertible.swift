@@ -29,7 +29,7 @@ extension MSAgent : DictConvertable {
 		        info: MSInfo(dict: dict),
 		        code: dict.value("code"),
 		        externalCode: dict.value("externalCode"),
-		        archived: dict.value("archived"),
+		        archived: dict.value("archived") ?? false,
 		        actualAddress: dict.value("actualAddress"),
 		        companyType: companyType,
 		        email: dict.value("email"),

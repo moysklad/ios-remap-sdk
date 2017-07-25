@@ -42,6 +42,7 @@ extension MSAgent {
         dict["legalTitle"] = self.legalTitle ?? ""
         dict["ogrn"] = self.ogrn ?? ""
         dict["ogrnip"] = self.ogrnip ?? ""
+        dict["archived"] = self.archived
         
         dict["okpo"] = self.okpo ?? ""
         dict["owner"] = serialize(entity: owner)
@@ -50,6 +51,8 @@ extension MSAgent {
         dict["tags"] = agentInfo.tags
         
         dict["state"] = serialize(entity: agentInfo.state)
+        
+        dict["attributes"] = attributes?.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
         
         return dict
     }

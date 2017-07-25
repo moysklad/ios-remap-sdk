@@ -74,7 +74,20 @@ extension MSAgentInfo {
 
 extension MSContactPerson: DictConvertable {
     public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {
-        return [String:Any]()
+        var dict = [String: Any]()
+        
+        if meta.href.characters.count > 0 {
+            dict["meta"] = meta.dictionary()
+        }
+        
+        guard !metaOnly else { return dict }
+        
+        dict.merge(info.dictionary())
+        dict["email"] = email ?? ""
+        dict["phone"] = phone ?? ""
+        dict["position"] = position ?? ""
+        
+        return dict
     }
     
     public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSContactPerson>? {

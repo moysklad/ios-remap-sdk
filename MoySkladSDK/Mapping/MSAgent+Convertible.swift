@@ -29,7 +29,7 @@ extension MSAgent : DictConvertable {
 		        info: MSInfo(dict: dict),
 		        code: dict.value("code"),
 		        externalCode: dict.value("externalCode"),
-		        archived: dict.value("archived"),
+		        archived: dict.value("archived") ?? false,
 		        actualAddress: dict.value("actualAddress"),
 		        companyType: companyType,
 		        email: dict.value("email"),
@@ -74,7 +74,20 @@ extension MSAgentInfo {
 
 extension MSContactPerson: DictConvertable {
     public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {
-        return [String:Any]()
+        var dict = [String: Any]()
+        
+        if meta.href.characters.count > 0 {
+            dict["meta"] = meta.dictionary()
+        }
+        
+        guard !metaOnly else { return dict }
+        
+        dict.merge(info.dictionary())
+        dict["email"] = email ?? ""
+        dict["phone"] = phone ?? ""
+        dict["position"] = position ?? ""
+        
+        return dict
     }
     
     public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSContactPerson>? {

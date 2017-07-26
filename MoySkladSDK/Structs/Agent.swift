@@ -262,7 +262,7 @@ public class MSAgent : MSAttributedEntity, Metable {
             accounts: [],
             agentInfo: MSAgentInfo(isEgaisEnable: nil, fsrarId: nil, payerVat: false, utmUrl: nil, director: nil, chiefAccountant: nil, tags: [], contactpersons: [], discounts: nil, state: state),
             salesAmount: Money(minorUnits: 0),
-            attributes: nil,
+            attributes: [],
             report: nil
         )
     }

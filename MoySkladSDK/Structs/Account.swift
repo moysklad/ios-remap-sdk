@@ -14,17 +14,17 @@ import Foundation
  and [ organizaiton](https://online.moysklad.ru/api/remap/1.1/doc/index.html#юрлицо-счета-юрлица-get)
 */
 public class MSAccount : Metable {
-	public let meta: MSMeta
-	public let id : MSID
-	public let info : MSInfo
-	public let accountId: String
-	public let isDefault: Bool
-	public let accountNumber: String
-	public let bankName: String?
-	public let bankLocation: String?
-	public let correspondentAccount: String?
-	public let bic: String?
-	public let agent: MSMeta?
+	public var meta: MSMeta
+	public var id : MSID
+	public var info : MSInfo
+	public var accountId: String
+	public var isDefault: Bool
+	public var accountNumber: String
+	public var bankName: String?
+	public var bankLocation: String?
+	public var correspondentAccount: String?
+	public var bic: String?
+	public var agent: MSMeta?
     
     public init(meta: MSMeta,
     id : MSID,

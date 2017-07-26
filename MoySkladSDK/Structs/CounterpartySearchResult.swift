@@ -9,11 +9,11 @@
 import Foundation
 
 public struct MSCounterpartySearchResult {
-    let name: String
-    let legalTitle: String
-    let inn: String
-    let kpp: String
-    let ogrn: String
-    let okpo: String
-    let legalAddress: String
+    public let name: String
+    public let legalTitle: String
+    public let inn: String
+    public let kpp: String
+    public let ogrn: String
+    public let okpo: String
+    public let legalAddress: String
 }

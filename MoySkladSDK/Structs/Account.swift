@@ -49,4 +49,18 @@ public class MSAccount : Metable {
         self.bic = bic
         self.agent = agent
     }
+    
+    public func copy() -> MSAccount {
+        return MSAccount(meta: meta,
+                         id: id,
+                         info: info,
+                         accountId: accountId,
+                         isDefault: isDefault,
+                         accountNumber: accountNumber,
+                         bankName: bankName,
+                         bankLocation: bankLocation,
+                         correspondentAccount: correspondentAccount,
+                         bic: bic,
+                         agent: agent)
+    }
 }

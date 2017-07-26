@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Represents general counterparty data returned by SearchByInn
 public struct MSCounterpartySearchResult {
     public let name: String
     public let legalTitle: String

@@ -18,7 +18,7 @@ public protocol MSGeneralCounterparty : class, Metable {
     var info : MSInfo { get set }
     var code: String? { get set }
     var externalCode: String? { get }
-    var archived: Bool? { get }
+    var archived: Bool { get }
     var actualAddress: String? { get set }
     var companyType: MSCompanyType { get set }
     var email: String? { get set }
@@ -117,7 +117,7 @@ public class MSAgent : MSAttributedEntity, Metable {
 	public var info : MSInfo
 	public var code: String?
 	public let externalCode: String?
-	public let archived: Bool?
+	public var archived: Bool
 	public var actualAddress: String?
 	public var companyType: MSCompanyType
 	public var email: String?
@@ -146,7 +146,7 @@ public class MSAgent : MSAttributedEntity, Metable {
     info : MSInfo,
     code: String?,
     externalCode: String?,
-    archived: Bool?,
+    archived: Bool,
     actualAddress: String?,
     companyType: MSCompanyType,
     email: String?,
@@ -244,7 +244,7 @@ public class MSAgent : MSAttributedEntity, Metable {
             info: MSInfo(version: 0, updated: nil, deleted: nil, name: "", description: nil),
             code: nil,
             externalCode: nil,
-            archived: nil,
+            archived: false,
             actualAddress: nil,
             companyType: .legal,
             email: nil,
@@ -262,7 +262,7 @@ public class MSAgent : MSAttributedEntity, Metable {
             accounts: [],
             agentInfo: MSAgentInfo(isEgaisEnable: nil, fsrarId: nil, payerVat: false, utmUrl: nil, director: nil, chiefAccountant: nil, tags: [], contactpersons: [], discounts: nil, state: state),
             salesAmount: Money(minorUnits: 0),
-            attributes: nil,
+            attributes: [],
             report: nil
         )
     }

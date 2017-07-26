@@ -62,12 +62,19 @@ extension MSAccount : DictConvertable {
 	public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {
         var dict = [String: Any]()
         
-        dict["meta"] = meta.dictionary()
+        if meta.href.characters.count > 0 {
+            dict["meta"] = meta.dictionary()
+        }
         
         guard !metaOnly else { return dict }
         
         dict.merge(info.dictionary())
-        // тут должны быть остальные поля объекта, если они понадобятся
+        dict["isDefault"] = isDefault
+        dict["accountNumber"] = accountNumber
+        dict["bankName"] = bankName ?? ""
+        dict["bankLocation"] = bankLocation ?? ""
+        dict["correspondentAccount"] = correspondentAccount ?? ""
+        dict["bic"] = bic ?? ""
         
         return dict
 	}

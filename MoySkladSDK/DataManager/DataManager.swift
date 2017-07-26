@@ -1111,6 +1111,13 @@ public struct DataManager {
         }
     }
     
+    /**
+     Searches counterparty data by INN.
+     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#контрагент-поиск-контрагентов-по-инн-get)
+     - parameter auth: Authentication information
+     - parameter id: INN of counterparty
+     - returns: Observable sequence with counterparty info
+     */
     public static func searchCounterpartyByInn(auth: Auth, inn: String) -> Observable<[MSCounterpartySearchResult]> {
         let urlPathComponents = ["search"]
         let urlParameters: [UrlParameter] = [GenericUrlParameter(name: "inn", value: inn)]

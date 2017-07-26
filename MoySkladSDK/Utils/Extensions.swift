@@ -294,7 +294,7 @@ public extension Date {
 
 public extension NSDecimalNumber {
     public func toMoneyString(showPositiveSign: Bool = false) -> String {
-        guard showPositiveSign else {
+        guard showPositiveSign, !self.isEqual(to: 0) else {
             return NSDecimalNumber.msMoneyNumberFormatter.string(from: self) ?? "0"
         }
 

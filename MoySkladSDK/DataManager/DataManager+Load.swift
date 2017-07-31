@@ -138,9 +138,6 @@ extension DataManager {
                 guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyReportResponse.value)) }
                 
                 let deserialized = result.msArray("rows").flatMap { MSAgentReport.from(dict: $0) }
-                guard deserialized.count == counterparties.count else {
-                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyReportResponse.value))
-                }
                 
                 return Observable.just(deserialized)
         }

@@ -1136,7 +1136,7 @@ public struct DataManager {
     
     /**
      Load counterparty contacts.
-     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc#контрагент-контактное-лицо-get)
+     Also see [ API refere`nce](https://online.moysklad.ru/api/remap/1.1/doc#контрагент-контактное-лицо-get)
      - parameter auth: Authentication information
      - parameter id: Id of counterparty
      - returns: Observable sequence with contacts
@@ -1170,7 +1170,7 @@ public struct DataManager {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartySearchResponse.value))
                 }
                 
-                return Observable.just(results.map { MSCounterpartySearchResult.from(dict: $0) })
+                return Observable.just(results.map { MSCounterpartySearchResult.from(dict: $0) }.removeNils())
         }
     }
 }

@@ -338,3 +338,12 @@ public extension Double {
         return nf
     }()
 }
+
+public extension String {
+    public func toDate() -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        return dateFormatter.date(from: self)
+    }
+}

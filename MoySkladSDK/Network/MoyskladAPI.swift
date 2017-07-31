@@ -136,7 +136,7 @@ final class HttpClient {
     //static let responseQueue = DispatchQueue(label: "HttpClient.ResponseQueue", qos: .utility)
     
     static let manager: Alamofire.SessionManager = {
-		
+        
         let serverTrustPolicies: [String: ServerTrustPolicy] = [
             "online.moysklad.ru": .disableEvaluation
         ]

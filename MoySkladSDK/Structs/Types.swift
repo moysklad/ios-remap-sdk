@@ -54,4 +54,5 @@ public enum MSObjectType : String {
     case embeddedtemplate
     case customtemplate
     case contactperson
+    case ordersstatistics
 }

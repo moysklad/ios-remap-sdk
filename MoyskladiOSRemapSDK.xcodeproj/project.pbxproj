@@ -98,6 +98,12 @@
 		95535FAE1F1F93E000A5E717 /* ContactPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95535FAD1F1F93E000A5E717 /* ContactPerson.swift */; };
 		C9BD0FC11E9BA40B00FD8613 /* MSTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD0FC01E9BA40B00FD8613 /* MSTemplate.swift */; };
 		C9BD0FC31E9BA70A00FD8613 /* MSTemplate+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD0FC21E9BA70A00FD8613 /* MSTemplate+Convertible.swift */; };
+		C9F3CB451F1CABB6005E1636 /* MSStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F3CB441F1CABB6005E1636 /* MSStatistics.swift */; };
+		C9F3CB471F1CAD4D005E1636 /* MSStatisticsContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F3CB461F1CAD4D005E1636 /* MSStatisticsContext.swift */; };
+		C9F3CB491F1CAED8005E1636 /* MSStatisticsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F3CB481F1CAED8005E1636 /* MSStatisticsData.swift */; };
+		C9F3CB4B1F1CB616005E1636 /* MSStatisticsValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F3CB4A1F1CB616005E1636 /* MSStatisticsValues.swift */; };
+		C9F3CB4E1F1CB69F005E1636 /* MSStatisticsEmployee.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F3CB4D1F1CB69F005E1636 /* MSStatisticsEmployee.swift */; };
+		C9F3CB501F1CB880005E1636 /* MSStatistics+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F3CB4F1F1CB880005E1636 /* MSStatistics+Convertible.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -205,6 +211,12 @@
 		95535FAD1F1F93E000A5E717 /* ContactPerson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactPerson.swift; sourceTree = "<group>"; };
 		C9BD0FC01E9BA40B00FD8613 /* MSTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSTemplate.swift; sourceTree = "<group>"; };
 		C9BD0FC21E9BA70A00FD8613 /* MSTemplate+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSTemplate+Convertible.swift"; sourceTree = "<group>"; };
+		C9F3CB441F1CABB6005E1636 /* MSStatistics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSStatistics.swift; sourceTree = "<group>"; };
+		C9F3CB461F1CAD4D005E1636 /* MSStatisticsContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSStatisticsContext.swift; sourceTree = "<group>"; };
+		C9F3CB481F1CAED8005E1636 /* MSStatisticsData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSStatisticsData.swift; sourceTree = "<group>"; };
+		C9F3CB4A1F1CB616005E1636 /* MSStatisticsValues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSStatisticsValues.swift; sourceTree = "<group>"; };
+		C9F3CB4D1F1CB69F005E1636 /* MSStatisticsEmployee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSStatisticsEmployee.swift; sourceTree = "<group>"; };
+		C9F3CB4F1F1CB880005E1636 /* MSStatistics+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSStatistics+Convertible.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,6 +328,11 @@
 				95535FAD1F1F93E000A5E717 /* ContactPerson.swift */,
 				9547EE9B1F2092CE00CC5FFC /* AgentReport.swift */,
 				6EE966AF1F28759C008DDD8E /* CounterpartySearchResult.swift */,
+				C9F3CB441F1CABB6005E1636 /* MSStatistics.swift */,
+				C9F3CB461F1CAD4D005E1636 /* MSStatisticsContext.swift */,
+				C9F3CB481F1CAED8005E1636 /* MSStatisticsData.swift */,
+				C9F3CB4A1F1CB616005E1636 /* MSStatisticsValues.swift */,
+				C9F3CB4D1F1CB69F005E1636 /* MSStatisticsEmployee.swift */,
 			);
 			path = Structs;
 			sourceTree = "<group>";
@@ -346,6 +363,7 @@
 				C9BD0FC21E9BA70A00FD8613 /* MSTemplate+Convertible.swift */,
 				9547EE9D1F20950F00CC5FFC /* MSAgentReport+Convertible.swift */,
 				6EE966B11F28761C008DDD8E /* CounterpartySearchResult+Convertable.swift */,
+				C9F3CB4F1F1CB880005E1636 /* MSStatistics+Convertible.swift */,
 			);
 			path = Mapping;
 			sourceTree = "<group>";
@@ -567,6 +585,7 @@
 				55C05C4B1E028F9B008F4254 /* MSDashboard.swift in Sources */,
 				55C05C551E028F9B008F4254 /* СustomerOrder.swift in Sources */,
 				55C05C521E028F9B008F4254 /* Project.swift in Sources */,
+				C9F3CB451F1CABB6005E1636 /* MSStatistics.swift in Sources */,
 				6E3C50FD1E4CA52A0085E8A6 /* MSCustomEntity+Convertible.swift in Sources */,
 				55C05C411E028F9B008F4254 /* Agent.swift in Sources */,
 				55C05C501E028F9B008F4254 /* Permissions.swift in Sources */,
@@ -584,11 +603,13 @@
 				55C05C701E028F9B008F4254 /* ValueCoding.swift in Sources */,
 				6E4344DE1E3B239A005D0DDE /* InvoiceOut+Serialize.swift in Sources */,
 				6E75A1E41EA8A3D200A05A83 /* DataManager.swift in Sources */,
+				C9F3CB4B1F1CB616005E1636 /* MSStatisticsValues.swift in Sources */,
 				55C05C3F1E028F9B008F4254 /* Extensions.swift in Sources */,
 				55C05C541E028F9B008F4254 /* Types.swift in Sources */,
 				55C05C6A1E028F9B008F4254 /* DecimalNumberType.swift in Sources */,
 				C9BD0FC11E9BA40B00FD8613 /* MSTemplate.swift in Sources */,
 				55C05C4F1E028F9B008F4254 /* MSStore.swift in Sources */,
+				C9F3CB471F1CAD4D005E1636 /* MSStatisticsContext.swift in Sources */,
 				55C05C5B1E028F9B008F4254 /* Employee+Convertible.swift in Sources */,
 				55C05C621E028F9B008F4254 /* MSStock+Convertible.swift in Sources */,
 				55C05C6B1E028F9B008F4254 /* NSDecimalExtensions.swift in Sources */,
@@ -597,6 +618,8 @@
 				6E75A1D41EA89B9E00A05A83 /* Filter.swift in Sources */,
 				6E4344DC1E3B239A005D0DDE /* CustomerOrder+Serialize.swift in Sources */,
 				55C05C491E028F9B008F4254 /* Meta.swift in Sources */,
+				C9F3CB491F1CAED8005E1636 /* MSStatisticsData.swift in Sources */,
+				C9F3CB501F1CB880005E1636 /* MSStatistics+Convertible.swift in Sources */,
 				55C05C5D1E028F9B008F4254 /* MSContract+Convertible.swift in Sources */,
 				55C05C451E028F9B008F4254 /* Demand.swift in Sources */,
 				9547EE9E1F20950F00CC5FFC /* MSAgentReport+Convertible.swift in Sources */,
@@ -622,6 +645,7 @@
 				55C05C4E1E028F9B008F4254 /* MSStock.swift in Sources */,
 				55C05C591E028F9B008F4254 /* Demand+Convertible.swift in Sources */,
 				55C05C4C1E028F9B008F4254 /* MSImage.swift in Sources */,
+				C9F3CB4E1F1CB69F005E1636 /* MSStatisticsEmployee.swift in Sources */,
 				55C05C421E028F9B008F4254 /* Assortment.swift in Sources */,
 				8B3B57491E1257B50023B75B /* MSAttribute+Convertible.swift in Sources */,
 				55C05C5A1E028F9B008F4254 /* DictConvertable.swift in Sources */,

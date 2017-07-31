@@ -1146,4 +1146,23 @@ public struct DataManager {
                 }))
         }
     }
+    
+    /**
+     Searches counterparty data by INN.
+     - parameter auth: Authentication information
+     - parameter id: INN of counterparty
+     - returns: Observable sequence with counterparty info
+     */
+    public static func searchCounterpartyByInn(auth: Auth, inn: String) -> Observable<[MSCounterpartySearchResult]> {
+        let urlPathComponents = ["search"]
+        let urlParameters: [UrlParameter] = [GenericUrlParameter(name: "inn", value: inn)]
+        return HttpClient.get(.counterparty, auth: auth, urlPathComponents: urlPathComponents, urlParameters: urlParameters)
+            .flatMapLatest { result -> Observable<[MSCounterpartySearchResult]> in
+                guard let results = result?.msArray("rows") else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartySearchResponse.value))
+                }
+                
+                return Observable.just(results.map { MSCounterpartySearchResult.from(dict: $0) })
+        }
+    }
 }

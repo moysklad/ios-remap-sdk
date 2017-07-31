@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct MSStatisticsData {
+public class MSStatisticsData {
     public let moment: Date
     public let values : MSStatisticsValues
     

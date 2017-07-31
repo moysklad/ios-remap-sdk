@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct MSStatisticsEmployee: Metable {
+public class MSStatisticsEmployee: Metable {
     public let meta: MSMeta
     
     public init(meta: MSMeta) {

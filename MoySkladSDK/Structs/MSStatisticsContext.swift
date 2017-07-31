@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct MSStatisticsContext {
+public class MSStatisticsContext {
     public let employee: MSStatisticsEmployee?
     
     public init(employee: MSStatisticsEmployee?) {

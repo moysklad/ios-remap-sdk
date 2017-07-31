@@ -96,6 +96,7 @@
 		9547EE9C1F2092CE00CC5FFC /* AgentReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9547EE9B1F2092CE00CC5FFC /* AgentReport.swift */; };
 		9547EE9E1F20950F00CC5FFC /* MSAgentReport+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9547EE9D1F20950F00CC5FFC /* MSAgentReport+Convertible.swift */; };
 		95535FAE1F1F93E000A5E717 /* ContactPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95535FAD1F1F93E000A5E717 /* ContactPerson.swift */; };
+		95AAF4F61F2F492600CA698A /* StatisticsParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AAF4F51F2F492600CA698A /* StatisticsParameters.swift */; };
 		C9BD0FC11E9BA40B00FD8613 /* MSTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD0FC01E9BA40B00FD8613 /* MSTemplate.swift */; };
 		C9BD0FC31E9BA70A00FD8613 /* MSTemplate+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD0FC21E9BA70A00FD8613 /* MSTemplate+Convertible.swift */; };
 		C9F3CB451F1CABB6005E1636 /* MSStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F3CB441F1CABB6005E1636 /* MSStatistics.swift */; };
@@ -209,6 +210,7 @@
 		9547EE9B1F2092CE00CC5FFC /* AgentReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgentReport.swift; sourceTree = "<group>"; };
 		9547EE9D1F20950F00CC5FFC /* MSAgentReport+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSAgentReport+Convertible.swift"; sourceTree = "<group>"; };
 		95535FAD1F1F93E000A5E717 /* ContactPerson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactPerson.swift; sourceTree = "<group>"; };
+		95AAF4F51F2F492600CA698A /* StatisticsParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticsParameters.swift; sourceTree = "<group>"; };
 		C9BD0FC01E9BA40B00FD8613 /* MSTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSTemplate.swift; sourceTree = "<group>"; };
 		C9BD0FC21E9BA70A00FD8613 /* MSTemplate+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSTemplate+Convertible.swift"; sourceTree = "<group>"; };
 		C9F3CB441F1CABB6005E1636 /* MSStatistics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSStatistics.swift; sourceTree = "<group>"; };
@@ -433,6 +435,7 @@
 				6E75A1CF1EA89B9E00A05A83 /* HttpRouter.swift */,
 				6E75A1D01EA89B9E00A05A83 /* OrderBy.swift */,
 				95300F4D1ECB06A6009424BF /* Order.swift */,
+				95AAF4F51F2F492600CA698A /* StatisticsParameters.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -661,6 +664,7 @@
 				55C05C431E028F9B008F4254 /* CompanySettings.swift in Sources */,
 				55C05C671E028F9B008F4254 /* Bitcoin.swift in Sources */,
 				6E75A1E81EA8A3D200A05A83 /* DataManager+Update.swift in Sources */,
+				95AAF4F61F2F492600CA698A /* StatisticsParameters.swift in Sources */,
 				6E75A1E71EA8A3D200A05A83 /* DataManager+Delete.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,18 +9,18 @@
 import Foundation
 
 extension MSStatistics {
-    public static func from(dict: Dictionary<String, Any>) -> MSStatistics? {
+    public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSStatistics>? {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else { return nil }
         
-        return MSStatistics.init(context: MSStatisticsContext.from(dict: dict.msValue("context")),
+        return MSEntity.entity(MSStatistics(context: MSStatisticsContext.from(dict: dict.msValue("context")),
                                  meta: meta,
-                                 data: MSStatisticsData.from(dict: dict.msArray("data")))
+                                 data: MSStatisticsData.from(dict: dict.msArray("data"))))
     }
 }
 
 extension MSStatisticsContext {
     public static func from(dict: Dictionary<String, Any>) -> MSStatisticsContext {
-        return MSStatisticsContext.init(employee: MSStatisticsEmployee.from(dict: dict.msValue("employee")))
+        return MSStatisticsContext(employee: MSStatisticsEmployee.from(dict: dict.msValue("employee")))
     }
 }
 
@@ -28,7 +28,7 @@ extension MSStatisticsEmployee {
     public static func from(dict: Dictionary<String, Any>) -> MSStatisticsEmployee? {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else { return nil }
 
-        return MSStatisticsEmployee.init(meta: meta)
+        return MSStatisticsEmployee(meta: meta)
     }
 }
 
@@ -45,7 +45,7 @@ extension MSStatisticsData {
 
 extension MSStatisticsValues {
     public static func from(dict: Dictionary<String, Any>) -> MSStatisticsValues {
-        return MSStatisticsValues.init(quantity: (dict["quantity"] as? Double ?? 0),
+        return MSStatisticsValues(quantity: (dict["quantity"] as? Double ?? 0),
                                        sum: (dict["sum"] as? Double ?? 0))
     }
 }

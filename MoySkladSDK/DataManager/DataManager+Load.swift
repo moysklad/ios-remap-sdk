@@ -225,4 +225,30 @@ extension DataManager {
         }
     }
     
+    /**
+     Load statistics data
+     - parameter auth: Authentication information
+     - parameter moment: Date interval
+     - parameter interval: type interval [hour, day, month]
+     */
+    public static func loadStatistics(
+                                auth: Auth,
+                                moment: StatisticsMoment,
+                                interval: StatisticsIntervalArgument,
+                                retailStore: StatisticsRerailStoreArgument? = nil
+                            ) -> Observable<MSEntity<MSStatistics>>  {
+        let urlParameters: [UrlParameter] = mergeUrlParameters(moment, interval, retailStore)
+        
+        return HttpClient.get(.plotseriesOrder, auth: auth, urlParameters: urlParameters)
+                    .flatMapLatest { result -> Observable<MSEntity<MSStatistics>> in
+                        
+                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPlotseriesResponse.value)) }
+                
+                guard let deserialized = MSStatistics.from(dict: result) else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value))
+                }
+                
+                return Observable.just(deserialized)
+        }
+    }
 }

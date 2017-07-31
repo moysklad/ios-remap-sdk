@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct MSStatisticsValues {
+public class MSStatisticsValues {
     public let quantity: Double
     public let sum : Double
     

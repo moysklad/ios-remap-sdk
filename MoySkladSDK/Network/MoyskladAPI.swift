@@ -115,6 +115,9 @@ public enum MSApiRequest : String {
     case customEntity = "/entity/customentity"
     case entity = "/entity"
     case counterpartyReport = "report/counterparty"
+    
+    case plotseries = "/plotseries/"
+    case reportMoneyByAccount = "/report/money/byaccount"
 }
 
 extension MSApiRequest {
@@ -136,7 +139,7 @@ final class HttpClient {
     //static let responseQueue = DispatchQueue(label: "HttpClient.ResponseQueue", qos: .utility)
     
     static let manager: Alamofire.SessionManager = {
-		
+        
         let serverTrustPolicies: [String: ServerTrustPolicy] = [
             "online.moysklad.ru": .disableEvaluation
         ]

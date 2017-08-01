@@ -64,6 +64,9 @@ enum LocalizedStrings : String {
     case unknownObjectType
     case incorrectCounterpartyMetadataResponse
     case incorrectCounterpartyReportResponse
+    case incorrectPlotseriesSalesResponse
+    case incorrectPlotseriesOrderResponse
+    case incorrectPlotseriesMoneyResponse
     
     case accessDeniedRate
     case accessDenied

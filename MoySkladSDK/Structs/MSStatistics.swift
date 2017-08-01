@@ -11,15 +11,33 @@ import Foundation
 public enum MSStatisticsType: String {
     case orders
     case sales
+    case money
 }
 
-public class MSStatistics: Metable {
+public class MSStatisticsBase: Metable {
     public let meta: MSMeta
+    
+    public init(meta: MSMeta) {
+        self.meta = meta
+    }
+}
+
+public class MSStatistics: MSStatisticsBase {
     public let series: Array<MSStatisticsData>
     
-    public init(meta : MSMeta,
-                series : Array<MSStatisticsData>) {
-        self.meta = meta
+    public init(meta: MSMeta,
+                series: Array<MSStatisticsData>) {
         self.series = series
+        super.init(meta: meta)
+    }
+}
+
+public class MSMoneyStatistics: MSStatisticsBase {
+    public let series: Array<MSMoneyStatisticsData>
+    
+    public init(meta: MSMeta,
+                series: Array<MSMoneyStatisticsData>) {
+        self.series = series
+        super.init(meta: meta)
     }
 }

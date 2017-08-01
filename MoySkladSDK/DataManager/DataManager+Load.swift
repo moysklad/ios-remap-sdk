@@ -9,7 +9,6 @@
 import Foundation
 import RxSwift
 
-
 public typealias groupedMoment<K>  = (date: Date, data: [MSEntity<K.Element>])  where K: MSGeneralDocument, K: DictConvertable
 
 extension DataManager {
@@ -222,34 +221,6 @@ extension DataManager {
                 }
                 
                 return Observable.just(withoutNills)
-        }
-    }
-    
-    /**
-     Load statistics data
-     - parameter auth: Authentication information
-     - parameter moment: Date interval
-     - parameter interval: type interval [hour, day, month]
-     */
-    public static func loadStatistics(
-                                auth: Auth,
-                                type: MSStatisticsType,
-                                moment: StatisticsMoment,
-                                interval: StatisticsIntervalArgument,
-                                retailStore: StatisticsRerailStoreArgument? = nil
-                        ) -> Observable<MSEntity<MSStatistics>> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(moment, interval, retailStore)
-        
-        return HttpClient.get(.plotseries, auth: auth, urlPathComponents: [type.rawValue], urlParameters: urlParameters)
-                    .flatMapLatest { result -> Observable<MSEntity<MSStatistics>> in
-                        
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPlotseriesResponse.value)) }
-                
-                guard let deserialized = MSStatistics.from(dict: result) else {
-                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value))
-                }
-                
-                return Observable.just(deserialized)
         }
     }
 }

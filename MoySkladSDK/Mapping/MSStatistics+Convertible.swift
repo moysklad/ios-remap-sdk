@@ -24,9 +24,9 @@ extension MSStatisticsData {
     public static func from(dict: [Dictionary<String, Any>]) -> Array<MSStatisticsData> {
         var result = Array<MSStatisticsData>()
         dict.forEach { (dataDict) in
-            guard let date = (dataDict["date"] as? String)?.toDate(), let quantity: Double = dataDict.value("quantity"), let sum: Double = dataDict.value("sum") else { return }
+            guard let dateServer: String = dataDict.value("date"), let date = dateServer.toDate() else { return }
             
-            let item = MSStatisticsData(moment: date, quantity: quantity, sum: sum)
+            let item = MSStatisticsData(moment: date, quantity: dataDict.value("quantity") ?? 0, sum: dataDict.value("sum") ?? 0)
             
             result.append(item)
         }

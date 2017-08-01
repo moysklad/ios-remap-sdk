@@ -233,13 +233,14 @@ extension DataManager {
      */
     public static func loadStatistics(
                                 auth: Auth,
+                                type: MSStatisticsType,
                                 moment: StatisticsMoment,
                                 interval: StatisticsIntervalArgument,
                                 retailStore: StatisticsRerailStoreArgument? = nil
-                            ) -> Observable<MSEntity<MSStatistics>>  {
+                        ) -> Observable<MSEntity<MSStatistics>> {
         let urlParameters: [UrlParameter] = mergeUrlParameters(moment, interval, retailStore)
         
-        return HttpClient.get(.plotseriesOrder, auth: auth, urlParameters: urlParameters)
+        return HttpClient.get(.plotseries, auth: auth, urlPathComponents: [type.rawValue], urlParameters: urlParameters)
                     .flatMapLatest { result -> Observable<MSEntity<MSStatistics>> in
                         
                 guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPlotseriesResponse.value)) }

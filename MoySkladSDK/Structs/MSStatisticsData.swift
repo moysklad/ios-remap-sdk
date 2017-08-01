@@ -10,11 +10,14 @@ import Foundation
 
 public class MSStatisticsData {
     public let moment: Date
-    public let values : MSStatisticsValues
+    public let quantity: Double
+    public let sum : Double
     
     public init(moment: Date,
-                values : MSStatisticsValues) {
+                quantity: Double,
+                sum : Double) {
         self.moment = moment
-        self.values = values
+        self.quantity = quantity
+        self.sum = sum
     }
 }

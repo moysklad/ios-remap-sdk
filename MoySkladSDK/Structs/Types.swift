@@ -55,4 +55,6 @@ public enum MSObjectType : String {
     case customtemplate
     case contactperson
     case ordersstatistics
+    case salesplotseries
+    case ordersplotseries
 }

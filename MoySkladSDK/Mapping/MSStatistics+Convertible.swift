@@ -8,27 +8,15 @@
 
 import Foundation
 
-extension MSStatistics {
+extension MSStatistics: DictConvertable {
     public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSStatistics>? {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else { return nil }
         
-        return MSEntity.entity(MSStatistics(context: MSStatisticsContext.from(dict: dict.msValue("context")),
-                                 meta: meta,
-                                 data: MSStatisticsData.from(dict: dict.msArray("data"))))
+        return MSEntity.entity(MSStatistics(meta: meta, series: MSStatisticsData.from(dict: dict.msArray("series"))))
     }
-}
-
-extension MSStatisticsContext {
-    public static func from(dict: Dictionary<String, Any>) -> MSStatisticsContext {
-        return MSStatisticsContext(employee: MSStatisticsEmployee.from(dict: dict.msValue("employee")))
-    }
-}
-
-extension MSStatisticsEmployee {
-    public static func from(dict: Dictionary<String, Any>) -> MSStatisticsEmployee? {
-        guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else { return nil }
-
-        return MSStatisticsEmployee(meta: meta)
+    
+    public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {
+        return [:]
     }
 }
 
@@ -36,16 +24,12 @@ extension MSStatisticsData {
     public static func from(dict: [Dictionary<String, Any>]) -> Array<MSStatisticsData> {
         var result = Array<MSStatisticsData>()
         dict.forEach { (dataDict) in
-            guard let date = (dataDict["date"] as? String)?.toDate() else { return }
-            result.append(MSStatisticsData.init(moment: date, values: MSStatisticsValues.from(dict: dataDict.msValue("values"))))
+            guard let date = (dataDict["date"] as? String)?.toDate(), let quantity: Double = dataDict.value("quantity"), let sum: Double = dataDict.value("sum") else { return }
+            
+            let item = MSStatisticsData(moment: date, quantity: quantity, sum: sum)
+            
+            result.append(item)
         }
         return result
-    }
-}
-
-extension MSStatisticsValues {
-    public static func from(dict: Dictionary<String, Any>) -> MSStatisticsValues {
-        return MSStatisticsValues(quantity: (dict["quantity"] as? Double ?? 0),
-                                       sum: (dict["sum"] as? Double ?? 0))
     }
 }

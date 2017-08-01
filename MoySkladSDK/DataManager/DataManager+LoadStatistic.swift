@@ -33,12 +33,12 @@ extension DataManager {
      - retailStore: href for retailStore
      */
     public static func loadStatistics(
-            auth: Auth,
-            type: MSStatisticsType,
-            moment: StatisticsMoment,
-            interval: StatisticsIntervalArgument,
-            retailStore: StatisticsRerailStoreArgument? = nil
-        ) -> Observable<MSEntity<MSStatistics>> {
+        auth: Auth,
+        type: MSStatisticsType,
+        moment: StatisticsMoment,
+        interval: StatisticsIntervalArgument,
+        retailStore: StatisticsRerailStoreArgument? = nil
+    ) -> Observable<MSEntity<MSStatistics>> {
         
         let urlParameters: [UrlParameter] = mergeUrlParameters(moment, interval, retailStore)
         
@@ -63,11 +63,11 @@ extension DataManager {
      - retailStore: href for retailStore
      */
     public static func loadMoneyStatistics(
-            auth: Auth,
-            moment: StatisticsMoment,
-            interval: StatisticsIntervalArgument,
-            retailStore: StatisticsRerailStoreArgument? = nil
-        ) -> Observable<MSEntity<MSMoneyStatistics>> {
+        auth: Auth,
+        moment: StatisticsMoment,
+        interval: StatisticsIntervalArgument,
+        retailStore: StatisticsRerailStoreArgument? = nil
+    ) -> Observable<MSEntity<MSMoneyStatistics>> {
         
         let urlParameters: [UrlParameter] = mergeUrlParameters(moment, interval, retailStore)
         let type = MSStatisticsType.money
@@ -84,4 +84,87 @@ extension DataManager {
                 return Observable.just(deserialized)
         }
     }
+    
+    public static func loadOrderStatisticsOfDay(
+        auth: Auth,
+        retailStore: StatisticsRerailStoreArgument? = nil
+    )-> Observable<StatisticsResult> {
+        let interval = StatisticsIntervalArgument(type: .hour)
+        
+        let currentRequest = loadStatistics(auth: auth,
+                                            type: .orders,
+                                            moment: StatisticsMoment(from: Date().beginningOfDay(), to: Date().endOfDay()),
+                                            interval: interval,
+                                            retailStore: retailStore)
+        
+        let lastRequest = loadStatistics(auth: auth,
+                                         type: .orders,
+                                         moment: StatisticsMoment(from: Date().beginningOfLastDay(), to: Date().endOfLastDay()),
+                                         interval: interval,
+                                         retailStore: retailStore)
+        
+        return Observable.combineLatest(currentRequest, lastRequest,
+                                        resultSelector: { current, last in
+                                            return StatisticsResult(current: current, last: last)
+                                        })
+    }
+    
+    public static func loadOrderStatisticsOfWeek(
+        auth: Auth,
+        retailStore: StatisticsRerailStoreArgument? = nil
+        )-> Observable<StatisticsResult> {
+        let interval = StatisticsIntervalArgument(type: .day)
+        
+        let currentRequest = loadStatistics(auth: auth,
+                                            type: .orders,
+                                            moment: StatisticsMoment(from: Date().startOfWeek(), to: Date().endOfWeek()),
+                                            interval: interval,
+                                            retailStore: retailStore)
+        
+        let lastRequest = loadStatistics(auth: auth,
+                                         type: .orders,
+                                         moment: StatisticsMoment(from: Date().startOfLastWeek(), to: Date().endOfLastWeek()),
+                                         interval: interval,
+                                         retailStore: retailStore)
+        
+        return Observable.combineLatest(currentRequest, lastRequest,
+                                        resultSelector: { current, last in
+                                            return StatisticsResult(current: current, last: last)
+        })
+    }
+    
+    public static func loadOrderStatisticsOfMonth(
+        auth: Auth,
+        retailStore: StatisticsRerailStoreArgument? = nil
+        )-> Observable<StatisticsResult> {
+        let interval = StatisticsIntervalArgument(type: .day)
+        
+        let currentRequest = loadStatistics(auth: auth,
+                                            type: .orders,
+                                            moment: StatisticsMoment(from: Date().startOfMonth(), to: Date().endOfMonth()),
+                                            interval: interval,
+                                            retailStore: retailStore)
+        
+        let lastRequest = loadStatistics(auth: auth,
+                                         type: .orders,
+                                         moment: StatisticsMoment(from: Date().startOfLastMonth(), to: Date().startOfMonth()),
+                                         interval: interval,
+                                         retailStore: retailStore)
+        
+        return Observable.combineLatest(currentRequest, lastRequest,
+                                        resultSelector: { current, last in
+                                            return StatisticsResult(current: current, last: last)
+        })
+    }
+    
+    
+//    public static func loadSalesStatistics(
+//        auth: Auth,
+//        moment: StatisticsMoment,
+//        interval: StatisticsIntervalArgument,
+//        retailStore: StatisticsRerailStoreArgument? = nil
+//    ) {
+//        let statisticsRequest = loadStatistics(auth: auth, type: .sales, moment: moment, interval: interval)
+////        let productReportRequest = 
+//    }
 }

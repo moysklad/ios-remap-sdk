@@ -188,10 +188,6 @@ public extension Date {
         return Date.msDateFormatter.string(from: self)
     }
     
-    public func beginningOfDay() -> Date {
-        return Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: self)!
-    }
-    
     public func toShortDate() -> String {
         return Date.msShortDateFormatter.string(from: self)
     }
@@ -275,6 +271,14 @@ public extension Date {
         return Date.msCalendar.date(byAdding: .second, value: 604799, to: self.startOfWeek())!
     }
     
+    func startOfLastWeek() -> Date {
+        return Date.msCalendar.date(byAdding: .second, value: -604799, to: self.startOfWeek())!
+    }
+    
+    func endOfLastWeek() -> Date {
+        return Date.msCalendar.date(byAdding: .second, value: 604799, to: self.startOfLastWeek())!
+    }
+    
     func startOfMonth() -> Date {
         let components = Date.msCalendar.dateComponents([.year, .month], from: self)
         return Date.msCalendar.date(from: components)!
@@ -287,8 +291,27 @@ public extension Date {
         return Date.msCalendar.date(byAdding: comps2, to: startOfMonth())!
     }
     
+    func startOfLastMonth() -> Date {
+        var comps2 = DateComponents()
+        comps2.month = -1
+        comps2.second = -1
+        return Date.msCalendar.date(byAdding: comps2, to: startOfMonth())!
+    }
+    
+    public func beginningOfDay() -> Date {
+        return Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: self)!
+    }
+    
     func endOfDay() -> Date {
         return Date.msCalendar.date(bySettingHour: 23, minute: 59, second: 59, of: self)!
+    }
+    
+    public func beginningOfLastDay() -> Date {
+        return Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: self.addingTimeInterval(-(24*60*60)))!
+    }
+    
+    func endOfLastDay() -> Date {
+        return Date.msCalendar.date(bySettingHour: 23, minute: 59, second: 59, of: self.addingTimeInterval(-(24*60*60)))!
     }
 }
 

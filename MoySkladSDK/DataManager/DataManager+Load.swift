@@ -105,11 +105,9 @@ extension DataManager {
     }
     
     /**
-     Load counterparty by Id
-     - parameter Id: Id of counterparty to load
+     Load counterparty report by Id
      - parameter auth: Authentication information
-     - parameter documentId: counterparty Id
-     - parameter expanders: Additional objects to include into request
+     - parameter counterpartyId: Id of counterparty
      */
     public static func loadReportById(auth: Auth, counterpartyId: UUID) -> Observable<MSEntity<MSAgentReport>> {
         return HttpClient.get(.counterpartyReport, auth: auth, urlPathComponents: [counterpartyId.uuidString])
@@ -119,6 +117,26 @@ extension DataManager {
                 guard let deserialized = MSAgentReport.from(dict: result) else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyReportResponse.value))
                 }
+                
+                return Observable.just(deserialized)
+        }
+    }
+    
+    /**
+     Load reports for specified counterparties
+     - parameter auth: Authentication information
+     - parameter counterparties: Array of counterparties
+    */
+    public static func loadReportsForCounterparties(auth: Auth, counterparties: [MSEntity<MSAgent>]) -> Observable<[MSEntity<MSAgentReport>]> {
+        guard counterparties.count > 0 else { return .just([]) }
+        
+        let body: [String: Any] = ["counterparties": counterparties.map { ["counterparty": ["meta": $0.objectMeta().dictionary()]] }]
+        
+        return HttpClient.create(.counterpartyReport, auth: auth, body: body, contentType: .json)
+            .flatMapLatest { result -> Observable<[MSEntity<MSAgentReport>]> in
+                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyReportResponse.value)) }
+                
+                let deserialized = result.msArray("rows").flatMap { MSAgentReport.from(dict: $0) }
                 
                 return Observable.just(deserialized)
         }

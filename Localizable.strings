@@ -48,6 +48,7 @@
 "incorrecPublicationFromTemplateResponse" = "Неизвестный ответ при запросе публикации из шаблона печатной формы";
 "incorrectCounterpartyReportResponse" = "Неизвестный ответ на запрос отчета контрагента";
 "incorrectCounterpartySearchResponse" = "Неизвестный ответ при поиске контрагента по ИНН";
+"incorrectBankSearchResponse" = "Неизвестный ответ при поиске банка по БИК";
 "unauthorizedError" = "Ошибка аутентификации: Неправильный пароль или имя пользователя";
 "unknownDocumentType" = "Неизвестный тип документа";
 "unknownObjectType" = "Неизвестный тип объекта";

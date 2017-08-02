@@ -55,6 +55,7 @@ enum LocalizedStrings : String {
     case incorrectStockByStoreResponse
     case incorrectTemplateResponse
     case incorrectCounterpartySearchResponse
+    case incorrectBankSearchResponse
     case unknownDocumentType
     case genericDeserializationError
     case documentTooManyPositions

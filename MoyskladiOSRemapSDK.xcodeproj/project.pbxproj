@@ -394,8 +394,6 @@
 				C9BD0FC21E9BA70A00FD8613 /* MSTemplate+Convertible.swift */,
 				55C05C2D1E028F9B008F4254 /* Project+Convertible.swift */,
 				55C05C2E1E028F9B008F4254 /* Store+Convertible.swift */,
-<<<<<<< HEAD
-=======
 				8B3B57481E1257B50023B75B /* MSAttribute+Convertible.swift */,
 				6E2266F91E266F61003D2DC5 /* MSSaleByProduct+Convertible.swift */,
 				6E3C50FC1E4CA52A0085E8A6 /* MSCustomEntity+Convertible.swift */,
@@ -407,7 +405,6 @@
 				C9F3CB4F1F1CB880005E1636 /* MSStatistics+Convertible.swift */,
 				956459E71F30A32B002099BC /* MSMoneyStatistics+Convertable.swift */,
 				954B482B1F31B69700DD1842 /* MSMoneyBalance+Convertable.swift */,
->>>>>>> 087377cdfd7b72cbc069722ddaf8eb1576a8615c
 			);
 			path = Mapping;
 			sourceTree = "<group>";

@@ -456,6 +456,52 @@ public struct DataManager {
     }
     
     /**
+     Load counterparties with report.
+     Also see API reference [ for counterparties](https://online.moysklad.ru/api/remap/1.1/doc/index.html#контрагент) and [ counterparty reports](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-показатели-контрагентов-показатели-контрагентов)
+     - parameter offset: Desired data offset
+     - parameter expanders: Additional objects to include into request
+     - parameter filter: Filter for request
+     - parameter search: Additional string for filtering by name
+     */
+    public static func counterpartiesWithReport(auth: Auth,
+                                      offset: MSOffset? = nil,
+                                      expanders: [Expander] = [],
+                                      filter: Filter? = nil,
+                                      search: Search? = nil)
+        -> Observable<[MSEntity<MSAgent>]> {
+            let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter)
+            
+            return HttpClient.get(.counterparty, auth: auth, urlParameters: urlParameters)
+                .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
+                    guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
+                    
+                    return deserializeArray(json: result,
+                                            incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value),
+                                            deserializer: { MSAgent.from(dict: $0) })
+            }
+                .flatMapLatest { counterparties -> Observable<[MSEntity<MSAgent>]> in
+                    return loadReportsForCounterparties(auth: auth, counterparties: counterparties)
+                        .catchError { e in
+                            guard case MSError.errors(let errors) = e else { throw e }
+                            
+                            guard let error = errors.first, error.httpStatusCode == 403 else { throw e }
+                            
+                            // пропускаем ошибки 1043 (бесплатный тариф) и 1016 (доступ запрещен) и просто считаем, что отчетов нет
+                            guard error.code == MSErrorCode.accessDeniedToCRM || error.code == MSErrorCode.accessDenied else { throw e }
+                            
+                            return .just([])
+                        }
+                        .flatMapLatest { reports -> Observable<[MSEntity<MSAgent>]> in
+                            let new = counterparties.toDictionary({ $0.objectMeta().objectId })
+                            reports.forEach {
+                                new[$0.value()?.agent.objectMeta().objectId ?? ""]?.value()?.report = $0
+                            }
+                            return .just(Array(new.values))
+                    }
+            }
+    }
+    
+    /**
      Load Assortment and group result by product folder
      - parameter auth: Authentication information
      - parameter offset: Desired data offset
@@ -1092,7 +1138,7 @@ public struct DataManager {
     
     /**
      Load counterparty contacts.
-     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc#контрагент-контактное-лицо-get)
+     Also see [ API refere`nce](https://online.moysklad.ru/api/remap/1.1/doc#контрагент-контактное-лицо-get)
      - parameter auth: Authentication information
      - parameter id: Id of counterparty
      - returns: Observable sequence with contacts
@@ -1118,15 +1164,30 @@ public struct DataManager {
      - returns: Observable sequence with counterparty info
      */
     public static func searchCounterpartyByInn(auth: Auth, inn: String) -> Observable<[MSCounterpartySearchResult]> {
-        let urlPathComponents = ["search"]
-        let urlParameters: [UrlParameter] = [GenericUrlParameter(name: "inn", value: inn)]
-        return HttpClient.get(.counterparty, auth: auth, urlPathComponents: urlPathComponents, urlParameters: urlParameters)
+        return HttpClient.get(.suggestCounterparty, auth: auth, urlParameters: [GenericUrlParameter(name: "search", value: inn)])
             .flatMapLatest { result -> Observable<[MSCounterpartySearchResult]> in
                 guard let results = result?.msArray("rows") else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartySearchResponse.value))
                 }
                 
-                return Observable.just(results.map { MSCounterpartySearchResult.from(dict: $0) })
+                return Observable.just(results.map { MSCounterpartySearchResult.from(dict: $0) }.removeNils())
+        }
+    }
+    
+    /**
+     Searches bank data by BIC.
+     - parameter auth: Authentication information
+     - parameter id: BIC
+     - returns: Observable sequence with bank info
+     */
+    public static func searchBankByBic(auth: Auth, bic: String) -> Observable<[MSBankSearchResult]> {
+        return HttpClient.get(.suggestBank, auth: auth, urlParameters: [GenericUrlParameter(name: "search", value: bic)])
+            .flatMapLatest { result -> Observable<[MSBankSearchResult]> in
+                guard let results = result?.msArray("rows") else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectBankSearchResponse.value))
+                }
+                
+                return Observable.just(results.map { MSBankSearchResult.from(dict: $0) })
         }
     }
 }

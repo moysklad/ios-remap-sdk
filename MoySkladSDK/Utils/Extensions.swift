@@ -316,8 +316,12 @@ public extension Date {
 }
 
 public extension NSDecimalNumber {
-    public func toMoneyString() -> String {
-        return NSDecimalNumber.msMoneyNumberFormatter.string(from: self) ?? "0"
+    public func toMoneyString(showPositiveSign: Bool = false) -> String {
+        guard showPositiveSign, !self.isEqual(to: 0) else {
+            return NSDecimalNumber.msMoneyNumberFormatter.string(from: self) ?? "0"
+        }
+
+        return NSDecimalNumber.msMoneyNumberFormatterWithPositiveSign.string(from: self) ?? "0"
     }
     
     @nonobjc public static var msMoneyNumberFormatter: NumberFormatter = {
@@ -327,8 +331,22 @@ public extension NSDecimalNumber {
         nf.numberStyle = .decimal
         nf.minimumFractionDigits = 2
         nf.maximumFractionDigits = 2
+        nf.negativePrefix = "- "
         return nf
     }()
+    
+    @nonobjc public static var msMoneyNumberFormatterWithPositiveSign: NumberFormatter = {
+        let nf = NumberFormatter()
+        nf.decimalSeparator = ","
+        nf.groupingSeparator = " "
+        nf.numberStyle = .decimal
+        nf.minimumFractionDigits = 2
+        nf.maximumFractionDigits = 2
+        nf.positivePrefix = "+ "
+        nf.negativePrefix = "- "
+        return nf
+    }()
+
 }
 
 public extension Double {

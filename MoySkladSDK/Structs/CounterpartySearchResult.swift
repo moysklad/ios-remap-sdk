@@ -15,6 +15,8 @@ public struct MSCounterpartySearchResult {
     public let inn: String
     public let kpp: String
     public let ogrn: String
+    public let ogrnip: String
     public let okpo: String
     public let legalAddress: String
+    public let companyType: MSCompanyType
 }

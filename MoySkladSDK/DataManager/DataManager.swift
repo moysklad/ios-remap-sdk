@@ -1171,4 +1171,21 @@ public struct DataManager {
                 return Observable.just(results.map { MSCounterpartySearchResult.from(dict: $0) }.removeNils())
         }
     }
+    
+    /**
+     Searches bank data by BIC.
+     - parameter auth: Authentication information
+     - parameter id: BIC
+     - returns: Observable sequence with bank info
+     */
+    public static func searchBankByBic(auth: Auth, bic: String) -> Observable<[MSBankSearchResult]> {
+        return HttpClient.get(.suggestBank, auth: auth, urlParameters: [GenericUrlParameter(name: "search", value: bic)])
+            .flatMapLatest { result -> Observable<[MSBankSearchResult]> in
+                guard let results = result?.msArray("rows") else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectBankSearchResponse.value))
+                }
+                
+                return Observable.just(results.map { MSBankSearchResult.from(dict: $0) })
+        }
+    }
 }

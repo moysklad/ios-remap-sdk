@@ -10,14 +10,14 @@ import Foundation
 
 public class MSMoneyStatisticsData {
     public let moment: Date
-    public let credit: Double
-    public let debit: Double
-    public let balance: Double
+    public let credit: Money
+    public let debit: Money
+    public let balance: Money
     
     public init(moment: Date,
-                credit: Double,
-                debit: Double,
-                balance: Double) {
+                credit: Money,
+                debit: Money,
+                balance: Money) {
         self.moment = moment
         self.credit = credit
         self.debit = debit

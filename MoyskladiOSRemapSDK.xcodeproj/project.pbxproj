@@ -95,6 +95,8 @@
 		95300F4E1ECB06A6009424BF /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95300F4D1ECB06A6009424BF /* Order.swift */; };
 		9547EE9C1F2092CE00CC5FFC /* AgentReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9547EE9B1F2092CE00CC5FFC /* AgentReport.swift */; };
 		9547EE9E1F20950F00CC5FFC /* MSAgentReport+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9547EE9D1F20950F00CC5FFC /* MSAgentReport+Convertible.swift */; };
+		954B482A1F31B30E00DD1842 /* MSMoneyBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954B48291F31B30E00DD1842 /* MSMoneyBalance.swift */; };
+		954B482C1F31B69700DD1842 /* MSMoneyBalance+Convertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954B482B1F31B69700DD1842 /* MSMoneyBalance+Convertable.swift */; };
 		95535FAE1F1F93E000A5E717 /* ContactPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95535FAD1F1F93E000A5E717 /* ContactPerson.swift */; };
 		956459E41F30A16B002099BC /* MSMoneyStatisticsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956459E31F30A16B002099BC /* MSMoneyStatisticsData.swift */; };
 		956459E81F30A32B002099BC /* MSMoneyStatistics+Convertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956459E71F30A32B002099BC /* MSMoneyStatistics+Convertable.swift */; };
@@ -210,6 +212,8 @@
 		95300F4D1ECB06A6009424BF /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		9547EE9B1F2092CE00CC5FFC /* AgentReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgentReport.swift; sourceTree = "<group>"; };
 		9547EE9D1F20950F00CC5FFC /* MSAgentReport+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSAgentReport+Convertible.swift"; sourceTree = "<group>"; };
+		954B48291F31B30E00DD1842 /* MSMoneyBalance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSMoneyBalance.swift; sourceTree = "<group>"; };
+		954B482B1F31B69700DD1842 /* MSMoneyBalance+Convertable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSMoneyBalance+Convertable.swift"; sourceTree = "<group>"; };
 		95535FAD1F1F93E000A5E717 /* ContactPerson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactPerson.swift; sourceTree = "<group>"; };
 		956459E31F30A16B002099BC /* MSMoneyStatisticsData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSMoneyStatisticsData.swift; sourceTree = "<group>"; };
 		956459E71F30A32B002099BC /* MSMoneyStatistics+Convertable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSMoneyStatistics+Convertable.swift"; sourceTree = "<group>"; };
@@ -336,6 +340,7 @@
 				C9F3CB481F1CAED8005E1636 /* MSStatisticsData.swift */,
 				956459E31F30A16B002099BC /* MSMoneyStatisticsData.swift */,
 				956459EF1F30BB1A002099BC /* StatisticsResult.swift */,
+				954B48291F31B30E00DD1842 /* MSMoneyBalance.swift */,
 			);
 			path = Structs;
 			sourceTree = "<group>";
@@ -368,6 +373,7 @@
 				6EE966B11F28761C008DDD8E /* CounterpartySearchResult+Convertable.swift */,
 				C9F3CB4F1F1CB880005E1636 /* MSStatistics+Convertible.swift */,
 				956459E71F30A32B002099BC /* MSMoneyStatistics+Convertable.swift */,
+				954B482B1F31B69700DD1842 /* MSMoneyBalance+Convertable.swift */,
 			);
 			path = Mapping;
 			sourceTree = "<group>";
@@ -582,6 +588,7 @@
 				6E75A1DD1EA89C8E00A05A83 /* MSError.swift in Sources */,
 				6E3C50FB1E4CA4090085E8A6 /* MSCustomEntity.swift in Sources */,
 				6E2266F81E266CF5003D2DC5 /* MSSaleByProduct.swift in Sources */,
+				954B482A1F31B30E00DD1842 /* MSMoneyBalance.swift in Sources */,
 				95535FAE1F1F93E000A5E717 /* ContactPerson.swift in Sources */,
 				95300F4E1ECB06A6009424BF /* Order.swift in Sources */,
 				6E4344E01E3B239A005D0DDE /* Position+Serialize.swift in Sources */,
@@ -605,6 +612,7 @@
 				55C05C461E028F9B008F4254 /* Employee.swift in Sources */,
 				8B3B57471E124BBC0023B75B /* Attribute.swift in Sources */,
 				6E75A1EC1EA8A88C00A05A83 /* Localization.swift in Sources */,
+				954B482C1F31B69700DD1842 /* MSMoneyBalance+Convertable.swift in Sources */,
 				6E75A1E51EA8A3D200A05A83 /* DataManager+Create.swift in Sources */,
 				55C05C701E028F9B008F4254 /* ValueCoding.swift in Sources */,
 				6E4344DE1E3B239A005D0DDE /* InvoiceOut+Serialize.swift in Sources */,

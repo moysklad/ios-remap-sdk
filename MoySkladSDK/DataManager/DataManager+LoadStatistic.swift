@@ -85,6 +85,37 @@ extension DataManager {
         }
     }
     
+    /**
+     Load money statistics data
+     - parameter auth: Authentication information
+     - parameter moment: Date interval
+     - parameter interval: type interval [hour, day, month]
+     - retailStore: href for retailStore
+     */
+    public static func loadMoneyBalance(
+        auth: Auth,
+        offset: MSOffset? = nil
+    ) -> Observable<[MSMoneyBalance]> {
+        return HttpClient.get(.reportMoneyByAccount, auth: auth, urlParameters: mergeUrlParameters(offset))
+            .flatMapLatest { result -> Observable<[MSMoneyBalance]> in
+                
+                guard let result = result else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPlotseriesMoneyBalanceResponse.value))
+                }
+                
+                let deserialized = result.msArray("rows").map { MSMoneyBalance.from(dict: $0) }
+                let withoutNills = deserialized.removeNils()
+                
+                guard withoutNills.count == deserialized.count else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPlotseriesMoneyBalanceResponse.value))
+                }
+                
+                return Observable.just(withoutNills)
+        }
+    }
+    
+    
+    
     public static func loadStatisticsOfDay(
         auth: Auth,
         type: MSStatisticsType,

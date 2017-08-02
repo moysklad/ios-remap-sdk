@@ -26,7 +26,7 @@ extension MSStatisticsData {
         dict.forEach { (dataDict) in
             guard let dateServer: String = dataDict.value("date"), let date = dateServer.toDate() else { return }
             
-            let item = MSStatisticsData(moment: date, quantity: dataDict.value("quantity") ?? 0, sum: dataDict.value("sum") ?? 0)
+            let item = MSStatisticsData(moment: date, quantity: dataDict.value("quantity") ?? 0, sum: Money(minorUnits: dataDict.value("sum") ?? 0))
             
             result.append(item)
         }

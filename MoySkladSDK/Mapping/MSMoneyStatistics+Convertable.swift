@@ -26,7 +26,10 @@ extension MSMoneyStatisticsData {
         dict.forEach { (dataDict) in
             guard let dateServer: String = dataDict.value("date"), let date = dateServer.toDate() else { return }
             
-            let item = MSMoneyStatisticsData(moment: date, credit: dataDict.value("credit") ?? 0, debit: dataDict.value("debit") ?? 0, balance: dataDict.value("balance") ?? 0)
+            let item = MSMoneyStatisticsData(moment: date,
+                                             credit: Money(minorUnits: dataDict.value("credit") ?? 0),
+                                             debit: Money(minorUnits: dataDict.value("debit") ?? 0),
+                                             balance: Money(minorUnits: dataDict.value("balance") ?? 0))
             
             result.append(item)
         }

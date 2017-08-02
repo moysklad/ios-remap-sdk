@@ -114,8 +114,6 @@ extension DataManager {
         }
     }
     
-    
-    
     public static func loadStatisticsOfDay(
         auth: Auth,
         type: MSStatisticsType,
@@ -188,6 +186,72 @@ extension DataManager {
         return Observable.combineLatest(currentRequest, lastRequest,
                                         resultSelector: { current, last in
                                             return StatisticsResult(current: current, last: last)
+        })
+    }
+    
+    public static func loadMoneyStatisticsOfDay(
+        auth: Auth,
+        retailStore: StatisticsRerailStoreArgument? = nil
+        )-> Observable<MoneyStatisticsResult> {
+        let interval = StatisticsIntervalArgument(type: .hour)
+        
+        let currentRequest = loadMoneyStatistics(auth: auth,
+                                            moment: StatisticsMoment(from: Date().beginningOfDay(), to: Date().endOfDay()),
+                                            interval: interval,
+                                            retailStore: retailStore)
+        
+        let lastRequest = loadMoneyStatistics(auth: auth,
+                                         moment: StatisticsMoment(from: Date().beginningOfLastDay(), to: Date().endOfLastDay()),
+                                         interval: interval,
+                                         retailStore: retailStore)
+        
+        return Observable.combineLatest(currentRequest, lastRequest,
+                                        resultSelector: { current, last in
+                                            return MoneyStatisticsResult(current: current, last: last)
+        })
+    }
+    
+    public static func loadMoneyStatisticsOfWeek(
+        auth: Auth,
+        retailStore: StatisticsRerailStoreArgument? = nil
+        )-> Observable<MoneyStatisticsResult> {
+        let interval = StatisticsIntervalArgument(type: .day)
+        
+        let currentRequest = loadMoneyStatistics(auth: auth,
+                                            moment: StatisticsMoment(from: Date().startOfWeek(), to: Date().endOfWeek()),
+                                            interval: interval,
+                                            retailStore: retailStore)
+        
+        let lastRequest = loadMoneyStatistics(auth: auth,
+                                         moment: StatisticsMoment(from: Date().startOfLastWeek(), to: Date().endOfLastWeek()),
+                                         interval: interval,
+                                         retailStore: retailStore)
+        
+        return Observable.combineLatest(currentRequest, lastRequest,
+                                        resultSelector: { current, last in
+                                            return MoneyStatisticsResult(current: current, last: last)
+        })
+    }
+    
+    public static func loadMoneyStatisticsOfMonth(
+        auth: Auth,
+        retailStore: StatisticsRerailStoreArgument? = nil
+        )-> Observable<MoneyStatisticsResult> {
+        let interval = StatisticsIntervalArgument(type: .day)
+        
+        let currentRequest = loadMoneyStatistics(auth: auth,
+                                            moment: StatisticsMoment(from: Date().startOfMonth(), to: Date().endOfMonth()),
+                                            interval: interval,
+                                            retailStore: retailStore)
+        
+        let lastRequest = loadMoneyStatistics(auth: auth,
+                                         moment: StatisticsMoment(from: Date().startOfLastMonth(), to: Date().startOfMonth()),
+                                         interval: interval,
+                                         retailStore: retailStore)
+        
+        return Observable.combineLatest(currentRequest, lastRequest,
+                                        resultSelector: { current, last in
+                                            return MoneyStatisticsResult(current: current, last: last)
         })
     }
 }

@@ -85,20 +85,21 @@ extension DataManager {
         }
     }
     
-    public static func loadOrderStatisticsOfDay(
+    public static func loadStatisticsOfDay(
         auth: Auth,
+        type: MSStatisticsType,
         retailStore: StatisticsRerailStoreArgument? = nil
     )-> Observable<StatisticsResult> {
         let interval = StatisticsIntervalArgument(type: .hour)
         
         let currentRequest = loadStatistics(auth: auth,
-                                            type: .orders,
+                                            type: type,
                                             moment: StatisticsMoment(from: Date().beginningOfDay(), to: Date().endOfDay()),
                                             interval: interval,
                                             retailStore: retailStore)
         
         let lastRequest = loadStatistics(auth: auth,
-                                         type: .orders,
+                                         type: type,
                                          moment: StatisticsMoment(from: Date().beginningOfLastDay(), to: Date().endOfLastDay()),
                                          interval: interval,
                                          retailStore: retailStore)
@@ -109,20 +110,21 @@ extension DataManager {
                                         })
     }
     
-    public static func loadOrderStatisticsOfWeek(
+    public static func loadStatisticsOfWeek(
         auth: Auth,
+        type: MSStatisticsType,
         retailStore: StatisticsRerailStoreArgument? = nil
         )-> Observable<StatisticsResult> {
         let interval = StatisticsIntervalArgument(type: .day)
         
         let currentRequest = loadStatistics(auth: auth,
-                                            type: .orders,
+                                            type: type,
                                             moment: StatisticsMoment(from: Date().startOfWeek(), to: Date().endOfWeek()),
                                             interval: interval,
                                             retailStore: retailStore)
         
         let lastRequest = loadStatistics(auth: auth,
-                                         type: .orders,
+                                         type: type,
                                          moment: StatisticsMoment(from: Date().startOfLastWeek(), to: Date().endOfLastWeek()),
                                          interval: interval,
                                          retailStore: retailStore)
@@ -133,20 +135,21 @@ extension DataManager {
         })
     }
     
-    public static func loadOrderStatisticsOfMonth(
+    public static func loadStatisticsOfMonth(
         auth: Auth,
+        type: MSStatisticsType,
         retailStore: StatisticsRerailStoreArgument? = nil
         )-> Observable<StatisticsResult> {
         let interval = StatisticsIntervalArgument(type: .day)
         
         let currentRequest = loadStatistics(auth: auth,
-                                            type: .orders,
+                                            type: type,
                                             moment: StatisticsMoment(from: Date().startOfMonth(), to: Date().endOfMonth()),
                                             interval: interval,
                                             retailStore: retailStore)
         
         let lastRequest = loadStatistics(auth: auth,
-                                         type: .orders,
+                                         type: type,
                                          moment: StatisticsMoment(from: Date().startOfLastMonth(), to: Date().startOfMonth()),
                                          interval: interval,
                                          retailStore: retailStore)
@@ -156,15 +159,4 @@ extension DataManager {
                                             return StatisticsResult(current: current, last: last)
         })
     }
-    
-    
-//    public static func loadSalesStatistics(
-//        auth: Auth,
-//        moment: StatisticsMoment,
-//        interval: StatisticsIntervalArgument,
-//        retailStore: StatisticsRerailStoreArgument? = nil
-//    ) {
-//        let statisticsRequest = loadStatistics(auth: auth, type: .sales, moment: moment, interval: interval)
-////        let productReportRequest = 
-//    }
 }

@@ -58,6 +58,12 @@
 "emptyDocumentId" = "У документа отсутствует атрибут id";
 "emptyObjectId" = "У объекта отсутствует атрибут id";
 "notOnline" = "Нет соединения с интернетом";
+"incorrectPlotseriesSalesResponse" = "Неизвестный ответ при запросе показателей продаж";
+"incorrectPlotseriesOrderResponse" = "Неизвестный ответ при запросе показателей заказов";
+"incorrectPlotseriesMoneyResponse" = "Неизвестный ответ при запросе денежных показателей";
+"incorrectPlotseriesMoneyBalanceResponse" = "Неизвестный ответ при запросе остатка средств по кассам";
+"incorrectPlotseriesRetailStoresReportResponse" = "Неизвестный ответ при запросе данных точки продаж";
+"incorrectPlotseriesRetailStoreReportResponse" = "Неизвестный ответ при запросе данных точки продаж";
 
 "accessDeniedRate" = "Запрещен доступ к справочнику валют. Обратитесь к администратору";
 "accessDenied" = "Доступ запрещен: у вас нет прав на просмотр данного объекта";

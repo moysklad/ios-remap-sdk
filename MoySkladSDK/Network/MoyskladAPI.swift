@@ -115,6 +115,7 @@ public enum MSApiRequest : String {
     case customEntity = "/entity/customentity"
     case entity = "/entity"
     case counterpartyReport = "report/counterparty"
+    case suggestCounterparty = "suggest/counterparty"
 }
 
 extension MSApiRequest {

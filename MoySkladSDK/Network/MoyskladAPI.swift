@@ -118,6 +118,8 @@ public enum MSApiRequest : String {
     
     case plotseries = "/plotseries/"
     case reportMoneyByAccount = "/report/money/byaccount"
+    case reportRetailstore = "/report/retailstore"
+    case reportRetailstoreRetailshift = "retailshift"
 }
 
 extension MSApiRequest {

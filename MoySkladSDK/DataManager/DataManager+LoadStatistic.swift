@@ -114,6 +114,55 @@ extension DataManager {
         }
     }
     
+    /**
+     Load retail stores report data
+     - parameter auth: Authentication information
+     */
+    public static func loadRetailStoresReport(
+        auth: Auth
+    ) -> Observable<[MSEntity<MSRetailStore>]> {
+        return HttpClient.get(.reportRetailstore, auth: auth)
+            .flatMapLatest { result -> Observable<[MSEntity<MSRetailStore>]> in
+                
+                guard let result = result else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPlotseriesRetailStoresReportResponse.value))
+                }
+                
+                let deserialized = result.msArray("rows").map { MSRetailStore.from(dict: $0) }
+                let withoutNills = deserialized.removeNils()
+                
+                guard withoutNills.count == deserialized.count else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPlotseriesRetailStoresReportResponse.value))
+                }
+                
+                return Observable.just(withoutNills)
+        }
+    }
+    
+    /**
+     Load retail store report data
+     - parameter auth: Authentication information
+     - parameter retailStoreId: UUID retail store
+     */
+    public static func loadRetailStoreReport(
+        auth: Auth,
+        retailStoreId id: UUID
+    ) -> Observable<MSEntity<MSRetailStoreStatistics>> {
+        return HttpClient.get(.reportRetailstore, auth: auth, urlPathComponents: [id.uuidString, MSApiRequest.reportRetailstoreRetailshift.rawValue])
+            .flatMapLatest { result -> Observable<MSEntity<MSRetailStoreStatistics>> in
+                
+                guard let result = result else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPlotseriesRetailStoreReportResponse.value))
+                }
+                
+                guard let deserialized = MSRetailStoreStatistics.from(dict: result) else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPlotseriesRetailStoreReportResponse.value))
+                }
+                
+                return Observable.just(deserialized)
+        }
+    }
+    
     public static func loadStatisticsOfDay(
         auth: Auth,
         type: MSStatisticsType,

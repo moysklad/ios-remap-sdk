@@ -1162,15 +1162,30 @@ public struct DataManager {
      - returns: Observable sequence with counterparty info
      */
     public static func searchCounterpartyByInn(auth: Auth, inn: String) -> Observable<[MSCounterpartySearchResult]> {
-        let urlPathComponents = ["search"]
-        let urlParameters: [UrlParameter] = [GenericUrlParameter(name: "inn", value: inn)]
-        return HttpClient.get(.counterparty, auth: auth, urlPathComponents: urlPathComponents, urlParameters: urlParameters)
+        return HttpClient.get(.suggestCounterparty, auth: auth, urlParameters: [GenericUrlParameter(name: "search", value: inn)])
             .flatMapLatest { result -> Observable<[MSCounterpartySearchResult]> in
                 guard let results = result?.msArray("rows") else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartySearchResponse.value))
                 }
                 
                 return Observable.just(results.map { MSCounterpartySearchResult.from(dict: $0) }.removeNils())
+        }
+    }
+    
+    /**
+     Searches bank data by BIC.
+     - parameter auth: Authentication information
+     - parameter id: BIC
+     - returns: Observable sequence with bank info
+     */
+    public static func searchBankByBic(auth: Auth, bic: String) -> Observable<[MSBankSearchResult]> {
+        return HttpClient.get(.suggestBank, auth: auth, urlParameters: [GenericUrlParameter(name: "search", value: bic)])
+            .flatMapLatest { result -> Observable<[MSBankSearchResult]> in
+                guard let results = result?.msArray("rows") else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectBankSearchResponse.value))
+                }
+                
+                return Observable.just(results.map { MSBankSearchResult.from(dict: $0) })
         }
     }
 }

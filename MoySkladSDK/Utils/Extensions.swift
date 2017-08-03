@@ -363,7 +363,7 @@ public extension NSDecimalNumber {
 
 public extension Double {
     public func toMSDoubleString(showPositiveSign: Bool = false) -> String {
-        guard showPositiveSign else {
+        guard showPositiveSign, self != 0 else {
             return Double.msDoubleFormatter.string(from: NSNumber(floatLiteral: self)) ?? "0"
         }
         

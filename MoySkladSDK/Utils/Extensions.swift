@@ -192,6 +192,10 @@ public extension Date {
         return Date.msShortDateFormatter.string(from: self)
     }
     
+    public func toDayDate() -> String {
+        return Date.msDayDateFormatter.string(from: self)
+    }
+    
     public func toShortTime() -> String {
         return Date.msHourAndMinuteFormatter.string(from: self)
     }
@@ -209,6 +213,12 @@ public extension Date {
     public static var msShortDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMMM"
+        return formatter
+    }()
+    
+    public static var msDayDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd"
         return formatter
     }()
     

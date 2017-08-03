@@ -313,6 +313,18 @@ public extension Date {
     func endOfLastDay() -> Date {
         return Date.msCalendar.date(bySettingHour: 23, minute: 59, second: 59, of: self.addingTimeInterval(-(24*60*60)))!
     }
+    
+    static var msStatisticsFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMMM, HH:mm"
+        formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
+        formatter.locale = Locale(identifier: "ru_RU")
+        return formatter
+    }()
+    
+    func toDayAndTime() -> String {
+        return Date.msStatisticsFormatter.string(from: self)
+    }
 }
 
 public extension NSDecimalNumber {

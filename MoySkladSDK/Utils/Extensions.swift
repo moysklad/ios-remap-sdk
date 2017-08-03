@@ -204,6 +204,10 @@ public extension Date {
         return Date.msShortDateAndTimeFormatter.string(from: self)
     }
     
+    public func toHourFromDate() -> String {
+        return Date.msHourFormatter.string(from: self)
+    }
+    
     public static var msShortDateAndTimeFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "d MMMM H:mm"
@@ -225,6 +229,12 @@ public extension Date {
     public static var msHourAndMinuteFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "H:mm"
+        return formatter
+    }()
+    
+    public static var msHourFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH"
         return formatter
     }()
     

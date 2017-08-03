@@ -41,3 +41,13 @@ public class MSMoneyStatistics: MSStatisticsBase {
         super.init(meta: meta)
     }
 }
+
+public class MSRetailStoreStatistics: MSStatisticsBase {
+    public let series: Array<MSRetailStoreStatisticsData>
+    
+    public init(meta: MSMeta,
+                series: Array<MSRetailStoreStatisticsData>) {
+        self.series = series
+        super.init(meta: meta)
+    }
+}

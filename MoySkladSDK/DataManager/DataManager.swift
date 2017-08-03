@@ -484,8 +484,10 @@ public struct DataManager {
                         .catchError { e in
                             guard case MSError.errors(let errors) = e else { throw e }
                             
-                            // для бесплатного тарифа пропускаем ошибку 1043 и просто считаем, что отчетов нет
-                            guard let error = errors.first, error.httpStatusCode == 403, error.code == MSErrorCode.accessDeniedToCRM else { throw e }
+                            guard let error = errors.first, error.httpStatusCode == 403 else { throw e }
+                            
+                            // пропускаем ошибки 1043 (бесплатный тариф) и 1016 (доступ запрещен) и просто считаем, что отчетов нет
+                            guard error.code == MSErrorCode.accessDeniedToCRM || error.code == MSErrorCode.accessDenied else { throw e }
                             
                             return .just([])
                         }
@@ -1162,15 +1164,30 @@ public struct DataManager {
      - returns: Observable sequence with counterparty info
      */
     public static func searchCounterpartyByInn(auth: Auth, inn: String) -> Observable<[MSCounterpartySearchResult]> {
-        let urlPathComponents = ["search"]
-        let urlParameters: [UrlParameter] = [GenericUrlParameter(name: "inn", value: inn)]
-        return HttpClient.get(.counterparty, auth: auth, urlPathComponents: urlPathComponents, urlParameters: urlParameters)
+        return HttpClient.get(.suggestCounterparty, auth: auth, urlParameters: [GenericUrlParameter(name: "search", value: inn)])
             .flatMapLatest { result -> Observable<[MSCounterpartySearchResult]> in
                 guard let results = result?.msArray("rows") else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartySearchResponse.value))
                 }
                 
                 return Observable.just(results.map { MSCounterpartySearchResult.from(dict: $0) }.removeNils())
+        }
+    }
+    
+    /**
+     Searches bank data by BIC.
+     - parameter auth: Authentication information
+     - parameter id: BIC
+     - returns: Observable sequence with bank info
+     */
+    public static func searchBankByBic(auth: Auth, bic: String) -> Observable<[MSBankSearchResult]> {
+        return HttpClient.get(.suggestBank, auth: auth, urlParameters: [GenericUrlParameter(name: "search", value: bic)])
+            .flatMapLatest { result -> Observable<[MSBankSearchResult]> in
+                guard let results = result?.msArray("rows") else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectBankSearchResponse.value))
+                }
+                
+                return Observable.just(results.map { MSBankSearchResult.from(dict: $0) })
         }
     }
 }

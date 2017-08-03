@@ -12,7 +12,8 @@ extension MSMoneyStatistics: DictConvertable {
     public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSMoneyStatistics>? {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else { return nil }
         
-        return MSEntity.entity(MSMoneyStatistics(meta: meta, series: MSMoneyStatisticsData.from(dict: dict.msArray("series"))))
+        return MSEntity.entity(MSMoneyStatistics(meta: meta,
+                                                 series: dict.msArray("series").map { MSMoneyStatisticsData.from(dict: $0) }.removeNils()))
     }
     
     public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {
@@ -21,15 +22,12 @@ extension MSMoneyStatistics: DictConvertable {
 }
 
 extension MSMoneyStatisticsData {
-    public static func from(dict: [Dictionary<String, Any>]) -> Array<MSMoneyStatisticsData> {
-        var result = Array<MSMoneyStatisticsData>()
-        dict.forEach { (dataDict) in
-            guard let dateServer: String = dataDict.value("date"), let date = dateServer.toDate() else { return }
+    public static func from(dict: Dictionary<String, Any>) -> MSMoneyStatisticsData? {
+        guard let dateServer: String = dict.value("date"), let date = dateServer.toDate() else { return nil }
             
-            let item = MSMoneyStatisticsData(moment: date, credit: dataDict.value("credit") ?? 0, debit: dataDict.value("debit") ?? 0, balance: dataDict.value("balance") ?? 0)
-            
-            result.append(item)
-        }
-        return result
+        return MSMoneyStatisticsData(moment: date,
+                                         credit: Money(minorUnits: dict.value("credit") ?? 0),
+                                         debit: Money(minorUnits: dict.value("debit") ?? 0),
+                                         balance: Money(minorUnits: dict.value("balance") ?? 0))
     }
 }

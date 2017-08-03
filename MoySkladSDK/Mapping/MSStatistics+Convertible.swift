@@ -12,7 +12,8 @@ extension MSStatistics: DictConvertable {
     public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSStatistics>? {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else { return nil }
         
-        return MSEntity.entity(MSStatistics(meta: meta, series: MSStatisticsData.from(dict: dict.msArray("series"))))
+        return MSEntity.entity(MSStatistics(meta: meta,
+                                            series: dict.msArray("series").map { MSStatisticsData.from(dict: $0) }.removeNils()))
     }
     
     public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {
@@ -21,15 +22,9 @@ extension MSStatistics: DictConvertable {
 }
 
 extension MSStatisticsData {
-    public static func from(dict: [Dictionary<String, Any>]) -> Array<MSStatisticsData> {
-        var result = Array<MSStatisticsData>()
-        dict.forEach { (dataDict) in
-            guard let dateServer: String = dataDict.value("date"), let date = dateServer.toDate() else { return }
-            
-            let item = MSStatisticsData(moment: date, quantity: dataDict.value("quantity") ?? 0, sum: dataDict.value("sum") ?? 0)
-            
-            result.append(item)
-        }
-        return result
+    public static func from(dict: Dictionary<String, Any>) -> MSStatisticsData? {
+        guard let dateServer: String = dict.value("date"), let date = dateServer.toDate() else { return nil }
+        
+        return MSStatisticsData(moment: date, quantity: dict.value("quantity") ?? 0, sum: Money(minorUnits: dict.value("sum") ?? 0))
     }
 }

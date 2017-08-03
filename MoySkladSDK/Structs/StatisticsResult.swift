@@ -9,10 +9,20 @@
 import Foundation
 
 public class StatisticsResult {
-    let current: MSEntity<MSStatistics>
-    let last: MSEntity<MSStatistics>
+    public let current: MSEntity<MSStatistics>
+    public let last: MSEntity<MSStatistics>
     
     init(current: MSEntity<MSStatistics>, last: MSEntity<MSStatistics>) {
+        self.current = current
+        self.last = last
+    }
+}
+
+public class MoneyStatisticsResult {
+    let current: MSEntity<MSMoneyStatistics>
+    let last: MSEntity<MSMoneyStatistics>
+    
+    init(current: MSEntity<MSMoneyStatistics>, last: MSEntity<MSMoneyStatistics>) {
         self.current = current
         self.last = last
     }

@@ -100,6 +100,7 @@ extension MSProduct {
                   info: MSInfo(dict: dict),
                   productFolder: MSProductFolder.from(dict: dict.msValue("productFolder")),
                   article: dict.value("article"),
+                  code: dict.value("code"),
                   description: dict.value("description"),
                   image: MSImage.from(dict: dict.msValue("image")),
                   buyPrice: MSPrice.from(dict: dict.msValue("buyPrice"), priceTypeOverride: "Цена закупки"),//LocalizedStrings.buyPrice.value),

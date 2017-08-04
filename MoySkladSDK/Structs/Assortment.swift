@@ -156,7 +156,13 @@ extension MSAssortment {
         }()
     }
     
-    public func getDisplayName() -> String {
+    public func getCodeAndArticle() -> String? {
+        let objCode: String? = {
+            guard meta.type == .variant else { return code }
+            
+            return code ?? assortmentInfo.product?.value()?.code
+        }()
+        
         let objArticle: String? = {
             if meta.type == .variant {
                 return assortmentInfo.product?.value()?.article
@@ -164,9 +170,15 @@ extension MSAssortment {
             return article
         }()
         
-        let codeAndArticle = [code, objArticle].removeNils().joined(separator: "/")
+        let codeAndArticle = [objCode, objArticle].removeNils().joined(separator: "/")
         
-        guard codeAndArticle.characters.count > 0 else { return info.name }
+        guard codeAndArticle.characters.count > 0 else { return nil }
+        
+        return codeAndArticle
+    }
+    
+    public func getDisplayName() -> String {
+        guard let codeAndArticle = getCodeAndArticle() else { return info.name }
         
         return "\(codeAndArticle) ∙ \(info.name )"
     }
@@ -231,6 +243,7 @@ public class MSProduct : Metable {
     public let info : MSInfo
     public let productFolder: MSEntity<MSProductFolder>?
     public let article: String?
+    public let code: String?
     public let description: String?
     public let image: MSImage?
     public let buyPrice: MSPrice?
@@ -244,6 +257,7 @@ public class MSProduct : Metable {
     info : MSInfo,
     productFolder: MSEntity<MSProductFolder>?,
     article: String?,
+    code: String?,
     description: String?,
     image: MSImage?,
     buyPrice: MSPrice?,
@@ -256,6 +270,7 @@ public class MSProduct : Metable {
         self.info = info
         self.productFolder = productFolder
         self.article = article
+        self.code = code
         self.description = description
         self.image = image
         self.buyPrice = buyPrice

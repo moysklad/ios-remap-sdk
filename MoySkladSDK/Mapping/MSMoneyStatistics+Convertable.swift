@@ -13,6 +13,8 @@ extension MSMoneyStatistics: DictConvertable {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else { return nil }
         
         return MSEntity.entity(MSMoneyStatistics(meta: meta,
+                                                 credit: dict.value("credit") ?? 0, 
+                                                 debit: dict.value("debit") ?? 0,
                                                  series: dict.msArray("series").map { MSMoneyStatisticsData.from(dict: $0) }.removeNils()))
     }
     

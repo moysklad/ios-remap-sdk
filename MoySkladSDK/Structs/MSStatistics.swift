@@ -33,10 +33,16 @@ public class MSStatistics: MSStatisticsBase {
 }
 
 public class MSMoneyStatistics: MSStatisticsBase {
+    public let credit: Double
+    public let debit: Double
     public let series: Array<MSMoneyStatisticsData>
     
     public init(meta: MSMeta,
+                credit: Double,
+                debit: Double,
                 series: Array<MSMoneyStatisticsData>) {
+        self.credit = credit
+        self.debit = debit
         self.series = series
         super.init(meta: meta)
     }

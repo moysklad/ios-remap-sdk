@@ -19,8 +19,8 @@ public class StatisticsResult {
 }
 
 public class MoneyStatisticsResult {
-    let current: MSEntity<MSMoneyStatistics>
-    let last: MSEntity<MSMoneyStatistics>
+    public let current: MSEntity<MSMoneyStatistics>
+    public let last: MSEntity<MSMoneyStatistics>
     
     init(current: MSEntity<MSMoneyStatistics>, last: MSEntity<MSMoneyStatistics>) {
         self.current = current

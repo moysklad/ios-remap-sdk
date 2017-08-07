@@ -131,7 +131,8 @@ extension MSAttribute : DictConvertable {
                 (type.lowercased() == "project") ||
                 (type.lowercased() == "store") ||
                 (type.lowercased() == "product") ||
-                (type.lowercased() == "counterparty") {
+                (type.lowercased() == "counterparty") ||
+                    (type.lowercased() == "organization") {
             
             guard let value: [String: Any] = dict.value("value") else {
                 return MSEntity.meta(meta)

@@ -9,9 +9,9 @@
 import Foundation
 
 public class MSMoneyBalance {
-    let organizationName: String
-    let accountName: String?
-    let balance: Money
+    public let organizationName: String
+    public let accountName: String?
+    public let balance: Money
     
     init(organizationName: String, accountName: String?, balance: Money) {
         self.organizationName = organizationName

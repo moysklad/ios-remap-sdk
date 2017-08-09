@@ -46,6 +46,7 @@ extension MSAssortment : DictConvertable {
 		             vat: dict.value("vat"),
 		             effectiveVat: dict.value("effectiveVat"),
 		             productFolder: MSProductFolder.from(dict: dict.msValue("productFolder")),
+		             uom: MSUOM.from(dict: dict.msValue("uom")),
 		             image: MSImage.from(dict: dict.msValue("image")),
 		             buyPrice: MSPrice.from(dict: dict.msValue("buyPrice"), priceTypeOverride: "Цена закупки"), //LocalizedStrings.buyPrice.value),
 		             salePrices: (dict["salePrices"] as? [Any] ?? []).map { MSPrice.from(dict: $0 as? Dictionary<String, Any> ?? [:]) }.flatMap { $0 },

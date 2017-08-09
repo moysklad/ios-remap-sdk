@@ -8,38 +8,6 @@
 
 import Foundation
 
-public protocol MSGeneralCounterparty : class, Metable {
-    var meta: MSMeta { get }
-    var id: MSID { get }
-    var accountId: String { get }
-    var owner: MSEntity<MSEmployee>? { get set }
-    var shared: Bool { get }
-    var group: MSEntity<MSGroup> { get set }
-    var info : MSInfo { get set }
-    var code: String? { get set }
-    var externalCode: String? { get }
-    var archived: Bool { get }
-    var actualAddress: String? { get set }
-    var companyType: MSCompanyType { get set }
-    var email: String? { get set }
-    var phone: String? { get set }
-    var fax: String? { get set }
-    var legalTitle: String? { get set }
-    var legalAddress: String? { get set }
-    var inn: String? { get set }
-    var kpp: String? { get set }
-    var ogrn: String? { get set }
-    var ogrnip: String? { get set }
-    var okpo: String? { get set }
-    var certificateNumber: String? { get set }
-    var certificateDate: Date? { get set }
-    var accounts: [MSEntity<MSAccount>] { get set }
-    var agentInfo: MSAgentInfo { get set }
-    var salesAmount: Money { get }
-    func copyAgent() -> MSGeneralCounterparty
-    func dictionary(metaOnly: Bool) -> [String: Any]
-}
-
 public enum MSCompanyType : String {
 	case legal
 	case entrepreneur

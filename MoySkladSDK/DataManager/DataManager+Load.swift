@@ -9,7 +9,6 @@
 import Foundation
 import RxSwift
 
-
 public typealias groupedMoment<K>  = (date: Date, data: [MSEntity<K.Element>])  where K: MSGeneralDocument, K: DictConvertable
 
 extension DataManager {
@@ -242,5 +241,4 @@ extension DataManager {
                 return Observable.just(withoutNills)
         }
     }
-    
 }

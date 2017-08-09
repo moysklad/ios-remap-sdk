@@ -296,12 +296,18 @@ public extension Date {
     }
     
     func endOfLastWeek() -> Date {
-        return Date.msCalendar.date(byAdding: .second, value: 604799, to: self.startOfLastWeek())!
+        return Date.msCalendar.date(byAdding: .second, value: 604799, to: self.startOfLastWeek().addingTimeInterval(-1))!
     }
     
     func startOfMonth() -> Date {
         let components = Date.msCalendar.dateComponents([.year, .month], from: self)
         return Date.msCalendar.date(from: components)!
+    }
+    
+    func endOfLastMonth() -> Date {
+        var comps2 = DateComponents()
+        comps2.second = -1
+        return Date.msCalendar.date(byAdding: comps2, to: startOfMonth())!
     }
     
     func endOfMonth() -> Date {
@@ -314,7 +320,6 @@ public extension Date {
     func startOfLastMonth() -> Date {
         var comps2 = DateComponents()
         comps2.month = -1
-        comps2.second = -1
         return Date.msCalendar.date(byAdding: comps2, to: startOfMonth())!
     }
     

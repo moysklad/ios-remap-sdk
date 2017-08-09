@@ -228,7 +228,7 @@ extension DataManager {
         
         let lastRequest = loadStatistics(auth: auth,
                                          type: type,
-                                         moment: StatisticsMoment(from: Date().startOfLastMonth(), to: Date().startOfMonth()),
+                                         moment: StatisticsMoment(from: Date().startOfLastMonth(), to: Date().endOfLastMonth()),
                                          interval: interval,
                                          retailStore: retailStore)
         
@@ -294,7 +294,7 @@ extension DataManager {
                                             retailStore: retailStore)
         
         let lastRequest = loadMoneyStatistics(auth: auth,
-                                         moment: StatisticsMoment(from: Date().startOfLastMonth(), to: Date().startOfMonth()),
+                                         moment: StatisticsMoment(from: Date().startOfLastMonth(), to: Date().endOfLastMonth()),
                                          interval: interval,
                                          retailStore: retailStore)
         

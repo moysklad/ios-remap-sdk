@@ -43,7 +43,7 @@ public class MSAssortment : Metable {
 	public let vat: Int?
 	public let effectiveVat: Int?
 	public let productFolder: MSEntity<MSProductFolder>?
-	//public let uom
+    public let uom: MSEntity<MSUOM>?
 	public let image: MSImage?
 	//public let minPrice: Money
 	public let buyPrice: MSPrice?
@@ -81,7 +81,7 @@ public class MSAssortment : Metable {
     vat: Int?,
     effectiveVat: Int?,
     productFolder: MSEntity<MSProductFolder>?,
-    //uom
+    uom: MSEntity<MSUOM>?,
     image: MSImage?,
     //minPrice: Money
     buyPrice: MSPrice?,
@@ -118,7 +118,7 @@ public class MSAssortment : Metable {
         self.vat = vat
         self.effectiveVat = effectiveVat
         self.productFolder  = productFolder
-        //uom
+        self.uom = uom
         self.image = image
         //minPrice: Money
         self.buyPrice = buyPrice

@@ -188,12 +188,12 @@ public extension Date {
         return Date.msDateFormatter.string(from: self)
     }
     
-    public func beginningOfDay() -> Date {
-        return Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: self)!
-    }
-    
     public func toShortDate() -> String {
         return Date.msShortDateFormatter.string(from: self)
+    }
+    
+    public func toDayDate() -> String {
+        return Date.msDayDateFormatter.string(from: self)
     }
     
     public func toShortTime() -> String {
@@ -202,6 +202,10 @@ public extension Date {
     
     public func toShortDateAndTime() -> String {
         return Date.msShortDateAndTimeFormatter.string(from: self)
+    }
+    
+    public func toHourFromDate() -> String {
+        return Date.msHourFormatter.string(from: self)
     }
     
     public static var msShortDateAndTimeFormatter: DateFormatter = {
@@ -216,9 +220,21 @@ public extension Date {
         return formatter
     }()
     
+    public static var msDayDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd"
+        return formatter
+    }()
+    
     public static var msHourAndMinuteFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "H:mm"
+        return formatter
+    }()
+    
+    public static var msHourFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH"
         return formatter
     }()
     
@@ -275,9 +291,23 @@ public extension Date {
         return Date.msCalendar.date(byAdding: .second, value: 604799, to: self.startOfWeek())!
     }
     
+    func startOfLastWeek() -> Date {
+        return Date.msCalendar.date(byAdding: .second, value: -604799, to: self.startOfWeek())!
+    }
+    
+    func endOfLastWeek() -> Date {
+        return Date.msCalendar.date(byAdding: .second, value: 604799, to: self.startOfLastWeek().addingTimeInterval(-1))!
+    }
+    
     func startOfMonth() -> Date {
         let components = Date.msCalendar.dateComponents([.year, .month], from: self)
         return Date.msCalendar.date(from: components)!
+    }
+    
+    func endOfLastMonth() -> Date {
+        var comps2 = DateComponents()
+        comps2.second = -1
+        return Date.msCalendar.date(byAdding: comps2, to: startOfMonth())!
     }
     
     func endOfMonth() -> Date {
@@ -287,8 +317,38 @@ public extension Date {
         return Date.msCalendar.date(byAdding: comps2, to: startOfMonth())!
     }
     
+    func startOfLastMonth() -> Date {
+        var comps2 = DateComponents()
+        comps2.month = -1
+        return Date.msCalendar.date(byAdding: comps2, to: startOfMonth())!
+    }
+    
+    public func beginningOfDay() -> Date {
+        return Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: self)!
+    }
+    
     func endOfDay() -> Date {
         return Date.msCalendar.date(bySettingHour: 23, minute: 59, second: 59, of: self)!
+    }
+    
+    public func beginningOfLastDay() -> Date {
+        return Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: self.addingTimeInterval(-(24*60*60)))!
+    }
+    
+    func endOfLastDay() -> Date {
+        return Date.msCalendar.date(bySettingHour: 23, minute: 59, second: 59, of: self.addingTimeInterval(-(24*60*60)))!
+    }
+    
+    static var msStatisticsFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMMM, HH:mm"
+        formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
+        formatter.locale = Locale(identifier: "ru_RU")
+        return formatter
+    }()
+    
+    func toDayAndTime() -> String {
+        return Date.msStatisticsFormatter.string(from: self)
     }
 }
 
@@ -328,7 +388,7 @@ public extension NSDecimalNumber {
 
 public extension Double {
     public func toMSDoubleString(showPositiveSign: Bool = false) -> String {
-        guard showPositiveSign else {
+        guard showPositiveSign, self != 0 else {
             return Double.msDoubleFormatter.string(from: NSNumber(floatLiteral: self)) ?? "0"
         }
         
@@ -355,4 +415,13 @@ public extension Double {
         nf.positivePrefix = nf.plusSign
         return nf
     }()
+}
+
+public extension String {
+    public func toDate() -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        return dateFormatter.date(from: self)
+    }
 }

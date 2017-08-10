@@ -296,12 +296,14 @@ final class HttpClient {
 				// проверяем вернулись ли данные
 				guard let data = dataResponse.result.value, !data.isEmpty else {
 					guard 200..<300 ~= dataResponse.response?.statusCode ?? 0 else {
-						// если статус 200 и данные не вернулись, просто возвращаем nil и завершаем работу
-						observer.onNext(nil); observer.onCompleted(); return
+                        // если данные не вернулись и код ответа не 200, то возвращаем неизвестную ошибку
+                        observer.onError(MSError.unknown)
+                        return
 					}
-					// если же данные не вернулись и код ответа не 200, то возвращаем неизвестную ошибку
-					observer.onError(MSError.unknown)
-					return
+                    
+                    // если статус 200 и данные не вернулись, просто возвращаем nil и завершаем работу
+                    observer.onNext(nil); observer.onCompleted()
+                    return
 				}
 				
 				guard let responseDict = (try? JSONSerialization.jsonObject(with: data, options: []) as? Dictionary<String,AnyObject>) ?? nil else {

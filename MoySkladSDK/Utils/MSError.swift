@@ -86,4 +86,12 @@ extension MSError {
                                                   code: MSErrorCode.generic,
                                                   httpStatusCode: -1)])
     }
+    
+    public static func isCrmAccessDenied(from e: Error) -> Bool {
+        guard case MSError.errors(let errors) = e else { return false }
+        guard let error = errors.first, error.httpStatusCode == 403 else { return false }
+        
+        // пропускаем ошибки 1043 (бесплатный тариф) и 1016 (доступ запрещен) и просто считаем, что отчетов нет
+        return error.code == MSErrorCode.accessDeniedToCRM || error.code == MSErrorCode.accessDenied
+    }
 }

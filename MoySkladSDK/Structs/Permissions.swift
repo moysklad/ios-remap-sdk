@@ -54,6 +54,8 @@ public struct MSUserPermissions {
     public let stock: MSPermission
     public let pnl: MSPermission
     public let customAttributes: MSPermission
+    public let companyCrm: MSPermission
+    public let tariffCrm: MSPermission
     
     public init(uom: MSPermission,
     product: MSPermission,
@@ -97,7 +99,9 @@ public struct MSUserPermissions {
     dashboard: MSPermission,
     stock: MSPermission,
     pnl: MSPermission,
-    customAttributes: MSPermission) {
+    customAttributes: MSPermission,
+    companyCrm: MSPermission,
+    tariffCrm: MSPermission) {
         self.uom = uom
         self.product = product
         self.service = service
@@ -141,6 +145,8 @@ public struct MSUserPermissions {
         self.stock = stock
         self.pnl = pnl
         self.customAttributes = customAttributes
+        self.companyCrm = companyCrm
+        self.tariffCrm = tariffCrm
     }
     
 //    let retailstore: MSPermission

@@ -59,6 +59,7 @@ public struct MSErrorCode {
     public static let unauthorized = 1056
     public static let accessDenied = 1016
     public static let accessDeniedToCRM = 1043
+    public static let accessDeniedToAPI = 1061
     public static let preconditionFailed = 33002
 }
 

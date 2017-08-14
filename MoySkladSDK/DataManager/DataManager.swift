@@ -482,12 +482,7 @@ public struct DataManager {
                 .flatMapLatest { counterparties -> Observable<[MSEntity<MSAgent>]> in
                     return loadReportsForCounterparties(auth: auth, counterparties: counterparties)
                         .catchError { e in
-                            guard case MSError.errors(let errors) = e else { throw e }
-                            
-                            guard let error = errors.first, error.httpStatusCode == 403 else { throw e }
-                            
-                            // пропускаем ошибки 1043 (бесплатный тариф) и 1016 (доступ запрещен) и просто считаем, что отчетов нет
-                            guard error.code == MSErrorCode.accessDeniedToCRM || error.code == MSErrorCode.accessDenied else { throw e }
+                            guard MSError.isCrmAccessDenied(from: e) else { throw e }
                             
                             return .just([])
                         }

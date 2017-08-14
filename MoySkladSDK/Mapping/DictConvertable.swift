@@ -251,6 +251,8 @@ extension MSUserPermissions {
                                  dashboard: MSPermission.from(dict: dict.msValue("dashboard")),
                                  stock: MSPermission.from(dict: dict.msValue("stock")),
                                  pnl: MSPermission.from(dict: dict.msValue("pnl")),
-                                 customAttributes: MSPermission.from(dict: dict.msValue("customAttributes")))
+                                 customAttributes: MSPermission.from(dict: dict.msValue("customAttributes")),
+                                 companyCrm: MSPermission.from(dict: dict.msValue("company_crm")),
+                                 tariffCrm: MSPermission.from(dict: dict.msValue("tariff_crm")))
     }
 }

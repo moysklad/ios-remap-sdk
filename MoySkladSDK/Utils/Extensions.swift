@@ -267,6 +267,10 @@ public extension Date {
         return Date.msLongDateFormatter.string(from: self)
     }
     
+//    func toMoscowDate() -> Date {
+//        
+//    }
+    
     static var msLongDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMMM yyyy"
@@ -324,7 +328,9 @@ public extension Date {
     }
     
     public func beginningOfDay() -> Date {
-        return Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: self)!
+        let date = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: self)!
+        
+        return date
     }
     
     func endOfDay() -> Date {
@@ -415,13 +421,4 @@ public extension Double {
         nf.positivePrefix = nf.plusSign
         return nf
     }()
-}
-
-public extension String {
-    public func toDate() -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        return dateFormatter.date(from: self)
-    }
 }

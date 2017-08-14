@@ -23,7 +23,7 @@ extension MSStatistics: DictConvertable {
 
 extension MSStatisticsData {
     public static func from(dict: Dictionary<String, Any>) -> MSStatisticsData? {
-        guard let dateServer: String = dict.value("date"), let date = dateServer.toDate() else { return nil }
+        guard let dateServer: String = dict.value("date"), let date = Date.fromMSDate(dateServer) else { return nil }
         
         return MSStatisticsData(moment: date, quantity: dict.value("quantity") ?? 0, sum: Money(minorUnits: dict.value("sum") ?? 0))
     }

@@ -25,7 +25,7 @@ extension MSMoneyStatistics: DictConvertable {
 
 extension MSMoneyStatisticsData {
     public static func from(dict: Dictionary<String, Any>) -> MSMoneyStatisticsData? {
-        guard let dateServer: String = dict.value("date"), let date = dateServer.toDate() else { return nil }
+        guard let dateServer: String = dict.value("date"), let date = Date.fromMSDate(dateServer) else { return nil }
             
         return MSMoneyStatisticsData(moment: date,
                                          credit: Money(minorUnits: dict.value("credit") ?? 0),

@@ -18,7 +18,7 @@ public struct StatisticsMoment: UrlParameter {
     public let from: Date
     public let to: Date
     public var urlParameters: [String : String] {
-        return ["momentFrom": from.toLongDate(), "momentTo": to.toLongDate()]
+        return ["momentFrom": from.toCurrentLocaleLongDate(), "momentTo": to.toCurrentLocaleLongDate()]
     }
     
     public init(from: Date, to: Date) {

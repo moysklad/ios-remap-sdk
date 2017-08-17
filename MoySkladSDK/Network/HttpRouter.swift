@@ -48,6 +48,7 @@ extension HttpRouter {
 	                   headers: [String: String] = [:], urlParameters: [UrlParameter] = []) -> HttpRouter {
         var headers2 = headers
         headers2["user-agent"] = "MoySklad_iOS_app_v"
+        headers2["X-Lognex-Content-Timezone"] = Date().toRfc5322()
 		return HttpRouter(apiRequest: apiRequest, method: method, contentType: contentType, urlPathComponents: urlPathComponents, httpBody: httpBody, headers: headers2, urlParameters: urlParameters)
 	}
 }

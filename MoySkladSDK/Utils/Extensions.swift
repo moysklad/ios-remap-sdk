@@ -416,3 +416,28 @@ public extension Double {
         return nf
     }()
 }
+
+// MARK: current TimeZone Extension
+public extension Date {
+    
+    public static var msRfc5322Formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
+        formatter.locale = Locale(identifier: "en_US")
+        return formatter
+    }()
+    
+    public static var msCurrentLocaleDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return formatter
+    }()
+    
+    public func toRfc5322() -> String {
+        return Date.msRfc5322Formatter.string(from: self)
+    }
+    
+    public func toCurrentLocaleLongDate() -> String {
+        return Date.msCurrentLocaleDateFormatter.string(from: self)
+    }
+}

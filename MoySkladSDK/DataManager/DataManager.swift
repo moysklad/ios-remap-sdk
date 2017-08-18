@@ -1185,4 +1185,30 @@ public struct DataManager {
                 return Observable.just(results.map { MSBankSearchResult.from(dict: $0) })
         }
     }
+    
+    /**
+     Load tasks.
+     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#задача)
+     - parameter auth: Authentication information
+     - parameter offset: Desired data offset
+     - parameter expanders: Additional objects to include into request
+     - parameter filter: Filter for request
+     - parameter search: Additional string for filtering by name
+     */
+    public static func tasks(auth: Auth,
+                                 offset: MSOffset? = nil,
+                                 expanders: [Expander] = [],
+                                 filter: Filter? = nil,
+                                 search: Search? = nil) -> Observable<[MSEntity<MSTask>]> {
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter)
+        
+        return HttpClient.get(.task, auth: auth, urlParameters: urlParameters)
+            .flatMapLatest { result -> Observable<[MSEntity<MSTask>]> in
+                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectTasksResponse.value)) }
+                
+                return deserializeArray(json: result,
+                                        incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value),
+                                        deserializer: { MSTask.from(dict: $0) })
+        }
+    }
 }

@@ -28,7 +28,7 @@
 "incorrectCompanySettingsResponse" = "Неизвестный ответ на запрос настроек компании при входе в систему";
 "incorrectDashboardResponse" = "Неизвестный ответ на запрос показателей";
 "incorrectOrganizationResponse" = "Неизвестный ответ на запрос организаций";
-"incorrectTasksResponse" = "Неизвестный ответ на задач";
+"incorrectTasksResponse" = "Неизвестный ответ на запрос задач";
 "incorrectCustomerOrderPositionsResponse" = "Неизвестный ответ на запрос позиций по заказу покупателя";
 "incorrectInvoiceOutPositionsResponse" = "Неизвестный ответ на запрос позиций по счету покупателя";
 "incorrectDemandsPositionsResponse" = "Неизвестный ответ на запрос позиций по отгрузке";

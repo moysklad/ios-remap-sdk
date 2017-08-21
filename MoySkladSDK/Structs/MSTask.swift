@@ -11,12 +11,12 @@ import Foundation
 public class MSTask: Metable {
     public let meta: MSMeta
     public let id: MSID
-    public let info: MSInfo
-    public let author: MSEntity<MSEmployee>
-    public let assignee: MSEntity<MSEmployee>?
-    public let agent: MSEntity<MSAgent>?
-    public let dueToDate: Date?
-    public let done: Bool
+    public var info: MSInfo
+    public var author: MSEntity<MSEmployee>
+    public var assignee: MSEntity<MSEmployee>?
+    public var agent: MSEntity<MSAgent>?
+    public var dueToDate: Date?
+    public var done: Bool
     
     init(meta: MSMeta,
          id: MSID,

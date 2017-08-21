@@ -1211,4 +1211,33 @@ public struct DataManager {
                                         deserializer: { MSTask.from(dict: $0) })
         }
     }
+    
+    /**
+     Load task by id.
+     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#задача)
+     - parameter auth: Authentication information
+     - parameter offset: Desired data offset
+     - parameter expanders: Additional objects to include into request
+     - parameter filter: Filter for request
+     - parameter search: Additional string for filtering by name
+     */
+    public static func loadById(auth: Auth,
+                             taskId: UUID,
+                             expanders: [Expander] = [],
+                             filter: Filter? = nil,
+                             search: Search? = nil) -> Observable<MSEntity<MSTask>> {
+        let urlParameters: [UrlParameter] = mergeUrlParameters(search, CompositeExpander(expanders), filter)
+        
+        return HttpClient.get(.task, auth: auth, urlPathComponents: [taskId.uuidString], urlParameters: urlParameters)
+            .flatMapLatest { result -> Observable<MSEntity<MSTask>> in
+
+                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectTasksResponse.value)) }
+                
+                guard let deserialized = MSTask.from(dict: result) else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectTasksResponse.value))
+                }
+                
+                return Observable.just(deserialized)
+        }
+    }
 }

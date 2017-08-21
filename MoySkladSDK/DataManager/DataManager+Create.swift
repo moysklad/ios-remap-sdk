@@ -10,7 +10,13 @@ import Foundation
 import RxSwift
 
 extension DataManager {
-    static func create<T>(entity: T, auth: Auth, expanders: [Expander] = []) -> Observable<T.Element> where T: MSRequestEntity, T: DictConvertable {
+    /**
+     Create new entity.
+     - parameter document: Entity instance that should be created
+     - parameter auth: Authentication information
+     - parameter expanders: Additional objects to include into response
+     */
+    public static func create<T>(entity: T, auth: Auth, expanders: [Expander] = []) -> Observable<T.Element> where T: MSRequestEntity, T: DictConvertable {
         guard let url = entity.requestUrl() else {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
         }
@@ -93,17 +99,4 @@ extension DataManager {
             }
         return ["rows": new as AnyObject] as AnyObject
     }
-    
-    /**
-     Create new Agent.
-     - parameter agent: MSAgent instance that should be created
-     - parameter auth: Authentication information
-     - parameter expanders: Additional objects to include into request
-     */
-    public static func create(agent: MSAgent, auth: Auth, expanders: [Expander] = []) -> Observable<MSAgent>  {
-        return create(entity: agent, auth: auth, expanders: expanders)
-    }
-    
-    
-    
 }

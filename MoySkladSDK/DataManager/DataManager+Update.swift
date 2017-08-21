@@ -10,7 +10,13 @@ import Foundation
 import RxSwift
 
 extension DataManager {
-    static func update<T>(entity: T, auth: Auth, expanders: [Expander] = []) -> Observable<T.Element> where T: MSRequestEntity, T: DictConvertable {
+    /**
+     Update entity
+     - parameter document: Entity that should be updated
+     - parameter auth: Authentication information
+     - parameter expanders: Additional objects to include into response
+     */
+    public static func update<T>(entity: T, auth: Auth, expanders: [Expander] = []) -> Observable<T.Element> where T: MSRequestEntity, T: DictConvertable {
         let urlParameters: [UrlParameter] = mergeUrlParameters(CompositeExpander(expanders))
         
         guard let url = entity.requestUrl() else {
@@ -41,19 +47,9 @@ extension DataManager {
      Update document
      - parameter document: Document that should be updated
      - parameter auth: Authentication information
-     - parameter expanders: Additional objects to include into request
+     - parameter expanders: Additional objects to include into response
     */
     public static func update<T>(document: T, auth: Auth, expanders: [Expander] = []) -> Observable<T.Element> where T: MSGeneralDocument, T: DictConvertable {
         return update(entity: document, auth: auth, expanders: expanders)
-    }
-    
-    /**
-     Update agent
-     - parameter agent: Agent that should be updated
-     - parameter auth: Authentication information
-     - parameter expanders: Additional objects to include into request
-     */
-    public static func update(agent: MSAgent, auth: Auth, expanders: [Expander] = []) -> Observable<MSAgent> {
-        return update(entity: agent, auth: auth, expanders: expanders)
     }
 }

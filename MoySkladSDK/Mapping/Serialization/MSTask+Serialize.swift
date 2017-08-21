@@ -20,7 +20,7 @@ extension MSTask {
         dict.merge(id.dictionary())
         
         dict["done"] = done
-        dict["dueToDate"] = dueToDate ?? NSNull()
+        dict["dueToDate"] = dueToDate?.toLongDate() ?? NSNull()
         dict["author"] = serialize(entity: author)
         dict["assignee"] = serialize(entity: assignee)
         dict["agent"] = serialize(entity: agent)

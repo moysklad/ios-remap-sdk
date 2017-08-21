@@ -12,7 +12,12 @@ import Foundation
 import RxSwift
 
 extension DataManager {
-    static func delete<T>(entity: T, auth: Auth) -> Observable<Void> where T: MSRequestEntity, T: DictConvertable {
+    /**
+     Delete entity
+     - parameter document: Entity that should be deleted
+     - parameter auth: Authentication information
+     */
+    public static func delete<T>(entity: T, auth: Auth) -> Observable<Void> where T: MSRequestEntity, T: DictConvertable {
         guard let url = entity.requestUrl() else {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
         }
@@ -31,14 +36,5 @@ extension DataManager {
     */
     public static func delete<T>(document: T, auth: Auth) -> Observable<Void> where T: MSGeneralDocument, T: DictConvertable {
         return delete(entity: document, auth: auth)
-    }
-
-    /**
-     Delete Agent
-     - parameter agent: Agent that should be deleted
-     - parameter auth: Authentication information
-     */
-    public static func delete(agent: MSAgent, auth: Auth) -> Observable<Void> {
-        return delete(entity: agent, auth: auth)
     }
 }

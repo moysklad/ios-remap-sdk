@@ -107,6 +107,16 @@ extension MSAgent: MSRequestEntity {
     }
 }
 
+extension MSTask: MSRequestEntity {
+    public func requestUrl() -> MSApiRequest? {
+        return MSApiRequest.task
+    }
+    
+    public func deserializationError() -> MSError {
+        return MSError.genericError(errorText: LocalizedStrings.incorrectTasksResponse.value)
+    }
+}
+
 extension MSGeneralDocument {    
     public func requestUrl() -> MSApiRequest? {
         switch meta.type {

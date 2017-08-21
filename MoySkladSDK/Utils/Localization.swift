@@ -22,6 +22,7 @@ enum LocalizedStrings : String {
     case objectAttributesNotLoaded
     case incorrectCompanySettingsResponse
     case incorrectOrganizationResponse
+    case incorrectTasksResponse
     case incorrectCustomerOrderMetadataResponse
     case incorrectInvoiceOutMetadataResponse
     case incorrectDemandsMetadataResponse

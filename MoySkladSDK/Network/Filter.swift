@@ -27,6 +27,7 @@ public enum EntityField: String {
     case productFolder
     case store
     case search
+    case done
 }
 
 public enum FilterOperator : String {
@@ -36,6 +37,9 @@ public enum FilterOperator : String {
     case lessThanOrEqual = "<="
     case greatherThan = ">"
     case greatherThanOrEqual = ">="
+    case contains = "~"
+    case hasPrefix = "~="
+    case hasSuffix = "=~"
 }
 
 public protocol FilterArgumentValue {
@@ -57,6 +61,12 @@ extension Int : FilterArgumentValue {
 extension MSMeta : FilterArgumentValue {
     public func toFilterValue() -> String {
         return href
+    }
+}
+
+extension Bool: FilterArgumentValue {
+    public func toFilterValue() -> String {
+        return "\(self)"
     }
 }
 

@@ -253,6 +253,8 @@ extension MSUserPermissions {
                                  pnl: MSPermission.from(dict: dict.msValue("pnl")),
                                  customAttributes: MSPermission.from(dict: dict.msValue("customAttributes")),
                                  companyCrm: MSPermission.from(dict: dict.msValue("company_crm")),
-                                 tariffCrm: MSPermission.from(dict: dict.msValue("tariff_crm")))
+                                 tariffCrm: MSPermission.from(dict: dict.msValue("tariff_crm")),
+                                 auditDashboard: MSPermission.from(dict: dict.msValue("audit_dashboard")),
+                                 admin: MSPermission.from(dict: dict.msValue("admin")))
     }
 }

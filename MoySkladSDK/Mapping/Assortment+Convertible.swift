@@ -27,10 +27,6 @@ extension MSAssortment : DictConvertable {
 		guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else {
 			return nil
 		}
-		
-		guard let name: String = dict.value("name"), name.characters.count > 0 else {
-			return MSEntity.meta(meta)
-		}
 
 		return MSEntity.entity(MSAssortment(meta: meta,
 		             id: MSID(dict: dict),

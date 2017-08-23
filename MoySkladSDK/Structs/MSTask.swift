@@ -12,16 +12,16 @@ public class MSTask: Metable {
     public let meta: MSMeta
     public let id: MSID
     public var info: MSInfo
-    public var author: MSEntity<MSEmployee>
+    public var author: MSEntity<MSEmployee>?
     public var assignee: MSEntity<MSEmployee>?
     public var agent: MSEntity<MSAgent>?
     public var dueToDate: Date?
     public var done: Bool
     
-    init(meta: MSMeta,
+    public init(meta: MSMeta,
          id: MSID,
          info: MSInfo,
-         author: MSEntity<MSEmployee>,
+         author: MSEntity<MSEmployee>?,
          assignee: MSEntity<MSEmployee>?,
          agent: MSEntity<MSAgent>?,
          dueToDate: Date?,

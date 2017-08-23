@@ -16,8 +16,8 @@ extension MSTask {
         
         guard !metaOnly else { return dict }
         
-        dict.merge(id.dictionary())
         dict.merge(info.dictionary())
+        dict.merge(id.dictionary())
         
         dict["done"] = done
         dict["dueToDate"] = dueToDate?.toLongDate() ?? NSNull()

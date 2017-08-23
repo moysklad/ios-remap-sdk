@@ -13,7 +13,7 @@ public class MSID {
 	public let msID: UUID?
 	public let syncID: UUID?
 	
-	static func empty()  -> MSID {
+	public static func empty() -> MSID {
 		return MSID(msID: nil, syncID: nil)
 	}
     

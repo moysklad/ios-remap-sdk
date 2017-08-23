@@ -18,7 +18,7 @@ public class MSTask: Metable {
     public var dueToDate: Date?
     public var done: Bool
     
-    init(meta: MSMeta,
+    public init(meta: MSMeta,
          id: MSID,
          info: MSInfo,
          author: MSEntity<MSEmployee>,

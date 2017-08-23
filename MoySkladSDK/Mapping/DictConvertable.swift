@@ -58,7 +58,7 @@ extension MSID {
 extension MSInfo {
     public init(dict: Dictionary<String, Any>) {
         self.name = dict.value("name") ?? ""
-        self.description = dict.value("description")
+        self.description = dict.value("description") ?? ""
         self.version = dict.value("version") ?? 0
         self.updated = Date.fromMSDate(dict.value("updated") ?? "")
         self.deleted = nil

@@ -27,4 +27,15 @@ extension MSTask {
         
         return dict
     }
+    
+    public func dictionaryForCreate() -> Dictionary<String, Any> {
+        var dict = [String: Any]()
+        dict.merge(info.dictionary())
+        dict["done"] = done
+        dict["dueToDate"] = dueToDate?.toLongDate() ?? NSNull()
+        dict["author"] = serialize(entity: author)
+        dict["assignee"] = serialize(entity: assignee)
+        dict["agent"] = serialize(entity: agent)
+        return dict
+    }
 }

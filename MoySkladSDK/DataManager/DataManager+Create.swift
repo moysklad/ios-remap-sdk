@@ -99,4 +99,28 @@ extension DataManager {
             }
         return ["rows": new as AnyObject] as AnyObject
     }
+    
+    /**
+     Create new task.
+     - parameter task: Task instance that should be created
+     - parameter auth: Authentication information
+     */
+    public static func createTask(entity: MSTask, auth: Auth) -> Observable<MSTask> {
+        guard let url = entity.requestUrl() else {
+            return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
+        }
+        
+        return HttpClient.create(url,
+                                 auth: auth,
+                                 body: entity.dictionaryForCreate())
+            .flatMapLatest { result -> Observable<MSTask> in
+                guard let result = result else { return Observable.error(entity.deserializationError()) }
+                
+                guard let deserialized = MSTask.from(dict: result)?.value() else {
+                    return Observable.error(entity.deserializationError())
+                }
+                
+                return Observable.just(deserialized)
+        }
+    }
 }

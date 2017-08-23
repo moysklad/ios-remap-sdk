@@ -35,4 +35,19 @@ public class MSTask: Metable {
         self.dueToDate = dueToDate
         self.done = done
     }
+    
+    public func copy() -> MSTask {
+        return MSTask(meta: meta,
+                      id: id,
+                      info: info,
+                      author: author,
+                      assignee: assignee,
+                      agent: agent,
+                      dueToDate: dueToDate,
+                      done: done)
+    }
+    
+    public func copyTask() -> MSTask {
+        return copy()
+    }
 }

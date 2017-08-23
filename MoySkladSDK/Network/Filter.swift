@@ -28,6 +28,8 @@ public enum EntityField: String {
     case store
     case search
     case done
+    case assignee
+    case author
 }
 
 public enum FilterOperator : String {

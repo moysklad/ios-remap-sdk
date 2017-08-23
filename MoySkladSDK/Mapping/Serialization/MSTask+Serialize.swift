@@ -16,26 +16,23 @@ extension MSTask {
         
         guard !metaOnly else { return dict }
         
-        dict.merge(info.dictionary())
         dict.merge(id.dictionary())
         
-        dict["done"] = done
-        dict["dueToDate"] = dueToDate?.toLongDate() ?? NSNull()
-        dict["author"] = serialize(entity: author)
-        dict["assignee"] = serialize(entity: assignee)
-        dict["agent"] = serialize(entity: agent)
-        
-        return dict
+        return resultDict(dict)
     }
     
     public func dictionaryForCreate() -> Dictionary<String, Any> {
-        var dict = [String: Any]()
-        dict.merge(info.dictionary())
-        dict["done"] = done
-        dict["dueToDate"] = dueToDate?.toLongDate() ?? NSNull()
-        dict["author"] = serialize(entity: author)
-        dict["assignee"] = serialize(entity: assignee)
-        dict["agent"] = serialize(entity: agent)
-        return dict
+        return resultDict()
+    }
+    
+    private func resultDict(_ dict: Dictionary<String, Any> = [String: Any]()) -> Dictionary<String, Any> {
+        var result = dict
+        result.merge(info.dictionary())
+        result["done"] = done
+        result["dueToDate"] = dueToDate?.toLongDate() ?? NSNull()
+        result["author"] = serialize(entity: author)
+        result["assignee"] = serialize(entity: assignee)
+        result["agent"] = serialize(entity: agent)
+        return result
     }
 }

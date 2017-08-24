@@ -10,41 +10,6 @@
 import Foundation
 
 /**
- Represents generalized document (CustomerOrder, Demand or OnvoiceOut).
- For more information see API reference for [ customer order](https://online.moysklad.ru/api/remap/1.1/doc/index.html#документ-заказ-покупателя), [ demand](https://online.moysklad.ru/api/remap/1.1/doc/index.html#документ-отгрузка) and [ invoice out](https://online.moysklad.ru/api/remap/1.1/doc/index.html#документ-счёт-покупателю)
-*/
-public protocol MSGeneralDocument : class, Metable, MSRequestEntity {
-    var id : MSID { get }
-    var meta : MSMeta { get }
-    var info : MSInfo { get set }
-    var agent : MSEntity<MSAgent>? { get set }
-    var agentAccount : MSEntity<MSAccount>? { get set }
-    var contract : MSEntity<MSContract>? { get set }
-    var positions : [MSEntity<MSPosition>] { get set }
-    var stock : [MSEntity<MSDocumentStock>] { get set }
-    var sum : Money { get set }
-    var vatSum : Money { get set }
-    var rate : MSRate? { get set }
-    var moment : Date { get set }
-    var project : MSEntity<MSProject>? { get set }
-    var organization : MSEntity<MSAgent>? { get set }
-    var organizationAccount : MSEntity<MSAccount>? { get set }
-    var owner : MSEntity<MSEmployee>? { get set }
-    var group : MSEntity<MSGroup> { get set }
-    var shared : Bool  { get set }
-    var applicable : Bool { get set }
-    var vatIncluded : Bool { get set }
-    var vatEnabled : Bool { get set }
-    var state : MSEntity<MSState>? { get set }
-    var attributes : [MSEntity<MSAttribute>]? { get set }
-    var store : MSEntity<MSStore>? { get set }
-    func copyDocument() -> MSGeneralDocument
-    func dictionary(metaOnly: Bool) -> [String: Any]
-    var originalStoreId: UUID? { get }
-    var originalApplicable: Bool { get }
-}
-
-/**
  Contains properties specific to Customer order
 */
 public protocol MSCustomerOrderType : MSGeneralDocument {

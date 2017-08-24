@@ -118,24 +118,6 @@ extension MSTask: MSRequestEntity {
 }
 
 extension MSGeneralDocument {    
-    public func requestUrl() -> MSApiRequest? {
-        switch meta.type {
-        case MSObjectType.customerorder: return .customerorder
-        case MSObjectType.demand: return .demand
-        case MSObjectType.invoiceout: return .invoiceOut
-        default: return nil
-        }
-    }
-    
-    public func deserializationError() -> MSError {
-        switch meta.type {
-        case MSObjectType.customerorder: return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
-        case MSObjectType.demand: return MSError.genericError(errorText: LocalizedStrings.incorrectDemandsResponse.value)
-        case MSObjectType.invoiceout: return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
-        default: return MSError.genericError(errorText: LocalizedStrings.genericDeserializationError.value)
-        }
-    }
-    
     func templateBody() -> [String: Any]? {
         switch self {
         case let o as MSCustomerOrder: return ["customerOrder": o.dictionary(metaOnly: true)]
@@ -145,6 +127,17 @@ extension MSGeneralDocument {
         }
     }
 }
+
+//extension MSMoneyDocument {
+//    func templateBody() -> [String: Any]? {
+//        switch self {
+//        case let o as MSCustomerOrder: return ["customerOrder": o.dictionary(metaOnly: true)]
+//        case let o as MSDemand: return ["demands": [o.dictionary(metaOnly: true)]]
+//        case let o as MSInvoice: return ["invoicesOut": [o.dictionary(metaOnly: true)]]
+//        default: return nil
+//        }
+//    }
+//}
 
 extension UserDefaults {
     var moySkladHost: String {

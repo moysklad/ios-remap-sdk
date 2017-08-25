@@ -57,7 +57,7 @@ public struct DataManager {
         return groups
     }
     
-    static func groupByDate2<T: MSGeneralDocument>(data: [MSEntity<T>],
+    static func groupByDate2<T: MSBaseDocumentType>(data: [MSEntity<T>],
                              withPrevious previousData: [(date: Date, data: [MSEntity<T>])]? = nil) -> [(date: Date, data: [MSEntity<T>])] {
         // объекты группируются по дню (moment)
         var groups: [Date: [MSEntity<T>]] = [:]

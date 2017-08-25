@@ -12,7 +12,7 @@ import RxSwift
 public typealias groupedMoment<K>  = (date: Date, data: [MSEntity<K.Element>])  where K: MSGeneralDocument, K: DictConvertable
 
 extension DataManager {
-    static func loadUrl<T: MSGeneralDocument>(type: T.Type) -> MSApiRequest {
+    static func loadUrl<T: MSBaseDocumentType>(type: T.Type) -> MSApiRequest {
         switch type {
         case is MSCustomerOrder.Type:
             return .customerorder
@@ -20,12 +20,14 @@ extension DataManager {
             return .demand
         case is MSInvoice.Type:
             return .invoiceOut
+        case is MSCashInOut.Type:
+            return .cashIn
         default:
             return .customerorder
         }
     }
     
-    static func loadUrlTemplate<T: MSGeneralDocument>(type: T.Type) -> MSApiRequest {
+    static func loadUrlTemplate<T: MSBaseDocumentType>(type: T.Type) -> MSApiRequest {
         switch type {
         case is MSCustomerOrder.Type:
             return .customerordermetadata
@@ -33,12 +35,14 @@ extension DataManager {
             return .demandmetadata
         case is MSInvoice.Type:
             return .invoiceOutMetadata
+        case is MSCashInOut.Type:
+            return .cashInMetadata
         default:
             return .customerordermetadata
         }
     }
     
-    static func loadError<T: MSGeneralDocument>(type: T.Type) -> MSError {
+    static func loadError<T: MSBaseDocumentType>(type: T.Type) -> MSError {
         switch T.self {
         case is MSCustomerOrder.Type:
             return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
@@ -71,7 +75,7 @@ extension DataManager {
      - parameter documentId: Document Id
      - parameter expanders: Additional objects to include into request
      */
-    public static func loadById<T>(doc: T.Type, auth: Auth, documentId : UUID, expanders: [Expander] = []) -> Observable<MSEntity<T.Element>>  where T: MSGeneralDocument, T: DictConvertable {
+    public static func loadById<T>(doc: T.Type, auth: Auth, documentId : UUID, expanders: [Expander] = []) -> Observable<MSEntity<T.Element>>  where T: MSBaseDocumentType, T: DictConvertable {
         return HttpClient.get(loadUrl(type: T.self), auth: auth, urlPathComponents: [documentId.uuidString], urlParameters: [CompositeExpander(expanders)])
             .flatMapLatest { result -> Observable<MSEntity<T.Element>> in
                 guard let result = result else { return Observable.error(loadError(type: T.self)) }
@@ -163,7 +167,7 @@ extension DataManager {
                                        organizationId: OrganizationIdParameter? = nil,
                                        stateId: StateIdParameter? = nil,
                                        withPrevious: [groupedMoment<T>]? = nil)
-        -> Observable<[groupedMoment<T>]> where T: MSGeneralDocument, T: DictConvertable, T.Element: MSGeneralDocument   {
+        -> Observable<[groupedMoment<T>]> where T: MSBaseDocumentType, T: DictConvertable, T.Element: MSBaseDocumentType   {
             return DataManager.load(docType: docType, auth: auth, offset: offset, expanders: expanders, filter: filter, search: search,organizationId: organizationId, stateId: stateId, orderBy: Order(OrderArgument(field: .moment)))
                 .flatMapLatest { result -> Observable<[groupedMoment<T>]> in
                     let grouped = DataManager.groupByDate2(data: result, withPrevious: withPrevious)
@@ -190,7 +194,7 @@ extension DataManager {
                             search: Search? = nil,
                             organizationId: OrganizationIdParameter? = nil,
                             stateId: StateIdParameter? = nil,
-                            orderBy: Order? = nil) -> Observable<[MSEntity<T.Element>]> where T: MSGeneralDocument, T: DictConvertable  {
+                            orderBy: Order? = nil) -> Observable<[MSEntity<T.Element>]> where T: MSBaseDocumentType, T: DictConvertable  {
         
         let urlParameters: [UrlParameter] = mergeUrlParameters(search, stateId, organizationId, offset, filter, orderBy, CompositeExpander(expanders))
         

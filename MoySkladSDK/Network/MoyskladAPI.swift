@@ -118,6 +118,8 @@ public enum MSApiRequest : String {
     case suggestCounterparty = "suggest/counterparty"
     case suggestBank = "suggest/bank"
     case task = "entity/task"
+    case cashIn = "entity/cashin"
+    case cashInMetadata = "entity/cashin/metadata"
     
     case plotseries = "/plotseries/"
     case reportMoneyByAccount = "/report/money/byaccount"

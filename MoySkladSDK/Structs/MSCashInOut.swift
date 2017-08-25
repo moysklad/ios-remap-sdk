@@ -19,6 +19,7 @@ public class MSCashInOutInfo {
     
     // cash out types
 //    var expenseItem: Metable { get set }
+    
     public init(incomingDate: Date?,
                 incomingNumber: String?) {
         self.incomingDate = incomingDate
@@ -35,10 +36,6 @@ public protocol MSCashInOutType : MSMoneyDocument {
 }
 
 public class MSCashInOut: Metable, MSCashInOutType {
-    public func dictionary(metaOnly: Bool) -> [String : Any] {
-        return [:]
-    }
-
     public let meta : MSMeta
     public let id : MSID
     public let accountId : String
@@ -55,22 +52,12 @@ public class MSCashInOut: Metable, MSCashInOutType {
     public var group : MSEntity<MSGroup>
     public var organization : MSEntity<MSAgent>?
     public var agent : MSEntity<MSAgent>?
-    public var store : MSEntity<MSStore>?
     public var contract : MSEntity<MSContract>?
     public var state : MSEntity<MSState>?
-    public var organizationAccount : MSEntity<MSAccount>?
-    public var agentAccount : MSEntity<MSAccount>?
     public var attributes : [MSEntity<MSAttribute>]?
-    //public let documents : MSMeta?
     public var vatSum : Money
-    public var positions : [MSEntity<MSPosition>]
-    public var stock : [MSEntity<MSDocumentStock>]
-    public var paymentPlannedMoment : Date?
-    public var payedSum : Money
-    public var shippedSum : Money
     public var project : MSEntity<MSProject>?
     public var cashInOutInfo: MSCashInOutInfo?
-    public let originalStoreId: UUID?
     public let originalApplicable: Bool
     public var paymentPurpose: String?
     
@@ -90,24 +77,14 @@ public class MSCashInOut: Metable, MSCashInOutType {
                 group : MSEntity<MSGroup>,
                 organization : MSEntity<MSAgent>?,
                 agent : MSEntity<MSAgent>?,
-                store : MSEntity<MSStore>?,
                 contract : MSEntity<MSContract>?,
                 state : MSEntity<MSState>?,
-                organizationAccount : MSEntity<MSAccount>?,
-                agentAccount : MSEntity<MSAccount>?,
                 attributes : [MSEntity<MSAttribute>]?,
                 vatSum : Money,
-                positions : [MSEntity<MSPosition>],
-                stock : [MSEntity<MSDocumentStock>],
-                paymentPlannedMoment : Date?,
-                payedSum : Money,
-                shippedSum : Money,
                 project : MSEntity<MSProject>?,
-                incomingNumber : String?,
-                incomingDate : Date?,
                 cashInOutInfo: MSCashInOutInfo?,
-                originalStoreId: UUID?,
-                originalApplicable: Bool) {
+                originalApplicable: Bool,
+                paymentPurpose: String?) {
         self.meta = meta
         self.id = id
         self.accountId = accountId
@@ -124,60 +101,44 @@ public class MSCashInOut: Metable, MSCashInOutType {
         self.group = group
         self.organization = organization
         self.agent = agent
-        self.store = store
         self.contract = contract
         self.state = state
-        self.organizationAccount = organizationAccount
-        self.agentAccount = agentAccount
         self.vatSum = vatSum
-        self.positions = positions
-        self.stock = stock
-        self.paymentPlannedMoment = paymentPlannedMoment
-        self.payedSum = payedSum
-        self.shippedSum = shippedSum
         self.project = project
         self.cashInOutInfo = cashInOutInfo
         self.attributes = attributes
-        self.originalStoreId = originalStoreId
         self.originalApplicable = originalApplicable
+        self.paymentPurpose = paymentPurpose
     }
     
     public func copy() -> MSCashInOut {
-        return self
-//        return MSCashInOut(meta: meta,
-//                         id: id,
-//                         accountId: accountId,
-//                         info: info,
-//                         externalCode: externalCode,
-//                         moment: moment,
-//                         applicable: applicable,
-//                         vatIncluded: vatIncluded,
-//                         vatEnabled: vatEnabled,
-//                         sum: sum,
-//                         rate: rate,
-//                         owner: owner,
-//                         shared: shared,
-//                         group: group,
-//                         organization: organization,
-//                         agent: agent,
-//                         store: store,
-//                         contract: contract,
-//                         state: state,
-//                         organizationAccount: organizationAccount,
-//                         agentAccount: agentAccount,
-//                         attributes: attributes,
-//                         vatSum: vatSum,
-//                         stock: stock,
-//                         paymentPlannedMoment: paymentPlannedMoment,
-//                         payedSum: payedSum,
-//                         shippedSum: shippedSum,
-//                         project: project,
-//                         cashInOutInfo: cashInOutInfo?.copy(),
-//                         originalStoreId: originalStoreId,
-//                         originalApplicable: originalApplicable)
+        return MSCashInOut(meta: meta,
+                           id: id,
+                           accountId: accountId,
+                           info: info,
+                           externalCode: externalCode,
+                           moment: moment,
+                           applicable: applicable,
+                           vatIncluded: vatIncluded,
+                           vatEnabled: vatEnabled,
+                           sum: sum,
+                           rate: rate,
+                           owner: owner,
+                           shared: shared,
+                           group: group,
+                           organization: organization,
+                           agent: agent,
+                           contract: contract,
+                           state: state,
+                           attributes: attributes,
+                           vatSum: vatSum,
+                           project: project,
+                           cashInOutInfo: cashInOutInfo,
+                           originalApplicable: originalApplicable,
+                           paymentPurpose: paymentPurpose)
     }
     
-//    public func copyDocument() -> MSMoneyDocument {
-//        return copy()
-//    }
+    public func copyDocument() -> MSBaseDocumentType {
+        return copy()
+    }
 }

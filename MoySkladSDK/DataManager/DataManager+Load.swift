@@ -14,16 +14,10 @@ public typealias groupedMoment<K>  = (date: Date, data: [MSEntity<K.Element>])  
 extension DataManager {
     static func loadUrl<T>(type: T.Type) -> MSApiRequest {
         switch type {
-        case is MSCustomerOrder.Type:
-            return .customerorder
         case let t where t == MSCustomerOrderType.self:
             return .customerorder
-        case is MSDemand.Type:
-            return .demand
         case let t where t == MSDemandType.self:
             return .demand
-        case is MSInvoice.Type:
-            return .invoiceOut
         case let t where t == MSInvoiceOutType.self:
             return .invoiceOut
         case let t where t == MSInvoiceInType.self:
@@ -40,11 +34,11 @@ extension DataManager {
     static func loadUrlTemplate<T: MSBaseDocumentType>(type: T.Type) -> MSApiRequest {
         // MSTODO: add new document templates
         switch type {
-        case is MSCustomerOrder.Type:
+        case let t where t == MSCustomerOrderType.self:
             return .customerordermetadata
-        case is MSDemand.Type:
+        case let t where t == MSDemandType.self:
             return .demandmetadata
-        case is MSInvoice.Type:
+        case let t where t == MSInvoiceOutType.self:
             return .invoiceOutMetadata
         case is MSCashInOut.Type:
             return .cashInMetadata
@@ -56,11 +50,11 @@ extension DataManager {
     static func loadError<T>(type: T.Type) -> MSError {
         // MSTODO: add new document errors
         switch T.self {
-        case is MSCustomerOrder.Type:
+        case let t where t == MSCustomerOrderType.self:
             return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
-        case is MSDemand.Type:
+        case let t where t == MSDemandType.self:
             return MSError.genericError(errorText: LocalizedStrings.incorrectDemandsResponse.value)
-        case is MSInvoice.Type:
+        case let t where t == MSInvoiceOutType.self:
             return MSError.genericError(errorText: LocalizedStrings.incorrectInvoicesOutResponse.value)
         default:
             fatalError("Unknown ObjectType \(type)")
@@ -69,11 +63,11 @@ extension DataManager {
     
     static func loadPositionsError<T: MSGeneralDocument>(type: T.Type) -> MSError {
         switch T.self {
-        case is MSCustomerOrder.Type:
+        case let t where t == MSCustomerOrderType.self:
             return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
-        case is MSDemand.Type:
+        case let t where t == MSDemandType.self:
             return MSError.genericError(errorText: LocalizedStrings.incorrectDemandsResponse.value)
-        case is MSInvoice.Type:
+        case let t where t == MSInvoiceOutType.self:
             return MSError.genericError(errorText: LocalizedStrings.incorrectInvoicesOutResponse.value)
         default:
             fatalError("Unknown ObjectType \(type)")

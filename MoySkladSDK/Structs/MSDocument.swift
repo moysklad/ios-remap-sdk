@@ -43,15 +43,15 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     // MSCustomerOrderType
     public var deliveryPlannedMoment : Date?
     public var purchaseOrders : [MSEntity<MSSimpleDocument>]
-    public var demands : [MSEntity<MSDemand>]
+    public var demands : [MSDemandType]
     public var payments : [MSEntity<MSSimpleDocument>]
-    public var invoicesOut : [MSEntity<MSInvoice>]
+    public var invoicesOut : [MSInvoiceOutType]
     
     // MSDemandType
     public var returns: [MSEntity<MSSimpleDocument>]
     public var factureOut: MSEntity<MSSimpleDocument>?
     public var overhead : MSOverhead?
-    public var customerOrder : MSEntity<MSCustomerOrder>?
+    public var customerOrder : MSCustomerOrderType?
     public var consignee: MSEntity<MSAgent>?
     public var carrier: MSEntity<MSAgent>?
     public var transportFacilityNumber: String?
@@ -106,13 +106,13 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                 stock : [MSEntity<MSDocumentStock>],
                 deliveryPlannedMoment : Date?,
                 purchaseOrders : [MSEntity<MSSimpleDocument>],
-                demands : [MSEntity<MSDemand>],
+                demands : [MSDemandType],
                 payments : [MSEntity<MSSimpleDocument>],
-                invoicesOut : [MSEntity<MSInvoice>],
+                invoicesOut : [MSInvoiceOutType],
                 returns: [MSEntity<MSSimpleDocument>],
                 factureOut: MSEntity<MSSimpleDocument>?,
                 overhead : MSOverhead?,
-                customerOrder : MSEntity<MSCustomerOrder>?,
+                customerOrder : MSCustomerOrderType?,
                 consignee: MSEntity<MSAgent>?,
                 carrier: MSEntity<MSAgent>?,
                 transportFacilityNumber: String?,

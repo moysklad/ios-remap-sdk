@@ -77,7 +77,7 @@ extension DataManager {
                     DataManager.added(meta: emptyDocumentPositionMeta(type: toType),
                                       to: result["positions"] as? [String: AnyObject] ?? [:])
                 
-                guard let deserialized = dictToDocFrom(type: toType, dict: result) else {
+                guard let deserialized = MSDocument.from(dict: result)?.value() else {
                     return Observable.error(createdDocumentError(type: toType))
                 }
                 

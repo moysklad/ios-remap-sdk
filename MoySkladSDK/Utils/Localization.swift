@@ -77,6 +77,6 @@ enum LocalizedStrings : String {
     case accessDenied
     
     var value: String {
-        return NSLocalizedString(rawValue, tableName: nil, bundle: Bundle(for: MSCustomerOrder.self), value: "", comment: "")
+        return NSLocalizedString(rawValue, tableName: nil, bundle: Bundle(for: MSAssortment.self), value: "", comment: "")
 }
 }

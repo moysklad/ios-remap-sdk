@@ -36,18 +36,6 @@ public extension MSMeta {
     }
 }
 
-func dictToDocFrom(type: MSObjectType, dict: [String: AnyObject]) -> MSGeneralDocument? {
-    switch type {
-    case .customerorder:
-        return MSCustomerOrder.from(dict: dict)?.value()
-    case .demand:
-        return MSDemand.from(dict: dict)?.value()
-    case .invoiceout:
-        return MSInvoice.from(dict: dict)?.value()
-    default: return nil
-    }
-}
-
 func emptyDocumentPositionMeta(type: MSObjectType) -> MSMeta {
     switch type {
     case MSObjectType.customerorder: return MSMeta(name: "", href: "", type: .customerorderposition)
@@ -120,9 +108,9 @@ extension MSTask: MSRequestEntity {
 extension MSGeneralDocument {    
     func templateBody() -> [String: Any]? {
         switch self {
-        case let o as MSCustomerOrder: return ["customerOrder": o.dictionary(metaOnly: true)]
-        case let o as MSDemand: return ["demands": [o.dictionary(metaOnly: true)]]
-        case let o as MSInvoice: return ["invoicesOut": [o.dictionary(metaOnly: true)]]
+        case let o as MSCustomerOrderType: return ["customerOrder": o.dictionary(metaOnly: true)]
+        case let o as MSDemandType: return ["demands": [o.dictionary(metaOnly: true)]]
+        case let o as MSInvoiceOutType: return ["invoicesOut": [o.dictionary(metaOnly: true)]]
         default: return nil
         }
     }

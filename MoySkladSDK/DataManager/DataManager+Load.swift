@@ -9,7 +9,7 @@
 import Foundation
 import RxSwift
 
-public typealias groupedMoment<K>  = (date: Date, data: [MSEntity<K.Element>])  where K: MSGeneralDocument, K: DictConvertable
+public typealias GroupedMoment<T>  = (date: Date, data: [T])  where T: MSGeneralDocument, T: DictConvertable
 
 extension DataManager {
     static func loadUrl<T>(type: T.Type) -> MSApiRequest {
@@ -71,26 +71,6 @@ extension DataManager {
             return MSError.genericError(errorText: LocalizedStrings.incorrectInvoicesOutResponse.value)
         default:
             fatalError("Unknown ObjectType \(type)")
-        }
-    }
-    
-    /**
-     Load document by Id
-     - parameter Id: Id of document to load
-     - parameter auth: Authentication information
-     - parameter documentId: Document Id
-     - parameter expanders: Additional objects to include into request
-     */
-    public static func loadById<T>(doc: T.Type, auth: Auth, documentId : UUID, expanders: [Expander] = []) -> Observable<MSEntity<T.Element>>  where T: MSBaseDocumentType, T: DictConvertable {
-        return HttpClient.get(loadUrl(type: T.self), auth: auth, urlPathComponents: [documentId.uuidString], urlParameters: [CompositeExpander(expanders)])
-            .flatMapLatest { result -> Observable<MSEntity<T.Element>> in
-                guard let result = result else { return Observable.error(loadError(type: T.self)) }
-                
-                guard let deserialized = T.from(dict: result) else {
-                    return Observable.error(loadError(type: T.self))
-                }
-                
-                return Observable.just(deserialized)
         }
     }
     
@@ -184,7 +164,7 @@ extension DataManager {
      - parameter stateId: If of state to filter by
      - parameter withPrevious: Grouped data returned by previous invocation of groupedByMoment (useful for paged loading)
     */
-    public static func groupedByMoment<T>(docType: T.Type,
+    public static func groupedByMoment<T: MSBaseDocumentType>(docType: T.Type,
                                        auth: Auth,
                                        offset: MSOffset? = nil,
                                        expanders: [Expander] = [],
@@ -192,46 +172,15 @@ extension DataManager {
                                        search: Search? = nil,
                                        organizationId: OrganizationIdParameter? = nil,
                                        stateId: StateIdParameter? = nil,
-                                       withPrevious: [groupedMoment<T>]? = nil)
-        -> Observable<[groupedMoment<T>]> where T: MSBaseDocumentType, T: DictConvertable, T.Element: MSBaseDocumentType   {
-            return DataManager.load(docType: docType, auth: auth, offset: offset, expanders: expanders, filter: filter, search: search,organizationId: organizationId, stateId: stateId, orderBy: Order(OrderArgument(field: .moment)))
-                .flatMapLatest { result -> Observable<[groupedMoment<T>]> in
-                    let grouped = DataManager.groupByDate2(data: result, withPrevious: withPrevious)
+                                       withPrevious: [GroupedMoment<T>]? = nil)
+        -> Observable<[GroupedMoment<T>]> {
+            return DataManager.loadDocuments(ofType: docType, auth: auth, offset: offset, expanders: expanders, filter: filter, search: search,organizationId: organizationId, stateId: stateId, orderBy: Order(OrderArgument(field: .moment)))
+                .flatMapLatest { result -> Observable<[GroupedMoment<T>]> in
+                    
+                    let grouped = DataManager.groupByDate2(data: result,
+                                                           withPrevious: withPrevious)
                     return Observable.just(grouped)
             }
-    }
-    
-    /**
-     Load documents
-     - parameter docType: Type of document
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
-     - parameter organizationId: Id of organization to filter by
-     - parameter stateId: If of state to filter by
-    */
-    public static func load<T>(docType: T.Type,
-                            auth: Auth,  
-                            offset: MSOffset? = nil, 
-                            expanders: [Expander] = [],
-                            filter: Filter? = nil,
-                            search: Search? = nil,
-                            organizationId: OrganizationIdParameter? = nil,
-                            stateId: StateIdParameter? = nil,
-                            orderBy: Order? = nil) -> Observable<[MSEntity<T.Element>]> where T: MSBaseDocumentType, T: DictConvertable  {
-        
-        let urlParameters: [UrlParameter] = mergeUrlParameters(search, stateId, organizationId, offset, filter, orderBy, CompositeExpander(expanders))
-        
-        return HttpClient.get(loadUrl(type: T.self), auth: auth, urlParameters: urlParameters)
-            .flatMapLatest { result -> Observable<[MSEntity<T.Element>]> in
-                guard let result = result else { return Observable.error(loadError(type: T.self)) }
-                
-                let deserialized = result.msArray("rows").flatMap { T.from(dict: $0) }
-                
-                return Observable.just(deserialized)
-        }
     }
     
     /**

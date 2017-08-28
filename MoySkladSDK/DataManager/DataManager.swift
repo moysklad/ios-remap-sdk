@@ -57,20 +57,20 @@ public struct DataManager {
         return groups
     }
     
-    static func groupByDate2<T: MSBaseDocumentType>(data: [MSEntity<T>],
-                             withPrevious previousData: [(date: Date, data: [MSEntity<T>])]? = nil) -> [(date: Date, data: [MSEntity<T>])] {
+    static func groupByDate2<T: MSBaseDocumentType>(data: [T],
+                             withPrevious previousData: [(date: Date, data: [T])]? = nil) -> [(date: Date, data: [T])] {
         // объекты группируются по дню (moment)
-        var groups: [Date: [MSEntity<T>]] = [:]
+        var groups: [Date: [T]] = [:]
         
         // скорее всего это не самый оптимальный способ группировки
-        data.flatMap { $0.value() }.forEach { object in
+        data.forEach { object in
             let moment = object.moment.beginningOfDay()
             var group = groups[moment]
             if group != nil {
-                group!.append(MSEntity.entity(object))
+                group!.append(object)
                 groups[moment] = group
             } else {
-                groups[moment] = [MSEntity.entity(object)]
+                groups[moment] = [object]
             }
         }
         

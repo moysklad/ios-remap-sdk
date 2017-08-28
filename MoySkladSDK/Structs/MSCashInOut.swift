@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol MSMoneyDocument : MSBaseDocumentType {
+public protocol MSMoneyDocumentType : MSBaseDocumentType {
     var paymentPurpose: String? { get set }
 }
 
@@ -31,7 +31,16 @@ public class MSCashInOutInfo {
     }
 }
 
-public protocol MSCashInOutType : MSMoneyDocument {
+public protocol MSCashInType: MSMoneyDocumentType {
+    var incomingDate: Date? { get set }
+    var incomingNumber: String? { get set }
+}
+
+public protocol MSCashOutType: MSMoneyDocumentType {
+    //var expenseItem: Metable { get set }
+}
+
+public protocol MSCashInOutType : MSMoneyDocumentType {
     var cashInOutInfo: MSCashInOutInfo? { get }
 }
 

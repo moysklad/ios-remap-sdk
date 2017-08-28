@@ -92,6 +92,20 @@ public protocol MSInvoiceType : MSGeneralDocument {
     var paymentPlannedMoment : Date? { get set }
 }
 
+public protocol MSInvoiceOutType: MSGeneralDocument {
+    var paymentPlannedMoment : Date? { get set }
+    var customerOrder: MSEntity<MSCustomerOrder>? { get set }
+    var demands: [MSEntity<MSDemand>] { get set }
+    var payments: [MSEntity<MSSimpleDocument>] { get set }
+}
+
+public protocol MSInvoiceInType: MSGeneralDocument {
+    var paymentPlannedMoment : Date? { get set }
+    var purchaseOrder: MSEntity<MSSimpleDocument>? { get set }
+    var incomingNumber: String? { get set }
+    var incomingDate: Date? { get set }
+}
+
 public class MSInvoice : Metable, MSInvoiceType {
 	public let meta : MSMeta
 	public let id : MSID

@@ -12,22 +12,33 @@ import RxSwift
 public typealias groupedMoment<K>  = (date: Date, data: [MSEntity<K.Element>])  where K: MSGeneralDocument, K: DictConvertable
 
 extension DataManager {
-    static func loadUrl<T: MSBaseDocumentType>(type: T.Type) -> MSApiRequest {
+    static func loadUrl<T>(type: T.Type) -> MSApiRequest {
         switch type {
         case is MSCustomerOrder.Type:
             return .customerorder
+        case let t where t == MSCustomerOrderType.self:
+            return .customerorder
         case is MSDemand.Type:
+            return .demand
+        case let t where t == MSDemandType.self:
             return .demand
         case is MSInvoice.Type:
             return .invoiceOut
+        case let t where t == MSInvoiceOutType.self:
+            return .invoiceOut
+        case let t where t == MSInvoiceInType.self:
+            return .invoiceIn
         case is MSCashInOut.Type:
             return .cashIn
+        case let t where t == MSCashInType.self:
+            return .cashIn
         default:
-            return .customerorder
+            fatalError("Unknown ObjectType \(type)")
         }
     }
     
     static func loadUrlTemplate<T: MSBaseDocumentType>(type: T.Type) -> MSApiRequest {
+        // MSTODO: add new document templates
         switch type {
         case is MSCustomerOrder.Type:
             return .customerordermetadata
@@ -38,11 +49,12 @@ extension DataManager {
         case is MSCashInOut.Type:
             return .cashInMetadata
         default:
-            return .customerordermetadata
+            fatalError("Unknown ObjectType \(type)")
         }
     }
     
-    static func loadError<T: MSBaseDocumentType>(type: T.Type) -> MSError {
+    static func loadError<T>(type: T.Type) -> MSError {
+        // MSTODO: add new document errors
         switch T.self {
         case is MSCustomerOrder.Type:
             return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
@@ -51,7 +63,7 @@ extension DataManager {
         case is MSInvoice.Type:
             return MSError.genericError(errorText: LocalizedStrings.incorrectInvoicesOutResponse.value)
         default:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
+            fatalError("Unknown ObjectType \(type)")
         }
     }
     
@@ -64,7 +76,7 @@ extension DataManager {
         case is MSInvoice.Type:
             return MSError.genericError(errorText: LocalizedStrings.incorrectInvoicesOutResponse.value)
         default:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
+            fatalError("Unknown ObjectType \(type)")
         }
     }
     
@@ -81,6 +93,26 @@ extension DataManager {
                 guard let result = result else { return Observable.error(loadError(type: T.self)) }
                 
                 guard let deserialized = T.from(dict: result) else {
+                    return Observable.error(loadError(type: T.self))
+                }
+                
+                return Observable.just(deserialized)
+        }
+    }
+    
+    /**
+     Load document by Id
+     - parameter documentOfType: Type of document
+     - parameter auth: Authentication information
+     - parameter documentId: Document Id
+     - parameter expanders: Additional objects to include into request
+     */
+    public static func loadById<T>(documentOfType: T.Type, auth: Auth, documentId : UUID, expanders: [Expander] = []) -> Observable<T>   {
+        return HttpClient.get(loadUrl(type: T.self), auth: auth, urlPathComponents: [documentId.uuidString], urlParameters: [CompositeExpander(expanders)])
+            .flatMapLatest { result -> Observable<T> in
+                guard let result = result else { return Observable.error(loadError(type: T.self)) }
+                
+                guard let deserialized = MSDocument.from(dict: result)?.value() as? T else {
                     return Observable.error(loadError(type: T.self))
                 }
                 
@@ -203,6 +235,41 @@ extension DataManager {
                 guard let result = result else { return Observable.error(loadError(type: T.self)) }
                 
                 let deserialized = result.msArray("rows").flatMap { T.from(dict: $0) }
+                
+                return Observable.just(deserialized)
+        }
+    }
+    
+    /**
+     Load documents
+     - parameter ofType: Type of document
+     - parameter auth: Authentication information
+     - parameter offset: Desired data offset
+     - parameter expanders: Additional objects to include into request
+     - parameter filter: Filter for request
+     - parameter search: Additional string for filtering by name
+     - parameter organizationId: Id of organization to filter by
+     - parameter stateId: If of state to filter by
+     */
+    public static func loadDocuments<T>(ofType: T.Type,
+                              auth: Auth,
+                              offset: MSOffset? = nil,
+                              expanders: [Expander] = [],
+                              filter: Filter? = nil,
+                              search: Search? = nil,
+                              organizationId: OrganizationIdParameter? = nil,
+                              stateId: StateIdParameter? = nil,
+                              orderBy: Order? = nil) -> Observable<[T]>  {
+        
+        let urlParameters: [UrlParameter] = mergeUrlParameters(search, stateId, organizationId, offset, filter, orderBy, CompositeExpander(expanders))
+        
+        return HttpClient.get(loadUrl(type: T.self), auth: auth, urlParameters: urlParameters)
+            .flatMapLatest { result -> Observable<[T]> in
+                guard let result = result else { return Observable.error(loadError(type: T.self)) }
+                
+                let deserialized = result.msArray("rows")
+                    .map { MSDocument.from(dict: $0)?.value() as? T }
+                    .removeNils()
                 
                 return Observable.just(deserialized)
         }

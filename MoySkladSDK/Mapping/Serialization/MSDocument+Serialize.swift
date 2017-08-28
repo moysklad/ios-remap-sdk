@@ -10,6 +10,7 @@ import Foundation
 
 extension MSDocument {
     public func dictionary(metaOnly: Bool = true) -> Dictionary<String, Any> {
+        // MSTODO: implement serialization
         fatalError("Not implemented")
     }
 }

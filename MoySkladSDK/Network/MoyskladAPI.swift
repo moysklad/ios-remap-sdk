@@ -95,6 +95,7 @@ public enum MSApiRequest : String {
     case demandmetadata = "entity/demand/metadata"
     case invoiceOut = "entity/invoiceOut"
     case invoiceOutNew = "entity/invoiceOut/new"
+    case invoiceIn = "entity/invoiceIn"
     case invoiceOutMetadata = "entity/invoiceOut/metadata"
     case dashboardDay = "report/dashboard/day"
     case dashboardWeek = "report/dashboard/week"
@@ -120,6 +121,8 @@ public enum MSApiRequest : String {
     case task = "entity/task"
     case cashIn = "entity/cashin"
     case cashInMetadata = "entity/cashin/metadata"
+    case cashOut = "entity/cashout"
+    case cashOutMetadata = "entity/cashout/metadata"
     
     case plotseries = "/plotseries/"
     case reportMoneyByAccount = "/report/money/byaccount"

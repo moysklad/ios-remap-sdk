@@ -78,10 +78,6 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
         fatalError()
     }
     
-    public func dictionary(metaOnly: Bool) -> [String : Any] {
-        fatalError()
-    }
-    
     public init(id : MSID,
                 meta : MSMeta,
                 info : MSInfo,

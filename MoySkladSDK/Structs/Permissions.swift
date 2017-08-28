@@ -58,6 +58,8 @@ public struct MSUserPermissions {
     public let tariffCrm: MSPermission
     public let auditDashboard: MSPermission
     public let admin: MSPermission
+    public let viewAllTasks: MSPermission
+    public let updateAllTasks: MSPermission
     
     public init(uom: MSPermission,
     product: MSPermission,
@@ -105,7 +107,9 @@ public struct MSUserPermissions {
     companyCrm: MSPermission,
     tariffCrm: MSPermission,
     auditDashboard: MSPermission,
-    admin: MSPermission) {
+    admin: MSPermission,
+    viewAllTasks: MSPermission,
+    updateAllTasks: MSPermission) {
         self.uom = uom
         self.product = product
         self.service = service
@@ -153,6 +157,8 @@ public struct MSUserPermissions {
         self.tariffCrm = tariffCrm
         self.auditDashboard = auditDashboard
         self.admin = admin
+        self.viewAllTasks = viewAllTasks
+        self.updateAllTasks = updateAllTasks
     }
     
 //    let retailstore: MSPermission

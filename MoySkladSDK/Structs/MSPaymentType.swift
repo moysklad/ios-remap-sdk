@@ -22,5 +22,5 @@ public protocol MSPaymentInType: MSMoneyDocumentType {
  Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#документ-исходящий-платеж)
  */
 public protocol MSPaymentOutType: MSMoneyDocumentType {
-    var expenseItem: Metable { get set }
+    var expenseItem: MSEntity<MSExpenseItem>? { get set }
 }

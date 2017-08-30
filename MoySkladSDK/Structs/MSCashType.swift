@@ -26,5 +26,5 @@ public protocol MSCashInType: MSMoneyDocumentType {
  Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#документ-расходный-ордер)
  */
 public protocol MSCashOutType: MSMoneyDocumentType {
-    var expenseItem: Metable { get set }
+    var expenseItem: MSEntity<MSExpenseItem>? { get set }
 }

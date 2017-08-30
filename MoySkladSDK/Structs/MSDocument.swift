@@ -73,7 +73,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     public var paymentPurpose: String?
     
     // MSCashOutType
-    public var expenseItem: Metable
+    public var expenseItem: MSEntity<MSExpenseItem>?
     
     public func copyDocument() -> MSGeneralDocument {
         fatalError()
@@ -125,7 +125,8 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                 purchaseOrder: MSEntity<MSSimpleDocument>?,
                 incomingNumber: String?,
                 incomingDate: Date?,
-                paymentPurpose: String?) {
+                paymentPurpose: String?,
+                expenseItem: MSEntity<MSExpenseItem>?) {
         self.id = id
         self.meta = meta
         self.info = info
@@ -173,5 +174,6 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
         self.incomingNumber = incomingNumber
         self.incomingDate = incomingDate
         self.paymentPurpose = paymentPurpose
+        self.expenseItem = expenseItem
     }
 }

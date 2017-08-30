@@ -39,8 +39,6 @@ extension MSID {
     public convenience init(dict: Dictionary<String, Any>) {
         self.init(msID: UUID(uuidString: dict.value("id") ?? ""),
                   syncID: UUID(uuidString: dict.value("syncId") ?? ""))
-//        self.msID = UUID(uuidString: dict.value("id") ?? "")
-//        self.syncID = UUID(uuidString: dict.value("syncId") ?? "")
     }
     
     public func dictionary() -> Dictionary<String, Any> {

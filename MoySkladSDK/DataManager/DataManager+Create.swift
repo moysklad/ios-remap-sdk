@@ -44,7 +44,7 @@ extension DataManager {
      - parameter auth: Authentication information
      - parameter expanders: Additional objects to include into request
     */
-    public static func create<T>(document: T, auth: Auth, expanders: [Expander] = []) -> Observable<T.Element> where T: MSGeneralDocument, T: DictConvertable {
+    public static func create(document: MSDocument, auth: Auth, expanders: [Expander] = []) -> Observable<MSDocument> {
         return create(entity: document, auth: auth, expanders: expanders)
     }
     

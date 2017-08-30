@@ -82,7 +82,6 @@ extension DataManager {
     }
     
     static func loadUrlTemplate<T: MSBaseDocumentType>(type: T.Type) -> MSApiRequest {
-        // MSTODO: add new document templates
         switch type {
         case let t where t == MSCustomerOrderType.self:
             return .customerordermetadata
@@ -104,7 +103,6 @@ extension DataManager {
     }
     
     static func loadError<T>(type: T.Type) -> MSError {
-        // MSTODO: add new document errors
         switch T.self {
         case let t where t == MSCustomerOrderType.self:
             return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
@@ -148,18 +146,21 @@ extension DataManager {
     
     /**
      Load document by Id
-     - parameter documentOfType: Type of document
+     - parameter request: Type of document request
      - parameter auth: Authentication information
      - parameter documentId: Document Id
      - parameter expanders: Additional objects to include into request
      */
-    public static func loadById<T>(documentOfType: T.Type, auth: Auth, documentId : UUID, expanders: [Expander] = []) -> Observable<T>   {
-        return HttpClient.get(loadUrl(type: T.self), auth: auth, urlPathComponents: [documentId.uuidString], urlParameters: [CompositeExpander(expanders)])
-            .flatMapLatest { result -> Observable<T> in
-                guard let result = result else { return Observable.error(loadError(type: T.self)) }
+    public static func loadById(forRequest request: MSDocumentLoadRequest,
+                                auth: Auth,
+                                documentId: UUID,
+                                expanders: [Expander] = []) -> Observable<MSDocument>  {
+        return HttpClient.get(request.apiRequest, auth: auth, urlPathComponents: [documentId.uuidString], urlParameters: [CompositeExpander(expanders)])
+            .flatMapLatest { result -> Observable<MSDocument> in
+                guard let result = result else { return Observable.error(request.requestError) }
                 
-                guard let deserialized = MSDocument.from(dict: result)?.value() as? T else {
-                    return Observable.error(loadError(type: T.self))
+                guard let deserialized = MSDocument.from(dict: result)?.value() else {
+                    return Observable.error(request.requestError)
                 }
                 
                 return Observable.just(deserialized)

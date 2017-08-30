@@ -291,42 +291,4 @@ extension DataManager {
                 return Observable.just(deserialized)
         }
     }
-    
-    /**
-     Load document positions
-     - parameter docType: Type of document
-     - parameter auth: Authentication information
-     - parameter documentId: Document Id
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
-    */
-    public static func loadPositions<T>(docType: T.Type, 
-                                     auth: Auth, 
-                                     documentId : UUID,
-                                     offset: MSOffset? = nil, 
-                                     expanders: [Expander] = [],
-                                     filter: Filter? = nil, 
-                                     search: Search? = nil) -> Observable<[MSEntity<MSPosition>]> where T: MSGeneralDocument, T: DictConvertable, T.Element: MSGeneralDocument{
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter)
-        return HttpClient.get(loadUrl(type: T.self), auth: auth, urlPathComponents: [documentId.uuidString, "positions"],
-                              urlParameters: urlParameters)
-            .flatMapLatest { result -> Observable<[MSEntity<MSPosition>]> in
-                guard let result = result else { return Observable.error(loadPositionsError(type: T.self)) }
-                
-                if let size: Int = result.msValue("meta").value("size"), size > DataManager.documentPositionsCountLimit {
-                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.documentTooManyPositions.value))
-                }
-                
-                let deserialized = result.msArray("rows").map { MSPosition.from(dict: $0) }
-                let withoutNills = deserialized.removeNils()
-                
-                guard withoutNills.count == deserialized.count else {
-                    return Observable.error(loadPositionsError(type: T.self))
-                }
-                
-                return Observable.just(withoutNills)
-        }
-    }
 }

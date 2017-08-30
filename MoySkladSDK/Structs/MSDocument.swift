@@ -76,6 +76,8 @@ MSPaymentInType, MSPaymentOutType {
     public var expenseItem: MSEntity<MSExpenseItem>?
     
     public func copyDocument() -> MSDocument {
+        let positionsCopy = positions.flatMap { $0.value() }.map { MSEntity.entity($0.copy()) }
+
         return MSDocument(id: id,
                           meta: meta,
                           info: info,
@@ -100,7 +102,7 @@ MSPaymentInType, MSPaymentOutType {
                           vatEnabled: vatEnabled,
                           store: store,
                           originalStoreId: originalStoreId,
-                          positions: positions,
+                          positions: positionsCopy,
                           stock: stock,
                           deliveryPlannedMoment: deliveryPlannedMoment,
                           purchaseOrders: purchaseOrders,

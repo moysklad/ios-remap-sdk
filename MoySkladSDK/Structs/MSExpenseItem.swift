@@ -9,7 +9,7 @@
 import Foundation
 
 public class MSExpenseItem: Metable {
-    var meta: MSMeta
+    public var meta: MSMeta
     
     public init(meta: MSMeta) {
         self.meta = meta

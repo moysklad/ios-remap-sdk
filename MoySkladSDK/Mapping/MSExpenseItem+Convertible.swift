@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension MSExpenseItem: DictConvertable {
+extension MSExpenseItem {
     public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSExpenseItem>? {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else { return nil }
         

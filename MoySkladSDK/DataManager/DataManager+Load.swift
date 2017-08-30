@@ -68,10 +68,14 @@ extension DataManager {
             return .invoiceOut
         case let t where t == MSInvoiceInType.self:
             return .invoiceIn
-        case is MSCashInOut.Type:
-            return .cashIn
         case let t where t == MSCashInType.self:
-            return .cashIn
+            return .cashInMetadata
+        case let t where t == MSCashOutType.self:
+            return .cashOut
+        case let t where t == MSPaymentInType.self:
+            return .paymentIn
+        case let t where t == MSPaymentOutType.self:
+            return .paymentOut
         default:
             fatalError("Unknown ObjectType \(type)")
         }
@@ -86,8 +90,14 @@ extension DataManager {
             return .demandmetadata
         case let t where t == MSInvoiceOutType.self:
             return .invoiceOutMetadata
-        case is MSCashInOut.Type:
+        case let t where t == MSCashInType.self:
             return .cashInMetadata
+        case let t where t == MSCashOutType.self:
+            return .cashOutMetadata
+        case let t where t == MSPaymentInType.self:
+            return .paymentInMetadata
+        case let t where t == MSPaymentOutType.self:
+            return .paymentOutMetadata
         default:
             fatalError("Unknown ObjectType \(type)")
         }
@@ -102,6 +112,14 @@ extension DataManager {
             return MSError.genericError(errorText: LocalizedStrings.incorrectDemandsResponse.value)
         case let t where t == MSInvoiceOutType.self:
             return MSError.genericError(errorText: LocalizedStrings.incorrectInvoicesOutResponse.value)
+        case let t where t == MSCashInType.self:
+            return MSError.genericError(errorText: LocalizedStrings.incorrectCashInResponse.value)
+        case let t where t == MSCashOutType.self:
+            return MSError.genericError(errorText: LocalizedStrings.incorrectCashOutResponse.value)
+        case let t where t == MSPaymentInType.self:
+            return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInResponse.value)
+        case let t where t == MSPaymentOutType.self:
+            return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutResponse.value)
         default:
             fatalError("Unknown ObjectType \(type)")
         }
@@ -115,6 +133,14 @@ extension DataManager {
             return MSError.genericError(errorText: LocalizedStrings.incorrectDemandsResponse.value)
         case let t where t == MSInvoiceOutType.self:
             return MSError.genericError(errorText: LocalizedStrings.incorrectInvoicesOutResponse.value)
+        case let t where t == MSCashInType.self:
+            return MSError.genericError(errorText: LocalizedStrings.incorrectCashInResponse.value)
+        case let t where t == MSCashOutType.self:
+            return MSError.genericError(errorText: LocalizedStrings.incorrectCashOutResponse.value)
+        case let t where t == MSPaymentInType.self:
+            return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInResponse.value)
+        case let t where t == MSPaymentOutType.self:
+            return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutResponse.value)
         default:
             fatalError("Unknown ObjectType \(type)")
         }

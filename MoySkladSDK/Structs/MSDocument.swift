@@ -9,7 +9,8 @@
 import Foundation
 
 public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderType, MSDemandType,
-                        MSInvoiceOutType, MSInvoiceInType, MSMoneyDocumentType, MSCashInType, MSCashOutType {
+                        MSInvoiceOutType, MSInvoiceInType, MSMoneyDocumentType, MSCashInType, MSCashOutType,
+                        MSPaymentInType, MSPaymentOutType {
     // MSBaseDocumentType
     public var id : MSID
     public var meta : MSMeta
@@ -72,7 +73,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     public var paymentPurpose: String?
     
     // MSCashOutType
-    // var expenseItem: Metable
+    public var expenseItem: Metable
     
     public func copyDocument() -> MSGeneralDocument {
         fatalError()
@@ -124,8 +125,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                 purchaseOrder: MSEntity<MSSimpleDocument>?,
                 incomingNumber: String?,
                 incomingDate: Date?,
-                paymentPurpose: String?
-        ) {
+                paymentPurpose: String?) {
         self.id = id
         self.meta = meta
         self.info = info

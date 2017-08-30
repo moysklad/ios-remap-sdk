@@ -12,11 +12,19 @@ public protocol MSMoneyDocumentType : MSBaseDocumentType {
     var paymentPurpose: String? { get set }
 }
 
+/**
+ Contains properties specific to CashIn
+ Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#документ-приходный-ордер)
+ */
 public protocol MSCashInType: MSMoneyDocumentType {
     var incomingDate: Date? { get set }
     var incomingNumber: String? { get set }
 }
 
+/**
+ Contains properties specific to CashOut
+ Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#документ-расходный-ордер)
+ */
 public protocol MSCashOutType: MSMoneyDocumentType {
-    //var expenseItem: Metable { get set }
+    var expenseItem: Metable { get set }
 }

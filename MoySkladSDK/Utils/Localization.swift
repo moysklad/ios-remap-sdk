@@ -72,7 +72,10 @@ enum LocalizedStrings : String {
     case incorrectPlotseriesMoneyBalanceResponse
     case incorrectPlotseriesRetailStoreReportResponse
     case incorrectPlotseriesRetailStoresReportResponse
-    
+    case incorrectCashInResponse
+    case incorrectCashOutResponse
+    case incorrectPaymentInResponse
+    case incorrectPaymentOutResponse
     case accessDeniedRate
     case accessDenied
     

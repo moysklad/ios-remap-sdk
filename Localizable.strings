@@ -65,6 +65,9 @@
 "incorrectPlotseriesMoneyBalanceResponse" = "Неизвестный ответ при запросе остатка средств по кассам";
 "incorrectPlotseriesRetailStoresReportResponse" = "Неизвестный ответ при запросе данных точки продаж";
 "incorrectPlotseriesRetailStoreReportResponse" = "Неизвестный ответ при запросе данных точки продаж";
-
+"incorrectCashInResponse" = "Ошибка при обработке приходных ордеров, возвращенных сервером";
+"incorrectCashOutResponse" = "Ошибка при обработке расходных ордеров, возвращенных сервером";
+"incorrectPaymentInResponse" = "Ошибка при обработке входящих платежей, возвращенных сервером";
+"incorrectPaymentOutResponse" = "Ошибка при обработке исходящих платежей, возвращенных сервером";
 "accessDeniedRate" = "Запрещен доступ к справочнику валют. Обратитесь к администратору";
 "accessDenied" = "Доступ запрещен: у вас нет прав на просмотр данного объекта";

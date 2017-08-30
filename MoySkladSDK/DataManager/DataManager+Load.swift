@@ -15,12 +15,20 @@ public enum MSDocumentLoadRequest {
     case customerOrder
     case demand
     case invoiceOut
+    case paymentIn
+    case paymentOut
+    case cashIn
+    case cashOut
     
     var apiRequest: MSApiRequest {
         switch self {
         case .customerOrder: return .customerorder
         case .demand: return .demand
         case .invoiceOut: return .invoiceOut
+        case .cashIn: return .cashIn
+        case .cashOut: return .cashOut
+        case .paymentIn: return .paymentIn
+        case .paymentOut: return .paymentOut
         }
     }
     
@@ -29,6 +37,10 @@ public enum MSDocumentLoadRequest {
         case .customerOrder: return .customerordermetadata
         case .demand: return .demandmetadata
         case .invoiceOut: return .invoiceOutMetadata
+        case .cashIn: return .cashInMetadata
+        case .cashOut: return .cashOutMetadata
+        case .paymentIn: return .paymentInMetadata
+        case .paymentOut: return .paymentOutMetadata
         }
     }
     
@@ -37,6 +49,10 @@ public enum MSDocumentLoadRequest {
         case .customerOrder: return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
         case .demand: return MSError.genericError(errorText: LocalizedStrings.incorrectDemandsResponse.value)
         case .invoiceOut: return MSError.genericError(errorText: LocalizedStrings.incorrectInvoicesOutResponse.value)
+        case .cashIn: return MSError.genericError(errorText: LocalizedStrings.incorrectCashInResponse.value)
+        case .cashOut: return MSError.genericError(errorText: LocalizedStrings.incorrectCashOutResponse.value)
+        case .paymentIn: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInResponse.value)
+        case .paymentOut: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutResponse.value)
         }
     }
 }

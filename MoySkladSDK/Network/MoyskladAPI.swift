@@ -123,7 +123,10 @@ public enum MSApiRequest : String {
     case cashInMetadata = "entity/cashin/metadata"
     case cashOut = "entity/cashout"
     case cashOutMetadata = "entity/cashout/metadata"
-    
+    case paymentIn = "/entity/paymentin"
+    case paymentInMetadata = "entity/paymentin/metadata"
+    case paymentOut = "/entity/paymentout"
+    case paymentOutMetadata = "/entity/paymentout/metadata"
     case plotseries = "/plotseries/"
     case reportMoneyByAccount = "/report/money/byaccount"
     case reportRetailstore = "/report/retailstore"

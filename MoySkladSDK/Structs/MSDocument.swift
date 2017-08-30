@@ -10,7 +10,7 @@ import Foundation
 
 public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderType, MSDemandType,
                         MSInvoiceOutType, MSInvoiceInType, MSMoneyDocumentType, MSCashInType, MSCashOutType,
-                        MSPaymentInType, MSPaymentOutType {
+MSPaymentInType, MSPaymentOutType {
     // MSBaseDocumentType
     public var id : MSID
     public var meta : MSMeta
@@ -75,8 +75,55 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     // MSCashOutType
     public var expenseItem: MSEntity<MSExpenseItem>?
     
-    public func copyDocument() -> MSGeneralDocument {
-        fatalError()
+    public func copyDocument() -> MSDocument {
+        return MSDocument(id: id,
+                          meta: meta,
+                          info: info,
+                          agent: agent,
+                          contract: contract,
+                          sum: sum,
+                          vatSum: vatSum,
+                          rate: rate,
+                          moment: moment,
+                          project: project,
+                          organization: organization,
+                          owner: owner,
+                          group: group,
+                          shared: shared,
+                          applicable: applicable,
+                          state: state,
+                          attributes: attributes,
+                          originalApplicable: originalApplicable,
+                          agentAccount: agentAccount,
+                          organizationAccount: organizationAccount,
+                          vatIncluded: vatIncluded,
+                          vatEnabled: vatEnabled,
+                          store: store,
+                          originalStoreId: originalStoreId,
+                          positions: positions,
+                          stock: stock,
+                          deliveryPlannedMoment: deliveryPlannedMoment,
+                          purchaseOrders: purchaseOrders,
+                          demands: demands,
+                          payments: payments,
+                          invoicesOut: invoicesOut,
+                          returns: returns,
+                          factureOut: factureOut,
+                          overhead: overhead,
+                          customerOrder: customerOrder,
+                          consignee: consignee,
+                          carrier: carrier,
+                          transportFacilityNumber: transportFacilityNumber,
+                          shippingInstructions: shippingInstructions,
+                          cargoName: cargoName,
+                          transportFacility: transportFacility,
+                          goodPackQuantity: goodPackQuantity,
+                          paymentPlannedMoment: paymentPlannedMoment,
+                          purchaseOrder: purchaseOrder,
+                          incomingNumber: incomingNumber,
+                          incomingDate: incomingDate,
+                          paymentPurpose: paymentPurpose,
+                          expenseItem: expenseItem)
     }
     
     public init(id : MSID,

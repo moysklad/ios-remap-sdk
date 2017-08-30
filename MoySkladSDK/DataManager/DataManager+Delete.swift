@@ -34,7 +34,7 @@ extension DataManager {
      - parameter document: Document that should be deleted
      - parameter auth: Authentication information
     */
-    public static func delete<T>(document: T, auth: Auth) -> Observable<Void> where T: MSGeneralDocument, T: DictConvertable {
+    public static func delete(document: MSDocument, auth: Auth) -> Observable<Void> {
         return delete(entity: document, auth: auth)
     }
 }

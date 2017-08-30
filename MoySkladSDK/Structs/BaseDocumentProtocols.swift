@@ -28,8 +28,8 @@ public protocol MSBaseDocumentType : class, Metable, MSRequestEntity {
     var attributes : [MSEntity<MSAttribute>]? { get set }
     var originalApplicable: Bool { get }
     
-//    func copyDocument() -> MSBaseDocumentType
-//    func dictionary(metaOnly: Bool) -> [String: Any]
+    func copyDocument() -> MSDocument
+    func dictionary(metaOnly: Bool) -> [String: Any]
 }
 
 public extension MSBaseDocumentType {
@@ -65,7 +65,4 @@ public protocol MSGeneralDocument : class, Metable, MSBaseDocumentType {
     var originalStoreId: UUID? { get }
     var positions : [MSEntity<MSPosition>] { get set }
     var stock : [MSEntity<MSDocumentStock>] { get set }
-    
-    func copyDocument() -> MSGeneralDocument
-    func dictionary(metaOnly: Bool) -> [String: Any]
 }

@@ -57,10 +57,10 @@ public struct DataManager {
         return groups
     }
     
-    static func groupByDate2<T: MSBaseDocumentType>(data: [T],
-                             withPrevious previousData: [(date: Date, data: [T])]? = nil) -> [(date: Date, data: [T])] {
+    static func groupByDate2(data: [MSDocument],
+                             withPrevious previousData: [(date: Date, data: [MSDocument])]? = nil) -> [(date: Date, data: [MSDocument])] {
         // объекты группируются по дню (moment)
-        var groups: [Date: [T]] = [:]
+        var groups: [Date: [MSDocument]] = [:]
         
         // скорее всего это не самый оптимальный способ группировки
         data.forEach { object in

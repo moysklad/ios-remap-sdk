@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		55C05BF61E028F24008F4254 /* MoyskladiOSRemapSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C05BEC1E028F24008F4254 /* MoyskladiOSRemapSDK.framework */; };
-		55C05BFB1E028F24008F4254 /* MoyskaldStructsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05BFA1E028F24008F4254 /* MoyskaldStructsTests.swift */; };
 		55C05BFD1E028F24008F4254 /* MoyskaldStructs.h in Headers */ = {isa = PBXBuildFile; fileRef = 55C05BEF1E028F24008F4254 /* MoyskaldStructs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55C05C3F1E028F9B008F4254 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C071E028F9B008F4254 /* Extensions.swift */; };
 		55C05C401E028F9B008F4254 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C091E028F9B008F4254 /* Account.swift */; };
@@ -144,7 +143,6 @@
 		55C05BEF1E028F24008F4254 /* MoyskaldStructs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoyskaldStructs.h; sourceTree = "<group>"; };
 		55C05BF01E028F24008F4254 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55C05BF51E028F24008F4254 /* MoyskladiOSRemapSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoyskladiOSRemapSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		55C05BFA1E028F24008F4254 /* MoyskaldStructsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoyskaldStructsTests.swift; sourceTree = "<group>"; };
 		55C05BFC1E028F24008F4254 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55C05C071E028F9B008F4254 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		55C05C091E028F9B008F4254 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -324,7 +322,6 @@
 		55C05BF91E028F24008F4254 /* MoyskaldStructsTests */ = {
 			isa = PBXGroup;
 			children = (
-				55C05BFA1E028F24008F4254 /* MoyskaldStructsTests.swift */,
 				55C05BFC1E028F24008F4254 /* Info.plist */,
 			);
 			path = MoyskaldStructsTests;
@@ -761,7 +758,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55C05BFB1E028F24008F4254 /* MoyskaldStructsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

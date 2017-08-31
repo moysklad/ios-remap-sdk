@@ -73,7 +73,19 @@ extension MSDocument {
         dict["positions"] = serialize(entities: positions,
                                       parent: self,
                                       metaOnly: false,
-                                      objectType: MSObjectType.customerorderposition,
+                                      objectType: {
+                                        switch meta.type {
+                                        case MSObjectType.demand:
+                                            return MSObjectType.demandposition
+                                        case MSObjectType.invoicein:
+                                            fallthrough
+                                        case MSObjectType.invoiceout:
+                                            return MSObjectType.invoiceposition
+                                        case MSObjectType.customerorder:
+                                            return MSObjectType.customerorderposition
+                                        default:
+                                            return MSObjectType.customerorderposition
+                                        }}(),
                                       collectionName: "positions")
         dict["stock"] = serialize(entities: stock,
                                   parent: self,
@@ -84,19 +96,27 @@ extension MSDocument {
         dict["purchaseOrders"] = serialize(entities: purchaseOrders,
                                            parent: self,
                                            metaOnly: false,
-                                           objectType: MSObjectType.purchaseorders,
+                                           objectType: MSObjectType.purchaseorder,
                                            collectionName: "purchaseOrders")
-        dict["demands"] = demands.flatMap { $0.dictionary(metaOnly: true) }
+        dict["demands"] = serialize(entities: demands.flatMap { $0 as? MSDocument }.map { MSEntity<MSDocument>.entity($0) },
+                                    parent: self,
+                                    metaOnly: true,
+                                    objectType: MSObjectType.demand,
+                                    collectionName: "demands")
         dict["payments"] = serialize(entities: payments,
                                      parent: self,
                                      metaOnly: false,
-                                     objectType: MSObjectType.payments,
+                                     objectType: MSObjectType.paymentin,
                                      collectionName: "payments")
-        dict["invoicesOut"] = invoicesOut.flatMap { $0.dictionary(metaOnly: true) }
+        dict["invoicesOut"] = serialize(entities: invoicesOut.flatMap { $0 as? MSDocument }.map { MSEntity<MSDocument>.entity($0) },
+                                        parent: self,
+                                        metaOnly: true,
+                                        objectType: MSObjectType.invoiceout,
+                                        collectionName: "invoicesOut")
         dict["returns"] = serialize(entities: returns,
                                     parent: self,
                                     metaOnly: false,
-                                    objectType: MSObjectType.returns,
+                                    objectType: MSObjectType.salesreturn,
                                     collectionName: "returns")
         if let factureOut = factureOut {
             dict["factureOut"] = serialize(entity: factureOut, metaOnly: true)

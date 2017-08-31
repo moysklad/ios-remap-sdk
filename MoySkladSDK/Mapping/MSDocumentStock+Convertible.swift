@@ -20,16 +20,4 @@ extension MSDocumentStock: DictConvertable {
         
         return dict
     }
-    
-    public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSDocumentStock>? {
-        guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else {  return nil }
-        
-        return MSEntity.entity(MSDocumentStock(meta: meta,
-                                               stock: dict.value("stock") ?? 0,
-                                               inTransit: dict.value("inTransit") ?? 0,
-                                               reserve: dict.value("reserve") ?? 0,
-                                               quantity: dict.value("quantity") ?? 0,
-                                               name: dict.value("name") ?? "",
-                                               cost: Money(minorUnits: dict.value("cost") ?? 0)))
-    }
 }

@@ -124,16 +124,16 @@ extension MSDocument {
         }
         dict["consignee"] = serialize(entity: consignee, metaOnly: true)
         dict["carrier"] = serialize(entity: carrier, metaOnly: true)
-        dict["transportFacilityNumber"] = transportFacilityNumber ?? NSNull()
-        dict["shippingInstructions"] = shippingInstructions ?? NSNull()
-        dict["cargoName"] = cargoName ?? NSNull()
-        dict["transportFacility"] = transportFacility ?? NSNull()
+        dict["transportFacilityNumber"] = transportFacilityNumber ?? ""
+        dict["shippingInstructions"] = shippingInstructions ?? ""
+        dict["cargoName"] = cargoName ?? ""
+        dict["transportFacility"] = transportFacility ?? ""
         dict["goodPackQuantity"] = goodPackQuantity ?? NSNull()
         dict["paymentPlannedMoment"] = paymentPlannedMoment?.toLongDate() ?? NSNull()
         dict["purchaseOrder"] = serialize(entity: purchaseOrder, metaOnly: true)
-        dict["incomingNumber"] = incomingNumber ?? NSNull()
+        dict["incomingNumber"] = incomingNumber ?? ""
         dict["incomingDate"] = incomingDate?.toLongDate() ?? NSNull()
-        dict["paymentPurpose"] = paymentPurpose ?? NSNull()
+        dict["paymentPurpose"] = paymentPurpose ?? ""
         dict["expenseItem"] = serialize(entity: expenseItem, metaOnly: true)
         
         return dict

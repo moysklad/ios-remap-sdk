@@ -119,6 +119,7 @@
 		95E886E51F31C934009C21F2 /* MSRetailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E886E41F31C934009C21F2 /* MSRetailStore.swift */; };
 		95E886E71F31C9C8009C21F2 /* MSRetailShift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E886E61F31C9C8009C21F2 /* MSRetailShift.swift */; };
 		95E886E91F31E638009C21F2 /* MSRetailStore+Convertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E886E81F31E638009C21F2 /* MSRetailStore+Convertable.swift */; };
+		C94F63561F57F1C600EAE437 /* DataManager+LoadTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94F63551F57F1C600EAE437 /* DataManager+LoadTemplates.swift */; };
 		C9564DCE1F569FB80051E3BE /* MSPaymentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9564DCD1F569FB80051E3BE /* MSPaymentType.swift */; };
 		C9564DD01F56B0730051E3BE /* MSExpenseItem+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9564DCF1F56B0730051E3BE /* MSExpenseItem+Convertible.swift */; };
 		C9564DD21F56B0DD0051E3BE /* MSExpenseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9564DD11F56B0DD0051E3BE /* MSExpenseItem.swift */; };
@@ -255,6 +256,7 @@
 		95E886E41F31C934009C21F2 /* MSRetailStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSRetailStore.swift; sourceTree = "<group>"; };
 		95E886E61F31C9C8009C21F2 /* MSRetailShift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSRetailShift.swift; sourceTree = "<group>"; };
 		95E886E81F31E638009C21F2 /* MSRetailStore+Convertable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSRetailStore+Convertable.swift"; sourceTree = "<group>"; };
+		C94F63551F57F1C600EAE437 /* DataManager+LoadTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataManager+LoadTemplates.swift"; sourceTree = "<group>"; };
 		C9564DCD1F569FB80051E3BE /* MSPaymentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSPaymentType.swift; sourceTree = "<group>"; };
 		C9564DCF1F56B0730051E3BE /* MSExpenseItem+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSExpenseItem+Convertible.swift"; sourceTree = "<group>"; };
 		C9564DD11F56B0DD0051E3BE /* MSExpenseItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSExpenseItem.swift; sourceTree = "<group>"; };
@@ -523,6 +525,7 @@
 				6E75A1E21EA8A3D200A05A83 /* DataManager+Delete.swift */,
 				6E75A1E31EA8A3D200A05A83 /* DataManager+Update.swift */,
 				956459E91F30A72D002099BC /* DataManager+LoadStatistic.swift */,
+				C94F63551F57F1C600EAE437 /* DataManager+LoadTemplates.swift */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -665,6 +668,7 @@
 				55C05C4A1E028F9B008F4254 /* MSCurrency.swift in Sources */,
 				55C05C631E028F9B008F4254 /* Project+Convertible.swift in Sources */,
 				C9BD0FC31E9BA70A00FD8613 /* MSTemplate+Convertible.swift in Sources */,
+				C94F63561F57F1C600EAE437 /* DataManager+LoadTemplates.swift in Sources */,
 				C9564DCE1F569FB80051E3BE /* MSPaymentType.swift in Sources */,
 				55C05C681E028F9B008F4254 /* Currency.swift in Sources */,
 				6E02E7DC1F470F97000EC1F8 /* MSTask+Serialize.swift in Sources */,

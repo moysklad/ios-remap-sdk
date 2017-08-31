@@ -117,6 +117,7 @@
 		95E886E71F31C9C8009C21F2 /* MSRetailShift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E886E61F31C9C8009C21F2 /* MSRetailShift.swift */; };
 		95E886E91F31E638009C21F2 /* MSRetailStore+Convertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E886E81F31E638009C21F2 /* MSRetailStore+Convertable.swift */; };
 		C94F63561F57F1C600EAE437 /* DataManager+LoadTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94F63551F57F1C600EAE437 /* DataManager+LoadTemplates.swift */; };
+		C94F63581F580CA600EAE437 /* MSDocumentStock+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94F63571F580CA600EAE437 /* MSDocumentStock+Convertible.swift */; };
 		C9564DCE1F569FB80051E3BE /* MSPaymentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9564DCD1F569FB80051E3BE /* MSPaymentType.swift */; };
 		C9564DD01F56B0730051E3BE /* MSExpenseItem+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9564DCF1F56B0730051E3BE /* MSExpenseItem+Convertible.swift */; };
 		C9564DD21F56B0DD0051E3BE /* MSExpenseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9564DD11F56B0DD0051E3BE /* MSExpenseItem.swift */; };
@@ -251,6 +252,7 @@
 		95E886E61F31C9C8009C21F2 /* MSRetailShift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSRetailShift.swift; sourceTree = "<group>"; };
 		95E886E81F31E638009C21F2 /* MSRetailStore+Convertable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSRetailStore+Convertable.swift"; sourceTree = "<group>"; };
 		C94F63551F57F1C600EAE437 /* DataManager+LoadTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataManager+LoadTemplates.swift"; sourceTree = "<group>"; };
+		C94F63571F580CA600EAE437 /* MSDocumentStock+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSDocumentStock+Convertible.swift"; sourceTree = "<group>"; };
 		C9564DCD1F569FB80051E3BE /* MSPaymentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSPaymentType.swift; sourceTree = "<group>"; };
 		C9564DCF1F56B0730051E3BE /* MSExpenseItem+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSExpenseItem+Convertible.swift"; sourceTree = "<group>"; };
 		C9564DD11F56B0DD0051E3BE /* MSExpenseItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSExpenseItem.swift; sourceTree = "<group>"; };
@@ -425,6 +427,7 @@
 				6EA06D321F3B4E39001E2B66 /* MSUOM+Convertable.swift */,
 				6E02E7D91F470D93000EC1F8 /* MSTask+Convertable.swift */,
 				C9564DCF1F56B0730051E3BE /* MSExpenseItem+Convertible.swift */,
+				C94F63571F580CA600EAE437 /* MSDocumentStock+Convertible.swift */,
 			);
 			path = Mapping;
 			sourceTree = "<group>";
@@ -707,6 +710,7 @@
 				55C05C401E028F9B008F4254 /* Account.swift in Sources */,
 				55C05C571E028F9B008F4254 /* CompanySettings+Convertible.swift in Sources */,
 				55C05C6E1E028F9B008F4254 /* Money.swift in Sources */,
+				C94F63581F580CA600EAE437 /* MSDocumentStock+Convertible.swift in Sources */,
 				55C05C651E028F9B008F4254 /* ApplePay.swift in Sources */,
 				95E886E51F31C934009C21F2 /* MSRetailStore.swift in Sources */,
 				55C05C641E028F9B008F4254 /* Store+Convertible.swift in Sources */,

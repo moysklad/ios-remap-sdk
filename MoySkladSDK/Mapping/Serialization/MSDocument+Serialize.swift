@@ -47,7 +47,6 @@ extension MSDocument {
         
         dict["agent"] = serialize(entity: agent, metaOnly: true)
         dict["contract"] = serialize(entity: contract, metaOnly: true)
-        dict["sum"] = sum.minorUnits
         dict["vatSum"] = vatSum.minorUnits
         dict["rate"] = rate?.dictionary(metaOnly: true) ?? NSNull()
         dict["moment"] = moment.toLongDate()
@@ -59,7 +58,6 @@ extension MSDocument {
         dict["applicable"] = applicable
         dict["state"] = serialize(entity: state, metaOnly: true)
         dict["attributes"] = attributes?.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
-        dict["originalApplicable"] = originalApplicable
         if let agentAccount = agentAccount {
             dict["agentAccount"] = serialize(entity: agentAccount, metaOnly: true)
         }
@@ -69,7 +67,6 @@ extension MSDocument {
         dict["vatIncluded"] = vatIncluded
         dict["vatEnabled"] = vatEnabled
         dict["store"] = serialize(entity: store, metaOnly: true)
-        dict["originalStoreId"] = originalStoreId?.uuidString ?? NSNull()
         dict["positions"] = serialize(entities: positions,
                                       parent: self,
                                       metaOnly: false,
@@ -124,8 +121,8 @@ extension MSDocument {
         if let overhead = overhead {
             dict["overhead"] = overhead.dictionary()
         }
-        if let customerOrder = customerOrder {
-            dict["customerOrder"] = customerOrder.dictionary(metaOnly: true)
+        if let customerOrder = customerOrder as? MSDocument {
+            dict["customerOrder"] = serialize(entity: MSEntity.entity(customerOrder), metaOnly: true)
         }
         dict["consignee"] = serialize(entity: consignee, metaOnly: true)
         dict["carrier"] = serialize(entity: carrier, metaOnly: true)

@@ -69,7 +69,7 @@ extension MSDocument {
         dict["vatIncluded"] = vatIncluded
         dict["vatEnabled"] = vatEnabled
         dict["store"] = serialize(entity: store, metaOnly: true)
-        dict["originalStoreId"] = originalStoreId
+        dict["originalStoreId"] = originalStoreId?.uuidString ?? NSNull()
         dict["positions"] = serialize(entities: positions,
                                       parent: self,
                                       metaOnly: false,

@@ -13,12 +13,12 @@ extension DataManager {
     /**
      Load print templates for document type.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#шаблон-печатной-формы)
-     - parameter forDocType: Document type for which templates should be loaded
+     - parameter request: Request metadata type for which templates should be loaded
      - parameter auth: Authentication information
      - parameter type: Type of Template that should be loaded
      */
-    public static func templates<T: MSGeneralDocument>(forDocType: T.Type, auth: Auth, type: MSTemplateType) -> Observable<[MSEntity<MSTemplate>]> {
-        return HttpClient.get(loadUrlTemplate(type: forDocType), auth: auth, urlPathComponents: [type.rawValue])
+    public static func templates(request: MSDocumentLoadRequest, auth: Auth, type: MSTemplateType) -> Observable<[MSEntity<MSTemplate>]> {
+        return HttpClient.get(request.metadataRequest, auth: auth, urlPathComponents: [type.rawValue])
             .flatMapLatest { result -> Observable<[MSEntity<MSTemplate>]> in
                 guard let result = result else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectTemplateResponse.value))
@@ -43,11 +43,11 @@ extension DataManager {
      - parameter meta: Document template metadata
      - returns: Observable sequence with http link to PDF document
      */
-    public static func documentFromTemplate<T: MSGeneralDocument>(auth: Auth, docType: T.Type, id: String, meta: MSMeta) -> Observable<String> {
+    public static func documentFromTemplate(request: MSDocumentLoadRequest, auth: Auth, id: String, meta: MSMeta) -> Observable<String> {
         let urlPathComponents: [String] = [id, "export"]
         var body = meta.dictionaryForTemplate()
         body["extension"] = "pdf"
-        return HttpClient.updateWithHeadersResult(loadUrl(type: docType), auth: auth, urlPathComponents: urlPathComponents, body: body).flatMapLatest { result -> Observable<String> in
+        return HttpClient.updateWithHeadersResult(request.apiRequest, auth: auth, urlPathComponents: urlPathComponents, body: body).flatMapLatest { result -> Observable<String> in
             
             guard let result = result else {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecDocumentFromTemplateResponse.value))
@@ -68,10 +68,10 @@ extension DataManager {
      - parameter meta: Document template metadata
      - returns: Observable sequence with http link to publication
      */
-    public static func publicationFromTemplate<T: MSGeneralDocument>(auth: Auth, docType: T.Type, id: String, meta: MSMeta) -> Observable<String> {
+    public static func publicationFromTemplate(request: MSDocumentLoadRequest, auth: Auth, id: String, meta: MSMeta) -> Observable<String> {
         let urlPathComponents: [String] = [id, "publication"]
         let body = meta.dictionaryForTemplate()
-        return HttpClient.create(loadUrl(type: docType), auth: auth, urlPathComponents: urlPathComponents, body: body, contentType: .json).flatMapLatest { result -> Observable<String> in
+        return HttpClient.create(request.apiRequest, auth: auth, urlPathComponents: urlPathComponents, body: body, contentType: .json).flatMapLatest { result -> Observable<String> in
             guard let result = result else {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecPublicationFromTemplateResponse.value))
             }

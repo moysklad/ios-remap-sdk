@@ -14,9 +14,9 @@ import Foundation
 */
 public protocol MSDemandType : MSGeneralDocument {
     var invoicesOut : [MSInvoiceOutType] { get }
-    var payments: [MSEntity<MSSimpleDocument>] { get }
-    var returns: [MSEntity<MSSimpleDocument>] { get }
-    var factureOut: MSEntity<MSSimpleDocument>? { get }
+    var payments: [MSEntity<MSDocument>] { get }
+    var returns: [MSEntity<MSDocument>] { get }
+    var factureOut: MSEntity<MSDocument>? { get }
     var overhead : MSOverhead? { get set }
     var customerOrder : MSCustomerOrderType? { get }
     var consignee: MSEntity<MSAgent>? { get set }

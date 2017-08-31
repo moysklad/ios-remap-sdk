@@ -29,13 +29,10 @@
 		55C05C501E028F9B008F4254 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C191E028F9B008F4254 /* Permissions.swift */; };
 		55C05C511E028F9B008F4254 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C1A1E028F9B008F4254 /* Position.swift */; };
 		55C05C521E028F9B008F4254 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C1B1E028F9B008F4254 /* Project.swift */; };
-		55C05C531E028F9B008F4254 /* SimpleDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C1C1E028F9B008F4254 /* SimpleDocument.swift */; };
 		55C05C541E028F9B008F4254 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C1D1E028F9B008F4254 /* Types.swift */; };
 		55C05C551E028F9B008F4254 /* MSCustomerOrderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C1E1E028F9B008F4254 /* MSCustomerOrderType.swift */; };
 		55C05C561E028F9B008F4254 /* Assortment+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C201E028F9B008F4254 /* Assortment+Convertible.swift */; };
 		55C05C571E028F9B008F4254 /* CompanySettings+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C211E028F9B008F4254 /* CompanySettings+Convertible.swift */; };
-		55C05C581E028F9B008F4254 /* CustomerOrder+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C221E028F9B008F4254 /* CustomerOrder+Convertible.swift */; };
-		55C05C591E028F9B008F4254 /* Demand+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C231E028F9B008F4254 /* Demand+Convertible.swift */; };
 		55C05C5A1E028F9B008F4254 /* DictConvertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C241E028F9B008F4254 /* DictConvertable.swift */; };
 		55C05C5B1E028F9B008F4254 /* Employee+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C251E028F9B008F4254 /* Employee+Convertible.swift */; };
 		55C05C5C1E028F9B008F4254 /* MSAgent+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C261E028F9B008F4254 /* MSAgent+Convertible.swift */; };
@@ -43,7 +40,6 @@
 		55C05C5E1E028F9B008F4254 /* MSDashboard+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C281E028F9B008F4254 /* MSDashboard+Convertible.swift */; };
 		55C05C5F1E028F9B008F4254 /* MSInvoice+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C291E028F9B008F4254 /* MSInvoice+Convertible.swift */; };
 		55C05C601E028F9B008F4254 /* MSPosition+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C2A1E028F9B008F4254 /* MSPosition+Convertible.swift */; };
-		55C05C611E028F9B008F4254 /* MSSimpleDocument+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C2B1E028F9B008F4254 /* MSSimpleDocument+Convertible.swift */; };
 		55C05C621E028F9B008F4254 /* MSStock+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C2C1E028F9B008F4254 /* MSStock+Convertible.swift */; };
 		55C05C631E028F9B008F4254 /* Project+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C2D1E028F9B008F4254 /* Project+Convertible.swift */; };
 		55C05C641E028F9B008F4254 /* Store+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C2E1E028F9B008F4254 /* Store+Convertible.swift */; };
@@ -118,6 +114,7 @@
 		95E886E91F31E638009C21F2 /* MSRetailStore+Convertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E886E81F31E638009C21F2 /* MSRetailStore+Convertable.swift */; };
 		C94F63561F57F1C600EAE437 /* DataManager+LoadTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94F63551F57F1C600EAE437 /* DataManager+LoadTemplates.swift */; };
 		C94F63581F580CA600EAE437 /* MSDocumentStock+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94F63571F580CA600EAE437 /* MSDocumentStock+Convertible.swift */; };
+		C94F635E1F58292100EAE437 /* MSOverhead+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94F635D1F58292100EAE437 /* MSOverhead+Convertible.swift */; };
 		C9564DCE1F569FB80051E3BE /* MSPaymentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9564DCD1F569FB80051E3BE /* MSPaymentType.swift */; };
 		C9564DD01F56B0730051E3BE /* MSExpenseItem+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9564DCF1F56B0730051E3BE /* MSExpenseItem+Convertible.swift */; };
 		C9564DD21F56B0DD0051E3BE /* MSExpenseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9564DD11F56B0DD0051E3BE /* MSExpenseItem.swift */; };
@@ -164,13 +161,10 @@
 		55C05C191E028F9B008F4254 /* Permissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
 		55C05C1A1E028F9B008F4254 /* Position.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
 		55C05C1B1E028F9B008F4254 /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
-		55C05C1C1E028F9B008F4254 /* SimpleDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleDocument.swift; sourceTree = "<group>"; };
 		55C05C1D1E028F9B008F4254 /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		55C05C1E1E028F9B008F4254 /* MSCustomerOrderType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSCustomerOrderType.swift; sourceTree = "<group>"; };
 		55C05C201E028F9B008F4254 /* Assortment+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Assortment+Convertible.swift"; sourceTree = "<group>"; };
 		55C05C211E028F9B008F4254 /* CompanySettings+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CompanySettings+Convertible.swift"; sourceTree = "<group>"; };
-		55C05C221E028F9B008F4254 /* CustomerOrder+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CustomerOrder+Convertible.swift"; sourceTree = "<group>"; };
-		55C05C231E028F9B008F4254 /* Demand+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Demand+Convertible.swift"; sourceTree = "<group>"; };
 		55C05C241E028F9B008F4254 /* DictConvertable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictConvertable.swift; sourceTree = "<group>"; };
 		55C05C251E028F9B008F4254 /* Employee+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Employee+Convertible.swift"; sourceTree = "<group>"; };
 		55C05C261E028F9B008F4254 /* MSAgent+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSAgent+Convertible.swift"; sourceTree = "<group>"; };
@@ -178,7 +172,6 @@
 		55C05C281E028F9B008F4254 /* MSDashboard+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSDashboard+Convertible.swift"; sourceTree = "<group>"; };
 		55C05C291E028F9B008F4254 /* MSInvoice+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSInvoice+Convertible.swift"; sourceTree = "<group>"; };
 		55C05C2A1E028F9B008F4254 /* MSPosition+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSPosition+Convertible.swift"; sourceTree = "<group>"; };
-		55C05C2B1E028F9B008F4254 /* MSSimpleDocument+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSSimpleDocument+Convertible.swift"; sourceTree = "<group>"; };
 		55C05C2C1E028F9B008F4254 /* MSStock+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSStock+Convertible.swift"; sourceTree = "<group>"; };
 		55C05C2D1E028F9B008F4254 /* Project+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Project+Convertible.swift"; sourceTree = "<group>"; };
 		55C05C2E1E028F9B008F4254 /* Store+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Store+Convertible.swift"; sourceTree = "<group>"; };
@@ -253,6 +246,7 @@
 		95E886E81F31E638009C21F2 /* MSRetailStore+Convertable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSRetailStore+Convertable.swift"; sourceTree = "<group>"; };
 		C94F63551F57F1C600EAE437 /* DataManager+LoadTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataManager+LoadTemplates.swift"; sourceTree = "<group>"; };
 		C94F63571F580CA600EAE437 /* MSDocumentStock+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSDocumentStock+Convertible.swift"; sourceTree = "<group>"; };
+		C94F635D1F58292100EAE437 /* MSOverhead+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSOverhead+Convertible.swift"; sourceTree = "<group>"; };
 		C9564DCD1F569FB80051E3BE /* MSPaymentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSPaymentType.swift; sourceTree = "<group>"; };
 		C9564DCF1F56B0730051E3BE /* MSExpenseItem+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSExpenseItem+Convertible.swift"; sourceTree = "<group>"; };
 		C9564DD11F56B0DD0051E3BE /* MSExpenseItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSExpenseItem.swift; sourceTree = "<group>"; };
@@ -365,7 +359,6 @@
 				55C05C191E028F9B008F4254 /* Permissions.swift */,
 				55C05C1A1E028F9B008F4254 /* Position.swift */,
 				55C05C1B1E028F9B008F4254 /* Project.swift */,
-				55C05C1C1E028F9B008F4254 /* SimpleDocument.swift */,
 				55C05C1D1E028F9B008F4254 /* Types.swift */,
 				8B3B57461E124BBC0023B75B /* Attribute.swift */,
 				6E2266F71E266CF5003D2DC5 /* MSSaleByProduct.swift */,
@@ -396,9 +389,7 @@
 			children = (
 				6E4344D61E3B2323005D0DDE /* Serialization */,
 				6EF37A331F5409830020BD78 /* MSDocument+Convertable.swift */,
-				55C05C221E028F9B008F4254 /* CustomerOrder+Convertible.swift */,
 				55C05C291E028F9B008F4254 /* MSInvoice+Convertible.swift */,
-				55C05C231E028F9B008F4254 /* Demand+Convertible.swift */,
 				55C05C201E028F9B008F4254 /* Assortment+Convertible.swift */,
 				55C05C211E028F9B008F4254 /* CompanySettings+Convertible.swift */,
 				55C05C241E028F9B008F4254 /* DictConvertable.swift */,
@@ -409,7 +400,6 @@
 				55C05C2A1E028F9B008F4254 /* MSPosition+Convertible.swift */,
 				95E886E81F31E638009C21F2 /* MSRetailStore+Convertable.swift */,
 				95461FEE1F31F75800071E3D /* MSRetailStoreStatistics+Convertable.swift */,
-				55C05C2B1E028F9B008F4254 /* MSSimpleDocument+Convertible.swift */,
 				55C05C2C1E028F9B008F4254 /* MSStock+Convertible.swift */,
 				55C05C2D1E028F9B008F4254 /* Project+Convertible.swift */,
 				55C05C2E1E028F9B008F4254 /* Store+Convertible.swift */,
@@ -428,6 +418,7 @@
 				6E02E7D91F470D93000EC1F8 /* MSTask+Convertable.swift */,
 				C9564DCF1F56B0730051E3BE /* MSExpenseItem+Convertible.swift */,
 				C94F63571F580CA600EAE437 /* MSDocumentStock+Convertible.swift */,
+				C94F635D1F58292100EAE437 /* MSOverhead+Convertible.swift */,
 			);
 			path = Mapping;
 			sourceTree = "<group>";
@@ -637,7 +628,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55C05C611E028F9B008F4254 /* MSSimpleDocument+Convertible.swift in Sources */,
 				95461FEF1F31F75800071E3D /* MSRetailStoreStatistics+Convertable.swift in Sources */,
 				55C05C471E028F9B008F4254 /* Group.swift in Sources */,
 				6E75A1DD1EA89C8E00A05A83 /* MSError.swift in Sources */,
@@ -674,6 +664,7 @@
 				954B482C1F31B69700DD1842 /* MSMoneyBalance+Convertable.swift in Sources */,
 				6E75A1E51EA8A3D200A05A83 /* DataManager+Create.swift in Sources */,
 				55C05C701E028F9B008F4254 /* ValueCoding.swift in Sources */,
+				C94F635E1F58292100EAE437 /* MSOverhead+Convertible.swift in Sources */,
 				6E75A1E41EA8A3D200A05A83 /* DataManager.swift in Sources */,
 				55C05C3F1E028F9B008F4254 /* Extensions.swift in Sources */,
 				55C05C541E028F9B008F4254 /* Types.swift in Sources */,
@@ -690,7 +681,6 @@
 				95E886E71F31C9C8009C21F2 /* MSRetailShift.swift in Sources */,
 				6EE617331EB9FA6B00BF3106 /* Agent+Serialize.swift in Sources */,
 				6ED959E21F31AEB20082AB7A /* MSBankSearchResult+Convertable.swift in Sources */,
-				55C05C531E028F9B008F4254 /* SimpleDocument.swift in Sources */,
 				C9564DD21F56B0DD0051E3BE /* MSExpenseItem.swift in Sources */,
 				6EF37A361F540E4E0020BD78 /* MSDocument+Serialize.swift in Sources */,
 				6E75A1D41EA89B9E00A05A83 /* Filter.swift in Sources */,
@@ -724,9 +714,7 @@
 				6E2266FA1E266F61003D2DC5 /* MSSaleByProduct+Convertible.swift in Sources */,
 				6E02E7DA1F470D93000EC1F8 /* MSTask+Convertable.swift in Sources */,
 				55C05C481E028F9B008F4254 /* MSInvoiceType.swift in Sources */,
-				55C05C581E028F9B008F4254 /* CustomerOrder+Convertible.swift in Sources */,
 				55C05C4E1E028F9B008F4254 /* MSStock.swift in Sources */,
-				55C05C591E028F9B008F4254 /* Demand+Convertible.swift in Sources */,
 				55C05C4C1E028F9B008F4254 /* MSImage.swift in Sources */,
 				55C05C421E028F9B008F4254 /* Assortment.swift in Sources */,
 				95461FED1F31F3F700071E3D /* MSRetailStoreStatisticsData.swift in Sources */,

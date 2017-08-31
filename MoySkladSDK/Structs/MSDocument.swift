@@ -43,14 +43,14 @@ MSPaymentInType, MSPaymentOutType {
     
     // MSCustomerOrderType
     public var deliveryPlannedMoment : Date?
-    public var purchaseOrders : [MSEntity<MSSimpleDocument>]
+    public var purchaseOrders : [MSEntity<MSDocument>]
     public var demands : [MSDemandType]
-    public var payments : [MSEntity<MSSimpleDocument>]
+    public var payments : [MSEntity<MSDocument>]
     public var invoicesOut : [MSInvoiceOutType]
     
     // MSDemandType
-    public var returns: [MSEntity<MSSimpleDocument>]
-    public var factureOut: MSEntity<MSSimpleDocument>?
+    public var returns: [MSEntity<MSDocument>]
+    public var factureOut: MSEntity<MSDocument>?
     public var overhead : MSOverhead?
     public var customerOrder : MSCustomerOrderType?
     public var consignee: MSEntity<MSAgent>?
@@ -65,7 +65,7 @@ MSPaymentInType, MSPaymentOutType {
     public var paymentPlannedMoment : Date?
     
     // MSInvoiceIn
-    public var purchaseOrder: MSEntity<MSSimpleDocument>?
+    public var purchaseOrder: MSEntity<MSDocument>?
     public var incomingNumber: String?
     public var incomingDate: Date?
     
@@ -155,12 +155,12 @@ MSPaymentInType, MSPaymentOutType {
                 positions : [MSEntity<MSPosition>],
                 stock : [MSEntity<MSDocumentStock>],
                 deliveryPlannedMoment : Date?,
-                purchaseOrders : [MSEntity<MSSimpleDocument>],
+                purchaseOrders : [MSEntity<MSDocument>],
                 demands : [MSDemandType],
-                payments : [MSEntity<MSSimpleDocument>],
+                payments : [MSEntity<MSDocument>],
                 invoicesOut : [MSInvoiceOutType],
-                returns: [MSEntity<MSSimpleDocument>],
-                factureOut: MSEntity<MSSimpleDocument>?,
+                returns: [MSEntity<MSDocument>],
+                factureOut: MSEntity<MSDocument>?,
                 overhead : MSOverhead?,
                 customerOrder : MSCustomerOrderType?,
                 consignee: MSEntity<MSAgent>?,
@@ -171,7 +171,7 @@ MSPaymentInType, MSPaymentOutType {
                 transportFacility: String?,
                 goodPackQuantity: Int?,
                 paymentPlannedMoment : Date?,
-                purchaseOrder: MSEntity<MSSimpleDocument>?,
+                purchaseOrder: MSEntity<MSDocument>?,
                 incomingNumber: String?,
                 incomingDate: Date?,
                 paymentPurpose: String?,

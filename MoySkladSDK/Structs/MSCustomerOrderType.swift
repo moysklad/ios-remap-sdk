@@ -14,8 +14,8 @@ import Foundation
 */
 public protocol MSCustomerOrderType : MSGeneralDocument {
     var deliveryPlannedMoment : Date? { get set }
-    var purchaseOrders : [MSEntity<MSSimpleDocument>] { get }
+    var purchaseOrders : [MSEntity<MSDocument>] { get }
     var demands : [MSDemandType] { get }
-    var payments : [MSEntity<MSSimpleDocument>] { get }
+    var payments : [MSEntity<MSDocument>] { get }
     var invoicesOut : [MSInvoiceOutType] { get }
 }

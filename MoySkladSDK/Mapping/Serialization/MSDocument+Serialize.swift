@@ -74,8 +74,6 @@ extension MSDocument {
                                         switch meta.type {
                                         case MSObjectType.demand:
                                             return MSObjectType.demandposition
-                                        case MSObjectType.invoicein:
-                                            fallthrough
                                         case MSObjectType.invoiceout:
                                             return MSObjectType.invoiceposition
                                         case MSObjectType.customerorder:

@@ -46,6 +46,7 @@ public enum MSObjectType : String {
     case purchaseorder
     case paymentin
     case paymentout
+    case operation
     case cashin
     case cashout
     case service

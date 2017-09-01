@@ -76,6 +76,7 @@ enum LocalizedStrings : String {
     case incorrectCashOutResponse
     case incorrectPaymentInResponse
     case incorrectPaymentOutResponse
+    case incorrectOperationResponse
     case accessDeniedRate
     case accessDenied
     

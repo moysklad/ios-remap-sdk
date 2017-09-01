@@ -19,6 +19,7 @@ public enum MSDocumentLoadRequest {
     case paymentOut
     case cashIn
     case cashOut
+    case operation
     
     var apiRequest: MSApiRequest {
         switch self {
@@ -29,6 +30,7 @@ public enum MSDocumentLoadRequest {
         case .cashOut: return .cashOut
         case .paymentIn: return .paymentIn
         case .paymentOut: return .paymentOut
+        case .operation: return .paymentIn // TODO: update after api create method
         }
     }
     
@@ -41,6 +43,7 @@ public enum MSDocumentLoadRequest {
         case .cashOut: return .cashOutMetadata
         case .paymentIn: return .paymentInMetadata
         case .paymentOut: return .paymentOutMetadata
+        case .operation: return .paymentInMetadata // TODO: update after api create method
         }
     }
     
@@ -53,6 +56,7 @@ public enum MSDocumentLoadRequest {
         case .cashOut: return MSError.genericError(errorText: LocalizedStrings.incorrectCashOutResponse.value)
         case .paymentIn: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInResponse.value)
         case .paymentOut: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutResponse.value)
+        case .operation: return MSError.genericError(errorText: LocalizedStrings.incorrectOperationResponse.value)
         }
     }
 }

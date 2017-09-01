@@ -107,10 +107,10 @@ extension MSTask: MSRequestEntity {
 
 extension MSGeneralDocument {    
     func templateBody() -> [String: Any]? {
-        switch self {
-        case let o as MSCustomerOrderType: return ["customerOrder": o.dictionary(metaOnly: true)]
-        case let o as MSDemandType: return ["demands": [o.dictionary(metaOnly: true)]]
-        case let o as MSInvoiceOutType: return ["invoicesOut": [o.dictionary(metaOnly: true)]]
+        switch self.meta.type {
+        case .customerorder: return ["customerOrder": dictionary(metaOnly: true)]
+        case .demand: return ["demands": [dictionary(metaOnly: true)]]
+        case .invoiceout: return ["invoicesOut": [dictionary(metaOnly: true)]]
         default: return nil
         }
     }

@@ -46,10 +46,10 @@ extension HttpRouter {
 	static func create(apiRequest: MSApiRequest, method: Alamofire.HTTPMethod = .get, contentType: HttpRequestContentType = .json,
 	                   urlPathComponents: [String] = [], httpBody: [String: Any]? = nil,
 	                   headers: [String: String] = [:], urlParameters: [UrlParameter] = []) -> HttpRouter {
-        var headers2 = headers
-        headers2["user-agent"] = "MoySklad_iOS_app_v"
-        headers2["X-Lognex-Content-Timezone"] = Date().toRfc5322()
-		return HttpRouter(apiRequest: apiRequest, method: method, contentType: contentType, urlPathComponents: urlPathComponents, httpBody: httpBody, headers: headers2, urlParameters: urlParameters)
+        var newHeaders = headers
+        newHeaders["user-agent"] = "MoySklad_iOS_app_v"
+        newHeaders["X-Lognex-Accept-Timezone"] = Date().toRfc5322()
+		return HttpRouter(apiRequest: apiRequest, method: method, contentType: contentType, urlPathComponents: urlPathComponents, httpBody: httpBody, headers: newHeaders, urlParameters: urlParameters)
 	}
 }
 

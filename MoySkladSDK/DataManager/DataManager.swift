@@ -1114,8 +1114,9 @@ public struct DataManager {
                                  offset: MSOffset? = nil,
                                  expanders: [Expander] = [],
                                  filter: Filter? = nil,
-                                 search: Search? = nil) -> Observable<[MSEntity<MSTask>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter)
+                                 search: Search? = nil,
+                                 orderBy: Order? = nil) -> Observable<[MSEntity<MSTask>]> {
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter, orderBy)
         
         return HttpClient.get(.task, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSTask>]> in

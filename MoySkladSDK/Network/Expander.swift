@@ -47,6 +47,7 @@ public enum ExpandPath : String {
     case uom
     case assignee
     case author
+    case operations
 }
 
 public protocol Expandable {

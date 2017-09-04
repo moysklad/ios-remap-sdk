@@ -57,20 +57,20 @@ public struct DataManager {
         return groups
     }
     
-    static func groupByDate2<T: MSGeneralDocument>(data: [MSEntity<T>],
-                             withPrevious previousData: [(date: Date, data: [MSEntity<T>])]? = nil) -> [(date: Date, data: [MSEntity<T>])] {
+    static func groupByDate2(data: [MSDocument],
+                             withPrevious previousData: [(date: Date, data: [MSDocument])]? = nil) -> [(date: Date, data: [MSDocument])] {
         // объекты группируются по дню (moment)
-        var groups: [Date: [MSEntity<T>]] = [:]
+        var groups: [Date: [MSDocument]] = [:]
         
         // скорее всего это не самый оптимальный способ группировки
-        data.flatMap { $0.value() }.forEach { object in
+        data.forEach { object in
             let moment = object.moment.beginningOfDay()
             var group = groups[moment]
             if group != nil {
-                group!.append(MSEntity.entity(object))
+                group!.append(object)
                 groups[moment] = group
             } else {
-                groups[moment] = [MSEntity.entity(object)]
+                groups[moment] = [object]
             }
         }
         
@@ -1045,92 +1045,7 @@ public struct DataManager {
         }
     }
     
-    /**
-     Load print templates for document type.
-     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#шаблон-печатной-формы)
-     - parameter forDocType: Document type for which templates should be loaded
-     - parameter auth: Authentication information
-     - parameter type: Type of Template that should be loaded
-    */
-    public static func templates<T: MSGeneralDocument>(forDocType: T.Type, auth: Auth, type: MSTemplateType) -> Observable<[MSEntity<MSTemplate>]> {
-        return HttpClient.get(loadUrlTemplate(type: forDocType), auth: auth, urlPathComponents: [type.rawValue])
-            .flatMapLatest { result -> Observable<[MSEntity<MSTemplate>]> in
-                guard let result = result else {
-                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectTemplateResponse.value))
-                }
-
-                let deserialized = result.msArray("rows").map { MSTemplate.from(dict: $0) }
-                let withoutNills = deserialized.removeNils()
-
-                guard withoutNills.count == deserialized.count else {
-                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectTemplateResponse.value))
-                }
-                return Observable.just(withoutNills)
-        }
-    }
-    
-    /**
-     Load link to created PDF for document from template.
-     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#печать-документов)
-     - parameter auth: Authentication information
-     - parameter docType: Document type for which PDF should be loaded
-     - parameter id: Id of document
-     - parameter meta: Document template metadata
-     - returns: Observable sequence with http link to PDF document
-    */
-    public static func documentFromTemplate<T: MSGeneralDocument>(auth: Auth, docType: T.Type, id: String, meta: MSMeta) -> Observable<String> {
-        let urlPathComponents: [String] = [id, "export"]
-        var body = meta.dictionaryForTemplate()
-        body["extension"] = "pdf"
-        return HttpClient.updateWithHeadersResult(loadUrl(type: docType), auth: auth, urlPathComponents: urlPathComponents, body: body).flatMapLatest { result -> Observable<String> in
-            
-            guard let result = result else {
-                return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecDocumentFromTemplateResponse.value))
-            }
-            guard let res = result["Location"] else {
-                return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecDocumentFromTemplateResponse.value))
-            }
-            return Observable.just(res)
-        }
-    }
-    
-    /**
-     Load link to created publication for document from template.
-     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#публикация-документов)
-     - parameter auth: Authentication information
-     - parameter docType: Document type for which publication should be loaded
-     - parameter id: Id of document
-     - parameter meta: Document template metadata
-     - returns: Observable sequence with http link to publication
-     */
-    public static func publicationFromTemplate<T: MSGeneralDocument>(auth: Auth, docType: T.Type, id: String, meta: MSMeta) -> Observable<String> {
-        let urlPathComponents: [String] = [id, "publication"]
-        let body = meta.dictionaryForTemplate()
-        return HttpClient.create(loadUrl(type: docType), auth: auth, urlPathComponents: urlPathComponents, body: body, contentType: .json).flatMapLatest { result -> Observable<String> in
-            guard let result = result else {
-                return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecPublicationFromTemplateResponse.value))
-            }
-            guard let res = result["href"] as? String else {
-                return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecPublicationFromTemplateResponse.value))
-            }
-            return Observable.just(res)
-        }
-    }
-    
-    /**
-     Load file disk
-     - parameter url: URL of file that should be loaded
-     - returns: Observable sequence with URL to downloaded file
-    */
-    public static func downloadDocument(url: URL) -> Observable<URL> {
-        return HttpClient.resultCreateFromData(url).flatMapLatest{ result -> Observable<URL> in
-            guard let result = result else {
-                return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecDownloadDocumentResponse.value))
-            }
-            return Observable.just(result)
-        }
-    }
-    
+        
     /**
      Load counterparty contacts.
      Also see [ API refere`nce](https://online.moysklad.ru/api/remap/1.1/doc#контрагент-контактное-лицо-get)

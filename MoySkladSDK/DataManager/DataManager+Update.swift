@@ -49,7 +49,7 @@ extension DataManager {
      - parameter auth: Authentication information
      - parameter expanders: Additional objects to include into response
     */
-    public static func update<T>(document: T, auth: Auth, expanders: [Expander] = []) -> Observable<T.Element> where T: MSGeneralDocument, T: DictConvertable {
+    public static func update(document: MSDocument, auth: Auth, expanders: [Expander] = []) -> Observable<MSDocument> {
         return update(entity: document, auth: auth, expanders: expanders)
     }
 }

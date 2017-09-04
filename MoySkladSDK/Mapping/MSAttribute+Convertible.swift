@@ -132,6 +132,8 @@ extension MSAttribute : DictConvertable {
                 (type.lowercased() == "store") ||
                 (type.lowercased() == "product") ||
                 (type.lowercased() == "counterparty") ||
+                (type.lowercased() == "service") ||
+                (type.lowercased() == "bundle") ||
                     (type.lowercased() == "organization") {
             
             guard let value: [String: Any] = dict.value("value") else {

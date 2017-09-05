@@ -24,6 +24,8 @@ extension MSExpenseItem: DictConvertable {
     public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSExpenseItem>? {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else { return nil }
         
-        return MSEntity.entity(MSExpenseItem(meta: meta))
+        return MSEntity.entity(MSExpenseItem(id: MSID(dict: dict),
+                                             meta: meta,
+                                             info: MSInfo(dict: dict)))
     }
 }

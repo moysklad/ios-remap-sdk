@@ -13,6 +13,10 @@ func newDocumentUrl(type: MSObjectType) -> MSApiRequest? {
     case MSObjectType.customerorder: return MSApiRequest.customerOrderNew
     case MSObjectType.demand: return MSApiRequest.demandNew
     case MSObjectType.invoiceout: return MSApiRequest.invoiceOutNew
+    case MSObjectType.paymentin: return MSApiRequest.paymentInNew
+    case MSObjectType.paymentout: return MSApiRequest.paymentOutNew
+    case MSObjectType.cashin: return MSApiRequest.cashInNew
+    case MSObjectType.cashout: return MSApiRequest.cashOutNew
     default: return nil
     }
 }
@@ -115,17 +119,6 @@ extension MSGeneralDocument {
         }
     }
 }
-
-//extension MSMoneyDocument {
-//    func templateBody() -> [String: Any]? {
-//        switch self {
-//        case let o as MSCustomerOrder: return ["customerOrder": o.dictionary(metaOnly: true)]
-//        case let o as MSDemand: return ["demands": [o.dictionary(metaOnly: true)]]
-//        case let o as MSInvoice: return ["invoicesOut": [o.dictionary(metaOnly: true)]]
-//        default: return nil
-//        }
-//    }
-//}
 
 extension UserDefaults {
     var moySkladHost: String {

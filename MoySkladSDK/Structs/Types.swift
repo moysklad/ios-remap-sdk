@@ -64,4 +64,5 @@ public enum MSObjectType : String {
     case moneyplotseries
     case retailstoreshift
     case task
+    case expenseitem
 }

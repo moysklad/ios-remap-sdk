@@ -66,6 +66,7 @@ extension MSDocument : DictConvertable {
                    incomingNumber: dict.value("incomingNumber"),
                    incomingDate: Date.fromMSDate(dict.value("incomingDate") ?? ""),
                    paymentPurpose: dict.value("paymentPurpose"),
+                   factureIn: MSDocument.from(dict: dict.msValue("factureIn")),
                    expenseItem: MSExpenseItem.from(dict: dict.value("expenseItem") ?? ["": ""])))
     }
 }

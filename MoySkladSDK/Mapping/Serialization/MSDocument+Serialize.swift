@@ -116,6 +116,9 @@ extension MSDocument {
         if let factureOut = factureOut {
             dict["factureOut"] = serialize(entity: factureOut, metaOnly: true)
         }
+        if let factureIn = factureIn {
+            dict["factureIn"] = serialize(entity: factureIn, metaOnly: true)
+        }
         if let overhead = overhead {
             dict["overhead"] = overhead.dictionary()
         }

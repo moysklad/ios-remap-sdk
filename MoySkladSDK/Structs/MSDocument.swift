@@ -71,6 +71,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     
     // MSMoneyDocumentType
     public var paymentPurpose: String?
+    public var factureIn: MSEntity<MSDocument>?
     
     // MSCashOutType
     public var expenseItem: MSEntity<MSExpenseItem>?
@@ -125,6 +126,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                           incomingNumber: incomingNumber,
                           incomingDate: incomingDate,
                           paymentPurpose: paymentPurpose,
+                          factureIn: factureIn,
                           expenseItem: expenseItem)
     }
     
@@ -175,6 +177,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                 incomingNumber: String?,
                 incomingDate: Date?,
                 paymentPurpose: String?,
+                factureIn: MSEntity<MSDocument>?,
                 expenseItem: MSEntity<MSExpenseItem>?) {
         self.id = id
         self.meta = meta
@@ -223,6 +226,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
         self.incomingNumber = incomingNumber
         self.incomingDate = incomingDate
         self.paymentPurpose = paymentPurpose
+        self.factureIn = factureIn
         self.expenseItem = expenseItem
     }
 }

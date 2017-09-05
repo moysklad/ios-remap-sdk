@@ -10,6 +10,7 @@ import Foundation
 
 public protocol MSMoneyDocumentType : MSBaseDocumentType {
     var paymentPurpose: String? { get set }
+    var factureIn: MSEntity<MSDocument>? { get set }
 }
 
 /**

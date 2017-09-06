@@ -35,9 +35,13 @@ public protocol MSBaseDocumentType : class, Metable, MSRequestEntity {
 public extension MSBaseDocumentType {
     public func requestUrl() -> MSApiRequest? {
         switch meta.type {
-        case MSObjectType.customerorder: return .customerorder
-        case MSObjectType.demand: return .demand
-        case MSObjectType.invoiceout: return .invoiceOut
+        case .customerorder: return .customerorder
+        case .demand: return .demand
+        case .invoiceout: return .invoiceOut
+        case .cashin: return .cashIn
+        case .cashout: return .cashOut
+        case .paymentin: return .paymentIn
+        case .paymentout: return .paymentOut
         default: return nil
         }
     }

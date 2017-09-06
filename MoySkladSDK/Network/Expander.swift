@@ -41,6 +41,7 @@ public enum ExpandPath : String {
     case product
     case assortment
     case factureout = "factureOut"
+    case facturein = "factureIn"
     case components
     case notes
     case contactpersons
@@ -48,6 +49,7 @@ public enum ExpandPath : String {
     case assignee
     case author
     case operations
+    case expenseitem = "expenseItem"
 }
 
 public protocol Expandable {

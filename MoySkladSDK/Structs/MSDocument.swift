@@ -71,6 +71,9 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     
     // MSMoneyDocumentType
     public var paymentPurpose: String?
+    public var factureIn: MSEntity<MSDocument>?
+    public var operations: [MSEntity<MSDocument>]?
+    public var linkedSum: Money
     
     // MSCashOutType
     public var expenseItem: MSEntity<MSExpenseItem>?
@@ -125,7 +128,10 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                           incomingNumber: incomingNumber,
                           incomingDate: incomingDate,
                           paymentPurpose: paymentPurpose,
-                          expenseItem: expenseItem)
+                          factureIn: factureIn,
+                          expenseItem: expenseItem,
+                          operations: operations,
+                          linkedSum: linkedSum)
     }
     
     public init(id : MSID,
@@ -175,7 +181,10 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                 incomingNumber: String?,
                 incomingDate: Date?,
                 paymentPurpose: String?,
-                expenseItem: MSEntity<MSExpenseItem>?) {
+                factureIn: MSEntity<MSDocument>?,
+                expenseItem: MSEntity<MSExpenseItem>?,
+                operations: [MSEntity<MSDocument>]?,
+                linkedSum: Money) {
         self.id = id
         self.meta = meta
         self.info = info
@@ -223,6 +232,9 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
         self.incomingNumber = incomingNumber
         self.incomingDate = incomingDate
         self.paymentPurpose = paymentPurpose
+        self.factureIn = factureIn
         self.expenseItem = expenseItem
+        self.operations = operations
+        self.linkedSum = linkedSum
     }
 }

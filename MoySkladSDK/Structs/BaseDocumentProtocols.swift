@@ -27,6 +27,7 @@ public protocol MSBaseDocumentType : class, Metable, MSRequestEntity {
     var state : MSEntity<MSState>? { get set }
     var attributes : [MSEntity<MSAttribute>]? { get set }
     var originalApplicable: Bool { get }
+    var stateContractId: String? { get set }
     
     func copyDocument() -> MSDocument
     func dictionary(metaOnly: Bool) -> [String: Any]

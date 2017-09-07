@@ -45,6 +45,7 @@ extension MSDocument {
         dict.merge(info.dictionary())
         dict.merge(id.dictionary())
         
+        dict["sum"] = sum.minorUnits
         dict["agent"] = serialize(entity: agent, metaOnly: true)
         dict["contract"] = serialize(entity: contract, metaOnly: true)
         dict["vatSum"] = vatSum.minorUnits

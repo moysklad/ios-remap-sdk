@@ -30,7 +30,7 @@ public enum MSDocumentLoadRequest {
         case .cashOut: return .cashOut
         case .paymentIn: return .paymentIn
         case .paymentOut: return .paymentOut
-        case .operation: return .paymentOut // TODO: update after api create method
+        case .operation: return .operation
         }
     }
     
@@ -43,7 +43,7 @@ public enum MSDocumentLoadRequest {
         case .cashOut: return .cashOutMetadata
         case .paymentIn: return .paymentInMetadata
         case .paymentOut: return .paymentOutMetadata
-        case .operation: return .paymentOutMetadata // TODO: update after api create method
+        case .operation: return .operation
         }
     }
     

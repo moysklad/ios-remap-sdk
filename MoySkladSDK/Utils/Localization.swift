@@ -26,6 +26,10 @@ enum LocalizedStrings : String {
     case incorrectCustomerOrderMetadataResponse
     case incorrectInvoiceOutMetadataResponse
     case incorrectDemandsMetadataResponse
+    case incorrectCashInMetadataResponse
+    case incorrectCashOutMetadataResponse
+    case incorrectPaymentInMetadataResponse
+    case incorrectPaymentOutMetadataResponse
     case incorrectProductFolderResponse
     case incorrectStoreResponse
     case incorrectCustomerOrderPositionsResponse

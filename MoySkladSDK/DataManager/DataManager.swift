@@ -22,6 +22,14 @@ public struct LogInInfo {
     public let counterpartyTags: [String]
 }
 
+
+struct MetadataLoadResult {
+    let type: MSObjectType
+    let states: [MSState]
+    let attributes: [MSAttributeDefinition]
+    let tags: [String]
+}
+
 public struct DataManager {
     /// Максимальное количество позиций для документа, при большем (при превышении возвращается ошибка)
     static let documentPositionsCountLimit = 100
@@ -230,26 +238,51 @@ public struct DataManager {
         // комбинируем все ответы от запросов и возвращаем LogInInfo
         return Observable.combineLatest(employeeRequest,
                                         settingsRequest,
-                                        customerOrderMetadata(auth: auth),
-                                        invoiceOutMetadata(auth: auth),
-                                        demandMetadata(auth: auth),
                                         currenciesRequest,
-                                        counterpartyMetadata(auth: auth),
+                                        loadAllMetadata(auth: auth),
                                         resultSelector: { result in
+                                            let states = result.3.toDictionary(key: { $0.type }, element: { $0.states })
+                                            let attributes = result.3.toDictionary(key: { $0.type }, element: { $0.attributes })
+                                            let counerpartyTags = result.3.first(where: { $0.type == .counterparty })?.tags ?? []
+                                            
                                             return LogInInfo(employee: result.0,
                                                              companySettings: result.1,
-                                                             states: [MSObjectType.customerorder: result.2.states,
-                                                                           MSObjectType.invoiceout: result.3.states,
-                                                                           MSObjectType.demand: result.4.states,
-                                                                           MSObjectType.counterparty: result.6.states],
-                                                             documentAttributes:[MSObjectType.customerorder: result.2.attributes,
-                                                                              MSObjectType.invoiceout: result.3.attributes,
-                                                                              MSObjectType.demand: result.4.attributes,
-                                                                              MSObjectType.counterparty: result.6.attributes],
-                                                             currencies: result.5.toDictionary { $0.meta.href.withoutParameters() },
-                                                             counterpartyTags: result.6.tags)
-                                            
+                                                             states: states,
+                                                             documentAttributes: attributes,
+                                                             currencies: result.2.toDictionary { $0.meta.href.withoutParameters() },
+                                                             counterpartyTags: counerpartyTags)
         })
+    }
+    
+    private static func loadAllMetadata(auth: Auth) -> Observable<[MetadataLoadResult]> {
+        let requests: [Observable<MetadataLoadResult>] = [
+            customerOrderMetadata(auth: auth).map { item -> MetadataLoadResult in
+                return MetadataLoadResult(type: MSObjectType.customerorder, states: item.states, attributes: item.attributes, tags: [])
+            },
+            demandMetadata(auth: auth).map { item -> MetadataLoadResult in
+                return MetadataLoadResult(type: MSObjectType.demand, states: item.states, attributes: item.attributes, tags: [])
+            },
+            invoiceOutMetadata(auth: auth).map { item -> MetadataLoadResult in
+                return MetadataLoadResult(type: MSObjectType.invoiceout, states: item.states, attributes: item.attributes, tags: [])
+            },
+            cashInMetadata(auth: auth).map { item -> MetadataLoadResult in
+                return MetadataLoadResult(type: MSObjectType.cashin, states: item.states, attributes: item.attributes, tags: [])
+            },
+            cashOutMetadata(auth: auth).map { item -> MetadataLoadResult in
+                return MetadataLoadResult(type: MSObjectType.cashout, states: item.states, attributes: item.attributes, tags: [])
+            },
+            paymentInMetadata(auth: auth).map { item -> MetadataLoadResult in
+                return MetadataLoadResult(type: MSObjectType.paymentin, states: item.states, attributes: item.attributes, tags: [])
+            },
+            paymentOutMetadata(auth: auth).map { item -> MetadataLoadResult in
+                return MetadataLoadResult(type: MSObjectType.paymentout, states: item.states, attributes: item.attributes, tags: [])
+            },
+            counterpartyMetadata(auth: auth).map { item -> MetadataLoadResult in
+                return MetadataLoadResult(type: MSObjectType.counterparty, states: item.states, attributes: item.attributes, tags: item.tags)
+            }
+        ]
+        
+        return Observable.zip(requests)
     }
     
     /**
@@ -284,6 +317,51 @@ public struct DataManager {
                               error: MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceOutMetadataResponse.value),
                               auth: auth)
     }
+    
+    /**
+     Load CashIn metadata
+     - parameter auth: Authentication information
+     - returns: Metadata for object
+     */
+    public static func cashInMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
+        return doucmentMetadata(request: .cashInMetadata,
+                                error: MSError.genericError(errorText: LocalizedStrings.incorrectCashInMetadataResponse.value),
+                                auth: auth)
+    }
+    
+    /**
+     Load CashOut metadata
+     - parameter auth: Authentication information
+     - returns: Metadata for object
+     */
+    public static func cashOutMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
+        return doucmentMetadata(request: .cashOutMetadata,
+                                error: MSError.genericError(errorText: LocalizedStrings.incorrectCashOutMetadataResponse.value),
+                                auth: auth)
+    }
+    
+    /**
+     Load PaymentIn metadata
+     - parameter auth: Authentication information
+     - returns: Metadata for object
+     */
+    public static func paymentInMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
+        return doucmentMetadata(request: .paymentInMetadata,
+                                error: MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInMetadataResponse.value),
+                                auth: auth)
+    }
+    
+    /**
+     Load PaymentOut metadata
+     - parameter auth: Authentication information
+     - returns: Metadata for object
+     */
+    public static func paymentOutMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
+        return doucmentMetadata(request: .paymentOutMetadata,
+                                error: MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutMetadataResponse.value),
+                                auth: auth)
+    }
+    
     
     /**
      Load Counterparty metadata

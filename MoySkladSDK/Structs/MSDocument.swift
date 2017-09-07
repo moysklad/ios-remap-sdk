@@ -30,6 +30,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     public var state : MSEntity<MSState>?
     public var attributes : [MSEntity<MSAttribute>]?
     public var originalApplicable: Bool
+    public var stateContractId: String?
     
     // MSGeneralDocument
     public var agentAccount : MSEntity<MSAccount>?
@@ -131,7 +132,8 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                           factureIn: factureIn,
                           expenseItem: expenseItem,
                           operations: operations,
-                          linkedSum: linkedSum)
+                          linkedSum: linkedSum,
+                          stateContractId: stateContractId)
     }
     
     public init(id : MSID,
@@ -184,7 +186,8 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                 factureIn: MSEntity<MSDocument>?,
                 expenseItem: MSEntity<MSExpenseItem>?,
                 operations: [MSEntity<MSDocument>]?,
-                linkedSum: Money) {
+                linkedSum: Money,
+                stateContractId: String?) {
         self.id = id
         self.meta = meta
         self.info = info
@@ -236,5 +239,6 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
         self.expenseItem = expenseItem
         self.operations = operations
         self.linkedSum = linkedSum
+        self.stateContractId = stateContractId
     }
 }

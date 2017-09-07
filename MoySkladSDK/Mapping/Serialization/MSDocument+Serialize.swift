@@ -137,6 +137,7 @@ extension MSDocument {
         dict["incomingNumber"] = incomingNumber ?? ""
         dict["incomingDate"] = incomingDate?.toLongDate() ?? NSNull()
         dict["paymentPurpose"] = paymentPurpose ?? ""
+        dict["stateContractId"] = stateContractId ?? ""
         dict["expenseItem"] = serialize(entity: expenseItem, metaOnly: true)
         
         return dict

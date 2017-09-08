@@ -51,6 +51,12 @@ extension Array {
         forEach { dict[key($0)] = $0 }
         return dict
     }
+    
+    func toDictionary<TKey, TElement>(key: (Element) -> TKey, element: (Element) -> TElement) -> [TKey: TElement] {
+        var dict = [TKey: TElement]()
+        forEach { dict[key($0)] = element($0) }
+        return dict
+    }
 }
 
 extension Dictionary {

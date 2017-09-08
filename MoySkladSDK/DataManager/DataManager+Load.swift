@@ -180,14 +180,11 @@ extension DataManager {
                                                     auth: Auth,
                                                     offset: MSOffset? = nil,
                                                     expanders: [Expander] = [],
-                                                    filter: Filter? = nil,
-                                                    search: Search? = nil,
-                                                    organizationId: OrganizationIdParameter? = nil,
-                                                    stateId: StateIdParameter? = nil,
+                                                    filters: DocumentsFilter? = nil,
                                                     withPrevious: [GroupedMoment<MSDocument>]? = nil)
         -> Observable<[GroupedMoment<MSDocument>]> {
             
-            return DataManager.loadDocuments(forRequest: request, auth: auth, offset: offset, expanders: expanders, filter: filter, search: search,organizationId: organizationId, stateId: stateId, orderBy: Order(OrderArgument(field: .moment)))
+            return DataManager.loadDocuments(forRequest: request, auth: auth, offset: offset, expanders: expanders, filters: filters, orderBy: Order(OrderArgument(field: .moment)))
                 .flatMapLatest { result -> Observable<[GroupedMoment<MSDocument>]> in
                     
                     let grouped = DataManager.groupByDate2(data: result,
@@ -211,13 +208,10 @@ extension DataManager {
                                      auth: Auth,
                                      offset: MSOffset? = nil,
                                      expanders: [Expander] = [],
-                                     filter: Filter? = nil,
-                                     search: Search? = nil,
-                                     organizationId: OrganizationIdParameter? = nil,
-                                     stateId: StateIdParameter? = nil,
+                                     filters: DocumentsFilter? = nil,
                                      orderBy: Order? = nil) -> Observable<[MSDocument]>  {
         
-        let urlParameters: [UrlParameter] = mergeUrlParameters(search, stateId, organizationId, offset, filter, orderBy, CompositeExpander(expanders))
+        let urlParameters: [UrlParameter] = mergeUrlParameters(filters?.search, filters?.stateId, filters?.organizationId, filters?.filter, offset, orderBy, CompositeExpander(expanders))
         
         return HttpClient.get(request.apiRequest, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSDocument]> in

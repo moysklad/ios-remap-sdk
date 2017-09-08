@@ -26,6 +26,7 @@ extension MSDocument : DictConvertable {
                    contract: MSContract.from(dict: dict.msValue("contract")),
                    sum: Money(minorUnits: dict.value("sum") ?? 0),
                    vatSum: Money(minorUnits: dict.value("vatSum") ?? 0),
+                   payedSum: Money(minorUnits: dict.value("payedSum") ?? 0),
                    rate: MSRate.from(dict: dict.msValue("rate")),
                    moment: moment,
                    project: MSProject.from(dict: dict.msValue("project")),

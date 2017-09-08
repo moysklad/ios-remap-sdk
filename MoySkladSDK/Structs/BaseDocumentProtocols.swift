@@ -16,6 +16,7 @@ public protocol MSBaseDocumentType : class, Metable, MSRequestEntity {
     var contract : MSEntity<MSContract>? { get set }
     var sum : Money { get set }
     var vatSum : Money { get set }
+    var payedSum: Money { get set}
     var rate : MSRate? { get set }
     var moment : Date { get set }
     var project : MSEntity<MSProject>? { get set }

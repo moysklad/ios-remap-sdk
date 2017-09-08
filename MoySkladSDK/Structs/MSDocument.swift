@@ -19,6 +19,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     public var contract : MSEntity<MSContract>?
     public var sum : Money
     public var vatSum : Money
+    public var payedSum: Money
     public var rate : MSRate?
     public var moment : Date
     public var project : MSEntity<MSProject>?
@@ -89,6 +90,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                           contract: contract,
                           sum: sum,
                           vatSum: vatSum,
+                          payedSum: payedSum,
                           rate: rate,
                           moment: moment,
                           project: project,
@@ -143,6 +145,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                 contract : MSEntity<MSContract>?,
                 sum : Money,
                 vatSum : Money,
+                payedSum: Money,
                 rate : MSRate?,
                 moment : Date,
                 project : MSEntity<MSProject>?,
@@ -195,6 +198,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
         self.contract = contract
         self.sum = sum
         self.vatSum = vatSum
+        self.payedSum = payedSum
         self.rate = rate
         self.moment = moment
         self.project = project

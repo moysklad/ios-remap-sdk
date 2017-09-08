@@ -30,6 +30,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     public var state : MSEntity<MSState>?
     public var attributes : [MSEntity<MSAttribute>]?
     public var originalApplicable: Bool
+    public var stateContractId: String?
     
     // MSGeneralDocument
     public var agentAccount : MSEntity<MSAccount>?
@@ -71,6 +72,9 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     
     // MSMoneyDocumentType
     public var paymentPurpose: String?
+    public var factureIn: MSEntity<MSDocument>?
+    public var operations: [MSEntity<MSDocument>]?
+    public var linkedSum: Money
     
     // MSCashOutType
     public var expenseItem: MSEntity<MSExpenseItem>?
@@ -125,7 +129,11 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                           incomingNumber: incomingNumber,
                           incomingDate: incomingDate,
                           paymentPurpose: paymentPurpose,
-                          expenseItem: expenseItem)
+                          factureIn: factureIn,
+                          expenseItem: expenseItem,
+                          operations: operations,
+                          linkedSum: linkedSum,
+                          stateContractId: stateContractId)
     }
     
     public init(id : MSID,
@@ -175,7 +183,11 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                 incomingNumber: String?,
                 incomingDate: Date?,
                 paymentPurpose: String?,
-                expenseItem: MSEntity<MSExpenseItem>?) {
+                factureIn: MSEntity<MSDocument>?,
+                expenseItem: MSEntity<MSExpenseItem>?,
+                operations: [MSEntity<MSDocument>]?,
+                linkedSum: Money,
+                stateContractId: String?) {
         self.id = id
         self.meta = meta
         self.info = info
@@ -223,6 +235,10 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
         self.incomingNumber = incomingNumber
         self.incomingDate = incomingDate
         self.paymentPurpose = paymentPurpose
+        self.factureIn = factureIn
         self.expenseItem = expenseItem
+        self.operations = operations
+        self.linkedSum = linkedSum
+        self.stateContractId = stateContractId
     }
 }

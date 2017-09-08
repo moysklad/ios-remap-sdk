@@ -204,14 +204,38 @@ extension MSAssortment {
         return image
     }
     
-    public func getBuyAndSalePrices() -> [MSPrice] {
+    public func getSalesPrices() -> [MSPrice] {
         if meta.type == .variant {
-            var prices = [buyPrice ?? assortmentInfo.product?.value()?.buyPrice].removeNils()
-            prices.append(contentsOf: salePrices.count > 0 ? salePrices : assortmentInfo.product?.value()?.salePrices ?? [])
+            var prices: [MSPrice] = []
+            
+            if salePrices.isEmpty {
+                prices.append(contentsOf: assortmentInfo.product?.value()?.salePrices ?? [])
+            } else if let productSalePrices = assortmentInfo.product?.value()?.salePrices {
+                for (index, priceArray) in salePrices.enumerated() {
+                    if priceArray.value.floatValue > 0 {
+                        prices.append(priceArray)
+                    } else if index < productSalePrices.count {
+                        prices.append(productSalePrices[index])
+                    }
+                }
+            }
+            
             return prices
         }
-        var prices = [buyPrice].removeNils()
-        prices.append(contentsOf: salePrices)
+        
+        return salePrices
+    }
+    
+    public func getBuyAndSalePrices() -> [MSPrice] {
+        var prices: [MSPrice] = []
+        
+        if meta.type == .variant, let price = (buyPrice ?? assortmentInfo.product?.value()?.buyPrice) {
+            prices.append(price)
+        } else if let price = buyPrice {
+            prices.append(price)
+        }
+
+        prices.append(contentsOf: getSalesPrices())
         return prices
     }
 }

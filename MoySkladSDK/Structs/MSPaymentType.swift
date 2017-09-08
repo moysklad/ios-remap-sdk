@@ -15,6 +15,7 @@ import Foundation
 public protocol MSPaymentInType: MSMoneyDocumentType {
     var incomingDate: Date? { get set }
     var incomingNumber: String? { get set }
+    var factureOut: MSEntity<MSDocument>? { get set }
 }
 
 /**
@@ -23,4 +24,5 @@ public protocol MSPaymentInType: MSMoneyDocumentType {
  */
 public protocol MSPaymentOutType: MSMoneyDocumentType {
     var expenseItem: MSEntity<MSExpenseItem>? { get set }
+    var factureIn: MSEntity<MSDocument>? { get set }
 }

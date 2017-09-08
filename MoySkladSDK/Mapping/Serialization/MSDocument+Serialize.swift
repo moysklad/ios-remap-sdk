@@ -116,6 +116,9 @@ extension MSDocument {
         if let factureOut = factureOut {
             dict["factureOut"] = serialize(entity: factureOut, metaOnly: true)
         }
+        if let factureIn = factureIn {
+            dict["factureIn"] = serialize(entity: factureIn, metaOnly: true)
+        }
         if let overhead = overhead {
             dict["overhead"] = overhead.dictionary()
         }
@@ -134,6 +137,7 @@ extension MSDocument {
         dict["incomingNumber"] = incomingNumber ?? ""
         dict["incomingDate"] = incomingDate?.toLongDate() ?? NSNull()
         dict["paymentPurpose"] = paymentPurpose ?? ""
+        dict["stateContractId"] = stateContractId ?? ""
         dict["expenseItem"] = serialize(entity: expenseItem, metaOnly: true)
         
         return dict

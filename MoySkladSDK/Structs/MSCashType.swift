@@ -10,6 +10,8 @@ import Foundation
 
 public protocol MSMoneyDocumentType : MSBaseDocumentType {
     var paymentPurpose: String? { get set }
+    var operations: [MSEntity<MSDocument>]? { get set }
+    var linkedSum: Money { get set }
 }
 
 /**
@@ -19,6 +21,7 @@ public protocol MSMoneyDocumentType : MSBaseDocumentType {
 public protocol MSCashInType: MSMoneyDocumentType {
     var incomingDate: Date? { get set }
     var incomingNumber: String? { get set }
+    var factureOut: MSEntity<MSDocument>? { get set }
 }
 
 /**
@@ -27,4 +30,5 @@ public protocol MSCashInType: MSMoneyDocumentType {
  */
 public protocol MSCashOutType: MSMoneyDocumentType {
     var expenseItem: MSEntity<MSExpenseItem>? { get set }
+    var factureIn: MSEntity<MSDocument>? { get set }
 }

@@ -9,9 +9,13 @@
 import Foundation
 
 public class MSExpenseItem: Metable {
+    public var id: MSID
     public var meta: MSMeta
+    public var info: MSInfo
     
-    public init(meta: MSMeta) {
+    public init(id: MSID, meta: MSMeta, info: MSInfo) {
+        self.id = id
         self.meta = meta
+        self.info = info
     }
 }

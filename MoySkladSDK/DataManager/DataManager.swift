@@ -282,7 +282,7 @@ public struct DataManager {
             }
         ]
         
-        return Observable.zip(requests)
+        return Observable.zip(requests) { $0 }
     }
     
     /**

@@ -36,18 +36,26 @@ public protocol MSBaseDocumentType : class, Metable, MSRequestEntity {
 public extension MSBaseDocumentType {
     public func requestUrl() -> MSApiRequest? {
         switch meta.type {
-        case MSObjectType.customerorder: return .customerorder
-        case MSObjectType.demand: return .demand
-        case MSObjectType.invoiceout: return .invoiceOut
+        case .customerorder: return .customerorder
+        case .demand: return .demand
+        case .invoiceout: return .invoiceOut
+        case .cashin: return .cashIn
+        case .cashout: return .cashOut
+        case .paymentin: return .paymentIn
+        case .paymentout: return .paymentOut
         default: return nil
         }
     }
     
     public func deserializationError() -> MSError {
         switch meta.type {
-        case MSObjectType.customerorder: return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
-        case MSObjectType.demand: return MSError.genericError(errorText: LocalizedStrings.incorrectDemandsResponse.value)
-        case MSObjectType.invoiceout: return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
+        case .customerorder: return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
+        case .demand: return MSError.genericError(errorText: LocalizedStrings.incorrectDemandsResponse.value)
+        case .invoiceout: return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
+        case .cashin: return MSError.genericError(errorText: LocalizedStrings.incorrectCashInResponse.value)
+        case .cashout: return MSError.genericError(errorText: LocalizedStrings.incorrectCashOutResponse.value)
+        case .paymentin: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInResponse.value)
+        case .paymentout: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutResponse.value)
         default: return MSError.genericError(errorText: LocalizedStrings.genericDeserializationError.value)
         }
     }

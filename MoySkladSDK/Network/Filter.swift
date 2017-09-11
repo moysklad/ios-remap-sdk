@@ -219,10 +219,10 @@ public struct FilterArgument {
 }
 
 public struct DocumentsFilter {
-    let search: Search?
-    let organizationId: OrganizationIdParameter?
-    let stateId: StateIdParameter?
-    let filter: Filter?
+    public let search: Search?
+    public let organizationId: OrganizationIdParameter?
+    public let stateId: StateIdParameter?
+    public let filter: Filter?
     
     public init(search: Search? = nil, organizationId: OrganizationIdParameter? = nil, stateId: StateIdParameter? = nil, filter: Filter? = nil) {
         self.search = search

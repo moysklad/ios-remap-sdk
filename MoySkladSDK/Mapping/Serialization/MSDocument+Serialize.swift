@@ -85,11 +85,7 @@ extension MSDocument {
                                             return MSObjectType.customerorderposition
                                         }}(),
                                       collectionName: "positions")
-        dict["stock"] = serialize(entities: stock,
-                                  parent: self,
-                                  metaOnly: false,
-                                  objectType: MSObjectType.stock,
-                                  collectionName: "stock")
+
         dict["deliveryPlannedMoment"] = deliveryPlannedMoment?.toLongDate() ?? NSNull()
         dict["purchaseOrders"] = serialize(entities: purchaseOrders,
                                            parent: self,
@@ -142,11 +138,17 @@ extension MSDocument {
         dict["goodPackQuantity"] = goodPackQuantity ?? NSNull()
         dict["paymentPlannedMoment"] = paymentPlannedMoment?.toLongDate() ?? NSNull()
         dict["purchaseOrder"] = serialize(entity: purchaseOrder, metaOnly: true)
-        dict["incomingNumber"] = incomingNumber ?? ""
-        dict["incomingDate"] = incomingDate?.toLongDate() ?? NSNull()
+        
         dict["paymentPurpose"] = paymentPurpose ?? ""
         dict["stateContractId"] = stateContractId ?? ""
         dict["expenseItem"] = serialize(entity: expenseItem, metaOnly: true)
+        
+        // сервер ломается, если отправить incomingDate и incomingNumber документу, у которого такого поля нет
+        // https://lognex.atlassian.net/browse/MC-22182
+        if meta.type == .paymentin {
+            dict["incomingDate"] = incomingDate?.toLongDate() ?? NSNull()
+            dict["incomingNumber"] = incomingNumber ?? ""
+        }
         
         return dict
     }

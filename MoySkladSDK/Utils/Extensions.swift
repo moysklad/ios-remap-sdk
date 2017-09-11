@@ -13,6 +13,10 @@ func newDocumentUrl(type: MSObjectType) -> MSApiRequest? {
     case MSObjectType.customerorder: return MSApiRequest.customerOrderNew
     case MSObjectType.demand: return MSApiRequest.demandNew
     case MSObjectType.invoiceout: return MSApiRequest.invoiceOutNew
+    case MSObjectType.paymentin: return MSApiRequest.paymentInNew
+    case MSObjectType.paymentout: return MSApiRequest.paymentOutNew
+    case MSObjectType.cashin: return MSApiRequest.cashInNew
+    case MSObjectType.cashout: return MSApiRequest.cashOutNew
     default: return nil
     }
 }
@@ -111,8 +115,17 @@ extension MSTask: MSRequestEntity {
     }
 }
 
-extension MSGeneralDocument {    
-    func templateBody() -> [String: Any]? {
+extension MSBaseDocumentType {
+    func templateBody(forDocument type: MSObjectType) -> [String: Any]? {
+        // если будет создаваться платежный документ, то для него связанные документы нужно класть в operations
+        switch type{
+        case .cashin: fallthrough
+        case .cashout: fallthrough
+        case .paymentin: fallthrough
+        case .paymentout: return ["operations": [dictionary(metaOnly: true)]]
+        default: break
+        }
+        
         switch self.meta.type {
         case .customerorder: return ["customerOrder": dictionary(metaOnly: true)]
         case .demand: return ["demands": [dictionary(metaOnly: true)]]
@@ -121,17 +134,6 @@ extension MSGeneralDocument {
         }
     }
 }
-
-//extension MSMoneyDocument {
-//    func templateBody() -> [String: Any]? {
-//        switch self {
-//        case let o as MSCustomerOrder: return ["customerOrder": o.dictionary(metaOnly: true)]
-//        case let o as MSDemand: return ["demands": [o.dictionary(metaOnly: true)]]
-//        case let o as MSInvoice: return ["invoicesOut": [o.dictionary(metaOnly: true)]]
-//        default: return nil
-//        }
-//    }
-//}
 
 extension UserDefaults {
     var moySkladHost: String {

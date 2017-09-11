@@ -16,6 +16,7 @@ public protocol MSBaseDocumentType : class, Metable, MSRequestEntity {
     var contract : MSEntity<MSContract>? { get set }
     var sum : Money { get set }
     var vatSum : Money { get set }
+    var payedSum: Money { get set}
     var rate : MSRate? { get set }
     var moment : Date { get set }
     var project : MSEntity<MSProject>? { get set }
@@ -49,9 +50,13 @@ public extension MSBaseDocumentType {
     
     public func deserializationError() -> MSError {
         switch meta.type {
-        case MSObjectType.customerorder: return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
-        case MSObjectType.demand: return MSError.genericError(errorText: LocalizedStrings.incorrectDemandsResponse.value)
-        case MSObjectType.invoiceout: return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
+        case .customerorder: return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
+        case .demand: return MSError.genericError(errorText: LocalizedStrings.incorrectDemandsResponse.value)
+        case .invoiceout: return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
+        case .cashin: return MSError.genericError(errorText: LocalizedStrings.incorrectCashInResponse.value)
+        case .cashout: return MSError.genericError(errorText: LocalizedStrings.incorrectCashOutResponse.value)
+        case .paymentin: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInResponse.value)
+        case .paymentout: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutResponse.value)
         default: return MSError.genericError(errorText: LocalizedStrings.genericDeserializationError.value)
         }
     }

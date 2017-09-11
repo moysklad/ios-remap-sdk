@@ -40,14 +40,17 @@ extension MSDocument {
     public func dictionary(metaOnly: Bool = true) -> Dictionary<String, Any> {
         var dict = [String: Any]()
         dict["meta"] = meta.dictionary()
+        dict["linkedSum"] = linkedSum.minorUnits
         guard !metaOnly else { return dict }
         
         dict.merge(info.dictionary())
         dict.merge(id.dictionary())
         
+        dict["sum"] = sum.minorUnits
         dict["agent"] = serialize(entity: agent, metaOnly: true)
         dict["contract"] = serialize(entity: contract, metaOnly: true)
         dict["vatSum"] = vatSum.minorUnits
+        dict["payedSum"] = payedSum.minorUnits
         dict["rate"] = rate?.dictionary(metaOnly: true) ?? NSNull()
         dict["moment"] = moment.toLongDate()
         dict["project"] = serialize(entity: project, metaOnly: true)
@@ -109,6 +112,11 @@ extension MSDocument {
                                     metaOnly: false,
                                     objectType: MSObjectType.salesreturn,
                                     collectionName: "returns")
+        if let operations = operations {
+            dict["operations"] = serialize(entities: operations,
+                                           parent: self,
+                                           objectType: MSObjectType.customerorder, collectionName: "operations")
+        }
         if let factureOut = factureOut {
             dict["factureOut"] = serialize(entity: factureOut, metaOnly: true)
         }

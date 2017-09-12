@@ -40,6 +40,7 @@ extension MSDocument {
     public func dictionary(metaOnly: Bool = true) -> Dictionary<String, Any> {
         var dict = [String: Any]()
         dict["meta"] = meta.dictionary()
+        dict["linkedSum"] = linkedSum.minorUnits
         guard !metaOnly else { return dict }
         
         dict.merge(info.dictionary())
@@ -49,6 +50,7 @@ extension MSDocument {
         dict["agent"] = serialize(entity: agent, metaOnly: true)
         dict["contract"] = serialize(entity: contract, metaOnly: true)
         dict["vatSum"] = vatSum.minorUnits
+        dict["payedSum"] = payedSum.minorUnits
         dict["rate"] = rate?.dictionary(metaOnly: true) ?? NSNull()
         dict["moment"] = moment.toLongDate()
         dict["project"] = serialize(entity: project, metaOnly: true)
@@ -83,11 +85,7 @@ extension MSDocument {
                                             return MSObjectType.customerorderposition
                                         }}(),
                                       collectionName: "positions")
-        dict["stock"] = serialize(entities: stock,
-                                  parent: self,
-                                  metaOnly: false,
-                                  objectType: MSObjectType.stock,
-                                  collectionName: "stock")
+
         dict["deliveryPlannedMoment"] = deliveryPlannedMoment?.toLongDate() ?? NSNull()
         dict["purchaseOrders"] = serialize(entities: purchaseOrders,
                                            parent: self,
@@ -114,6 +112,11 @@ extension MSDocument {
                                     metaOnly: false,
                                     objectType: MSObjectType.salesreturn,
                                     collectionName: "returns")
+        if let operations = operations {
+            dict["operations"] = serialize(entities: operations,
+                                           parent: self,
+                                           objectType: MSObjectType.customerorder, collectionName: "operations")
+        }
         if let factureOut = factureOut {
             dict["factureOut"] = serialize(entity: factureOut, metaOnly: true)
         }
@@ -135,11 +138,17 @@ extension MSDocument {
         dict["goodPackQuantity"] = goodPackQuantity ?? NSNull()
         dict["paymentPlannedMoment"] = paymentPlannedMoment?.toLongDate() ?? NSNull()
         dict["purchaseOrder"] = serialize(entity: purchaseOrder, metaOnly: true)
-        dict["incomingNumber"] = incomingNumber ?? ""
-        dict["incomingDate"] = incomingDate?.toLongDate() ?? NSNull()
+        
         dict["paymentPurpose"] = paymentPurpose ?? ""
         dict["stateContractId"] = stateContractId ?? ""
         dict["expenseItem"] = serialize(entity: expenseItem, metaOnly: true)
+        
+        // сервер ломается, если отправить incomingDate и incomingNumber документу, у которого такого поля нет
+        // https://lognex.atlassian.net/browse/MC-22182
+        if meta.type == .paymentin {
+            dict["incomingDate"] = incomingDate?.toLongDate() ?? NSNull()
+            dict["incomingNumber"] = incomingNumber ?? ""
+        }
         
         return dict
     }

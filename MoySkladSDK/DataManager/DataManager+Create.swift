@@ -55,7 +55,7 @@ extension DataManager {
      - parameter toType: Type of new document
      - parameter expanders: Additional objects to include into request
     */
-    public static func createTemplate(auth: Auth, fromDocument: MSGeneralDocument?, toType: MSObjectType, expanders: [Expander] = []) -> Observable<MSGeneralDocument> {
+    public static func createTemplate(auth: Auth, fromDocument: MSBaseDocumentType?, toType: MSObjectType, expanders: [Expander] = []) -> Observable<MSGeneralDocument> {
         guard let url = newDocumentUrl(type: toType) else {
             return Observable.error(createdDocumentError(type: toType))
         }
@@ -65,7 +65,7 @@ extension DataManager {
         return HttpClient.update(url,
                                  auth: auth,
                                  urlParameters: urlParameters,
-                                 body: fromDocument?.templateBody())
+                                 body: fromDocument?.templateBody(forDocument: toType))
             .flatMapLatest { result -> Observable<MSGeneralDocument> in
                 guard var result = result else { return Observable.error(createdDocumentError(type: toType)) }
                 

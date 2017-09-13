@@ -75,4 +75,6 @@ public enum MSObjectType : String {
     case purchasereturn
     case inventory
     case internalorder
+    case commissionreportin
+    case commissionreportout
 }

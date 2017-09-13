@@ -32,6 +32,8 @@ public enum EntityField: String {
     case author
     case dueToDate
     case type
+    case paid
+    case id
 }
 
 public enum FilterOperator : String {

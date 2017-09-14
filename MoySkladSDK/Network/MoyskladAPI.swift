@@ -135,6 +135,7 @@ public enum MSApiRequest : String {
     case reportMoneyByAccount = "/report/money/byaccount"
     case reportRetailstore = "/report/retailstore"
     case reportRetailstoreRetailshift = "retailshift"
+    case operation = "entity/operation"
 }
 
 extension MSApiRequest {

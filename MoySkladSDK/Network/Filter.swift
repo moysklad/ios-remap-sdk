@@ -31,6 +31,7 @@ public enum EntityField: String {
     case assignee
     case author
     case dueToDate
+    case type
 }
 
 public enum FilterOperator : String {
@@ -215,4 +216,22 @@ public struct FilterArgument {
     }
     
     public var asArgumentString: String { return "\(field.rawValue)\(filterOperator.rawValue)\(value.toFilterValue())" }
+}
+
+public struct DocumentsFilter {
+    public let search: Search?
+    public let organizationId: OrganizationIdParameter?
+    public let stateId: StateIdParameter?
+    public let filter: Filter?
+    
+    public init(search: Search? = nil, organizationId: OrganizationIdParameter? = nil, stateId: StateIdParameter? = nil, filter: Filter? = nil) {
+        self.search = search
+        self.organizationId = organizationId
+        self.stateId = stateId
+        self.filter = filter
+    }
+    
+    public static func empty() -> DocumentsFilter {
+        return DocumentsFilter(search: nil, organizationId: nil, stateId: nil, filter: nil)
+    }
 }

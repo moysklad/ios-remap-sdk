@@ -255,6 +255,9 @@ extension MSUserPermissions {
                                  auditDashboard: MSPermission.from(dict: dict.msValue("audit_dashboard")),
                                  admin: MSPermission.from(dict: dict.msValue("admin")),
                                  viewAllTasks: MSPermission.from(dict: dict.msValue("viewAllTasks")),
-                                 updateAllTasks: MSPermission.from(dict: dict.msValue("updateAllTasks")))
+                                 updateAllTasks: MSPermission.from(dict: dict.msValue("updateAllTasks")),
+                                 commissionreportin: MSPermission.from(dict: dict.msValue("commissionreportin")),
+                                 commissionreportout: MSPermission.from(dict: dict.msValue("commissionreportout")),
+                                 retailshift: MSPermission.from(dict: dict.msValue("retailshift")))
     }
 }

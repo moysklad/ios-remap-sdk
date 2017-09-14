@@ -17,8 +17,10 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     public var info : MSInfo
     public var agent : MSEntity<MSAgent>?
     public var contract : MSEntity<MSContract>?
+    /// Приходит в валюте документа
     public var sum : Money
     public var vatSum : Money
+    /// Приходит в валюте учета (валюта по умолчанию для учетной записи)
     public var payedSum: Money
     public var rate : MSRate?
     public var moment : Date
@@ -75,6 +77,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     public var paymentPurpose: String?
     public var factureIn: MSEntity<MSDocument>?
     public var operations: [MSEntity<MSDocument>]?
+    /// Приходит в валюте связанного документа
     public var linkedSum: Money
     
     // MSCashOutType
@@ -82,6 +85,8 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     
     public func copyDocument() -> MSDocument {
         let positionsCopy = positions.flatMap { $0.value() }.map { MSEntity.entity($0.copy()) }
+        
+        let operationsCopy = operations?.flatMap { $0.value() }.map { MSEntity.entity($0.copyDocument()) }
 
         return MSDocument(id: id,
                           meta: meta,
@@ -133,7 +138,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                           paymentPurpose: paymentPurpose,
                           factureIn: factureIn,
                           expenseItem: expenseItem,
-                          operations: operations,
+                          operations: operationsCopy,
                           linkedSum: linkedSum,
                           stateContractId: stateContractId)
     }

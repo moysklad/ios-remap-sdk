@@ -85,6 +85,8 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     
     public func copyDocument() -> MSDocument {
         let positionsCopy = positions.flatMap { $0.value() }.map { MSEntity.entity($0.copy()) }
+        
+        let operationsCopy = operations?.flatMap { $0.value() }.map { MSEntity.entity($0.copyDocument()) }
 
         return MSDocument(id: id,
                           meta: meta,
@@ -136,7 +138,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                           paymentPurpose: paymentPurpose,
                           factureIn: factureIn,
                           expenseItem: expenseItem,
-                          operations: operations,
+                          operations: operationsCopy,
                           linkedSum: linkedSum,
                           stateContractId: stateContractId)
     }

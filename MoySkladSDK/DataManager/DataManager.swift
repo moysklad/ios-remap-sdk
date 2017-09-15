@@ -1235,8 +1235,12 @@ public struct DataManager {
         }
     }
     
-    public static func loadExpenseitems(auth: Auth, offset: MSOffset? = nil) -> Observable<[MSEntity<MSExpenseItem>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset)
+    public static func loadExpenseitems(auth: Auth,
+                                        offset: MSOffset? = nil,
+                                        expanders: [Expander] = [],
+                                        filter: Filter? = nil,
+                                        search: Search? = nil) -> Observable<[MSEntity<MSExpenseItem>]> {
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, CompositeExpander(expanders))
         return HttpClient.get(.expenseitem, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSExpenseItem>]> in
     

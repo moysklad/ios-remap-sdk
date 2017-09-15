@@ -935,11 +935,7 @@ public struct DataManager {
                 
                 return deserializeArray(json: result,
                                         incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value),
-                                        deserializer: { item in
-                                            var updateItem = item
-                                            updateItem["companyType"] = "individual" // выставляем для сотрудника юр лицо
-                                            return MSAgent.from(dict: updateItem)
-                                        })
+                                        deserializer: { MSAgent.from(dict: $0) })
         }
     }
     

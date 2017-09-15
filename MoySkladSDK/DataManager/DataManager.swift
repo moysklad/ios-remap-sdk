@@ -912,13 +912,15 @@ public struct DataManager {
     }
     
     /**
-     Load employees with convert to MSAgent.
+     Load employees to agent
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#сотрудник)
      - parameter auth: Authentication information
      - parameter offset: Desired data offset
      - parameter expanders: Additional objects to include into request
      - parameter filter: Filter for request
      - parameter search: Additional string for filtering by name
+     
+     Реализовано для возможности совмещать на одном экране контрагентов и сотрудников. Релизовано на экране выбора контрагента
      */
     public static func employeesForAgents(auth: Auth,
                                  offset: MSOffset? = nil,
@@ -931,14 +933,13 @@ public struct DataManager {
             .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
                 guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value)) }
                 
-                let deserialized = result.msArray("rows").map { MSEmployee.from(dict: $0) }
-                let deserializedEmployee = deserialized.removeNils()
-                
-                guard deserializedEmployee.count == deserialized.count else {
-                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value))
-                }
-                
-                return Observable.just(deserializedEmployee.map { MSEntityСonverter.convertToAgent(from: $0) })
+                return deserializeArray(json: result,
+                                        incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value),
+                                        deserializer: { item in
+                                            var updateItem = item
+                                            updateItem["companyType"] = "individual" // выставляем для сотрудника юр лицо
+                                            return MSAgent.from(dict: updateItem)
+                                        })
         }
     }
     

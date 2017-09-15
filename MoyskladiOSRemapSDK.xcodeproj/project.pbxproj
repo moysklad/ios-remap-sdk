@@ -112,7 +112,6 @@
 		95E886E51F31C934009C21F2 /* MSRetailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E886E41F31C934009C21F2 /* MSRetailStore.swift */; };
 		95E886E71F31C9C8009C21F2 /* MSRetailShift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E886E61F31C9C8009C21F2 /* MSRetailShift.swift */; };
 		95E886E91F31E638009C21F2 /* MSRetailStore+Convertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E886E81F31E638009C21F2 /* MSRetailStore+Convertable.swift */; };
-		95F632881F6BF26900B0A34F /* MSEntityСonverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F632871F6BF26900B0A34F /* MSEntityСonverter.swift */; };
 		C94F63561F57F1C600EAE437 /* DataManager+LoadTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94F63551F57F1C600EAE437 /* DataManager+LoadTemplates.swift */; };
 		C94F63581F580CA600EAE437 /* MSDocumentStock+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94F63571F580CA600EAE437 /* MSDocumentStock+Convertible.swift */; };
 		C94F635E1F58292100EAE437 /* MSOverhead+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94F635D1F58292100EAE437 /* MSOverhead+Convertible.swift */; };
@@ -245,7 +244,6 @@
 		95E886E41F31C934009C21F2 /* MSRetailStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSRetailStore.swift; sourceTree = "<group>"; };
 		95E886E61F31C9C8009C21F2 /* MSRetailShift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSRetailShift.swift; sourceTree = "<group>"; };
 		95E886E81F31E638009C21F2 /* MSRetailStore+Convertable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSRetailStore+Convertable.swift"; sourceTree = "<group>"; };
-		95F632871F6BF26900B0A34F /* MSEntityСonverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSEntityСonverter.swift"; sourceTree = "<group>"; };
 		C94F63551F57F1C600EAE437 /* DataManager+LoadTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataManager+LoadTemplates.swift"; sourceTree = "<group>"; };
 		C94F63571F580CA600EAE437 /* MSDocumentStock+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSDocumentStock+Convertible.swift"; sourceTree = "<group>"; };
 		C94F635D1F58292100EAE437 /* MSOverhead+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSOverhead+Convertible.swift"; sourceTree = "<group>"; };
@@ -329,7 +327,6 @@
 				55C05C071E028F9B008F4254 /* Extensions.swift */,
 				6E75A1DC1EA89C8E00A05A83 /* MSError.swift */,
 				6E75A1EB1EA8A88C00A05A83 /* Localization.swift */,
-				95F632871F6BF26900B0A34F /* MSEntityСonverter.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -668,7 +665,6 @@
 				6E75A1E51EA8A3D200A05A83 /* DataManager+Create.swift in Sources */,
 				55C05C701E028F9B008F4254 /* ValueCoding.swift in Sources */,
 				C94F635E1F58292100EAE437 /* MSOverhead+Convertible.swift in Sources */,
-				95F632881F6BF26900B0A34F /* MSEntityСonverter.swift in Sources */,
 				6E75A1E41EA8A3D200A05A83 /* DataManager.swift in Sources */,
 				55C05C3F1E028F9B008F4254 /* Extensions.swift in Sources */,
 				55C05C541E028F9B008F4254 /* Types.swift in Sources */,

@@ -66,4 +66,15 @@ public enum MSObjectType : String {
     case task
     case expenseitem
     case facturein
+    case enter
+    case supply
+    case loss
+    case move
+    case retaildrawercashin
+    case retaildrawercashout
+    case purchasereturn
+    case inventory
+    case internalorder
+    case commissionreportin
+    case commissionreportout
 }

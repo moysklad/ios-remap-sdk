@@ -60,6 +60,9 @@ public struct MSUserPermissions {
     public let admin: MSPermission
     public let viewAllTasks: MSPermission
     public let updateAllTasks: MSPermission
+    public let commissionreportin: MSPermission
+    public let commissionreportout: MSPermission
+    public let retailshift: MSPermission
     
     public init(uom: MSPermission,
     product: MSPermission,
@@ -109,7 +112,10 @@ public struct MSUserPermissions {
     auditDashboard: MSPermission,
     admin: MSPermission,
     viewAllTasks: MSPermission,
-    updateAllTasks: MSPermission) {
+    updateAllTasks: MSPermission,
+    commissionreportin: MSPermission,
+    commissionreportout: MSPermission,
+    retailshift: MSPermission) {
         self.uom = uom
         self.product = product
         self.service = service
@@ -159,10 +165,12 @@ public struct MSUserPermissions {
         self.admin = admin
         self.viewAllTasks = viewAllTasks
         self.updateAllTasks = updateAllTasks
+        self.commissionreportin = commissionreportin
+        self.commissionreportout = commissionreportout
+        self.retailshift = retailshift
     }
     
 //    let retailstore: MSPermission
-//    let retailshift: MSPermission
 //    let retaildemand: MSPermission
 //    let retailsalesreturn: MSPermission
 //    let retaildrawercashin: MSPermission

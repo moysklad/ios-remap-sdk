@@ -112,11 +112,9 @@ extension MSDocument {
                                     metaOnly: false,
                                     objectType: MSObjectType.salesreturn,
                                     collectionName: "returns")
-        if let operations = operations {
-            dict["operations"] = serialize(entities: operations,
-                                           parent: self,
-                                           objectType: MSObjectType.customerorder, collectionName: "operations")
-        }
+        dict["operations"] = serialize(entities: operations,
+                                       parent: self,
+                                       objectType: MSObjectType.customerorder, collectionName: "operations")
         if let factureOut = factureOut {
             dict["factureOut"] = serialize(entity: factureOut, metaOnly: true)
         }

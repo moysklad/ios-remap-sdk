@@ -76,7 +76,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     // MSMoneyDocumentType
     public var paymentPurpose: String?
     public var factureIn: MSEntity<MSDocument>?
-    public var operations: [MSEntity<MSDocument>]?
+    public var operations: [MSEntity<MSDocument>]
     /// Приходит в валюте связанного документа
     public var linkedSum: Money
     
@@ -85,8 +85,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     
     public func copyDocument() -> MSDocument {
         let positionsCopy = positions.flatMap { $0.value() }.map { MSEntity.entity($0.copy()) }
-        
-        let operationsCopy = operations?.flatMap { $0.value() }.map { MSEntity.entity($0.copyDocument()) }
+        let operationsCopy = operations.flatMap { $0.value() }.map { MSEntity.entity($0.copyDocument()) }
 
         return MSDocument(id: id,
                           meta: meta,
@@ -193,7 +192,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                 paymentPurpose: String?,
                 factureIn: MSEntity<MSDocument>?,
                 expenseItem: MSEntity<MSExpenseItem>?,
-                operations: [MSEntity<MSDocument>]?,
+                operations: [MSEntity<MSDocument>],
                 linkedSum: Money,
                 stateContractId: String?) {
         self.id = id

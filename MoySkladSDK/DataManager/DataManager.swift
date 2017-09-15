@@ -1262,4 +1262,21 @@ public struct DataManager {
                 return Observable.just(deserialized)
         }
     }
+    
+    public static func loadExpenseitems(auth: Auth,
+                                        offset: MSOffset? = nil,
+                                        expanders: [Expander] = [],
+                                        filter: Filter? = nil,
+                                        search: Search? = nil) -> Observable<[MSEntity<MSExpenseItem>]> {
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, CompositeExpander(expanders))
+        return HttpClient.get(.expenseitem, auth: auth, urlParameters: urlParameters)
+            .flatMapLatest { result -> Observable<[MSEntity<MSExpenseItem>]> in
+    
+            guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectExpenseItemResponse.value)) }
+                
+            return deserializeArray(json: result,
+                                    incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectExpenseItemResponse.value),
+                                    deserializer: { MSExpenseItem.from(dict: $0) })
+        }
+    }
 }

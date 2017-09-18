@@ -36,7 +36,28 @@ import Foundation
  and scale rules for base 10 decimal arithmetic.
 */
 public struct _Decimal<Behavior: DecimalNumberBehaviorType>: DecimalNumberType {
-
+    public var magnitude: NSDecimalNumber
+    
+    public static func -=(lhs: inout _Decimal<Behavior>, rhs: _Decimal<Behavior>) {
+        lhs = lhs.subtract(rhs)
+    }
+    
+    public init?<T>(exactly source: T) where T : BinaryInteger {
+        self.storage = NSDecimalNumber(integerLiteral: Int(source))
+        self.magnitude = NSDecimalNumber(string: source.magnitude as? String)
+    }
+    
+    public static func +=(lhs: inout _Decimal<Behavior>, rhs: _Decimal<Behavior>) {
+        lhs = lhs.add(rhs)
+    }
+    
+    public static func *=(lhs: inout _Decimal<Behavior>, rhs: _Decimal<Behavior>) {
+        lhs = lhs.multiply(by: rhs)
+    }
+    
+    public typealias Magnitude = NSDecimalNumber
+    
+    
     public typealias DecimalNumberBehavior = Behavior
 
     /// Access the underlying decimal storage.
@@ -50,18 +71,19 @@ public struct _Decimal<Behavior: DecimalNumberBehaviorType>: DecimalNumberType {
     */
     public init(storage: NSDecimalNumber = NSDecimalNumber.zero) {
         self.storage = storage
+        self.magnitude = storage
     }
 }
 
 // MARK: - Equality
 
-public func ==<B: DecimalNumberBehaviorType>(lhs: _Decimal<B>, rhs: _Decimal<B>) -> Bool {
+public func ==<B>(lhs: _Decimal<B>, rhs: _Decimal<B>) -> Bool {
     return lhs.storage == rhs.storage
 }
 
 // MARK: - Comparable
 
-public func <<B: DecimalNumberBehaviorType>(lhs: _Decimal<B>, rhs: _Decimal<B>) -> Bool {
+public func <<B>(lhs: _Decimal<B>, rhs: _Decimal<B>) -> Bool {
     return lhs.storage < rhs.storage
 }
 

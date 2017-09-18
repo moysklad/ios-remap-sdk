@@ -182,7 +182,7 @@ internal extension PKPaymentSummaryItemType {
 
 internal extension PKPaymentSummaryItem {
 
-    convenience init<Cost: MoneyType>(paymentSummaryItem: PaymentSummaryItem<Cost>) where Cost.DecimalStorageType == NSDecimalNumber {
+    convenience init<Cost>(paymentSummaryItem: PaymentSummaryItem<Cost>)  {
         self.init()
         amount = paymentSummaryItem.amount
         label = paymentSummaryItem.label
@@ -207,7 +207,7 @@ public extension PKPaymentRequest {
      - parameter sellerName: a `String` which is used in the total cost summary item.
      - returns: a `PKPaymentRequest` which has its payment summary items and currency code set.
     */
-    convenience init<Cost: MoneyType>(items: [PaymentSummaryItem<Cost>], sellerName: String) where Cost.DecimalStorageType == NSDecimalNumber, Cost.Coder: NSCoding, Cost.Coder.Value == Cost {
+    convenience init<Cost>(items: [PaymentSummaryItem<Cost>], sellerName: String)  {
         self.init()
         currencyCode = Cost.Currency.code
         var items = items
@@ -219,7 +219,7 @@ public extension PKPaymentRequest {
 
 // MARK: - Equality
 
-public func ==<Cost: MoneyType>(lhs: PaymentSummaryItem<Cost>, rhs: PaymentSummaryItem<Cost>) -> Bool where Cost.DecimalStorageType == NSDecimalNumber {
+public func ==<Cost>(lhs: PaymentSummaryItem<Cost>, rhs: PaymentSummaryItem<Cost>) -> Bool {
     return lhs.cost == rhs.cost && lhs.label == rhs.label && lhs.type == rhs.type
 }
 

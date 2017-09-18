@@ -140,10 +140,30 @@ public extension MoneyType where DecimalStorageType == BankersDecimal.DecimalSto
  such as `USD` or `GBP`.
 */
 public struct _Money<C: CurrencyType>: MoneyType {
+    public static func -=(lhs: inout _Money<C>, rhs: _Money<C>) {
+        lhs = lhs.subtract(rhs)
+    }
+    
+    public static func +=(lhs: inout _Money<C>, rhs: _Money<C>) {
+        lhs = lhs.add(rhs)
+    }
+    
+    public init?<T>(exactly source: T) where T : BinaryInteger {
+        decimal = _Decimal<DecimalNumberBehavior>(integerLiteral: Int(source))
+        magnitude = decimal.isNegative ? decimal.negative : decimal
+    }
+    
+    public typealias Magnitude = _Decimal<C>
+    
+    public static func *=(lhs: inout _Money<C>, rhs: _Money<C>) {
+        lhs = lhs.multiply(by: rhs)
+    }
+    
     
     public typealias DecimalNumberBehavior = C
     public typealias Currency = C
-
+    
+    public var magnitude: _Decimal<C>
     /// Access the underlying decimal.
     /// - returns: the `_Decimal<C>`
     public let decimal: _Decimal<C>
@@ -178,6 +198,7 @@ public struct _Money<C: CurrencyType>: MoneyType {
      */
     public init(_ value: _Decimal<C> = _Decimal<C>()) {
         decimal = value
+        magnitude  = value.isNegative ? value.negative : value
     }
 
     /**
@@ -187,6 +208,7 @@ public struct _Money<C: CurrencyType>: MoneyType {
      */
     public init(minorUnits: IntegerLiteralType) {
         decimal = _Decimal<DecimalNumberBehavior>(integerLiteral: minorUnits).multiply(byPowerOf10: Currency.scale * -1)
+        magnitude  = decimal.isNegative ? decimal.negative : decimal
     }
 
     /**
@@ -197,6 +219,7 @@ public struct _Money<C: CurrencyType>: MoneyType {
      */
     public init(storage: _Decimal<C>.DecimalStorageType) {
         decimal = _Decimal<DecimalNumberBehavior>(storage: storage)
+        magnitude  = decimal.isNegative ? decimal.negative : decimal
     }
 
     /**
@@ -206,6 +229,7 @@ public struct _Money<C: CurrencyType>: MoneyType {
      */
     public init(integerLiteral value: IntegerLiteralType) {
         decimal = _Decimal<DecimalNumberBehavior>(integerLiteral: value)
+        magnitude  = decimal.isNegative ? decimal.negative : decimal
     }
 
     /**
@@ -215,6 +239,7 @@ public struct _Money<C: CurrencyType>: MoneyType {
      */
     public init(floatLiteral value: FloatLiteralType) {
         decimal = _Decimal<DecimalNumberBehavior>(floatLiteral: value)
+        magnitude  = decimal.isNegative ? decimal.negative : decimal
     }
     
     /**
@@ -270,13 +295,13 @@ public struct _Money<C: CurrencyType>: MoneyType {
 
 // MARK: - Equality
 
-public func ==<C: CurrencyType>(lhs: _Money<C>, rhs: _Money<C>) -> Bool {
+public func ==<C>(lhs: _Money<C>, rhs: _Money<C>) -> Bool {
     return lhs.decimal == rhs.decimal
 }
 
 // MARK: - Comparable
 
-public func <<C: CurrencyType>(lhs: _Money<C>, rhs: _Money<C>) -> Bool {
+public func <<C>(lhs: _Money<C>, rhs: _Money<C>) -> Bool {
     return lhs.decimal < rhs.decimal
 }
 

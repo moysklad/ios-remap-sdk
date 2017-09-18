@@ -1129,8 +1129,8 @@ public struct DataManager {
                                       from: Date, 
                                       to: Date, 
                                       offset: MSOffset? = nil) -> Observable<[MSSaleByProduct]> {
-        let momentFrom = GenericUrlParameter(name: "momentFrom", value: from.toLongDate())
-        let momentTo = GenericUrlParameter(name: "momentTo", value: to.toLongDate())
+        let momentFrom = GenericUrlParameter(name: "momentFrom", value: from.toCurrentLocaleLongDate())
+        let momentTo = GenericUrlParameter(name: "momentTo", value: to.toCurrentLocaleLongDate())
         
         let urlParameters: [UrlParameter] = mergeUrlParameters(offset, momentFrom, momentTo)
         

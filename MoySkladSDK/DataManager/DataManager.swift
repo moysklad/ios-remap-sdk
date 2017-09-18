@@ -912,6 +912,34 @@ public struct DataManager {
     }
     
     /**
+     Load employees to agent
+     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#сотрудник)
+     - parameter auth: Authentication information
+     - parameter offset: Desired data offset
+     - parameter expanders: Additional objects to include into request
+     - parameter filter: Filter for request
+     - parameter search: Additional string for filtering by name
+     
+     Реализовано для возможности совмещать на одном экране контрагентов и сотрудников. Релизовано на экране выбора контрагента
+     */
+    public static func employeesForAgents(auth: Auth,
+                                 offset: MSOffset? = nil,
+                                 expanders: [Expander] = [],
+                                 filter: Filter? = nil,
+                                 search: Search? = nil) -> Observable<[MSEntity<MSAgent>]> {
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter)
+        
+        return HttpClient.get(.employee, auth: auth, urlParameters: urlParameters)
+            .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
+                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value)) }
+                
+                return deserializeArray(json: result,
+                                        incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value),
+                                        deserializer: { MSAgent.from(dict: $0) })
+        }
+    }
+    
+    /**
      Load accounts for specified agent.
      Also see API reference for [ counterparty](https://online.moysklad.ru/api/remap/1.1/doc/index.html#контрагент-счета-контрагента-get)
      and [ organizaiton](https://online.moysklad.ru/api/remap/1.1/doc/index.html#юрлицо-счета-юрлица-get)

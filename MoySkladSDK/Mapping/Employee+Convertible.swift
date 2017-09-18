@@ -27,13 +27,15 @@ extension MSEmployee : DictConvertable {
 			return nil
 		}
 		
-		guard let lastName: String = dict.value("lastName"), lastName.characters.count > 0 else {
+		guard let lastName: String = dict.value("lastName"), lastName.characters.count > 0, let group = MSGroup.from(dict: dict.msValue("group")) else {
 			return MSEntity.meta(meta)
 		}
 		
 		return MSEntity.entity(MSEmployee(meta: meta,
 		                                  id: MSID(dict: dict),
 		                                  info: MSInfo(dict: dict),
+                                          group: group,
+		                                  shared: dict.value("shared") ?? false,
 		                                  accountId: dict.value("accountId") ?? "",
 		                                  code: dict.value("code"),
 		                                  externalCode: dict.value("externalCode"),

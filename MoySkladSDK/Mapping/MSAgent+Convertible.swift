@@ -15,7 +15,6 @@ extension MSAgent : DictConvertable {
 		}
 		
 		guard let name: String = dict.value("name"), name.characters.count > 0,
-			let companyType = MSCompanyType(rawValue: dict.value("companyType") ?? ""),
 			let group = MSGroup.from(dict: dict.msValue("group")) else {
 				return MSEntity.meta(meta)
 		}
@@ -31,7 +30,7 @@ extension MSAgent : DictConvertable {
 		        externalCode: dict.value("externalCode"),
 		        archived: dict.value("archived") ?? false,
 		        actualAddress: dict.value("actualAddress"),
-		        companyType: companyType,
+		        companyType: MSCompanyType(rawValue: dict.value("companyType") ?? "") ?? MSCompanyType.individual,
 		        email: dict.value("email"),
 		        phone: dict.value("phone"),
 		        fax: dict.value("fax"),

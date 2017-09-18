@@ -16,6 +16,8 @@ public struct MSEmployee : Metable {
 	public let meta: MSMeta
 	public let id : MSID
 	public let info : MSInfo
+    public let group: MSEntity<MSGroup>
+    public let shared: Bool
 	public let accountId: String
 	public let code: String?
 	public let externalCode: String?
@@ -40,6 +42,8 @@ public struct MSEmployee : Metable {
     public init(meta: MSMeta,
     id : MSID,
     info : MSInfo,
+    group: MSEntity<MSGroup>,
+    shared: Bool, 
     accountId: String,
     code: String?,
     externalCode: String?,
@@ -63,6 +67,8 @@ public struct MSEmployee : Metable {
         self.meta = meta
         self.id = id
         self.info = info
+        self.group = group
+        self.shared = shared
         self.accountId = accountId
         self.code = code
         self.externalCode = externalCode

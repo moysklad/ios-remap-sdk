@@ -1292,4 +1292,21 @@ public struct DataManager {
                                     deserializer: { MSExpenseItem.from(dict: $0) })
         }
     }
+    
+    public static func loadCounties(auth: Auth,
+                                        offset: MSOffset? = nil,
+                                        expanders: [Expander] = [],
+                                        filter: Filter? = nil,
+                                        search: Search? = nil) -> Observable<[MSEntity<MSCountry>]> {
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, CompositeExpander(expanders))
+        return HttpClient.get(.country, auth: auth, urlParameters: urlParameters)
+            .flatMapLatest { result -> Observable<[MSEntity<MSCountry>]> in
+                
+                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCountiesResponse.value)) }
+                
+                return deserializeArray(json: result,
+                                        incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectCountiesResponse.value),
+                                        deserializer: { MSCountry.from(dict: $0) })
+        }
+    }
 }

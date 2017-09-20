@@ -139,6 +139,7 @@ public enum MSApiRequest : String {
     case expenseitem = "entity/expenseitem"
     case supply = "/entity/supply"
     case supplyMetadata = "/entity/supply/metadata"
+    case country = "/entity/country"
 }
 
 extension MSApiRequest {

@@ -137,6 +137,9 @@ public enum MSApiRequest : String {
     case reportRetailstoreRetailshift = "retailshift"
     case operation = "entity/operation"
     case expenseitem = "entity/expenseitem"
+    case supply = "/entity/supply"
+    case supplyMetadata = "/entity/supply/metadata"
+    case country = "/entity/country"
 }
 
 extension MSApiRequest {

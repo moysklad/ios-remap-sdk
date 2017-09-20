@@ -148,6 +148,12 @@ extension MSDocument {
             dict["incomingNumber"] = incomingNumber ?? ""
         }
         
+        dict["invoicesIn"] = serialize(entities: invoicesIn,
+                                       parent: self,
+                                       metaOnly: true,
+                                       objectType: MSObjectType.invoicein,
+                                       collectionName: "invoicesIn")
+        
         return dict
     }
 }

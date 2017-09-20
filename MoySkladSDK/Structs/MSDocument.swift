@@ -10,7 +10,7 @@ import Foundation
 
 public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderType, MSDemandType,
                         MSInvoiceOutType, MSInvoiceInType, MSMoneyDocumentType, MSCashInType, MSCashOutType,
-                        MSPaymentInType, MSPaymentOutType {
+                        MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType {
     // MSBaseDocumentType
     public var id : MSID
     public var meta : MSMeta
@@ -83,6 +83,9 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     // MSCashOutType
     public var expenseItem: MSEntity<MSExpenseItem>?
     
+    // MSProcurementType
+    public var invoicesIn: [MSEntity<MSDocument>]
+    
     public func copyDocument() -> MSDocument {
         let positionsCopy = positions.flatMap { $0.value() }.map { MSEntity.entity($0.copy()) }
         let operationsCopy = operations.flatMap { $0.value() }.map { MSEntity.entity($0.copyDocument()) }
@@ -139,7 +142,8 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                           expenseItem: expenseItem,
                           operations: operationsCopy,
                           linkedSum: linkedSum,
-                          stateContractId: stateContractId)
+                          stateContractId: stateContractId,
+                          invoicesIn: invoicesIn)
     }
     
     public init(id : MSID,
@@ -194,7 +198,8 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                 expenseItem: MSEntity<MSExpenseItem>?,
                 operations: [MSEntity<MSDocument>],
                 linkedSum: Money,
-                stateContractId: String?) {
+                stateContractId: String?,
+                invoicesIn: [MSEntity<MSDocument>]) {
         self.id = id
         self.meta = meta
         self.info = info
@@ -248,5 +253,6 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
         self.operations = operations
         self.linkedSum = linkedSum
         self.stateContractId = stateContractId
+        self.invoicesIn = invoicesIn
     }
 }

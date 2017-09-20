@@ -277,6 +277,9 @@ public struct DataManager {
             paymentOutMetadata(auth: auth).map { item -> MetadataLoadResult in
                 return MetadataLoadResult(type: MSObjectType.paymentout, states: item.states, attributes: item.attributes, tags: [])
             },
+            supplyMetadata(auth: auth).map { item -> MetadataLoadResult in
+                return MetadataLoadResult(type: MSObjectType.supply, states: item.states, attributes: item.attributes, tags: [])
+            },
             counterpartyMetadata(auth: auth).map { item -> MetadataLoadResult in
                 return MetadataLoadResult(type: MSObjectType.counterparty, states: item.states, attributes: item.attributes, tags: item.tags)
             }
@@ -362,6 +365,16 @@ public struct DataManager {
                                 auth: auth)
     }
     
+    /**
+     Load Supply metadata
+     - parameter auth: Authentication information
+     - returns: Metadata for object
+     */
+    public static func supplyMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
+        return doucmentMetadata(request: .supplyMetadata,
+                                error: MSError.genericError(errorText: LocalizedStrings.incorrectSupplyMetadataResponse.value),
+                                auth: auth)
+    }
     
     /**
      Load Counterparty metadata
@@ -1277,6 +1290,23 @@ public struct DataManager {
             return deserializeArray(json: result,
                                     incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectExpenseItemResponse.value),
                                     deserializer: { MSExpenseItem.from(dict: $0) })
+        }
+    }
+    
+    public static func loadCountries(auth: Auth,
+                                        offset: MSOffset? = nil,
+                                        expanders: [Expander] = [],
+                                        filter: Filter? = nil,
+                                        search: Search? = nil) -> Observable<[MSEntity<MSCountry>]> {
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, CompositeExpander(expanders))
+        return HttpClient.get(.country, auth: auth, urlParameters: urlParameters)
+            .flatMapLatest { result -> Observable<[MSEntity<MSCountry>]> in
+                
+                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCountiesResponse.value)) }
+                
+                return deserializeArray(json: result,
+                                        incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectCountiesResponse.value),
+                                        deserializer: { MSCountry.from(dict: $0) })
         }
     }
 }

@@ -19,6 +19,12 @@ extension MSPosition : DictConvertable {
             return nil
         }
         
+        let gtdDict = dict.msValue("gtd")
+        var gtd: String? = nil
+        if let gtdString: String = gtdDict.value("name") {
+            gtd = gtdString
+        }
+        
         return MSEntity.entity(MSPosition(meta: meta,
                    id: MSID(dict: dict),
                    assortment: assortment,
@@ -27,6 +33,8 @@ extension MSPosition : DictConvertable {
                    shipped: dict.value("shipped") ?? 0,
                    price: Money(minorUnits: dict.value("price") ?? 0),
                    discount: dict.value("discount") ?? 0,
-                   vat: dict.value("vat") ?? 0))
+                   vat: dict.value("vat") ?? 0,
+                   gtd: gtd,
+                   country: MSCountry.from(dict: dict.msValue("country"))))
     }
 }

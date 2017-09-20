@@ -77,4 +77,6 @@ public enum MSObjectType : String {
     case internalorder
     case commissionreportin
     case commissionreportout
+    case supplyposition
+    case country
 }

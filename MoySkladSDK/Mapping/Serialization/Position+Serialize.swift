@@ -28,6 +28,8 @@ extension MSPosition {
         dict["reserve"] = reserve
         dict["shipped"] = shipped
         dict["vat"] = vat
+        dict["country"] = serialize(entity: country, metaOnly: true)
+        dict["gtd"] = gtd ?? ""
         
         return dict
     }

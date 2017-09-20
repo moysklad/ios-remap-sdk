@@ -1293,7 +1293,7 @@ public struct DataManager {
         }
     }
     
-    public static func loadCounties(auth: Auth,
+    public static func loadCountries(auth: Auth,
                                         offset: MSOffset? = nil,
                                         expanders: [Expander] = [],
                                         filter: Filter? = nil,

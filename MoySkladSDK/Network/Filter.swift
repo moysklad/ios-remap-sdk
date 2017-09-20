@@ -146,34 +146,6 @@ struct StockStoretId: UrlParameter {
 }
 
 /**
- Represents filter by Document state.
- Value should contain href from metadata in MSState object.
- */
-public struct StateIdParameter : UrlParameter {
-    public let value: String
-    
-    public var urlParameters: [String : String] { return ["state.id": value] }
-    
-    public init(value: String) {
-        self.value = value
-    }
-}
-
-/**
- Represents filter by Organization.
- Value should contain href from metadata in MSOrganization object.
- */
-public struct OrganizationIdParameter : UrlParameter {
-    public let value: String
-    
-    public var urlParameters: [String : String] { return ["organization.id": value] }
-    
-    public init(value: String) {
-        self.value = value
-    }
-}
-
-/**
  Set of instructions for filtering
  
  Example:
@@ -222,18 +194,14 @@ public struct FilterArgument {
 
 public struct DocumentsFilter {
     public let search: Search?
-    public let organizationId: OrganizationIdParameter?
-    public let stateId: StateIdParameter?
     public let filter: Filter?
     
-    public init(search: Search? = nil, organizationId: OrganizationIdParameter? = nil, stateId: StateIdParameter? = nil, filter: Filter? = nil) {
+    public init(search: Search? = nil, filter: Filter? = nil) {
         self.search = search
-        self.organizationId = organizationId
-        self.stateId = stateId
         self.filter = filter
     }
     
     public static func empty() -> DocumentsFilter {
-        return DocumentsFilter(search: nil, organizationId: nil, stateId: nil, filter: nil)
+        return DocumentsFilter(search: nil, filter: nil)
     }
 }

@@ -217,7 +217,7 @@ extension DataManager {
                                      filters: DocumentsFilter? = nil,
                                      orderBy: Order? = nil) -> Observable<[MSDocument]>  {
         
-        let urlParameters: [UrlParameter] = mergeUrlParameters(filters?.search, filters?.stateId, filters?.organizationId, filters?.filter, offset, orderBy, CompositeExpander(expanders))
+        let urlParameters: [UrlParameter] = mergeUrlParameters(filters?.search, filters?.filter, offset, orderBy, CompositeExpander(expanders))
         
         return HttpClient.get(request.apiRequest, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSDocument]> in

@@ -30,6 +30,7 @@ enum LocalizedStrings : String {
     case incorrectCashOutMetadataResponse
     case incorrectPaymentInMetadataResponse
     case incorrectPaymentOutMetadataResponse
+    case incorrectSupplyMetadataResponse
     case incorrectProductFolderResponse
     case incorrectStoreResponse
     case incorrectCustomerOrderPositionsResponse

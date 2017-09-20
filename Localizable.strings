@@ -39,6 +39,7 @@
 "incorrectCashOutMetadataResponse" = "Неизвестный ответ на запрос метаданных для расходных ордеров";
 "incorrectPaymentInMetadataResponse" = "Неизвестный ответ на запрос метаданных для входящих платежей";
 "incorrectPaymentOutMetadataResponse" = "Неизвестный ответ на запрос метаданных для исходящих платежей";
+"incorrectSupplyMetadataResponse" = "Неизвестный ответ на запрос метаданных для приемок";
 "incorrectDemandsMetadataResponse" = "Неизвестный ответ на запрос метаданных для отгрузок";
 "incorrectDemandsResponse" = "Ошибка при обработке отгрузок, возвращенных сервером";
 "incorrectInvoicesOutResponse" = "Ошибка при обработке счетов покупателей, возвращенных сервером";

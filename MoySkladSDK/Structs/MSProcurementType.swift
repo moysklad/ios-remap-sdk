@@ -11,3 +11,5 @@ import Foundation
 public protocol MSProcurementType: MSGeneralDocument {
     var invoicesIn: [MSEntity<MSDocument>] { get set }
 }
+
+public protocol MSSupplyType: MSProcurementType {}

@@ -20,6 +20,7 @@ public enum MSDocumentLoadRequest {
     case cashIn
     case cashOut
     case operation
+    case supply
     
     var apiRequest: MSApiRequest {
         switch self {
@@ -31,6 +32,7 @@ public enum MSDocumentLoadRequest {
         case .paymentIn: return .paymentIn
         case .paymentOut: return .paymentOut
         case .operation: return .operation
+        case .supply: return .supply
         }
     }
     
@@ -44,6 +46,7 @@ public enum MSDocumentLoadRequest {
         case .paymentIn: return .paymentInMetadata
         case .paymentOut: return .paymentOutMetadata
         case .operation: return .operation
+        case .supply: return .supplyMetadata
         }
     }
     
@@ -57,6 +60,7 @@ public enum MSDocumentLoadRequest {
         case .paymentIn: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInResponse.value)
         case .paymentOut: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutResponse.value)
         case .operation: return MSError.genericError(errorText: LocalizedStrings.incorrectOperationResponse.value)
+        case .supply: return MSError.genericError(errorText: LocalizedStrings.incorrectSupplyResponse.value)
         }
     }
 }
@@ -78,6 +82,8 @@ extension DataManager {
             return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInResponse.value)
         case let t where t == MSPaymentOutType.self:
             return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutResponse.value)
+        case let t where t == MSSupplyType.self:
+            return MSError.genericError(errorText: LocalizedStrings.incorrectSupplyResponse.value)
         default:
             fatalError("Unknown ObjectType \(type)")
         }

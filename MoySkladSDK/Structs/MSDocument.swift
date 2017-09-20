@@ -10,7 +10,7 @@ import Foundation
 
 public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderType, MSDemandType,
                         MSInvoiceOutType, MSInvoiceInType, MSMoneyDocumentType, MSCashInType, MSCashOutType,
-                        MSPaymentInType, MSPaymentOutType, MSProcurementType {
+                        MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType {
     // MSBaseDocumentType
     public var id : MSID
     public var meta : MSMeta

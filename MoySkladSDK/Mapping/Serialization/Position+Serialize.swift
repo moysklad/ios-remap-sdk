@@ -28,8 +28,11 @@ extension MSPosition {
         dict["reserve"] = reserve
         dict["shipped"] = shipped
         dict["vat"] = vat
-        dict["country"] = serialize(entity: country, metaOnly: true)
-        dict["gtd"] = gtd ?? ""
+        
+        if meta.type == .supplyposition, assortment.objectMeta().type != .service {
+            dict["country"] = serialize(entity: country, metaOnly: true)
+            dict["gtd"] = ["name": gtd ?? ""]
+        }
         
         return dict
     }

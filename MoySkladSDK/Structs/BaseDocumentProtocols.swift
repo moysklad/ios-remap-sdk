@@ -44,6 +44,7 @@ public extension MSBaseDocumentType {
         case .cashout: return .cashOut
         case .paymentin: return .paymentIn
         case .paymentout: return .paymentOut
+        case .supply: return .supply
         default: return nil
         }
     }
@@ -57,6 +58,7 @@ public extension MSBaseDocumentType {
         case .cashout: return MSError.genericError(errorText: LocalizedStrings.incorrectCashOutResponse.value)
         case .paymentin: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInResponse.value)
         case .paymentout: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutResponse.value)
+        case .supply: return MSError.genericError(errorText: LocalizedStrings.incorrectSupplyResponse.value)
         default: return MSError.genericError(errorText: LocalizedStrings.genericDeserializationError.value)
         }
     }

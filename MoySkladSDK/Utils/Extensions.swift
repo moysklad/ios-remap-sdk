@@ -17,6 +17,7 @@ func newDocumentUrl(type: MSObjectType) -> MSApiRequest? {
     case MSObjectType.paymentout: return MSApiRequest.paymentOutNew
     case MSObjectType.cashin: return MSApiRequest.cashInNew
     case MSObjectType.cashout: return MSApiRequest.cashOutNew
+    case MSObjectType.supply: return MSApiRequest.supplyNew
     default: return nil
     }
 }

@@ -32,7 +32,8 @@ public enum EntityField: String {
     case author
     case dueToDate
     case type
-    case paid
+    case paid = "isPaid"
+    case paidCash = "isPaidInCash"
     case id
 }
 

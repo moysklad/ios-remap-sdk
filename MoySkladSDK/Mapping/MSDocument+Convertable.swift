@@ -72,6 +72,10 @@ extension MSDocument : DictConvertable {
                    operations: dict.msArray("operations").map { MSDocument.from(dict: $0) }.flatMap { $0 },
                    linkedSum: Money(minorUnits: dict.value("linkedSum") ?? 0),
                    stateContractId: dict.value("stateContractId"),
-                   invoicesIn: dict.msArray("invoicesIn").map { MSDocument.from(dict: $0) }.flatMap { $0 }))
+                   invoicesIn: dict.msArray("invoicesIn").map { MSDocument.from(dict: $0) }.flatMap { $0 },
+                   proceedsNoCash: Money(minorUnits: dict.value("proceedsNoCash") ?? 0),
+                   proceedsCash: Money(minorUnits: dict.value("proceedsCash") ?? 0),
+                   receivedNoCash: Money(minorUnits: dict.value("receivedNoCash") ?? 0),
+                   receivedCash: Money(minorUnits: dict.value("receivedCash") ?? 0)))
     }
 }

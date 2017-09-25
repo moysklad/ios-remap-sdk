@@ -10,7 +10,7 @@ import Foundation
 
 public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderType, MSDemandType,
                         MSInvoiceOutType, MSInvoiceInType, MSMoneyDocumentType, MSCashInType, MSCashOutType,
-                        MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType {
+                        MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShiftType {
     // MSBaseDocumentType
     public var id : MSID
     public var meta : MSMeta
@@ -86,6 +86,12 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     // MSProcurementType
     public var invoicesIn: [MSEntity<MSDocument>]
     
+    // MSRetailShiftType
+    public var proceedsNoCash: Money
+    public var proceedsCash: Money
+    public var receivedNoCash: Money
+    public var receivedCash: Money
+    
     public func copyDocument() -> MSDocument {
         let positionsCopy = positions.flatMap { $0.value() }.map { MSEntity.entity($0.copy()) }
         let operationsCopy = operations.flatMap { $0.value() }.map { MSEntity.entity($0.copyDocument()) }
@@ -143,7 +149,11 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                           operations: operationsCopy,
                           linkedSum: linkedSum,
                           stateContractId: stateContractId,
-                          invoicesIn: invoicesIn)
+                          invoicesIn: invoicesIn,
+                          proceedsNoCash: proceedsNoCash,
+                          proceedsCash: proceedsCash,
+                          receivedNoCash: receivedNoCash,
+                          receivedCash: receivedCash)
     }
     
     public init(id : MSID,
@@ -199,7 +209,11 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                 operations: [MSEntity<MSDocument>],
                 linkedSum: Money,
                 stateContractId: String?,
-                invoicesIn: [MSEntity<MSDocument>]) {
+                invoicesIn: [MSEntity<MSDocument>],
+                proceedsNoCash: Money,
+                proceedsCash: Money,
+                receivedNoCash: Money,
+                receivedCash: Money) {
         self.id = id
         self.meta = meta
         self.info = info
@@ -254,5 +268,9 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
         self.linkedSum = linkedSum
         self.stateContractId = stateContractId
         self.invoicesIn = invoicesIn
+        self.proceedsNoCash = proceedsNoCash
+        self.proceedsCash = proceedsCash
+        self.receivedNoCash =  receivedNoCash
+        self.receivedCash = receivedCash
     }
 }

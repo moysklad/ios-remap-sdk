@@ -147,6 +147,22 @@ struct StockStoretId: UrlParameter {
 }
 
 /**
+ - Represents filter by Organization.
+ - Value should contain href from metadata in MSOrganization object.
+ - */
+public struct OrganizationIdParameter : UrlParameter {
+    public let value: String
+    
+    public var urlParameters: [String : String] {
+        return ["organization.id": value]
+    }
+    
+    public init(value: String) {
+        self.value = value
+    }
+}
+
+/**
  Set of instructions for filtering
  
  Example:
@@ -196,13 +212,15 @@ public struct FilterArgument {
 public struct DocumentsFilter {
     public let search: Search?
     public let filter: Filter?
+    public let organization: OrganizationIdParameter?
     
-    public init(search: Search? = nil, filter: Filter? = nil) {
+    public init(search: Search? = nil, filter: Filter? = nil, organization: OrganizationIdParameter? = nil) {
         self.search = search
         self.filter = filter
+        self.organization = organization
     }
     
     public static func empty() -> DocumentsFilter {
-        return DocumentsFilter(search: nil, filter: nil)
+        return DocumentsFilter(search: nil, filter: nil, organization: nil)
     }
 }

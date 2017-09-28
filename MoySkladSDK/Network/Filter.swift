@@ -47,6 +47,7 @@ public enum FilterOperator : String {
     case contains = "~"
     case hasPrefix = "~="
     case hasSuffix = "=~"
+    case containsNoRegister = "~*"
 }
 
 public protocol FilterArgumentValue {

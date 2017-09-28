@@ -143,7 +143,7 @@ extension MSDocument {
         
         // сервер ломается, если отправить incomingDate и incomingNumber документу, у которого такого поля нет
         // https://lognex.atlassian.net/browse/MC-22182
-        if meta.type == .paymentin {
+        if meta.type == .paymentin || meta.type == .supply {
             dict["incomingDate"] = incomingDate?.toLongDate() ?? NSNull()
             dict["incomingNumber"] = incomingNumber ?? ""
         }

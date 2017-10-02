@@ -13,10 +13,9 @@ extension MSAgent : DictConvertable {
 		guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else {
 			return nil
 		}
-		
-		guard let name: String = dict.value("name"), name.characters.count > 0,
-			let group = MSGroup.from(dict: dict.msValue("group")) else {
-				return MSEntity.meta(meta)
+        
+		guard let group = MSGroup.from(dict: dict.msValue("group")) else {
+            return MSEntity.meta(meta)
 		}
         
 		return MSEntity.entity(MSAgent(meta: meta,

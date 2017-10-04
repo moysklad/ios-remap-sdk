@@ -30,7 +30,7 @@
 		55C05C511E028F9B008F4254 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C1A1E028F9B008F4254 /* Position.swift */; };
 		55C05C521E028F9B008F4254 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C1B1E028F9B008F4254 /* Project.swift */; };
 		55C05C541E028F9B008F4254 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C1D1E028F9B008F4254 /* Types.swift */; };
-		55C05C551E028F9B008F4254 /* MSCustomerOrderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C1E1E028F9B008F4254 /* MSCustomerOrderType.swift */; };
+		55C05C551E028F9B008F4254 /* MSOrderTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C1E1E028F9B008F4254 /* MSOrderTypes.swift */; };
 		55C05C561E028F9B008F4254 /* Assortment+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C201E028F9B008F4254 /* Assortment+Convertible.swift */; };
 		55C05C571E028F9B008F4254 /* CompanySettings+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C211E028F9B008F4254 /* CompanySettings+Convertible.swift */; };
 		55C05C5A1E028F9B008F4254 /* DictConvertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C241E028F9B008F4254 /* DictConvertable.swift */; };
@@ -166,7 +166,7 @@
 		55C05C1A1E028F9B008F4254 /* Position.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
 		55C05C1B1E028F9B008F4254 /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		55C05C1D1E028F9B008F4254 /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
-		55C05C1E1E028F9B008F4254 /* MSCustomerOrderType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSCustomerOrderType.swift; sourceTree = "<group>"; };
+		55C05C1E1E028F9B008F4254 /* MSOrderTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSOrderTypes.swift; sourceTree = "<group>"; };
 		55C05C201E028F9B008F4254 /* Assortment+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Assortment+Convertible.swift"; sourceTree = "<group>"; };
 		55C05C211E028F9B008F4254 /* CompanySettings+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CompanySettings+Convertible.swift"; sourceTree = "<group>"; };
 		55C05C241E028F9B008F4254 /* DictConvertable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictConvertable.swift; sourceTree = "<group>"; };
@@ -344,7 +344,7 @@
 			children = (
 				6EBBF3621F4EFC2100FA64FE /* BaseDocumentProtocols.swift */,
 				6EF37A311F53F4800020BD78 /* MSDocument.swift */,
-				55C05C1E1E028F9B008F4254 /* MSCustomerOrderType.swift */,
+				55C05C1E1E028F9B008F4254 /* MSOrderTypes.swift */,
 				55C05C0E1E028F9B008F4254 /* MSDemandType.swift */,
 				55C05C111E028F9B008F4254 /* MSInvoiceType.swift */,
 				6EBBF3601F4EED7500FA64FE /* MSCashType.swift */,
@@ -653,7 +653,7 @@
 				6E75A1D31EA89B9E00A05A83 /* Expander.swift in Sources */,
 				55C05C4D1E028F9B008F4254 /* MSState.swift in Sources */,
 				55C05C4B1E028F9B008F4254 /* MSDashboard.swift in Sources */,
-				55C05C551E028F9B008F4254 /* MSCustomerOrderType.swift in Sources */,
+				55C05C551E028F9B008F4254 /* MSOrderTypes.swift in Sources */,
 				55C05C521E028F9B008F4254 /* Project.swift in Sources */,
 				C9F3CB451F1CABB6005E1636 /* MSStatistics.swift in Sources */,
 				6E3C50FD1E4CA52A0085E8A6 /* MSCustomEntity+Convertible.swift in Sources */,

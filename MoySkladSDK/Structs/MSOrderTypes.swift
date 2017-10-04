@@ -1,5 +1,5 @@
 //
-//  MSCustomerOrderType.swift
+//  MSOrderTypes.swift
 //  MoyskladNew
 //
 //  Created by Kostya on 20/10/2016.

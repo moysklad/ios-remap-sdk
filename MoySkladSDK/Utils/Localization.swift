@@ -50,6 +50,8 @@ enum LocalizedStrings : String {
     case incorrectCustomerOrderTemplateResponse
     case incorrectDemandTemplateResponse
     case incorrectInvoiceOutTemplateResponse
+    case incorrectInvoiceInTemplateResponse
+    case incorrectPurchaseOrderTemplateResponse
     case incorrecDocumentFromTemplateResponse
     case incorrecPublicationFromTemplateResponse
     case incorrecDownloadDocumentResponse

@@ -18,6 +18,8 @@ func newDocumentUrl(type: MSObjectType) -> MSApiRequest? {
     case MSObjectType.cashin: return MSApiRequest.cashInNew
     case MSObjectType.cashout: return MSApiRequest.cashOutNew
     case MSObjectType.supply: return MSApiRequest.supplyNew
+    case MSObjectType.invoicein: return MSApiRequest.invoiceInNew
+    case MSObjectType.purchaseorder: return MSApiRequest.purchaseOrderNew
     default: return nil
     }
 }
@@ -27,6 +29,9 @@ func createdDocumentError(type: MSObjectType) -> MSError {
     case MSObjectType.customerorder: return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrderTemplateResponse.value)
     case MSObjectType.demand: return MSError.genericError(errorText: LocalizedStrings.incorrectDemandTemplateResponse.value)
     case MSObjectType.invoiceout: return MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceOutTemplateResponse.value)
+    case MSObjectType.invoicein: return MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceInTemplateResponse.value)
+    case MSObjectType.purchaseorder: return MSError.genericError(errorText: LocalizedStrings.incorrectPurchaseOrderTemplateResponse.value)
+//MSTODO: add error description for other documents type
     default: return MSError.genericError(errorText: LocalizedStrings.genericDeserializationError.value)
     }
 }

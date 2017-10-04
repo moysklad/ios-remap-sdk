@@ -48,6 +48,8 @@
 "incorrectCustomerOrdersResponse" = "Ошибка при обработке заказов покупателей, возвращенных сервером";
 "incorrectAssortmentResponse" = "Ошибка при обработке товаров, возвращенных сервером";
 "incorrectCustomerOrderTemplateResponse" = "Неизвестный ответ при запросе шаблона заказа покупателя";
+"incorrectInvoiceInTemplateResponse" = "Неизвестный ответ при запросе шаблона счета поставщика";
+"incorrectPurchaseOrderTemplateResponse" = "Неизвестный ответ при запросе шаблона заказа поставщику";
 "incorrectDemandTemplateResponse" = "Неизвестный ответ при запросе шаблона отгрузки";
 "incorrectInvoiceOutTemplateResponse" = "Неизвестный ответ при запросе шаблона счета покупателя";
 "incorrectTemplateResponse" = "Неизвестный ответ при запросе шаблонов печатной формы";

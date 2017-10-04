@@ -67,6 +67,8 @@ public enum MSDocumentLoadRequest {
         case .paymentOut: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutResponse.value)
         case .operation: return MSError.genericError(errorText: LocalizedStrings.incorrectOperationResponse.value)
         case .supply: return MSError.genericError(errorText: LocalizedStrings.incorrectSupplyResponse.value)
+        case .invoiceIn: return MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceInResponse.value)
+        case .purchaseOrder: return MSError.genericError(errorText: LocalizedStrings.incorrectPurchaseOrderResponse.value)
         }
     }
 }
@@ -90,6 +92,8 @@ extension DataManager {
             return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutResponse.value)
         case let t where t == MSSupplyType.self:
             return MSError.genericError(errorText: LocalizedStrings.incorrectSupplyResponse.value)
+        case let t where t == MSInvoiceInType.self:
+            return MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceInResponse.value)
         default:
             fatalError("Unknown ObjectType \(type)")
         }

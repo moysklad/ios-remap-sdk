@@ -21,6 +21,8 @@ public enum MSDocumentLoadRequest {
     case cashOut
     case operation
     case supply
+    case invoiceIn
+    case purchaseOrder
     
     var apiRequest: MSApiRequest {
         switch self {
@@ -33,6 +35,8 @@ public enum MSDocumentLoadRequest {
         case .paymentOut: return .paymentOut
         case .operation: return .operation
         case .supply: return .supply
+        case .invoiceIn: return .invoiceIn
+        case .purchaseOrder: return .purchaseOrder
         }
     }
     
@@ -47,6 +51,8 @@ public enum MSDocumentLoadRequest {
         case .paymentOut: return .paymentOutMetadata
         case .operation: return .operation
         case .supply: return .supplyMetadata
+        case .invoiceIn: return .invoiceInMetadata
+        case .purchaseOrder: return .purchaseOrderMetadata
         }
     }
     

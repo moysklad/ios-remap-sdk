@@ -162,8 +162,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                           receivedNoCash: receivedNoCash,
                           receivedCash: receivedCash,
                           customerOrders: customerOrders,
-                          supplies: supplies)
-                          receivedCash: receivedCash,
+                          supplies: supplies,
                           commitentSum: commitentSum)
     }
     
@@ -225,9 +224,8 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                 proceedsCash: Money,
                 receivedNoCash: Money,
                 receivedCash: Money,
-                customerOrders : [MSEntity<MSDocument>],
-                supplies : [MSSupplyType]) {
-                receivedCash: Money,
+                customerOrders: [MSEntity<MSDocument>],
+                supplies: [MSSupplyType],
                 commitentSum: Money) {
         self.id = id
         self.meta = meta

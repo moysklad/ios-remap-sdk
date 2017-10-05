@@ -78,8 +78,7 @@ extension MSDocument : DictConvertable {
                    receivedNoCash: Money(minorUnits: dict.value("receivedNoCash") ?? 0),
                    receivedCash: Money(minorUnits: dict.value("receivedCash") ?? 0),
                    customerOrders: dict.msArray("customerOrders").map { MSDocument.from(dict: $0) }.flatMap { $0 },
-                   supplies: dict.msArray("supplies").map { MSDocument.from(dict: $0)?.value() }.removeNils()))
-                   receivedCash: Money(minorUnits: dict.value("receivedCash") ?? 0),
+                   supplies: dict.msArray("supplies").map { MSDocument.from(dict: $0)?.value() }.removeNils(),
                    commitentSum: Money(minorUnits: dict.value("commitentSum") ?? 0)))
     }
 }

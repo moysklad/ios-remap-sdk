@@ -31,7 +31,6 @@ func createdDocumentError(type: MSObjectType) -> MSError {
     case MSObjectType.invoiceout: return MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceOutTemplateResponse.value)
     case MSObjectType.invoicein: return MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceInTemplateResponse.value)
     case MSObjectType.purchaseorder: return MSError.genericError(errorText: LocalizedStrings.incorrectPurchaseOrderTemplateResponse.value)
-//MSTODO: add error description for other documents type
     default: return MSError.genericError(errorText: LocalizedStrings.genericDeserializationError.value)
     }
 }

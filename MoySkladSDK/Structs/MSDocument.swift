@@ -96,6 +96,9 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     public var receivedNoCash: Money
     public var receivedCash: Money
     
+    // commissionreport
+    public var commitentSum: Money
+    
     public func copyDocument() -> MSDocument {
         let positionsCopy = positions.flatMap { $0.value() }.map { MSEntity.entity($0.copy()) }
         let operationsCopy = operations.flatMap { $0.value() }.map { MSEntity.entity($0.copyDocument()) }
@@ -160,6 +163,8 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                           receivedCash: receivedCash,
                           customerOrders: customerOrders,
                           supplies: supplies)
+                          receivedCash: receivedCash,
+                          commitentSum: commitentSum)
     }
     
     public init(id : MSID,
@@ -222,6 +227,8 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                 receivedCash: Money,
                 customerOrders : [MSEntity<MSDocument>],
                 supplies : [MSSupplyType]) {
+                receivedCash: Money,
+                commitentSum: Money) {
         self.id = id
         self.meta = meta
         self.info = info
@@ -282,5 +289,6 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
         self.receivedCash = receivedCash
         self.customerOrders = customerOrders
         self.supplies = supplies
+        self.commitentSum = commitentSum
     }
 }

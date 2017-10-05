@@ -12,6 +12,7 @@ public protocol MSMoneyDocumentType : MSBaseDocumentType {
     var paymentPurpose: String? { get set }
     var operations: [MSEntity<MSDocument>] { get set }
     var linkedSum: Money { get set }
+    var commitentSum: Money { get set }
 }
 
 /**

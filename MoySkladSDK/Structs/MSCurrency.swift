@@ -19,19 +19,22 @@ public class MSCurrency : Metable {
 	public let code: String?
 	public let isoCode: String?
     public let isDefault: Bool
+    public let isIndirect: Bool
     
     public init(meta : MSMeta,
     name: String,
     rate: Double,
     code: String?,
     isoCode: String?,
-    isDefault: Bool) {
+    isDefault: Bool,
+    isIndirect: Bool) {
         self.meta = meta
         self.name = name
         self.rate = rate
         self.code = code
         self.isoCode = isoCode
         self.isDefault = isDefault
+        self.isIndirect = isIndirect
     }
 }
 

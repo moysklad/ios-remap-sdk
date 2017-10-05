@@ -32,7 +32,8 @@ extension MSCompanySettings : DictConvertable {
                                   rate: 0,
                                   code: nil,
                                   isoCode: nil,
-                                  isDefault: false)
+                                  isDefault: false,
+                                  isIndirect: false)
             }
             return cur
         }()
@@ -64,7 +65,8 @@ extension MSCurrency : DictConvertable {
                                           rate: rate,
                                           code: dict.value("code"),
                                           isoCode: dict.value("isoCode"),
-                                          isDefault: dict.value("default") ?? false))
+                                          isDefault: dict.value("default") ?? false,
+                                          isIndirect: dict.value("indirect") ?? false))
     }
     
     public func dictionary(metaOnly: Bool = true) -> Dictionary<String, Any> {

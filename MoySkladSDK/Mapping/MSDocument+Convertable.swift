@@ -76,6 +76,7 @@ extension MSDocument : DictConvertable {
                    proceedsNoCash: Money(minorUnits: dict.value("proceedsNoCash") ?? 0),
                    proceedsCash: Money(minorUnits: dict.value("proceedsCash") ?? 0),
                    receivedNoCash: Money(minorUnits: dict.value("receivedNoCash") ?? 0),
-                   receivedCash: Money(minorUnits: dict.value("receivedCash") ?? 0)))
+                   receivedCash: Money(minorUnits: dict.value("receivedCash") ?? 0),
+                   commitentSum: Money(minorUnits: dict.value("commitentSum") ?? 0)))
     }
 }

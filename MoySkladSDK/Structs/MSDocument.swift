@@ -52,6 +52,10 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     public var payments : [MSEntity<MSDocument>]
     public var invoicesOut : [MSInvoiceOutType]
     
+    // MSPurchaseOrderType
+    public var customerOrders : [MSEntity<MSDocument>]
+    public var supplies : [MSSupplyType]
+    
     // MSDemandType
     public var returns: [MSEntity<MSDocument>]
     public var factureOut: MSEntity<MSDocument>?
@@ -157,6 +161,8 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                           proceedsCash: proceedsCash,
                           receivedNoCash: receivedNoCash,
                           receivedCash: receivedCash,
+                          customerOrders: customerOrders,
+                          supplies: supplies,
                           commitentSum: commitentSum)
     }
     
@@ -218,6 +224,8 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                 proceedsCash: Money,
                 receivedNoCash: Money,
                 receivedCash: Money,
+                customerOrders: [MSEntity<MSDocument>],
+                supplies: [MSSupplyType],
                 commitentSum: Money) {
         self.id = id
         self.meta = meta
@@ -277,6 +285,8 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
         self.proceedsCash = proceedsCash
         self.receivedNoCash =  receivedNoCash
         self.receivedCash = receivedCash
+        self.customerOrders = customerOrders
+        self.supplies = supplies
         self.commitentSum = commitentSum
     }
 }

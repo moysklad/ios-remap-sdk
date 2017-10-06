@@ -43,9 +43,13 @@
 "incorrectDemandsMetadataResponse" = "Неизвестный ответ на запрос метаданных для отгрузок";
 "incorrectDemandsResponse" = "Ошибка при обработке отгрузок, возвращенных сервером";
 "incorrectInvoicesOutResponse" = "Ошибка при обработке счетов покупателей, возвращенных сервером";
+"incorrectInvoiceInResponse" = "Ошибка при обработке счетов поставщиков, возвращенных сервером";
+"incorrectPurchaseOrderResponse" = "Ошибка при обработке заказов поставщикам, возвращенных сервером";
 "incorrectCustomerOrdersResponse" = "Ошибка при обработке заказов покупателей, возвращенных сервером";
 "incorrectAssortmentResponse" = "Ошибка при обработке товаров, возвращенных сервером";
 "incorrectCustomerOrderTemplateResponse" = "Неизвестный ответ при запросе шаблона заказа покупателя";
+"incorrectInvoiceInTemplateResponse" = "Неизвестный ответ при запросе шаблона счета поставщика";
+"incorrectPurchaseOrderTemplateResponse" = "Неизвестный ответ при запросе шаблона заказа поставщику";
 "incorrectDemandTemplateResponse" = "Неизвестный ответ при запросе шаблона отгрузки";
 "incorrectInvoiceOutTemplateResponse" = "Неизвестный ответ при запросе шаблона счета покупателя";
 "incorrectTemplateResponse" = "Неизвестный ответ при запросе шаблонов печатной формы";

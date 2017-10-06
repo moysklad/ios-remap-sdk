@@ -77,10 +77,12 @@ extension MSDocument {
                                         switch meta.type {
                                         case MSObjectType.demand:
                                             return MSObjectType.demandposition
-                                        case MSObjectType.invoiceout:
+                                        case MSObjectType.invoiceout, MSObjectType.invoicein:
                                             return MSObjectType.invoiceposition
                                         case MSObjectType.customerorder:
                                             return MSObjectType.customerorderposition
+                                        case MSObjectType.purchaseorder:
+                                            return MSObjectType.purchaseorderposition
                                         default:
                                             return MSObjectType.customerorderposition
                                         }}(),

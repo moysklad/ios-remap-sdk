@@ -33,7 +33,8 @@ extension MSCompanySettings : DictConvertable {
                                   code: nil,
                                   isoCode: nil,
                                   isDefault: false,
-                                  isIndirect: false)
+                                  isIndirect: false,
+                                  multiplicity: 0)
             }
             return cur
         }()
@@ -59,6 +60,7 @@ extension MSCurrency : DictConvertable {
             return MSEntity.meta(meta)
         }
         let rate: Double = dict.value("rate") ?? 0
+        let multiplicity: Double = dict.value("multiplicity") ?? 0
         
         return MSEntity.entity(MSCurrency(meta: meta,
                                           name: name,
@@ -66,7 +68,8 @@ extension MSCurrency : DictConvertable {
                                           code: dict.value("code"),
                                           isoCode: dict.value("isoCode"),
                                           isDefault: dict.value("default") ?? false,
-                                          isIndirect: dict.value("indirect") ?? false))
+                                          isIndirect: dict.value("indirect") ?? false,
+                                          multiplicity: multiplicity))
     }
     
     public func dictionary(metaOnly: Bool = true) -> Dictionary<String, Any> {

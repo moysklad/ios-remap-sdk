@@ -20,6 +20,7 @@ public class MSCurrency : Metable {
 	public let isoCode: String?
     public let isDefault: Bool
     public let isIndirect: Bool
+    public let multiplicity: Double
     
     public init(meta : MSMeta,
     name: String,
@@ -27,7 +28,8 @@ public class MSCurrency : Metable {
     code: String?,
     isoCode: String?,
     isDefault: Bool,
-    isIndirect: Bool) {
+    isIndirect: Bool,
+    multiplicity: Double) {
         self.meta = meta
         self.name = name
         self.rate = rate
@@ -35,6 +37,7 @@ public class MSCurrency : Metable {
         self.isoCode = isoCode
         self.isDefault = isDefault
         self.isIndirect = isIndirect
+        self.multiplicity = multiplicity
     }
 }
 

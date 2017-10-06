@@ -36,6 +36,6 @@ extension MSPosition : DictConvertable {
                    vat: dict.value("vat") ?? 0,
                    gtd: gtd,
                    country: MSCountry.from(dict: dict.msValue("country")),
-                   wait: dict.value("wait") ?? 0))
+                   wait: dict.value("inTransit") ?? 0))
     }
 }

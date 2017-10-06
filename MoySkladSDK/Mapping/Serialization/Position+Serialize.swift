@@ -28,7 +28,7 @@ extension MSPosition {
         dict["reserve"] = reserve
         dict["shipped"] = shipped
         dict["vat"] = vat
-        dict["wait"] = wait
+        dict["inTransit"] = wait
         
         if meta.type == .supplyposition, assortment.objectMeta().type != .service {
             dict["country"] = serialize(entity: country, metaOnly: true)

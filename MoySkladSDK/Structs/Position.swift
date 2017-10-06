@@ -21,7 +21,7 @@ public class MSPosition : Metable {
 	public var vat : Int
     public var gtd : String?
     public var country: MSEntity<MSCountry>?
-    public var wait: Double
+    public var inTransit: Double
     
     public init(meta : MSMeta,
     id : MSID,
@@ -34,7 +34,7 @@ public class MSPosition : Metable {
     vat : Int,
     gtd : String?,
     country : MSEntity<MSCountry>?,
-    wait: Double) {
+    inTransit: Double) {
         self.meta = meta
         self.id = id
         self.assortment = assortment
@@ -46,7 +46,7 @@ public class MSPosition : Metable {
         self.vat = vat
         self.gtd = gtd
         self.country = country
-        self.wait = wait
+        self.inTransit = inTransit
     }
     
     public func copy() -> MSPosition {
@@ -61,6 +61,6 @@ public class MSPosition : Metable {
                           vat: vat,
                           gtd: gtd,
                           country: country,
-                          wait: wait)
+                          inTransit: inTransit)
     }
 }

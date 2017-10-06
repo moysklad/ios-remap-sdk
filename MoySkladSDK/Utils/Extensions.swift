@@ -132,9 +132,10 @@ extension MSBaseDocumentType {
         }
         
         switch self.meta.type {
-        case .customerorder: return ["customerOrder": dictionary(metaOnly: true)]
+        case .customerorder: return type == .purchaseorder ? ["customerOrders": [dictionary(metaOnly: true)]] : ["customerOrder": dictionary(metaOnly: true)]
         case .demand: return ["demands": [dictionary(metaOnly: true)]]
         case .invoiceout: return ["invoicesOut": [dictionary(metaOnly: true)]]
+        case .purchaseorder: return ["purchaseOrder": dictionary(metaOnly: true)]
         default: return nil
         }
     }

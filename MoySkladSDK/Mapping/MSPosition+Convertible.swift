@@ -35,6 +35,7 @@ extension MSPosition : DictConvertable {
                    discount: dict.value("discount") ?? 0,
                    vat: dict.value("vat") ?? 0,
                    gtd: gtd,
-                   country: MSCountry.from(dict: dict.msValue("country"))))
+                   country: MSCountry.from(dict: dict.msValue("country")),
+                   inTransit: dict.value("inTransit") ?? 0))
     }
 }

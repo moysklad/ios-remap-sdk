@@ -35,6 +35,7 @@ public enum ExpandPath : String {
 	case agent
 	case purchaseorders = "purchaseOrders"
     case purchaseorder = "purchaseOrder"
+    case internalorder = "internalOrder"
 	case supplier
 	case salePrices
     case buyPrice

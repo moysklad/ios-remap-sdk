@@ -21,16 +21,21 @@ public enum ExpandPath : String {
 	case counterparty
 	case currency
 	case demands
+    case supplies
 	case owner
 	case invoicesout = "invoicesOut"
+    case invoicesin = "invoicesIn"
 	case group
 	case accounts
 	case customerorder = "customerOrder"
+    case customerorders = "customerOrders"
 	case returns
 	case payments
 	case agentaccount = "agentAccount"
 	case agent
 	case purchaseorders = "purchaseOrders"
+    case purchaseorder = "purchaseOrder"
+    case internalorder = "internalOrder"
 	case supplier
 	case salePrices
     case buyPrice

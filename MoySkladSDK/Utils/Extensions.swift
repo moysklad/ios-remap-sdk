@@ -136,6 +136,7 @@ extension MSBaseDocumentType {
         case .demand: return ["demands": [dictionary(metaOnly: true)]]
         case .invoiceout: return ["invoicesOut": [dictionary(metaOnly: true)]]
         case .purchaseorder: return ["purchaseOrder": dictionary(metaOnly: true)]
+        case .invoicein: return ["invoiceIn": dictionary(metaOnly: true)]
         default: return nil
         }
     }

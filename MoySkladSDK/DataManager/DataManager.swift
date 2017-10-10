@@ -280,6 +280,12 @@ public struct DataManager {
             supplyMetadata(auth: auth).map { item -> MetadataLoadResult in
                 return MetadataLoadResult(type: MSObjectType.supply, states: item.states, attributes: item.attributes, tags: [])
             },
+            invoiceInMetadata(auth: auth).map { item -> MetadataLoadResult in
+                return MetadataLoadResult(type: MSObjectType.invoicein, states: item.states, attributes: item.attributes, tags: [])
+            },
+            purchaseOrderMetadata(auth: auth).map { item -> MetadataLoadResult in
+                return MetadataLoadResult(type: MSObjectType.purchaseorder, states: item.states, attributes: item.attributes, tags: [])
+            },
             counterpartyMetadata(auth: auth).map { item -> MetadataLoadResult in
                 return MetadataLoadResult(type: MSObjectType.counterparty, states: item.states, attributes: item.attributes, tags: item.tags)
             }
@@ -294,7 +300,7 @@ public struct DataManager {
      - returns: Metadata for object
     */
     public static func customerOrderMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return doucmentMetadata(request: .customerordermetadata,
+        return documentMetadata(request: .customerordermetadata,
                               error: MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrderMetadataResponse.value),
                               auth: auth)
     }
@@ -305,7 +311,7 @@ public struct DataManager {
      - returns: Metadata for object
      */
     public static func demandMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return doucmentMetadata(request: .demandmetadata, 
+        return documentMetadata(request: .demandmetadata, 
                               error: MSError.genericError(errorText: LocalizedStrings.incorrectDemandsMetadataResponse.value),
                               auth: auth)
     }
@@ -316,7 +322,7 @@ public struct DataManager {
      - returns: Metadata for object
      */
     public static func invoiceOutMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return doucmentMetadata(request: .invoiceOutMetadata,
+        return documentMetadata(request: .invoiceOutMetadata,
                               error: MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceOutMetadataResponse.value),
                               auth: auth)
     }
@@ -327,7 +333,7 @@ public struct DataManager {
      - returns: Metadata for object
      */
     public static func cashInMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return doucmentMetadata(request: .cashInMetadata,
+        return documentMetadata(request: .cashInMetadata,
                                 error: MSError.genericError(errorText: LocalizedStrings.incorrectCashInMetadataResponse.value),
                                 auth: auth)
     }
@@ -338,7 +344,7 @@ public struct DataManager {
      - returns: Metadata for object
      */
     public static func cashOutMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return doucmentMetadata(request: .cashOutMetadata,
+        return documentMetadata(request: .cashOutMetadata,
                                 error: MSError.genericError(errorText: LocalizedStrings.incorrectCashOutMetadataResponse.value),
                                 auth: auth)
     }
@@ -349,7 +355,7 @@ public struct DataManager {
      - returns: Metadata for object
      */
     public static func paymentInMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return doucmentMetadata(request: .paymentInMetadata,
+        return documentMetadata(request: .paymentInMetadata,
                                 error: MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInMetadataResponse.value),
                                 auth: auth)
     }
@@ -360,7 +366,7 @@ public struct DataManager {
      - returns: Metadata for object
      */
     public static func paymentOutMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return doucmentMetadata(request: .paymentOutMetadata,
+        return documentMetadata(request: .paymentOutMetadata,
                                 error: MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutMetadataResponse.value),
                                 auth: auth)
     }
@@ -371,8 +377,30 @@ public struct DataManager {
      - returns: Metadata for object
      */
     public static func supplyMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return doucmentMetadata(request: .supplyMetadata,
+        return documentMetadata(request: .supplyMetadata,
                                 error: MSError.genericError(errorText: LocalizedStrings.incorrectSupplyMetadataResponse.value),
+                                auth: auth)
+    }
+    
+    /**
+     Load InvoiceIn metadata
+     - parameter auth: Authentication information
+     - returns: Metadata for object
+     */
+    public static func invoiceInMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
+        return documentMetadata(request: .invoiceInMetadata,
+                                error: MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceInMetadataResponse.value),
+                                auth: auth)
+    }
+    
+    /**
+     Load PurchaseOrder metadata
+     - parameter auth: Authentication information
+     - returns: Metadata for object
+     */
+    public static func purchaseOrderMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
+        return documentMetadata(request: .purchaseOrderMetadata,
+                                error: MSError.genericError(errorText: LocalizedStrings.incorrectPurchaseOrderMetadataResponse.value),
                                 auth: auth)
     }
     
@@ -392,7 +420,7 @@ public struct DataManager {
         }
     }
     
-    static func doucmentMetadata(request: MSApiRequest, error: Error, auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
+    static func documentMetadata(request: MSApiRequest, error: Error, auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
         return HttpClient.get(request, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
             .flatMapLatest { result -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> in
                 guard let result = result else { return Observable.error(error) }

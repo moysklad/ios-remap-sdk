@@ -226,12 +226,17 @@ extension MSAssortment {
         return salePrices
     }
     
+    public func getBuyPrice() -> MSPrice? {
+        if meta.type == .variant, let price = (buyPrice ?? assortmentInfo.product?.value()?.buyPrice) {
+            return price
+        }
+        return buyPrice
+    }
+    
     public func getBuyAndSalePrices() -> [MSPrice] {
         var prices: [MSPrice] = []
         
-        if meta.type == .variant, let price = (buyPrice ?? assortmentInfo.product?.value()?.buyPrice) {
-            prices.append(price)
-        } else if let price = buyPrice {
+        if let price = getBuyPrice() {
             prices.append(price)
         }
 

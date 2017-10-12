@@ -19,6 +19,11 @@ extension MSDocument : DictConvertable {
                 return MSEntity.meta(meta)
         }
         
+        var purchaseOrders = dict.msArray("purchaseOrders").map { MSDocument.from(dict: $0) }.flatMap { $0 }
+        if let purchaseOrder = MSDocument.from(dict: dict.msValue("purchaseOrder")) {
+            purchaseOrders.append(purchaseOrder)
+        }
+        
         return MSEntity.entity(MSDocument(id: MSID(dict: dict),
                                           meta: meta,
                    info: MSInfo(dict: dict),
@@ -47,7 +52,7 @@ extension MSDocument : DictConvertable {
                    positions: dict.msValue("positions").msArray("rows").map { MSPosition.from(dict: $0) }.flatMap { $0 },
                    stock: [],
                    deliveryPlannedMoment: Date.fromMSDate(dict.value("deliveryPlannedMoment") ?? ""),
-                   purchaseOrders: dict.msArray("purchaseOrders").map { MSDocument.from(dict: $0) }.flatMap { $0 },
+                   purchaseOrders: purchaseOrders,
                    demands: dict.msArray("demands").map { MSDocument.from(dict: $0)?.value() }.removeNils(),
                    payments: dict.msArray("payments").map { MSDocument.from(dict: $0) }.flatMap { $0 },
                    invoicesOut: dict.msArray("invoicesOut").map { MSDocument.from(dict: $0)?.value() }.removeNils(),

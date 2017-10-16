@@ -15,7 +15,7 @@ extension MSAssortment {
         dict["meta"] = meta.dictionary()
         guard !metaOnly else { return dict }
         
-//        dict.merge(info.dictionary())
+        dict.merge(info.dictionary())
         dict.merge(id.dictionary())
         
         dict["accountId"] = accountId
@@ -77,7 +77,10 @@ extension MSAssortment {
         dict["quantity"] = quantity ?? 0
         dict["description"] = description ?? ""
         dict["salePrices"] = salePrices.map { $0.dictionary() }
-        dict["assortmentInfo"] = assortmentInfo.dictionary()
+        
+        if !assortmentInfo.dictionary().isEmpty {
+            dict["assortmentInfo"] = assortmentInfo.dictionary()
+        }
         dict["barcodes"] = barcodes
         
         return dict
@@ -132,7 +135,9 @@ extension MSAssortmentInfo {
             dict["product"] = serialize(entity: product, metaOnly: true)
         }
         
-        dict["components"] = components.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
+        if components.count > 0 {
+            dict["components"] = components.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
+        }
         
         return dict
     }

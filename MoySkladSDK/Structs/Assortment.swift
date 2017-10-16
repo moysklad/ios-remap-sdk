@@ -28,7 +28,7 @@ public class MSAlcohol {
  Represents Assortment
  For more information, see [API reference.](https://online.moysklad.ru/api/remap/1.1/doc/index.html#ассортимент)
 */
-public class MSAssortment : Metable {
+public class MSAssortment : Metable, DictConvertable {
 	public let meta: MSMeta
 	public let id: MSID
 	public let accountId: String
@@ -264,7 +264,7 @@ public struct MSAssortmentInfo {
     }
 }
 
-public class MSProduct : Metable {
+public class MSProduct : Metable, DictConvertable {
     public let meta: MSMeta
     public let id: MSID
     public let accountId: String

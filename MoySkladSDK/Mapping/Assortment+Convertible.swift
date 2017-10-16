@@ -9,20 +9,7 @@
 import Foundation
 //import Money
 
-extension MSAssortment : DictConvertable {
-	public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {
-        var dict = [String: Any]()
-        
-        dict["meta"] = meta.dictionary()
-        
-        guard !metaOnly else { return dict }
-        
-        dict.merge(info.dictionary())
-        // тут должны быть остальные поля объекта, если они понадобятся
-        
-        return dict
-	}
-	
+extension MSAssortment {
 	public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSAssortment>? {
 		guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else {
 			return nil
@@ -67,10 +54,6 @@ extension MSAssortment : DictConvertable {
 }
 
 extension MSAlcohol {
-	public func dictionary() -> Dictionary<String, Any> {
-		return [String:Any]()
-	}
-	
 	public static func from(dict: Dictionary<String, Any>) -> MSAlcohol? {
 		guard dict.keys.count > 0 else {
 			return nil

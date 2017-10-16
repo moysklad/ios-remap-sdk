@@ -21,24 +21,24 @@ extension MSAssortment {
         dict["accountId"] = accountId
         dict["shared"] = shared
         
-        if type(of: serialize(entity: group, metaOnly: false)) != type(of: NSNull()) {
-            dict["group"] = serialize(entity: group, metaOnly: false)
+        if type(of: serialize(entity: group, metaOnly: true)) != type(of: NSNull()) {
+            dict["group"] = serialize(entity: group, metaOnly: true)
         }
         
-        if type(of: serialize(entity: owner, metaOnly: false)) != type(of: NSNull()) {
-            dict["owner"] = serialize(entity: owner, metaOnly: false)
+        if type(of: serialize(entity: owner, metaOnly: true)) != type(of: NSNull()) {
+            dict["owner"] = serialize(entity: owner, metaOnly: true)
         }
         
-        if type(of: serialize(entity: productFolder, metaOnly: false)) != type(of: NSNull()) {
-            dict["productFolder"] = serialize(entity: productFolder, metaOnly: false)
+        if type(of: serialize(entity: productFolder, metaOnly: true)) != type(of: NSNull()) {
+            dict["productFolder"] = serialize(entity: productFolder, metaOnly: true)
         }
         
-        if type(of: serialize(entity: supplier, metaOnly: false)) != type(of: NSNull()) {
-            dict["supplier"] = serialize(entity: supplier, metaOnly: false)
+        if type(of: serialize(entity: supplier, metaOnly: true)) != type(of: NSNull()) {
+            dict["supplier"] = serialize(entity: supplier, metaOnly: true)
         }
         
-        if type(of: serialize(entity: uom, metaOnly: false)) != type(of: NSNull()) {
-            dict["uom"] = serialize(entity: uom, metaOnly: false)
+        if type(of: serialize(entity: uom, metaOnly: true)) != type(of: NSNull()) {
+            dict["uom"] = serialize(entity: uom, metaOnly: true)
         }
 
         if let alcohol = alcohol?.dictionary() {
@@ -99,8 +99,8 @@ extension MSPrice {
         dict["priceType"] = priceType ?? ""
         dict["value"] = value.minorUnits
         
-        if type(of: serialize(entity: currency, metaOnly: false)) != type(of: NSNull()) {
-            dict["currency"] = serialize(entity: currency, metaOnly: false)
+        if type(of: serialize(entity: currency, metaOnly: true)) != type(of: NSNull()) {
+            dict["currency"] = serialize(entity: currency, metaOnly: true)
         }
         
         return dict
@@ -124,12 +124,12 @@ extension MSAssortmentInfo {
     public func dictionary() -> Dictionary<String, Any> {
         var dict = [String: Any]()
         
-        if type(of: serialize(entity: productFolder, metaOnly: false)) != type(of: NSNull()) {
-            dict["productFolder"] = serialize(entity: productFolder, metaOnly: false)
+        if type(of: serialize(entity: productFolder, metaOnly: true)) != type(of: NSNull()) {
+            dict["productFolder"] = serialize(entity: productFolder, metaOnly: true)
         }
         
-        if type(of: serialize(entity: product, metaOnly: false)) != type(of: NSNull()) {
-            dict["product"] = serialize(entity: product, metaOnly: false)
+        if type(of: serialize(entity: product, metaOnly: true)) != type(of: NSNull()) {
+            dict["product"] = serialize(entity: product, metaOnly: true)
         }
         
         dict["components"] = components.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
@@ -158,12 +158,12 @@ extension MSProduct {
             dict["buyPrice"] = buyPrice
         }
         
-        if type(of: serialize(entity: productFolder, metaOnly: false)) != type(of: NSNull()) {
-            dict["productFolder"] = serialize(entity: productFolder, metaOnly: false)
+        if type(of: serialize(entity: productFolder, metaOnly: true)) != type(of: NSNull()) {
+            dict["productFolder"] = serialize(entity: productFolder, metaOnly: true)
         }
         
-        if type(of: serialize(entity: supplier, metaOnly: false)) != type(of: NSNull()) {
-            dict["supplier"] = serialize(entity: supplier, metaOnly: false)
+        if type(of: serialize(entity: supplier, metaOnly: true)) != type(of: NSNull()) {
+            dict["supplier"] = serialize(entity: supplier, metaOnly: true)
         }
         
         if let image = image?.dictionary() {

@@ -15,24 +15,41 @@ extension MSAssortment {
         dict["meta"] = meta.dictionary()
         guard !metaOnly else { return dict }
         
-        dict.merge(info.dictionary())
+//        dict.merge(info.dictionary())
         dict.merge(id.dictionary())
         
         dict["accountId"] = accountId
-        dict["owner"] = serialize(entity: owner, metaOnly: true)
         dict["shared"] = shared
-        dict["group"] = serialize(entity: group, metaOnly: true)
-        dict["code"] = code ?? NSNull()
-        dict["externalCode"] = externalCode ?? NSNull()
+        
+        if type(of: serialize(entity: group, metaOnly: false)) != type(of: NSNull()) {
+            dict["group"] = serialize(entity: group, metaOnly: false)
+        }
+        
+        if type(of: serialize(entity: owner, metaOnly: false)) != type(of: NSNull()) {
+            dict["owner"] = serialize(entity: owner, metaOnly: false)
+        }
+        
+        if type(of: serialize(entity: productFolder, metaOnly: false)) != type(of: NSNull()) {
+            dict["productFolder"] = serialize(entity: productFolder, metaOnly: false)
+        }
+        
+        if type(of: serialize(entity: supplier, metaOnly: false)) != type(of: NSNull()) {
+            dict["supplier"] = serialize(entity: supplier, metaOnly: false)
+        }
+        
+        if type(of: serialize(entity: uom, metaOnly: false)) != type(of: NSNull()) {
+            dict["uom"] = serialize(entity: uom, metaOnly: false)
+        }
+
+        
+        dict["code"] = code ?? ""
+        dict["externalCode"] = externalCode ?? ""
         dict["archived"] = archived
-        dict["pathName"] = pathName ?? NSNull()
-        dict["vat"] = vat ?? NSNull()
-        dict["effectiveVat"] = effectiveVat ?? NSNull()
-        dict["productFolder"] = serialize(entity: productFolder, metaOnly: true)
-        dict["uom"] = serialize(entity: uom, metaOnly: true)
-        dict["supplier"] = serialize(entity: supplier, metaOnly: true)
+        dict["pathName"] = pathName ?? ""
+        dict["vat"] = vat ?? 0
+        dict["effectiveVat"] = effectiveVat ?? 0
         dict["country"] = country?.dictionary() ?? NSNull()
-        dict["article"] = article ?? NSNull()
+        dict["article"] = article ?? ""
         dict["weighed"] = weighed
         dict["weight"] = weight 
         dict["volume"] = volume
@@ -43,7 +60,7 @@ extension MSAssortment {
         dict["reserve"] = reserve ?? NSNull()
         dict["inTransit"] = inTransit ?? NSNull()
         dict["quantity"] = quantity ?? NSNull()
-        dict["description"] = description ?? NSNull()
+        dict["description"] = description ?? ""
         dict["buyPrice"] = buyPrice?.dictionary() ?? NSNull()
         dict["alcohol"] = alcohol?.dictionary() ?? NSNull()
         dict["image"] = image?.dictionary() ?? NSNull()
@@ -52,6 +69,14 @@ extension MSAssortment {
         dict["barcodes"] = barcodes
         
         return dict
+    }
+    
+    public func requestUrl() -> MSApiRequest? {
+        return MSApiRequest.product
+    }
+    
+    public func deserializationError() -> MSError {
+        return MSError.genericError(errorText: LocalizedStrings.incorrectProductResponse.value)
     }
 }
 

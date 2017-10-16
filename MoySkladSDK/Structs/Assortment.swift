@@ -28,7 +28,7 @@ public class MSAlcohol {
  Represents Assortment
  For more information, see [API reference.](https://online.moysklad.ru/api/remap/1.1/doc/index.html#ассортимент)
 */
-public class MSAssortment : Metable, DictConvertable {
+public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
 	public let meta: MSMeta
 	public let id: MSID
 	public let accountId: String

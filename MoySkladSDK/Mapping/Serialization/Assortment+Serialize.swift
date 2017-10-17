@@ -20,27 +20,16 @@ extension MSAssortment {
         
         dict["accountId"] = accountId
         dict["shared"] = shared
-        
-        if type(of: serialize(entity: group, metaOnly: true)) != type(of: NSNull()) {
-            dict["group"] = serialize(entity: group, metaOnly: true)
-        }
-        
-        if type(of: serialize(entity: owner, metaOnly: true)) != type(of: NSNull()) {
-            dict["owner"] = serialize(entity: owner, metaOnly: true)
-        }
-        
-        if type(of: serialize(entity: productFolder, metaOnly: true)) != type(of: NSNull()) {
-            dict["productFolder"] = serialize(entity: productFolder, metaOnly: true)
-        }
-        
-        if type(of: serialize(entity: supplier, metaOnly: true)) != type(of: NSNull()) {
-            dict["supplier"] = serialize(entity: supplier, metaOnly: true)
-        }
-        
-        if type(of: serialize(entity: uom, metaOnly: true)) != type(of: NSNull()) {
-            dict["uom"] = serialize(entity: uom, metaOnly: true)
-        }
+        dict["group"] = serialize(entity: group, metaOnly: true)
+        dict["owner"] = serialize(entity: owner, metaOnly: true)
+        dict["productFolder"] = serialize(entity: productFolder, metaOnly: true)
+        dict["supplier"] = serialize(entity: supplier, metaOnly: true)
+        dict["uom"] = serialize(entity: uom, metaOnly: true)
 
+        if !assortmentInfo.dictionary().isEmpty {
+            dict["assortmentInfo"] = assortmentInfo.dictionary()
+        }
+        
         if let alcohol = alcohol?.dictionary() {
             dict["alcohol"] = alcohol
         }
@@ -53,9 +42,7 @@ extension MSAssortment {
             dict["image"] = image
         }
         
-        if let country = country?.dictionary() {
-            dict["country"] = country
-        }
+        dict["country"] = country?.dictionary() ?? NSNull()
 
         
         dict["code"] = code ?? ""
@@ -77,10 +64,6 @@ extension MSAssortment {
         dict["quantity"] = quantity ?? 0
         dict["description"] = description ?? ""
         dict["salePrices"] = salePrices.map { $0.dictionary() }
-        
-        if !assortmentInfo.dictionary().isEmpty {
-            dict["assortmentInfo"] = assortmentInfo.dictionary()
-        }
         dict["barcodes"] = barcodes
         
         return dict
@@ -127,13 +110,8 @@ extension MSAssortmentInfo {
     public func dictionary() -> Dictionary<String, Any> {
         var dict = [String: Any]()
         
-        if type(of: serialize(entity: productFolder, metaOnly: true)) != type(of: NSNull()) {
-            dict["productFolder"] = serialize(entity: productFolder, metaOnly: true)
-        }
-        
-        if type(of: serialize(entity: product, metaOnly: true)) != type(of: NSNull()) {
-            dict["product"] = serialize(entity: product, metaOnly: true)
-        }
+        dict["productFolder"] = serialize(entity: productFolder, metaOnly: true)
+        dict["product"] = serialize(entity: product, metaOnly: true)
         
         if components.count > 0 {
             dict["components"] = components.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
@@ -158,24 +136,17 @@ extension MSProduct {
         dict["article"] = article ?? ""
         dict["code"] = code ?? ""
         dict["description"] = description ?? ""
+        dict["productFolder"] = serialize(entity: productFolder, metaOnly: true)
+        dict["supplier"] = serialize(entity: supplier, metaOnly: true)
+        dict["salePrices"] = salePrices.map { $0.dictionary() }
         
         if let buyPrice = buyPrice?.dictionary() {
             dict["buyPrice"] = buyPrice
         }
         
-        if type(of: serialize(entity: productFolder, metaOnly: true)) != type(of: NSNull()) {
-            dict["productFolder"] = serialize(entity: productFolder, metaOnly: true)
-        }
-        
-        if type(of: serialize(entity: supplier, metaOnly: true)) != type(of: NSNull()) {
-            dict["supplier"] = serialize(entity: supplier, metaOnly: true)
-        }
-        
         if let image = image?.dictionary() {
             dict["image"] = image
         }
-        
-        dict["salePrices"] = salePrices.map { $0.dictionary() }
         
         return dict
     }
@@ -206,10 +177,7 @@ extension MSBundleComponent {
         
         dict["accountId"] = accountId
         dict["quantity"] = quantity
-        
-        if type(of: serialize(entity: assortment, metaOnly: false)) != type(of: NSNull()) {
-            dict["assortment"] = serialize(entity: assortment, metaOnly: false)
-        }
+        dict["assortment"] = serialize(entity: assortment, metaOnly: false)
        
         return dict
     }

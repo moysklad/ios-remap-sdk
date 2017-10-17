@@ -142,6 +142,44 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
         self.assortmentInfo = assortmentInfo
         self.description = description
     }
+    
+    public func copy() -> MSAssortment {
+        return MSAssortment(meta: meta,
+                            id: id,
+                            accountId: accountId,
+                            owner: owner,
+                            shared: shared,
+                            group: group,
+                            info: info,
+                            code: code,
+                            externalCode: externalCode,
+                            archived: archived,
+                            pathName: pathName,
+                            vat: vat,
+                            effectiveVat: effectiveVat,
+                            productFolder: productFolder,
+                            uom: uom,
+                            image: image,
+                            buyPrice: buyPrice,
+                            salePrices: salePrices,
+                            supplier: supplier,
+                            country: country,
+                            article: article,
+                            weighed: weighed,
+                            weight: weight,
+                            volume: volume,
+                            barcodes: barcodes,
+                            alcohol: alcohol,
+                            modificationsCount: modificationsCount,
+                            minimumBalance: minimumBalance,
+                            isSerialTrackable: isSerialTrackable,
+                            stock: stock,
+                            reserve: reserve,
+                            inTransit: inTransit,
+                            quantity: quantity,
+                            assortmentInfo: assortmentInfo,
+                            description: description)
+    }
 }
 
 extension MSAssortment {

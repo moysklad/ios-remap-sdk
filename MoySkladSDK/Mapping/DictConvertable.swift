@@ -143,10 +143,6 @@ extension MSMeta {
 }
 
 extension MSPrice {
-    public func dictionary() -> Dictionary<String, Any> {
-        return [String:Any]()
-    }
-    
     public static func from(dict: Dictionary<String, Any>, priceTypeOverride: String? = nil) -> MSPrice? {
         guard dict.keys.count > 0 else {
             return nil
@@ -161,11 +157,7 @@ extension MSPrice {
     }
 }
 
-extension MSImage {
-	public func dictionary() -> Dictionary<String, Any> {
-		return [String:Any]()
-	}
-	
+extension MSImage {	
 	public static func from(dict: Dictionary<String, Any>) -> MSImage? {
 		guard let miniature: String = dict.msValue("miniature").value("href") else { return nil }
 		guard let miniatureUrl = URL(string: miniature) else { return nil }

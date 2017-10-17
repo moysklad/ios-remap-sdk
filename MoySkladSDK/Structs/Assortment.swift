@@ -28,44 +28,44 @@ public class MSAlcohol {
  Represents Assortment
  For more information, see [API reference.](https://online.moysklad.ru/api/remap/1.1/doc/index.html#ассортимент)
 */
-public class MSAssortment : Metable {
-	public let meta: MSMeta
-	public let id: MSID
-	public let accountId: String
-	public let owner: MSEntity<MSEmployee>?
-	public let shared: Bool
-	public let group: MSEntity<MSGroup>?
-	public let info : MSInfo
-	public let code: String?
-	public let externalCode: String?
-	public let archived: Bool
-	public let pathName: String?
-	public let vat: Int?
-	public let effectiveVat: Int?
-	public let productFolder: MSEntity<MSProductFolder>?
-    public let uom: MSEntity<MSUOM>?
-	public let image: MSImage?
+public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
+	public var meta: MSMeta
+	public var id: MSID
+	public var accountId: String
+	public var owner: MSEntity<MSEmployee>?
+	public var shared: Bool
+	public var group: MSEntity<MSGroup>?
+	public var info : MSInfo
+	public var code: String?
+	public var externalCode: String?
+	public var archived: Bool
+	public var pathName: String?
+	public var vat: Int?
+	public var effectiveVat: Int?
+	public var productFolder: MSEntity<MSProductFolder>?
+    public var uom: MSEntity<MSUOM>?
+	public var image: MSImage?
 	//public let minPrice: Money
-	public let buyPrice: MSPrice?
-	public let salePrices: [MSPrice]
-	public let supplier: MSEntity<MSAgent>?
-	public let country: MSMeta?
-	public let article: String?
-	public let weighed: Bool
-	public let weight: Double
-	public let volume: Double
+	public var buyPrice: MSPrice?
+	public var salePrices: [MSPrice]
+	public var supplier: MSEntity<MSAgent>?
+	public var country: MSMeta?
+	public var article: String?
+	public var weighed: Bool
+	public var weight: Double
+	public var volume: Double
 	//public let packs
-	public let barcodes: [String]
-	public let alcohol: MSAlcohol?
-	public let modificationsCount: Int?
-	public let minimumBalance: Double?
-	public let isSerialTrackable: Bool
-	public let stock: Double?
-	public let reserve: Double?
-	public let inTransit: Double?
-	public let quantity: Double?
-    public let assortmentInfo: MSAssortmentInfo
-    public let description: String?
+	public var barcodes: [String]
+	public var alcohol: MSAlcohol?
+	public var modificationsCount: Int?
+	public var minimumBalance: Double?
+	public var isSerialTrackable: Bool
+	public var stock: Double?
+	public var reserve: Double?
+	public var inTransit: Double?
+	public var quantity: Double?
+    public var assortmentInfo: MSAssortmentInfo
+    public var description: String?
     
     public init(meta: MSMeta,
     id: MSID,
@@ -264,7 +264,7 @@ public struct MSAssortmentInfo {
     }
 }
 
-public class MSProduct : Metable {
+public class MSProduct : Metable, DictConvertable {
     public let meta: MSMeta
     public let id: MSID
     public let accountId: String

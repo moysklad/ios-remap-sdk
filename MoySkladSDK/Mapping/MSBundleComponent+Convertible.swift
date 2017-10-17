@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension MSBundleComponent : DictConvertable {
+extension MSBundleComponent {
     public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSBundleComponent>? {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else {
             return nil
@@ -23,15 +23,5 @@ extension MSBundleComponent : DictConvertable {
                           accountId: dict.value("accountId") ?? "",
                           quantity: dict.value("quantity") ?? 0,
                           assortment: assortment))
-    }
-    
-    public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {
-        var dict = [String: Any]()
-        
-        dict["meta"] = meta.dictionary()
-        
-        guard !metaOnly else { return dict }
-        
-        return dict
     }
 }

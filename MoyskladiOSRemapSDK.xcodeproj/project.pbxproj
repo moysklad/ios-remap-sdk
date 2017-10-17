@@ -124,6 +124,7 @@
 		C9564DD21F56B0DD0051E3BE /* MSExpenseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9564DD11F56B0DD0051E3BE /* MSExpenseItem.swift */; };
 		C9BD0FC11E9BA40B00FD8613 /* MSTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD0FC01E9BA40B00FD8613 /* MSTemplate.swift */; };
 		C9BD0FC31E9BA70A00FD8613 /* MSTemplate+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD0FC21E9BA70A00FD8613 /* MSTemplate+Convertible.swift */; };
+		C9D387ED1F94A559008CD04C /* Assortment+Serialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D387EC1F94A559008CD04C /* Assortment+Serialize.swift */; };
 		C9F3CB451F1CABB6005E1636 /* MSStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F3CB441F1CABB6005E1636 /* MSStatistics.swift */; };
 		C9F3CB491F1CAED8005E1636 /* MSStatisticsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F3CB481F1CAED8005E1636 /* MSStatisticsData.swift */; };
 		C9F3CB501F1CB880005E1636 /* MSStatistics+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F3CB4F1F1CB880005E1636 /* MSStatistics+Convertible.swift */; };
@@ -260,6 +261,7 @@
 		C9564DD11F56B0DD0051E3BE /* MSExpenseItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSExpenseItem.swift; sourceTree = "<group>"; };
 		C9BD0FC01E9BA40B00FD8613 /* MSTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSTemplate.swift; sourceTree = "<group>"; };
 		C9BD0FC21E9BA70A00FD8613 /* MSTemplate+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSTemplate+Convertible.swift"; sourceTree = "<group>"; };
+		C9D387EC1F94A559008CD04C /* Assortment+Serialize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Assortment+Serialize.swift"; sourceTree = "<group>"; };
 		C9F3CB441F1CABB6005E1636 /* MSStatistics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSStatistics.swift; sourceTree = "<group>"; };
 		C9F3CB481F1CAED8005E1636 /* MSStatisticsData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSStatisticsData.swift; sourceTree = "<group>"; };
 		C9F3CB4F1F1CB880005E1636 /* MSStatistics+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSStatistics+Convertible.swift"; sourceTree = "<group>"; };
@@ -485,6 +487,7 @@
 				6EE617321EB9FA6B00BF3106 /* Agent+Serialize.swift */,
 				6E02E7DB1F470F97000EC1F8 /* MSTask+Serialize.swift */,
 				6EF37A351F540E4E0020BD78 /* MSDocument+Serialize.swift */,
+				C9D387EC1F94A559008CD04C /* Assortment+Serialize.swift */,
 			);
 			path = Serialization;
 			sourceTree = "<group>";
@@ -732,6 +735,7 @@
 				55C05C4E1E028F9B008F4254 /* MSStock.swift in Sources */,
 				55C05C4C1E028F9B008F4254 /* MSImage.swift in Sources */,
 				55C05C421E028F9B008F4254 /* Assortment.swift in Sources */,
+				C9D387ED1F94A559008CD04C /* Assortment+Serialize.swift in Sources */,
 				95461FED1F31F3F700071E3D /* MSRetailStoreStatisticsData.swift in Sources */,
 				8B3B57491E1257B50023B75B /* MSAttribute+Convertible.swift in Sources */,
 				55C05C5A1E028F9B008F4254 /* DictConvertable.swift in Sources */,

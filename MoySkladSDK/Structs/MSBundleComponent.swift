@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class MSBundleComponent : Metable {
+public final class MSBundleComponent : Metable, DictConvertable {
     public let meta: MSMeta
     public let id: MSID
     public let accountId: String

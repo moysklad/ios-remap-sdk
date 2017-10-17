@@ -250,6 +250,7 @@ extension MSUserPermissions {
                                  updateAllTasks: MSPermission.from(dict: dict.msValue("updateAllTasks")),
                                  commissionreportin: MSPermission.from(dict: dict.msValue("commissionreportin")),
                                  commissionreportout: MSPermission.from(dict: dict.msValue("commissionreportout")),
-                                 retailshift: MSPermission.from(dict: dict.msValue("retailshift")))
+                                 retailshift: MSPermission.from(dict: dict.msValue("retailshift")),
+                                 bundle: MSPermission.from(dict: dict.msValue("bundle")))
     }
 }

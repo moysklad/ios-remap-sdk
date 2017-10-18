@@ -56,6 +56,7 @@ public enum ExpandPath : String {
     case operations
     case expenseitem = "expenseItem"
     case country
+    case packs
 }
 
 public protocol Expandable {

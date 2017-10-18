@@ -65,6 +65,7 @@ extension MSAssortment {
         dict["description"] = description ?? ""
         dict["salePrices"] = salePrices.map { $0.dictionary() }
         dict["barcodes"] = barcodes
+        dict["attributes"] = attributes?.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
         
         return dict
     }

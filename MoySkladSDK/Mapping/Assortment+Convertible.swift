@@ -49,7 +49,8 @@ extension MSAssortment {
 		             inTransit: dict.value("inTransit"),
 		             quantity: dict.value("quantity"),
 		             assortmentInfo: MSAssortmentInfo.from(dict: dict),
-		             description: dict.value("description")))
+		             description: dict.value("description"),
+		             attributes: dict.msArray("attributes").map { MSAttribute.from(dict: $0) }.flatMap { $0 }))
 	}
 }
 

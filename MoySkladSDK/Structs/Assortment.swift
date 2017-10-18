@@ -66,6 +66,7 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
 	public var quantity: Double?
     public var assortmentInfo: MSAssortmentInfo
     public var description: String?
+    public var attributes: [MSEntity<MSAttribute>]?
     
     public init(meta: MSMeta,
     id: MSID,
@@ -103,7 +104,8 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
     inTransit: Double?,
     quantity: Double?,
     assortmentInfo: MSAssortmentInfo,
-    description: String?) {
+    description: String?,
+    attributes: [MSEntity<MSAttribute>]?) {
         self.meta = meta
         self.id = id
         self.accountId = accountId
@@ -141,6 +143,7 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
         self.quantity = quantity
         self.assortmentInfo = assortmentInfo
         self.description = description
+        self.attributes = attributes
     }
     
     public func copy() -> MSAssortment {
@@ -178,7 +181,8 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
                             inTransit: inTransit,
                             quantity: quantity,
                             assortmentInfo: assortmentInfo,
-                            description: description)
+                            description: description,
+                            attributes: attributes)
     }
 }
 

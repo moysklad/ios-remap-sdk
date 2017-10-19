@@ -67,6 +67,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     public var assortmentInfo: MSAssortmentInfo
     public var description: String?
     public var packs: [MSPack]?
+    public var localImage: MSLocalImage?
     
     public init(meta: MSMeta,
     id: MSID,
@@ -106,7 +107,8 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     assortmentInfo: MSAssortmentInfo,
     description: String?,
     attributes: [MSEntity<MSAttribute>]?,
-    packs: [MSPack]?) {
+    packs: [MSPack]?,
+    localImage: MSLocalImage?) {
         self.meta = meta
         self.id = id
         self.accountId = accountId
@@ -145,6 +147,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
         self.assortmentInfo = assortmentInfo
         self.description = description
         self.packs = packs
+        self.localImage = localImage
         super.init(attributes: attributes)
     }
     
@@ -185,7 +188,8 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             assortmentInfo: assortmentInfo,
                             description: description,
                             attributes: attributes,
-                            packs: packs)
+                            packs: packs,
+                            localImage: localImage)
     }
 }
 

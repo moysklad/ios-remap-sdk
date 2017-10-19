@@ -147,6 +147,7 @@ public enum MSApiRequest : String {
     case purchaseOrderMetadata = "/entity/purchaseorder/metadata"
     case invoiceInMetadata = "/entity/invoicein/metadata"
     case uom = "/entity/uom"
+    case productMetadata = "/entity/product/metadata"
 }
 
 extension MSApiRequest {

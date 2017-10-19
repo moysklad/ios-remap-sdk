@@ -28,7 +28,7 @@ public class MSAlcohol {
  Represents Assortment
  For more information, see [API reference.](https://online.moysklad.ru/api/remap/1.1/doc/index.html#ассортимент)
 */
-public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
+public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequestEntity {
 	public var meta: MSMeta
 	public var id: MSID
 	public var accountId: String
@@ -66,7 +66,6 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
 	public var quantity: Double?
     public var assortmentInfo: MSAssortmentInfo
     public var description: String?
-    public var attributes: [MSEntity<MSAttribute>]?
     public var packs: [MSPack]?
     
     public init(meta: MSMeta,
@@ -145,8 +144,8 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
         self.quantity = quantity
         self.assortmentInfo = assortmentInfo
         self.description = description
-        self.attributes = attributes
         self.packs = packs
+        super.init(attributes: attributes)
     }
     
     public func copy() -> MSAssortment {

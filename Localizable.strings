@@ -87,3 +87,4 @@
 "incorrectExpenseItemResponse" = "Неизвестный ответ на запрос статей расходов";
 "incorrectCountiesResponse" = "Неизвестный ответ на запрос стран";
 "incorrectUomResponse" = "Неизвестный ответ на запрос единиц измерения";
+"incorrectProductMetadataResponse" = "Неизвестный ответ на запрос метаданных для товаров";

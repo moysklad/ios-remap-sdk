@@ -51,7 +51,8 @@ extension MSAssortment {
 		             assortmentInfo: MSAssortmentInfo.from(dict: dict),
 		             description: dict.value("description"),
 		             attributes: dict.msArray("attributes").map { MSAttribute.from(dict: $0) }.flatMap { $0 },
-		             packs: (dict["packs"] as? [Any] ?? []).map { MSPack.from(dict: $0 as? Dictionary<String, Any> ?? [:]) }.flatMap { $0 }))
+		             packs: (dict["packs"] as? [Any] ?? []).map { MSPack.from(dict: $0 as? Dictionary<String, Any> ?? [:]) }.flatMap { $0 },
+		             localImage: nil))
 	}
 }
 

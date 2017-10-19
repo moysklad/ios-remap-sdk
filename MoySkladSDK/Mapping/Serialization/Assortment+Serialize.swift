@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension MSAssortment {
     public func dictionary(metaOnly: Bool = true) -> Dictionary<String, Any> {
@@ -38,7 +39,7 @@ extension MSAssortment {
             dict["buyPrice"] = buyPrice
         }
         
-        if let image = image?.dictionary() {
+        if let image = localImage?.dictionary() {
             dict["image"] = image
         }
         
@@ -143,23 +144,16 @@ extension MSProduct {
             dict["buyPrice"] = buyPrice
         }
         
-        if let image = image?.dictionary() {
-            dict["image"] = image
-        }
-        
         return dict
     }
 }
 
-extension MSImage {
+extension MSLocalImage {
     public func dictionary() -> Dictionary<String, Any> {
         var dict = [String: Any]()
     
-        dict["title"] = title
-        dict["filename"] = filename
-        dict["size"] = size
-        dict["miniatureUrl"] = miniatureUrl.absoluteString
-        dict["tinyUrl"] = tinyUrl?.absoluteString ?? ""
+        dict["filename"] = title
+        dict["content"] = UIImageJPEGRepresentation(image, 1)?.base64EncodedString() ?? NSNull()
         
         return dict
     }

@@ -66,6 +66,8 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
 	public var quantity: Double?
     public var assortmentInfo: MSAssortmentInfo
     public var description: String?
+    public var attributes: [MSEntity<MSAttribute>]?
+    public var packs: [MSPack]?
     
     public init(meta: MSMeta,
     id: MSID,
@@ -103,7 +105,9 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
     inTransit: Double?,
     quantity: Double?,
     assortmentInfo: MSAssortmentInfo,
-    description: String?) {
+    description: String?,
+    attributes: [MSEntity<MSAttribute>]?,
+    packs: [MSPack]?) {
         self.meta = meta
         self.id = id
         self.accountId = accountId
@@ -141,6 +145,48 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
         self.quantity = quantity
         self.assortmentInfo = assortmentInfo
         self.description = description
+        self.attributes = attributes
+        self.packs = packs
+    }
+    
+    public func copy() -> MSAssortment {
+        return MSAssortment(meta: meta,
+                            id: id,
+                            accountId: accountId,
+                            owner: owner,
+                            shared: shared,
+                            group: group,
+                            info: info,
+                            code: code,
+                            externalCode: externalCode,
+                            archived: archived,
+                            pathName: pathName,
+                            vat: vat,
+                            effectiveVat: effectiveVat,
+                            productFolder: productFolder,
+                            uom: uom,
+                            image: image,
+                            buyPrice: buyPrice,
+                            salePrices: salePrices,
+                            supplier: supplier,
+                            country: country,
+                            article: article,
+                            weighed: weighed,
+                            weight: weight,
+                            volume: volume,
+                            barcodes: barcodes,
+                            alcohol: alcohol,
+                            modificationsCount: modificationsCount,
+                            minimumBalance: minimumBalance,
+                            isSerialTrackable: isSerialTrackable,
+                            stock: stock,
+                            reserve: reserve,
+                            inTransit: inTransit,
+                            quantity: quantity,
+                            assortmentInfo: assortmentInfo,
+                            description: description,
+                            attributes: attributes,
+                            packs: packs)
     }
 }
 

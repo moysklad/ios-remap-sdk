@@ -130,6 +130,7 @@
 		C9F3CB501F1CB880005E1636 /* MSStatistics+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F3CB4F1F1CB880005E1636 /* MSStatistics+Convertible.swift */; };
 		C9FB5F9A1F978E12004C2DEE /* MSPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB5F991F978E12004C2DEE /* MSPack.swift */; };
 		C9FB5F9C1F978F9A004C2DEE /* MSPack+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB5F9B1F978F9A004C2DEE /* MSPack+Convertible.swift */; };
+		C9FB5FB21F98FC67004C2DEE /* MSLocalImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB5FB11F98FC67004C2DEE /* MSLocalImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -269,6 +270,7 @@
 		C9F3CB4F1F1CB880005E1636 /* MSStatistics+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSStatistics+Convertible.swift"; sourceTree = "<group>"; };
 		C9FB5F991F978E12004C2DEE /* MSPack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSPack.swift; sourceTree = "<group>"; };
 		C9FB5F9B1F978F9A004C2DEE /* MSPack+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSPack+Convertible.swift"; sourceTree = "<group>"; };
+		C9FB5FB11F98FC67004C2DEE /* MSLocalImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSLocalImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -398,6 +400,7 @@
 				954897731F725298004ED60A /* MSCountry.swift */,
 				951039201F79173C00AE52E0 /* MSRetailShiftType.swift */,
 				C9FB5F991F978E12004C2DEE /* MSPack.swift */,
+				C9FB5FB11F98FC67004C2DEE /* MSLocalImage.swift */,
 			);
 			path = Structs;
 			sourceTree = "<group>";
@@ -745,6 +748,7 @@
 				C9D387ED1F94A559008CD04C /* Assortment+Serialize.swift in Sources */,
 				95461FED1F31F3F700071E3D /* MSRetailStoreStatisticsData.swift in Sources */,
 				8B3B57491E1257B50023B75B /* MSAttribute+Convertible.swift in Sources */,
+				C9FB5FB21F98FC67004C2DEE /* MSLocalImage.swift in Sources */,
 				55C05C5A1E028F9B008F4254 /* DictConvertable.swift in Sources */,
 				6E13A0241E94D873004171EE /* MSBundleComponent.swift in Sources */,
 				6EE966B21F28761C008DDD8E /* CounterpartySearchResult+Convertable.swift in Sources */,

@@ -42,9 +42,7 @@ extension MSAssortment {
             dict["image"] = image
         }
         
-        dict["country"] = country?.dictionary() ?? NSNull()
-
-        
+        dict["country"] = country?.objectMeta().dictionary() ?? NSNull()
         dict["code"] = code ?? ""
         dict["externalCode"] = externalCode ?? ""
         dict["archived"] = archived

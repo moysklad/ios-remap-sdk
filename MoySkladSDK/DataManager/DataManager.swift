@@ -1337,4 +1337,21 @@ public struct DataManager {
                                         deserializer: { MSCountry.from(dict: $0) })
         }
     }
+    
+    public static func loadUom(auth: Auth,
+                                     offset: MSOffset? = nil,
+                                     expanders: [Expander] = [],
+                                     filter: Filter? = nil,
+                                     search: Search? = nil) -> Observable<[MSEntity<MSUOM>]> {
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, CompositeExpander(expanders))
+        return HttpClient.get(.uom, auth: auth, urlParameters: urlParameters)
+            .flatMapLatest { result -> Observable<[MSEntity<MSUOM>]> in
+                
+                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectUomResponse.value)) }
+                
+                return deserializeArray(json: result,
+                                        incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectUomResponse.value),
+                                        deserializer: { MSUOM.from(dict: $0) })
+        }
+    }
 }

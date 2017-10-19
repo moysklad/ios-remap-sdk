@@ -49,7 +49,7 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
 	public var buyPrice: MSPrice?
 	public var salePrices: [MSPrice]
 	public var supplier: MSEntity<MSAgent>?
-	public var country: MSMeta?
+	public var country: MSEntity<MSCountry>?
 	public var article: String?
 	public var weighed: Bool
 	public var weight: Double
@@ -89,7 +89,7 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
     buyPrice: MSPrice?,
     salePrices: [MSPrice],
     supplier: MSEntity<MSAgent>?,
-    country: MSMeta?,
+    country: MSEntity<MSCountry>?,
     article: String?,
     weighed: Bool,
     weight: Double,

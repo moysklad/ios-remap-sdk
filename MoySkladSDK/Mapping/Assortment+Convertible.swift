@@ -34,7 +34,7 @@ extension MSAssortment {
 		             buyPrice: MSPrice.from(dict: dict.msValue("buyPrice"), priceTypeOverride: "Цена закупки"), //LocalizedStrings.buyPrice.value),
 		             salePrices: (dict["salePrices"] as? [Any] ?? []).map { MSPrice.from(dict: $0 as? Dictionary<String, Any> ?? [:]) }.flatMap { $0 },
 		             supplier: MSAgent.from(dict: dict.msValue("supplier")),
-		             country: nil,
+		             country: MSCountry.from(dict: dict.msValue("country")),
 		             article: dict.value("article"),
 		             weighed: dict.value("weighed") ?? false,
 		             weight: dict.value("weight") ?? 0,

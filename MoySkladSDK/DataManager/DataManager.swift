@@ -288,6 +288,9 @@ public struct DataManager {
             },
             counterpartyMetadata(auth: auth).map { item -> MetadataLoadResult in
                 return MetadataLoadResult(type: MSObjectType.counterparty, states: item.states, attributes: item.attributes, tags: item.tags)
+            },
+            productMetadata(auth: auth).map { item -> MetadataLoadResult in
+                return MetadataLoadResult(type: MSObjectType.product, states: [], attributes: item.attributes, tags: [])
             }
         ]
         
@@ -417,6 +420,22 @@ public struct DataManager {
                 }
                 return deserializeCounterpartyMetadata(json: result,
                                                        incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyMetadataResponse.value))
+        }
+    }
+    
+    /**
+     Load Counterparty metadata
+     - parameter auth: Authentication information
+     - returns: Metadata for object
+     */
+    public static func productMetadata(auth: Auth) -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> {
+        return HttpClient.get(.productMetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
+            .flatMapLatest { result -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> in
+                guard let result = result else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProductMetadataResponse.value))
+                }
+                return deserializeCounterpartyMetadata(json: result,
+                                                       incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectProductMetadataResponse.value))
         }
     }
     
@@ -1335,6 +1354,23 @@ public struct DataManager {
                 return deserializeArray(json: result,
                                         incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectCountiesResponse.value),
                                         deserializer: { MSCountry.from(dict: $0) })
+        }
+    }
+    
+    public static func loadUom(auth: Auth,
+                                     offset: MSOffset? = nil,
+                                     expanders: [Expander] = [],
+                                     filter: Filter? = nil,
+                                     search: Search? = nil) -> Observable<[MSEntity<MSUOM>]> {
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, CompositeExpander(expanders))
+        return HttpClient.get(.uom, auth: auth, urlParameters: urlParameters)
+            .flatMapLatest { result -> Observable<[MSEntity<MSUOM>]> in
+                
+                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectUomResponse.value)) }
+                
+                return deserializeArray(json: result,
+                                        incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectUomResponse.value),
+                                        deserializer: { MSUOM.from(dict: $0) })
         }
     }
 }

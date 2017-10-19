@@ -42,9 +42,7 @@ extension MSAssortment {
             dict["image"] = image
         }
         
-        dict["country"] = country?.dictionary() ?? NSNull()
-
-        
+        dict["country"] = country?.objectMeta().dictionary() ?? NSNull()
         dict["code"] = code ?? ""
         dict["externalCode"] = externalCode ?? ""
         dict["archived"] = archived
@@ -65,6 +63,7 @@ extension MSAssortment {
         dict["description"] = description ?? ""
         dict["salePrices"] = salePrices.map { $0.dictionary() }
         dict["barcodes"] = barcodes
+        dict["attributes"] = attributes?.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
         
         return dict
     }

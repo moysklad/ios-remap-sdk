@@ -28,7 +28,7 @@ public class MSAlcohol {
  Represents Assortment
  For more information, see [API reference.](https://online.moysklad.ru/api/remap/1.1/doc/index.html#ассортимент)
 */
-public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
+public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequestEntity {
 	public var meta: MSMeta
 	public var id: MSID
 	public var accountId: String
@@ -49,7 +49,7 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
 	public var buyPrice: MSPrice?
 	public var salePrices: [MSPrice]
 	public var supplier: MSEntity<MSAgent>?
-	public var country: MSMeta?
+	public var country: MSEntity<MSCountry>?
 	public var article: String?
 	public var weighed: Bool
 	public var weight: Double
@@ -66,6 +66,7 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
 	public var quantity: Double?
     public var assortmentInfo: MSAssortmentInfo
     public var description: String?
+    public var packs: [MSPack]?
     
     public init(meta: MSMeta,
     id: MSID,
@@ -87,7 +88,7 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
     buyPrice: MSPrice?,
     salePrices: [MSPrice],
     supplier: MSEntity<MSAgent>?,
-    country: MSMeta?,
+    country: MSEntity<MSCountry>?,
     article: String?,
     weighed: Bool,
     weight: Double,
@@ -103,7 +104,9 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
     inTransit: Double?,
     quantity: Double?,
     assortmentInfo: MSAssortmentInfo,
-    description: String?) {
+    description: String?,
+    attributes: [MSEntity<MSAttribute>]?,
+    packs: [MSPack]?) {
         self.meta = meta
         self.id = id
         self.accountId = accountId
@@ -141,6 +144,48 @@ public class MSAssortment : Metable, DictConvertable, MSRequestEntity {
         self.quantity = quantity
         self.assortmentInfo = assortmentInfo
         self.description = description
+        self.packs = packs
+        super.init(attributes: attributes)
+    }
+    
+    public func copy() -> MSAssortment {
+        return MSAssortment(meta: meta,
+                            id: id,
+                            accountId: accountId,
+                            owner: owner,
+                            shared: shared,
+                            group: group,
+                            info: info,
+                            code: code,
+                            externalCode: externalCode,
+                            archived: archived,
+                            pathName: pathName,
+                            vat: vat,
+                            effectiveVat: effectiveVat,
+                            productFolder: productFolder,
+                            uom: uom,
+                            image: image,
+                            buyPrice: buyPrice,
+                            salePrices: salePrices,
+                            supplier: supplier,
+                            country: country,
+                            article: article,
+                            weighed: weighed,
+                            weight: weight,
+                            volume: volume,
+                            barcodes: barcodes,
+                            alcohol: alcohol,
+                            modificationsCount: modificationsCount,
+                            minimumBalance: minimumBalance,
+                            isSerialTrackable: isSerialTrackable,
+                            stock: stock,
+                            reserve: reserve,
+                            inTransit: inTransit,
+                            quantity: quantity,
+                            assortmentInfo: assortmentInfo,
+                            description: description,
+                            attributes: attributes,
+                            packs: packs)
     }
 }
 

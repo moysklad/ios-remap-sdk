@@ -31,6 +31,7 @@ extension MSAssortment {
 		             productFolder: MSProductFolder.from(dict: dict.msValue("productFolder")),
 		             uom: MSUOM.from(dict: dict.msValue("uom")),
 		             image: MSImage.from(dict: dict.msValue("image")),
+		             minPrice: Money(minorUnits: dict.value("minPrice") ?? 0),
 		             buyPrice: MSPrice.from(dict: dict.msValue("buyPrice"), priceTypeOverride: "Цена закупки"), //LocalizedStrings.buyPrice.value),
 		             salePrices: (dict["salePrices"] as? [Any] ?? []).map { MSPrice.from(dict: $0 as? Dictionary<String, Any> ?? [:]) }.flatMap { $0 },
 		             supplier: MSAgent.from(dict: dict.msValue("supplier")),

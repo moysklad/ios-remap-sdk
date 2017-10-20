@@ -45,7 +45,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
 	public var productFolder: MSEntity<MSProductFolder>?
     public var uom: MSEntity<MSUOM>?
 	public var image: MSImage?
-	//public let minPrice: Money
+	public var minPrice: Money
 	public var buyPrice: MSPrice?
 	public var salePrices: [MSPrice]
 	public var supplier: MSEntity<MSAgent>?
@@ -85,7 +85,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     productFolder: MSEntity<MSProductFolder>?,
     uom: MSEntity<MSUOM>?,
     image: MSImage?,
-    //minPrice: Money
+    minPrice: Money,
     buyPrice: MSPrice?,
     salePrices: [MSPrice],
     supplier: MSEntity<MSAgent>?,
@@ -125,7 +125,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
         self.productFolder  = productFolder
         self.uom = uom
         self.image = image
-        //minPrice: Money
+        self.minPrice = minPrice
         self.buyPrice = buyPrice
         self.salePrices = salePrices
         self.supplier = supplier
@@ -168,6 +168,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             productFolder: productFolder,
                             uom: uom,
                             image: image,
+                            minPrice: minPrice,
                             buyPrice: buyPrice,
                             salePrices: salePrices,
                             supplier: supplier,

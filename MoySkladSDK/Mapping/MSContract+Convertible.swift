@@ -27,7 +27,7 @@ extension MSContract : DictConvertable {
 			return nil
 		}
 		
-		guard let name: String = dict.value("name"), name.characters.count > 0,
+		guard let name: String = dict.value("name"), name.count > 0,
 			let group = MSGroup.from(dict: dict.msValue("group")) else {
 				return MSEntity.meta(meta)
 		}
@@ -62,7 +62,7 @@ extension MSAccount : DictConvertable {
 	public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {
         var dict = [String: Any]()
         
-        if meta.href.characters.count > 0 {
+        if meta.href.count > 0 {
             dict["meta"] = meta.dictionary()
         }
         
@@ -84,7 +84,7 @@ extension MSAccount : DictConvertable {
 			return nil
 		}
 		
-		guard let accountNumber: String = dict.value("accountNumber"), accountNumber.characters.count > 0 else {
+		guard let accountNumber: String = dict.value("accountNumber"), accountNumber.count > 0 else {
 				return MSEntity.meta(meta)
 		}
 		

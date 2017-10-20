@@ -35,7 +35,7 @@ extension MSStore : DictConvertable {
 			return nil
 		}
 		
-		guard let name: String = dict.value("name"), name.characters.count > 0,
+		guard let name: String = dict.value("name"), name.count > 0,
 			let group = MSGroup.from(dict: dict.msValue("group")) else {
 				return MSEntity.meta(meta)
 		}

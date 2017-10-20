@@ -12,7 +12,7 @@ extension MSAgent {
     public func dictionary(metaOnly: Bool = true) -> Dictionary<String, Any> {
         var dict = [String: Any]()
         
-        if meta.href.characters.count > 0 {
+        if meta.href.count > 0 {
             dict["meta"] = meta.dictionary()
         }
         
@@ -50,7 +50,7 @@ extension MSAgent {
         dict["archived"] = self.archived
         
         dict["okpo"] = self.okpo ?? ""
-        if meta.href.characters.count > 0 {
+        if meta.href.count > 0 {
             dict["owner"] = serialize(entity: owner)
             dict["group"] = serialize(entity: group)
         }

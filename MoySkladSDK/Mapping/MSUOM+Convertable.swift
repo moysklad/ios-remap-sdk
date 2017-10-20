@@ -16,7 +16,7 @@ extension MSUOM: DictConvertable {
     public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSUOM>? {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else { return nil }
         
-        guard let name: String = dict.value("name"), name.characters.count > 0 else { return MSEntity.meta(meta) }
+        guard let name: String = dict.value("name"), name.count > 0 else { return MSEntity.meta(meta) }
         
         return MSEntity.entity(MSUOM(meta: meta,
               id: MSID(dict: dict),

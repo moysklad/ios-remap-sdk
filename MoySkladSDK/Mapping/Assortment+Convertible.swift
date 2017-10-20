@@ -114,7 +114,7 @@ extension MSProductFolder : DictConvertable {
             return nil
         }
         
-        guard let name: String = dict.value("name"), name.characters.count > 0 else {
+        guard let name: String = dict.value("name"), name.count > 0 else {
             return MSEntity.meta(meta)
         }
         

@@ -35,7 +35,72 @@ import Foundation
  It is generic over the decimal number behavior type, which defines the rounding
  and scale rules for base 10 decimal arithmetic.
 */
-public struct _Decimal<Behavior: DecimalNumberBehaviorType>: DecimalNumberType {
+public struct _Decimal<Behavior: DecimalNumberBehaviorType>: DecimalNumberType, Comparable {
+    public var magnitude: NSDecimalNumber
+    
+    public static func -=(lhs: inout _Decimal<Behavior>, rhs: _Decimal<Behavior>) {
+        lhs = lhs.subtract(rhs)
+    }
+    
+    public static func +=(lhs: inout _Decimal<Behavior>, rhs: _Decimal<Behavior>) {
+        lhs = lhs.add(rhs)
+    }
+    
+    public static func *=(lhs: inout _Decimal<Behavior>, rhs: _Decimal<Behavior>) {
+        lhs = lhs.multiply(by: rhs)
+    }
+    
+    public static func *(lhs: _Decimal<Behavior>, rhs: _Decimal<Behavior>) -> _Decimal<Behavior> {
+        return lhs.multiply(by: rhs)
+    }
+    
+    public static func +=(lhs: inout _Decimal<Behavior>, rhs: _Decimal<Behavior>) -> _Decimal<Behavior> {
+        return lhs.add(rhs)
+    }
+    
+    public static func -=(lhs: inout _Decimal<Behavior>, rhs: _Decimal<Behavior>) -> _Decimal<Behavior> {
+        return lhs.subtract(rhs)
+    }
+    
+    public static prefix func +(lhs: _Decimal<Behavior>) -> _Decimal<Behavior> {
+        return lhs
+    }
+    
+    public static func ==(lhs: _Decimal<Behavior>, rhs: _Decimal<Behavior>) -> Bool {
+        return lhs.storage == rhs.storage
+    }
+    
+    /// Returns a Boolean value indicating whether the value of the first
+    /// argument is less than or equal to that of the second argument.
+    ///
+    /// - Parameters:
+    ///   - lhs: A value to compare.
+    ///   - rhs: Another value to compare.
+    public static func <=(lhs: _Decimal<Behavior>, rhs: _Decimal<Behavior>) -> Bool {
+        return lhs.storage <= lhs.storage
+    }
+    
+    /// Returns a Boolean value indicating whether the value of the first
+    /// argument is greater than or equal to that of the second argument.
+    ///
+    /// - Parameters:
+    ///   - lhs: A value to compare.
+    ///   - rhs: Another value to compare.
+    public static func >=(lhs: _Decimal<Behavior>, rhs: _Decimal<Behavior>) -> Bool {
+        return lhs.storage >= lhs.storage
+    }
+    
+    /// Returns a Boolean value indicating whether the value of the first
+    /// argument is greater than that of the second argument.
+    ///
+    /// - Parameters:
+    ///   - lhs: A value to compare.
+    ///   - rhs: Another value to compare.
+    public static func >(lhs: _Decimal<Behavior>, rhs: _Decimal<Behavior>) -> Bool {
+        return lhs.storage > lhs.storage
+    }
+
+    public typealias Magnitude = NSDecimalNumber
 
     public typealias DecimalNumberBehavior = Behavior
 
@@ -43,6 +108,11 @@ public struct _Decimal<Behavior: DecimalNumberBehaviorType>: DecimalNumberType {
     /// - returns: the `NSDecimalNumber`
     public let storage: NSDecimalNumber
 
+    public init?<T>(exactly source: T) where T : BinaryInteger {
+        self.storage = NSDecimalNumber(integerLiteral: Int(source))
+        self.magnitude = NSDecimalNumber(string: source.magnitude as? String)
+    }
+    
     /**
      Initialize a new value using the underlying decimal storage.
 
@@ -50,18 +120,19 @@ public struct _Decimal<Behavior: DecimalNumberBehaviorType>: DecimalNumberType {
     */
     public init(storage: NSDecimalNumber = NSDecimalNumber.zero) {
         self.storage = storage
+        self.magnitude = storage
     }
 }
 
 // MARK: - Equality
 
-public func ==<B: DecimalNumberBehaviorType>(lhs: _Decimal<B>, rhs: _Decimal<B>) -> Bool {
+public func ==<B>(lhs: _Decimal<B>, rhs: _Decimal<B>) -> Bool {
     return lhs.storage == rhs.storage
 }
 
 // MARK: - Comparable
 
-public func <<B: DecimalNumberBehaviorType>(lhs: _Decimal<B>, rhs: _Decimal<B>) -> Bool {
+public func <<B>(lhs: _Decimal<B>, rhs: _Decimal<B>) -> Bool {
     return lhs.storage < rhs.storage
 }
 

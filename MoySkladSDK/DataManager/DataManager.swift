@@ -44,7 +44,7 @@ public struct DataManager {
         return result
     }
     
-    static func groupBy<T: Metable, K: Hashable>(data: [MSEntity<T>], groupingKey: ((T) -> K),
+    static func groupBy<T, K: Hashable>(data: [MSEntity<T>], groupingKey: ((T) -> K),
                             withPrevious previousData: [(groupKey: K, data: [MSEntity<T>])]? = nil) -> [(groupKey: K, data: [MSEntity<T>])] {
         var groups: [(groupKey: K, data: [MSEntity<T>])] = previousData ?? []
         
@@ -157,7 +157,7 @@ public struct DataManager {
         return Observable.just((states: statesWithoutNills, tags: json.value("groups") ?? [], attributes: attrsWithoutNills))
     }
     
-    static func deserializeArray<T:Metable>(json: [String:Any],
+    static func deserializeArray<T>(json: [String:Any],
                                  incorrectJsonError: Error,
                                  deserializer: @escaping ([String:Any]) -> MSEntity<T>?) -> Observable<[MSEntity<T>]> {
         let deserialized = json.msArray("rows").map { deserializer($0) }
@@ -240,7 +240,7 @@ public struct DataManager {
                                         settingsRequest,
                                         currenciesRequest,
                                         loadAllMetadata(auth: auth),
-                                        resultSelector: { result in
+                                        resultSelector: { result  in
                                             let states = result.3.toDictionary(key: { $0.type }, element: { $0.states })
                                             let attributes = result.3.toDictionary(key: { $0.type }, element: { $0.attributes })
                                             let counerpartyTags = result.3.first(where: { $0.type == .counterparty })?.tags ?? []

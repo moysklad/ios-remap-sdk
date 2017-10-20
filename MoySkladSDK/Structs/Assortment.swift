@@ -360,8 +360,8 @@ public class MSProduct : Metable, DictConvertable {
 
 public class MSPrice {
 	public let priceType: String?
-	public let value: Money
-	public let currency: MSEntity<MSCurrency>?
+	public var value: Money
+	public var currency: MSEntity<MSCurrency>?
     
     public init(priceType: String?,
     value: Money,

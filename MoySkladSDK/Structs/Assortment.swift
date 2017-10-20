@@ -11,12 +11,12 @@ import UIKit
 //import Money
 
 public class MSAlcohol {
-    public let excise: Bool
-	public let type: String?
-	public let strength: Double?
-	public let volume: Double?
+    public var excise: Bool
+	public var type: Int?
+	public var strength: Double?
+	public var volume: Double?
     
-    public init(excise: Bool, type: String? = nil, strength: Double? = nil, volume: Double? = nil) {
+    public init(excise: Bool, type: Int? = nil, strength: Double? = nil, volume: Double? = nil) {
         self.excise = excise
         self.type = type
         self.strength = strength

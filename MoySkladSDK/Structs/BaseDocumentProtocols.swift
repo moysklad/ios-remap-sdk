@@ -72,7 +72,7 @@ public extension MSBaseDocumentType {
  Represents generalized document (CustomerOrder, Demand or OnvoiceOut).
  For more information see API reference for [ customer order](https://online.moysklad.ru/api/remap/1.1/doc/index.html#документ-заказ-покупателя), [ demand](https://online.moysklad.ru/api/remap/1.1/doc/index.html#документ-отгрузка) and [ invoice out](https://online.moysklad.ru/api/remap/1.1/doc/index.html#документ-счёт-покупателю)
  */
-public protocol MSGeneralDocument: BaseDocumentType {
+public protocol MSGeneralDocument: MSBaseDocumentType {
     var agentAccount : MSEntity<MSAccount>? { get set }
     var organizationAccount : MSEntity<MSAccount>? { get set }
     var vatIncluded : Bool { get set }

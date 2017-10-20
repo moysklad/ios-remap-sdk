@@ -12,7 +12,7 @@ import Alamofire
 fileprivate extension URL {
     init?(baseUrl: String, parameters: [UrlParameter] = []) {
         let convertedParameters = parameters.reduce([(key: String, value: String)](), {
-            return $0.0 + $0.1.urlParameters.map { param -> (key: String, value: String) in
+            return $0 + $1.urlParameters.map { param -> (key: String, value: String) in
                 return (key: param.key, value: param.value)
             }
         })

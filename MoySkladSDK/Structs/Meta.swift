@@ -14,7 +14,7 @@ public typealias Href = String
 extension Href {
     public func withoutParameters() -> String {
         let endIndex = self.range(of: "?")?.lowerBound ?? self.endIndex
-        return substring(to: endIndex)
+        return "\(self.prefix(upTo: endIndex))"
     }
 }
 

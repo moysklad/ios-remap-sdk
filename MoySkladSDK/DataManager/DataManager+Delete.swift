@@ -7,8 +7,6 @@
 //
 
 import Foundation
-
-import Foundation
 import RxSwift
 
 extension DataManager {
@@ -26,7 +24,7 @@ extension DataManager {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.emptyObjectId.value))
         }
         
-        return HttpClient.delete(url, auth: auth, urlPathComponents: [id.uuidString]).flatMap { _ -> Observable<Void> in return .just() }
+        return HttpClient.delete(url, auth: auth, urlPathComponents: [id.uuidString]).flatMap { _ -> Observable<Void> in return .just(()) }
     }
     
     /**

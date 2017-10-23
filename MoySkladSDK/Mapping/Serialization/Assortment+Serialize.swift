@@ -70,7 +70,12 @@ extension MSAssortment {
     }
     
     public func requestUrl() -> MSApiRequest? {
-        return MSApiRequest.product
+        switch meta.type {
+        case .service: return MSApiRequest.service
+        case .bundle: return MSApiRequest.bundle
+        case .variant: return MSApiRequest.variant
+        default: return MSApiRequest.product
+        }
     }
     
     public func deserializationError() -> MSError {

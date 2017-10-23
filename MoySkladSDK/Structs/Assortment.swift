@@ -66,7 +66,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
 	public var quantity: Double?
     public var assortmentInfo: MSAssortmentInfo
     public var description: String?
-    public var packs: [MSPack]?
+    public var packs: [MSPack]
     public var localImage: MSLocalImage?
     
     public init(meta: MSMeta,
@@ -107,7 +107,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     assortmentInfo: MSAssortmentInfo,
     description: String?,
     attributes: [MSEntity<MSAttribute>]?,
-    packs: [MSPack]?,
+    packs: [MSPack],
     localImage: MSLocalImage?) {
         self.meta = meta
         self.id = id

@@ -50,6 +50,7 @@ extension MSDocument : DictConvertable {
                    store: MSStore.from(dict: dict.msValue("store")),
                    originalStoreId: MSStore.from(dict: dict.msValue("store"))?.value()?.id.msID,
                    positions: dict.msValue("positions").msArray("rows").map { MSPosition.from(dict: $0) }.flatMap { $0 },
+                   totalPositionsCount: dict.msValue("positions").msValue("meta").value("size") ?? 0,
                    stock: [],
                    deliveryPlannedMoment: Date.fromMSDate(dict.value("deliveryPlannedMoment") ?? ""),
                    purchaseOrders: purchaseOrders,

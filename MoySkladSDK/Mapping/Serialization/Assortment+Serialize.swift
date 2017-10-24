@@ -47,7 +47,7 @@ extension MSAssortment {
         }
         
         dict["country"] = serialize(entity: country, metaOnly: true)
-        dict["code"] = code ?? ""
+        dict["code"] = code
         dict["externalCode"] = externalCode ?? ""
         dict["archived"] = archived
         dict["vat"] = vat ?? 0

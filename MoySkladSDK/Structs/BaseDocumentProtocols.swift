@@ -80,5 +80,8 @@ public protocol MSGeneralDocument : class, Metable, MSBaseDocumentType {
     var store : MSEntity<MSStore>? { get set }
     var originalStoreId: UUID? { get }
     var positions : [MSEntity<MSPosition>] { get set }
+    /// Через expand в поле positions можно загрузить максимум 100 объектов,
+    /// данное значение показывает реальное количество позиций в документе
+    var totalPositionsCount: Int { get }
     var stock : [MSEntity<MSDocumentStock>] { get set }
 }

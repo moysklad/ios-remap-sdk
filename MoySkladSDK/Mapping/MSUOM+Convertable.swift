@@ -10,7 +10,13 @@ import Foundation
 
 extension MSUOM: DictConvertable {
     public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {
-        return [String:Any]()
+        var dict = [String: Any]()
+        
+        if meta.href.characters.count > 0 {
+            dict["meta"] = meta.dictionary()
+        }
+        
+        return dict
     }
     
     public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSUOM>? {

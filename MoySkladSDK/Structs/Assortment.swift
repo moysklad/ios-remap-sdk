@@ -11,12 +11,12 @@ import UIKit
 //import Money
 
 public class MSAlcohol {
-    public var excise: Bool
+    public var excise: Bool?
 	public var type: Int?
 	public var strength: Double?
 	public var volume: Double?
     
-    public init(excise: Bool, type: Int? = nil, strength: Double? = nil, volume: Double? = nil) {
+    public init(excise: Bool?, type: Int? = nil, strength: Double? = nil, volume: Double? = nil) {
         self.excise = excise
         self.type = type
         self.strength = strength
@@ -65,7 +65,6 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
 	public var inTransit: Double?
 	public var quantity: Double?
     public var assortmentInfo: MSAssortmentInfo
-    public var description: String?
     public var packs: [MSPack]
     public var localImage: MSLocalImage?
     
@@ -105,7 +104,6 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     inTransit: Double?,
     quantity: Double?,
     assortmentInfo: MSAssortmentInfo,
-    description: String?,
     attributes: [MSEntity<MSAttribute>]?,
     packs: [MSPack],
     localImage: MSLocalImage?) {
@@ -145,7 +143,6 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
         self.inTransit = inTransit
         self.quantity = quantity
         self.assortmentInfo = assortmentInfo
-        self.description = description
         self.packs = packs
         self.localImage = localImage
         super.init(attributes: attributes)
@@ -187,7 +184,6 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             inTransit: inTransit,
                             quantity: quantity,
                             assortmentInfo: assortmentInfo,
-                            description: description,
                             attributes: attributes,
                             packs: packs,
                             localImage: localImage)
@@ -235,9 +231,9 @@ extension MSAssortment {
     
     public func getDescription() -> String? {
         if meta.type == .variant {
-            return description ?? assortmentInfo.product?.value()?.description
+            return info.description ?? assortmentInfo.product?.value()?.info.description
         }
-        return description
+        return info.description
     }
     
     public func getSupplier() -> MSEntity<MSAgent>? {
@@ -323,7 +319,6 @@ public class MSProduct : Metable, DictConvertable {
     public let productFolder: MSEntity<MSProductFolder>?
     public let article: String?
     public let code: String?
-    public let description: String?
     public let image: MSImage?
     public let buyPrice: MSPrice?
     public let salePrices: [MSPrice]
@@ -337,7 +332,6 @@ public class MSProduct : Metable, DictConvertable {
     productFolder: MSEntity<MSProductFolder>?,
     article: String?,
     code: String?,
-    description: String?,
     image: MSImage?,
     buyPrice: MSPrice?,
     salePrices: [MSPrice],
@@ -350,7 +344,6 @@ public class MSProduct : Metable, DictConvertable {
         self.productFolder = productFolder
         self.article = article
         self.code = code
-        self.description = description
         self.image = image
         self.buyPrice = buyPrice
         self.salePrices = salePrices

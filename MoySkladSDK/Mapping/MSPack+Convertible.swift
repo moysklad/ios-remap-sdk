@@ -10,8 +10,17 @@ import Foundation
 
 extension MSPack {
     public static func from(dict: Dictionary<String, Any>) -> MSPack {
-        return MSPack(id: MSID.init(msID: UUID.init(uuidString: dict.value("id") ?? ""), syncID: nil),
+        return MSPack(id: MSID.init(msID: UUID(uuidString: dict.value("id") ?? ""), syncID: nil),
                       quantity: dict.value("quantity") ?? 0,
                       uom: MSUOM.from(dict: dict.msValue("uom")))
+    }
+    
+    public func dictionary() -> Dictionary<String, Any> {
+        var dict = [String:Any]()
+        
+        dict["uom"] = uom?.value()?.dictionary(metaOnly: true)
+        dict["quantity"] = quantity
+        
+        return dict
     }
 }

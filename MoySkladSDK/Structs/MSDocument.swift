@@ -43,6 +43,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     public var store : MSEntity<MSStore>?
     public var originalStoreId: UUID?
     public var positions : [MSEntity<MSPosition>]
+    public let totalPositionsCount: Int
     public var stock : [MSEntity<MSDocumentStock>]
     
     // MSCustomerOrderType
@@ -129,6 +130,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                           store: store,
                           originalStoreId: originalStoreId,
                           positions: positionsCopy,
+                          totalPositionsCount: totalPositionsCount,
                           stock: stock,
                           deliveryPlannedMoment: deliveryPlannedMoment,
                           purchaseOrders: purchaseOrders,
@@ -192,6 +194,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
                 store : MSEntity<MSStore>?,
                 originalStoreId: UUID?,
                 positions : [MSEntity<MSPosition>],
+                totalPositionsCount: Int,
                 stock : [MSEntity<MSDocumentStock>],
                 deliveryPlannedMoment : Date?,
                 purchaseOrders : [MSEntity<MSDocument>],
@@ -253,6 +256,7 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
         self.store = store
         self.originalStoreId = originalStoreId
         self.positions = positions
+        self.totalPositionsCount = totalPositionsCount
         self.stock = stock
         self.deliveryPlannedMoment = deliveryPlannedMoment
         self.purchaseOrders = purchaseOrders

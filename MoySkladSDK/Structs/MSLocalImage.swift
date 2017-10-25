@@ -10,10 +10,10 @@ import UIKit
 
 public class MSLocalImage {
     public var title: String
-    public var image: UIImage
+    public var image: Data
     
     public init(title: String,
-                image: UIImage) {
+                image: Data) {
         self.title = title
         self.image = image
     }

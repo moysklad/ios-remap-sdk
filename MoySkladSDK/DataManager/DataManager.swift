@@ -20,14 +20,23 @@ public struct LogInInfo {
     public let documentAttributes: [MSObjectType: [MSAttributeDefinition]]
     public let currencies: [String: MSCurrency]
     public let counterpartyTags: [String]
+    public let priceTypes: [String]
 }
-
 
 struct MetadataLoadResult {
     let type: MSObjectType
     let states: [MSState]
     let attributes: [MSAttributeDefinition]
     let tags: [String]
+    let priceTypes: [String]
+    
+    init(type: MSObjectType, states: [MSState] = [], attributes: [MSAttributeDefinition] = [], tags: [String] = [], priceTypes: [String] = []) {
+        self.type = type
+        self.states = states
+        self.attributes = attributes
+        self.tags = tags
+        self.priceTypes = priceTypes
+    }
 }
 
 public struct DataManager {
@@ -157,7 +166,25 @@ public struct DataManager {
         return Observable.just((states: statesWithoutNills, tags: json.value("groups") ?? [], attributes: attrsWithoutNills))
     }
     
-    static func deserializeArray<T>(json: [String:Any],
+    static func deserializeAssortmentMetadata(json: [String:Any], incorrectJsonError: Error) -> Observable<(attributes: [MSAttributeDefinition], priceTypes: [String])> {
+        let deserializedAttrs = json.msArray("attributes").map { MSAttributeDefinition.from(dict: $0) }
+        let attrsWithoutNills = deserializedAttrs.removeNils()
+        
+        guard attrsWithoutNills.count == deserializedAttrs.count else {
+            return Observable.error(incorrectJsonError)
+        }
+        
+        let priceTypes: [String?] = json.msArray("priceTypes").map { $0.value("name") }
+        let priceTypesWithoutNills = priceTypes.removeNils()
+        
+        guard priceTypes.count == priceTypesWithoutNills.count else {
+            return Observable.error(incorrectJsonError)
+        }
+        
+        return Observable.just((attributes: attrsWithoutNills, priceTypes: priceTypesWithoutNills))
+    }
+    
+    static func deserializeArray<T:Metable>(json: [String:Any],
                                  incorrectJsonError: Error,
                                  deserializer: @escaping ([String:Any]) -> MSEntity<T>?) -> Observable<[MSEntity<T>]> {
         let deserialized = json.msArray("rows").map { deserializer($0) }
@@ -240,17 +267,19 @@ public struct DataManager {
                                         settingsRequest,
                                         currenciesRequest,
                                         loadAllMetadata(auth: auth),
-                                        resultSelector: {
-                                            let states = $3.toDictionary(key: { $0.type }, element: { $0.states })
-                                            let attributes = $3.toDictionary(key: { $0.type }, element: { $0.attributes })
-                                            let counerpartyTags = $3.first(where: { $0.type == .counterparty })?.tags ?? []
+                                        resultSelector: { result in
+                                            let states = result.3.toDictionary(key: { $0.type }, element: { $0.states })
+                                            let attributes = result.3.toDictionary(key: { $0.type }, element: { $0.attributes })
+                                            let counerpartyTags = result.3.first(where: { $0.type == .counterparty })?.tags ?? []
+                                            let assortmentPrices = result.3.first(where: { $0.type == .product })?.priceTypes ?? []
                                             
                                             return LogInInfo(employee: $0,
                                                              companySettings: $1,
                                                              states: states,
                                                              documentAttributes: attributes,
-                                                             currencies: $2.toDictionary { $0.meta.href.withoutParameters() },
-                                                             counterpartyTags: counerpartyTags)
+                                                             currencies: result.2.toDictionary { $0.meta.href.withoutParameters() },
+                                                             counterpartyTags: counerpartyTags,
+                                                             priceTypes: assortmentPrices)
         })
     }
     
@@ -290,7 +319,7 @@ public struct DataManager {
                 return MetadataLoadResult(type: MSObjectType.counterparty, states: item.states, attributes: item.attributes, tags: item.tags)
             },
             productMetadata(auth: auth).map { item -> MetadataLoadResult in
-                return MetadataLoadResult(type: MSObjectType.product, states: [], attributes: item.attributes, tags: [])
+                return MetadataLoadResult(type: MSObjectType.product, attributes: item.attributes, priceTypes: item.priceTypes)
             }
         ]
         
@@ -428,13 +457,13 @@ public struct DataManager {
      - parameter auth: Authentication information
      - returns: Metadata for object
      */
-    public static func productMetadata(auth: Auth) -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> {
+    public static func productMetadata(auth: Auth) -> Observable<(attributes: [MSAttributeDefinition], priceTypes: [String])> {
         return HttpClient.get(.productMetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
-            .flatMapLatest { result -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> in
+            .flatMapLatest { result -> Observable<(attributes: [MSAttributeDefinition], priceTypes: [String])> in
                 guard let result = result else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProductMetadataResponse.value))
                 }
-                return deserializeCounterpartyMetadata(json: result,
+                return deserializeAssortmentMetadata(json: result,
                                                        incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectProductMetadataResponse.value))
         }
     }

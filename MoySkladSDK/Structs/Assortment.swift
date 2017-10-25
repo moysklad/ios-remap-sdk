@@ -11,12 +11,12 @@ import UIKit
 //import Money
 
 public class MSAlcohol {
-    public let excise: Bool
-	public let type: String?
-	public let strength: Double?
-	public let volume: Double?
+    public var excise: Bool?
+	public var type: Int?
+	public var strength: Double?
+	public var volume: Double?
     
-    public init(excise: Bool, type: String? = nil, strength: Double? = nil, volume: Double? = nil) {
+    public init(excise: Bool?, type: Int? = nil, strength: Double? = nil, volume: Double? = nil) {
         self.excise = excise
         self.type = type
         self.strength = strength
@@ -45,7 +45,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
 	public var productFolder: MSEntity<MSProductFolder>?
     public var uom: MSEntity<MSUOM>?
 	public var image: MSImage?
-	//public let minPrice: Money
+	public var minPrice: Money
 	public var buyPrice: MSPrice?
 	public var salePrices: [MSPrice]
 	public var supplier: MSEntity<MSAgent>?
@@ -65,8 +65,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
 	public var inTransit: Double?
 	public var quantity: Double?
     public var assortmentInfo: MSAssortmentInfo
-    public var description: String?
-    public var packs: [MSPack]?
+    public var packs: [MSPack]
     public var localImage: MSLocalImage?
     
     public init(meta: MSMeta,
@@ -85,7 +84,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     productFolder: MSEntity<MSProductFolder>?,
     uom: MSEntity<MSUOM>?,
     image: MSImage?,
-    //minPrice: Money
+    minPrice: Money,
     buyPrice: MSPrice?,
     salePrices: [MSPrice],
     supplier: MSEntity<MSAgent>?,
@@ -105,9 +104,8 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     inTransit: Double?,
     quantity: Double?,
     assortmentInfo: MSAssortmentInfo,
-    description: String?,
     attributes: [MSEntity<MSAttribute>]?,
-    packs: [MSPack]?,
+    packs: [MSPack],
     localImage: MSLocalImage?) {
         self.meta = meta
         self.id = id
@@ -125,7 +123,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
         self.productFolder  = productFolder
         self.uom = uom
         self.image = image
-        //minPrice: Money
+        self.minPrice = minPrice
         self.buyPrice = buyPrice
         self.salePrices = salePrices
         self.supplier = supplier
@@ -145,7 +143,6 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
         self.inTransit = inTransit
         self.quantity = quantity
         self.assortmentInfo = assortmentInfo
-        self.description = description
         self.packs = packs
         self.localImage = localImage
         super.init(attributes: attributes)
@@ -168,6 +165,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             productFolder: productFolder,
                             uom: uom,
                             image: image,
+                            minPrice: minPrice,
                             buyPrice: buyPrice,
                             salePrices: salePrices,
                             supplier: supplier,
@@ -186,7 +184,6 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             inTransit: inTransit,
                             quantity: quantity,
                             assortmentInfo: assortmentInfo,
-                            description: description,
                             attributes: attributes,
                             packs: packs,
                             localImage: localImage)
@@ -234,9 +231,9 @@ extension MSAssortment {
     
     public func getDescription() -> String? {
         if meta.type == .variant {
-            return description ?? assortmentInfo.product?.value()?.description
+            return info.description ?? assortmentInfo.product?.value()?.info.description
         }
-        return description
+        return info.description
     }
     
     public func getSupplier() -> MSEntity<MSAgent>? {
@@ -322,7 +319,6 @@ public class MSProduct : Metable, DictConvertable {
     public let productFolder: MSEntity<MSProductFolder>?
     public let article: String?
     public let code: String?
-    public let description: String?
     public let image: MSImage?
     public let buyPrice: MSPrice?
     public let salePrices: [MSPrice]
@@ -336,7 +332,6 @@ public class MSProduct : Metable, DictConvertable {
     productFolder: MSEntity<MSProductFolder>?,
     article: String?,
     code: String?,
-    description: String?,
     image: MSImage?,
     buyPrice: MSPrice?,
     salePrices: [MSPrice],
@@ -349,7 +344,6 @@ public class MSProduct : Metable, DictConvertable {
         self.productFolder = productFolder
         self.article = article
         self.code = code
-        self.description = description
         self.image = image
         self.buyPrice = buyPrice
         self.salePrices = salePrices
@@ -359,8 +353,8 @@ public class MSProduct : Metable, DictConvertable {
 
 public class MSPrice {
 	public let priceType: String?
-	public let value: Money
-	public let currency: MSEntity<MSCurrency>?
+	public var value: Money
+	public var currency: MSEntity<MSCurrency>?
     
     public init(priceType: String?,
     value: Money,

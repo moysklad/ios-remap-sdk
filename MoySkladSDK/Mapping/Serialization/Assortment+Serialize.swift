@@ -31,10 +31,13 @@ extension MSAssortment {
             dict["assortmentInfo"] = assortmentInfo.dictionary()
         }
         
-        if let alcohol = alcohol?.dictionary() {
-            dict["alcohol"] = alcohol
+        var alcoholObject: MSAlcohol = MSAlcohol(excise: nil, type: nil, strength: nil, volume: nil)
+        if let alcohol = alcohol {
+            alcoholObject = alcohol
         }
+        dict["alcoholic"] = alcoholObject.dictionary()
         
+        dict["minPrice"] = minPrice.minorUnits
         if let buyPrice = buyPrice?.dictionary() {
             dict["buyPrice"] = buyPrice
         }
@@ -43,34 +46,35 @@ extension MSAssortment {
             dict["image"] = image
         }
         
-        dict["country"] = country?.objectMeta().dictionary() ?? NSNull()
-        dict["code"] = code ?? ""
+        dict["country"] = serialize(entity: country, metaOnly: true)
+        dict["code"] = code
         dict["externalCode"] = externalCode ?? ""
         dict["archived"] = archived
-        dict["pathName"] = pathName ?? ""
         dict["vat"] = vat ?? 0
-        dict["effectiveVat"] = effectiveVat ?? 0
         dict["article"] = article ?? ""
         dict["weighed"] = weighed
         dict["weight"] = weight 
         dict["volume"] = volume
-        dict["modificationsCount"] = modificationsCount ?? 0
         dict["minimumBalance"] = minimumBalance ?? 0
         dict["isSerialTrackable"] = isSerialTrackable
-        dict["stock"] = stock ?? 0
-        dict["reserve"] = reserve ?? 0
-        dict["inTransit"] = inTransit ?? 0
-        dict["quantity"] = quantity ?? 0
-        dict["description"] = description ?? ""
         dict["salePrices"] = salePrices.map { $0.dictionary() }
         dict["barcodes"] = barcodes
         dict["attributes"] = attributes?.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
+        
+        if packs.count > 0 {
+            dict["packs"] = packs.map { $0.dictionary() }
+        }
         
         return dict
     }
     
     public func requestUrl() -> MSApiRequest? {
-        return MSApiRequest.product
+        switch meta.type {
+        case .service: return MSApiRequest.service
+        case .bundle: return MSApiRequest.bundle
+        case .variant: return MSApiRequest.variant
+        default: return MSApiRequest.product
+        }
     }
     
     public func deserializationError() -> MSError {
@@ -98,9 +102,9 @@ extension MSAlcohol {
         var dict = [String: Any]()
         
         dict["excise"] = excise
-        dict["type"] = type ?? ""
-        dict["strength"] = strength ?? 0
-        dict["volume"] = volume ?? 0
+        dict["type"] = type
+        dict["strength"] = strength
+        dict["volume"] = volume
         
         return dict
     }
@@ -135,7 +139,6 @@ extension MSProduct {
         dict["shared"] = shared
         dict["article"] = article ?? ""
         dict["code"] = code ?? ""
-        dict["description"] = description ?? ""
         dict["productFolder"] = serialize(entity: productFolder, metaOnly: true)
         dict["supplier"] = serialize(entity: supplier, metaOnly: true)
         dict["salePrices"] = salePrices.map { $0.dictionary() }
@@ -151,9 +154,9 @@ extension MSProduct {
 extension MSLocalImage {
     public func dictionary() -> Dictionary<String, Any> {
         var dict = [String: Any]()
-    
+     
         dict["filename"] = title
-        dict["content"] = UIImageJPEGRepresentation(image, 1)?.base64EncodedString() ?? NSNull()
+        dict["content"] = image.base64EncodedString()
         
         return dict
     }

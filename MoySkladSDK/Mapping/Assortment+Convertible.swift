@@ -31,6 +31,7 @@ extension MSAssortment {
 		             productFolder: MSProductFolder.from(dict: dict.msValue("productFolder")),
 		             uom: MSUOM.from(dict: dict.msValue("uom")),
 		             image: MSImage.from(dict: dict.msValue("image")),
+		             minPrice: Money(minorUnits: dict.value("minPrice") ?? 0),
 		             buyPrice: MSPrice.from(dict: dict.msValue("buyPrice"), priceTypeOverride: "Цена закупки"), //LocalizedStrings.buyPrice.value),
 		             salePrices: (dict["salePrices"] as? [Any] ?? []).map { MSPrice.from(dict: $0 as? Dictionary<String, Any> ?? [:]) }.flatMap { $0 },
 		             supplier: MSAgent.from(dict: dict.msValue("supplier")),
@@ -49,7 +50,6 @@ extension MSAssortment {
 		             inTransit: dict.value("inTransit"),
 		             quantity: dict.value("quantity"),
 		             assortmentInfo: MSAssortmentInfo.from(dict: dict),
-		             description: dict.value("description"),
 		             attributes: dict.msArray("attributes").map { MSAttribute.from(dict: $0) }.flatMap { $0 },
 		             packs: (dict["packs"] as? [Any] ?? []).map { MSPack.from(dict: $0 as? Dictionary<String, Any> ?? [:]) }.flatMap { $0 },
 		             localImage: nil))
@@ -84,7 +84,6 @@ extension MSProduct {
                   productFolder: MSProductFolder.from(dict: dict.msValue("productFolder")),
                   article: dict.value("article"),
                   code: dict.value("code"),
-                  description: dict.value("description"),
                   image: MSImage.from(dict: dict.msValue("image")),
                   buyPrice: MSPrice.from(dict: dict.msValue("buyPrice"), priceTypeOverride: "Цена закупки"),//LocalizedStrings.buyPrice.value),
                   salePrices: (dict["salePrices"] as? [Any] ?? []).map { MSPrice.from(dict: $0 as? Dictionary<String, Any> ?? [:]) }.removeNils(),
@@ -102,7 +101,13 @@ extension MSAssortmentInfo {
 
 extension MSProductFolder : DictConvertable {
     public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {
-        return [String:Any]()
+        var dict = [String: Any]()
+        
+        if meta.href.characters.count > 0 {
+            dict["meta"] = meta.dictionary()
+        }
+        
+        return dict
     }
     
     public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSProductFolder>? {

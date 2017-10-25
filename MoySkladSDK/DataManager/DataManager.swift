@@ -184,7 +184,7 @@ public struct DataManager {
         return Observable.just((attributes: attrsWithoutNills, priceTypes: priceTypesWithoutNills))
     }
     
-    static func deserializeArray<T:Metable>(json: [String:Any],
+    static func deserializeArray<T>(json: [String:Any],
                                  incorrectJsonError: Error,
                                  deserializer: @escaping ([String:Any]) -> MSEntity<T>?) -> Observable<[MSEntity<T>]> {
         let deserialized = json.msArray("rows").map { deserializer($0) }
@@ -267,17 +267,17 @@ public struct DataManager {
                                         settingsRequest,
                                         currenciesRequest,
                                         loadAllMetadata(auth: auth),
-                                        resultSelector: { result in
-                                            let states = result.3.toDictionary(key: { $0.type }, element: { $0.states })
-                                            let attributes = result.3.toDictionary(key: { $0.type }, element: { $0.attributes })
-                                            let counerpartyTags = result.3.first(where: { $0.type == .counterparty })?.tags ?? []
-                                            let assortmentPrices = result.3.first(where: { $0.type == .product })?.priceTypes ?? []
+                                        resultSelector: {
+                                            let states = $3.toDictionary(key: { $0.type }, element: { $0.states })
+                                            let attributes = $3.toDictionary(key: { $0.type }, element: { $0.attributes })
+                                            let counerpartyTags = $3.first(where: { $0.type == .counterparty })?.tags ?? []
+                                            let assortmentPrices = $3.first(where: { $0.type == .product })?.priceTypes ?? []
                                             
                                             return LogInInfo(employee: $0,
                                                              companySettings: $1,
                                                              states: states,
                                                              documentAttributes: attributes,
-                                                             currencies: result.2.toDictionary { $0.meta.href.withoutParameters() },
+                                                             currencies: $2.toDictionary { $0.meta.href.withoutParameters() },
                                                              counterpartyTags: counerpartyTags,
                                                              priceTypes: assortmentPrices)
         })

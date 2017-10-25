@@ -156,7 +156,7 @@ extension MSLocalImage {
         var dict = [String: Any]()
      
         dict["filename"] = title
-        dict["content"] = UIImageJPEGRepresentation(image, 1)?.base64EncodedString() ?? NSNull()
+        dict["content"] = image.base64EncodedString()
         
         return dict
     }

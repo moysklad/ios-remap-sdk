@@ -89,7 +89,7 @@ extension MSState : DictConvertable {
     public  static func from(dict: Dictionary<String, Any>) -> MSEntity<MSState>? {
         guard let meta = MSMeta.from(dict: dict["meta"] as? [String: Any] ?? [:], parent: dict) else { return nil }
         
-        guard let name: String = dict.value("name"), name.characters.count > 0 else { return MSEntity.meta(meta) }
+        guard let name: String = dict.value("name"), name.count > 0 else { return MSEntity.meta(meta) }
         
         guard let color: Int = dict.value("color") else { return MSEntity.meta(meta) }
         

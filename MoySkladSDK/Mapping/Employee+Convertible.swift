@@ -27,7 +27,7 @@ extension MSEmployee : DictConvertable {
 			return nil
 		}
 		
-		guard let lastName: String = dict.value("lastName"), lastName.characters.count > 0, let group = MSGroup.from(dict: dict.msValue("group")) else {
+		guard let lastName: String = dict.value("lastName"), lastName.count > 0, let group = MSGroup.from(dict: dict.msValue("group")) else {
 			return MSEntity.meta(meta)
 		}
 		
@@ -78,7 +78,7 @@ extension MSGroup : DictConvertable {
 			return nil
 		}
 		
-		guard let name: String = dict.value("name"), name.characters.count > 0 else {
+		guard let name: String = dict.value("name"), name.count > 0 else {
 			return MSEntity.meta(meta)
 		}
 		

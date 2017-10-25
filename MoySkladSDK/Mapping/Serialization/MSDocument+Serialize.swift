@@ -26,13 +26,13 @@ func serialize<T:  DictConvertable>(entities: [MSEntity<T>], parent: Metable, me
         return false
     }
     let endIndex = parent.meta.href.range(of: "?")?.lowerBound ?? parent.meta.href.endIndex
-    let meta: [String:Any] = ["href":"\(parent.meta.href.substring(to: endIndex))/\(collectionName)",
+    let meta: [String:Any] = ["href":"\(parent.meta.href.prefix(upTo: endIndex))/\(collectionName)",
         "type":objectType.rawValue,
         "mediaType":"application/json",
         "size":serialized.count,
         "limit":100,
         "offset":0]
-    
+        
     return ["meta":meta, "rows":serialized]
 }
 

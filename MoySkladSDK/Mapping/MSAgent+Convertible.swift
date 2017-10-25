@@ -74,7 +74,7 @@ extension MSContactPerson: DictConvertable {
     public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {
         var dict = [String: Any]()
         
-        if meta.href.characters.count > 0 {
+        if meta.href.count > 0 {
             dict["meta"] = meta.dictionary()
         }
         

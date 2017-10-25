@@ -252,7 +252,7 @@ public extension Date {
     }()
     
     public static func fromMSDate(_ value: String) -> Date? {
-        guard value.characters.count > 0 else {
+        guard value.count > 0 else {
             return nil
         }
         return Date.msDateFormatter.date(from: value)

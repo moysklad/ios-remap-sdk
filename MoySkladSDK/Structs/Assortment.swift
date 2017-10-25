@@ -218,7 +218,7 @@ extension MSAssortment {
         
         let codeAndArticle = [objCode, objArticle].removeNils().joined(separator: "/")
         
-        guard codeAndArticle.characters.count > 0 else { return nil }
+        guard codeAndArticle.count > 0 else { return nil }
         
         return codeAndArticle
     }
@@ -398,7 +398,7 @@ public class MSProductFolder : Metable {
 
 extension MSProductFolder {
     public func fullPath() -> String {
-        guard let pathName = pathName, pathName.characters.count > 0 else {
+        guard let pathName = pathName, pathName.count > 0 else {
             return info.name
         }
         

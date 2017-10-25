@@ -53,7 +53,7 @@ public struct DataManager {
         return result
     }
     
-    static func groupBy<T: Metable, K: Hashable>(data: [MSEntity<T>], groupingKey: ((T) -> K),
+    static func groupBy<T, K: Hashable>(data: [MSEntity<T>], groupingKey: ((T) -> K),
                             withPrevious previousData: [(groupKey: K, data: [MSEntity<T>])]? = nil) -> [(groupKey: K, data: [MSEntity<T>])] {
         var groups: [(groupKey: K, data: [MSEntity<T>])] = previousData ?? []
         
@@ -99,7 +99,7 @@ public struct DataManager {
             }
         }
         
-        return groups.map { (date: $0.key, data: $0.value) }.sorted(by: { $0.0.date > $0.1.date })
+        return groups.map { (date: $0.key, data: $0.value) }.sorted(by: { $0.date > $1.date })
     }
     
     static func groupByDate<T: MSGeneralDocument>(data: [MSEntity<T>], date: ((T) -> Date),
@@ -127,7 +127,7 @@ public struct DataManager {
             }
         }
         
-        return groups.map { (date: $0.key, data: $0.value) }.sorted(by: { $0.0.date > $0.1.date })
+        return groups.map { (date: $0.key, data: $0.value) }.sorted(by: { $0.date > $1.date })
     }
     
     static func deserializeDocumentMetadata(json: [String:Any], incorrectJsonError: Error) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
@@ -184,7 +184,7 @@ public struct DataManager {
         return Observable.just((attributes: attrsWithoutNills, priceTypes: priceTypesWithoutNills))
     }
     
-    static func deserializeArray<T:Metable>(json: [String:Any],
+    static func deserializeArray<T>(json: [String:Any],
                                  incorrectJsonError: Error,
                                  deserializer: @escaping ([String:Any]) -> MSEntity<T>?) -> Observable<[MSEntity<T>]> {
         let deserialized = json.msArray("rows").map { deserializer($0) }
@@ -267,17 +267,17 @@ public struct DataManager {
                                         settingsRequest,
                                         currenciesRequest,
                                         loadAllMetadata(auth: auth),
-                                        resultSelector: { result in
-                                            let states = result.3.toDictionary(key: { $0.type }, element: { $0.states })
-                                            let attributes = result.3.toDictionary(key: { $0.type }, element: { $0.attributes })
-                                            let counerpartyTags = result.3.first(where: { $0.type == .counterparty })?.tags ?? []
-                                            let assortmentPrices = result.3.first(where: { $0.type == .product })?.priceTypes ?? []
+                                        resultSelector: {
+                                            let states = $3.toDictionary(key: { $0.type }, element: { $0.states })
+                                            let attributes = $3.toDictionary(key: { $0.type }, element: { $0.attributes })
+                                            let counerpartyTags = $3.first(where: { $0.type == .counterparty })?.tags ?? []
+                                            let assortmentPrices = $3.first(where: { $0.type == .product })?.priceTypes ?? []
                                             
-                                            return LogInInfo(employee: result.0,
-                                                             companySettings: result.1,
+                                            return LogInInfo(employee: $0,
+                                                             companySettings: $1,
                                                              states: states,
                                                              documentAttributes: attributes,
-                                                             currencies: result.2.toDictionary { $0.meta.href.withoutParameters() },
+                                                             currencies: $2.toDictionary { $0.meta.href.withoutParameters() },
                                                              counterpartyTags: counerpartyTags,
                                                              priceTypes: assortmentPrices)
         })

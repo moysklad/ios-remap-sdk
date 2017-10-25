@@ -120,7 +120,7 @@ extension Expander : Expandable {
     */
 	public var expandString: String {
 		let str = Expander.formatExpandPaths(self).joined(separator: ",")
-		return str.characters.count == 0 ? type.rawValue : str
+		return str.count == 0 ? type.rawValue : str
 	}
 }
 

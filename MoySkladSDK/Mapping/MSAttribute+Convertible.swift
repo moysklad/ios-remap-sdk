@@ -45,11 +45,11 @@ extension MSAttribute : DictConvertable {
             return nil
         }
         
-        guard let name: String = dict.value("name"), name.characters.count > 0 else {
+        guard let name: String = dict.value("name"), name.count > 0 else {
             return MSEntity.meta(meta)
         }
         
-        guard let type: String = dict.value("type"), type.characters.count > 0 else {
+        guard let type: String = dict.value("type"), type.count > 0 else {
             return MSEntity.meta(meta)
         }
         

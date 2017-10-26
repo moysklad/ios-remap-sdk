@@ -250,6 +250,14 @@ extension MSAssortment {
         return image
     }
     
+    /// Обнуляет поле image у объекта, для удаления изображения товара
+    public func clearImage() {
+        if meta.type == .variant {
+            assortmentInfo.product?.value()?.image = nil
+        }
+        image = nil
+    }
+    
     public func getSalesPrices() -> [MSPrice] {
         if meta.type == .variant {
             var prices: [MSPrice] = []
@@ -319,7 +327,7 @@ public class MSProduct : Metable, DictConvertable {
     public let productFolder: MSEntity<MSProductFolder>?
     public let article: String?
     public let code: String?
-    public let image: MSImage?
+    public var image: MSImage?
     public let buyPrice: MSPrice?
     public let salePrices: [MSPrice]
     public let supplier: MSEntity<MSAgent>?

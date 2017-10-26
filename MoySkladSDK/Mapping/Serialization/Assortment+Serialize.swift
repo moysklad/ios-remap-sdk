@@ -44,6 +44,10 @@ extension MSAssortment {
         
         if let image = localImage?.dictionary() {
             dict["image"] = image
+        }  else if getImage() == nil {
+            // если getImage возвращает nil, значит у объекта не было картинки или ее удалили
+            // отправляем NULL, что бы удалить ее
+            dict["image"] = NSNull()
         }
         
         dict["country"] = serialize(entity: country, metaOnly: true)

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderType, MSDemandType,
+public class MSDocument: MSAttributedEntity, MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderType, MSDemandType,
                         MSInvoiceOutType, MSInvoiceInType, MSMoneyDocumentType, MSCashInType, MSCashOutType,
                         MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShiftType {
     // MSBaseDocumentType
@@ -31,7 +31,6 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
     public var shared : Bool
     public var applicable : Bool
     public var state : MSEntity<MSState>?
-    public var attributes : [MSEntity<MSAttribute>]?
     public var originalApplicable: Bool
     public var stateContractId: String?
     
@@ -247,7 +246,6 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
         self.shared = shared
         self.applicable = applicable
         self.state = state
-        self.attributes = attributes
         self.originalApplicable = originalApplicable
         self.agentAccount = agentAccount
         self.organizationAccount = organizationAccount
@@ -292,5 +290,6 @@ public class MSDocument: MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderT
         self.customerOrders = customerOrders
         self.supplies = supplies
         self.commitentSum = commitentSum
+        super.init(attributes: attributes)
     }
 }

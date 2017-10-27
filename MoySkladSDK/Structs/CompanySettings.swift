@@ -38,6 +38,11 @@ public enum MSEntity<T : Metable> {
         case .meta(let meta): return meta
         }
     }
+    
+    public static func from(_ value: T?) -> MSEntity? {
+        guard let value = value else { return nil }
+        return MSEntity.entity(value)
+    }
 }
 
 public class MSCompanySettings : Metable {

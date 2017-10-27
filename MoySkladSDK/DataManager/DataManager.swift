@@ -21,6 +21,7 @@ public struct LogInInfo {
     public let currencies: [String: MSCurrency]
     public let counterpartyTags: [String]
     public let priceTypes: [String]
+    public let groups: [String: MSGroup]
 }
 
 struct MetadataLoadResult {
@@ -246,7 +247,7 @@ public struct DataManager {
                 return Observable.just(settings)
         }
         
-        let currenciesRequest = HttpClient.get(.currency, auth: auth)
+        let currenciesRequest = HttpClient.get(.currency, auth: auth, urlParameters: [MSOffset(size: 100, limit: 100, offset: 0)])
             .flatMapLatest { result -> Observable<[MSCurrency]> in
                 guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCurrencyResponse.value)) }
                 
@@ -262,11 +263,22 @@ public struct DataManager {
                 }
         }
         
+        let groupsRequest = HttpClient.get(.group, auth: auth, urlParameters: [MSOffset(size: 100, limit: 100, offset: 0)])
+            .flatMapLatest { result -> Observable<[MSGroup]> in
+                guard let result = result else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectGroupResponse.value))
+                }
+                let deserialized = result.msArray("rows").map { MSGroup.from(dict: $0)?.value() }.removeNils()
+                
+                return Observable.just(deserialized)
+        }
+        
         // комбинируем все ответы от запросов и возвращаем LogInInfo
         return Observable.combineLatest(employeeRequest,
                                         settingsRequest,
                                         currenciesRequest,
                                         loadAllMetadata(auth: auth),
+                                        groupsRequest,
                                         resultSelector: {
                                             let states = $3.toDictionary(key: { $0.type }, element: { $0.states })
                                             let attributes = $3.toDictionary(key: { $0.type }, element: { $0.attributes })
@@ -279,7 +291,8 @@ public struct DataManager {
                                                              documentAttributes: attributes,
                                                              currencies: $2.toDictionary { $0.meta.href.withoutParameters() },
                                                              counterpartyTags: counerpartyTags,
-                                                             priceTypes: assortmentPrices)
+                                                             priceTypes: assortmentPrices,
+                                                             groups: $4.toDictionary({ $0.meta.href.withoutParameters() }))
         })
     }
     

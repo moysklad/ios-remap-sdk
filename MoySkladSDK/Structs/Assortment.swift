@@ -67,6 +67,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     public var assortmentInfo: MSAssortmentInfo
     public var packs: [MSPack]
     public var localImage: MSLocalImage?
+    public var characteristics: [MSAssortmentCharacteristics]?
     
     public init(meta: MSMeta,
     id: MSID,
@@ -106,7 +107,8 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     assortmentInfo: MSAssortmentInfo,
     attributes: [MSEntity<MSAttribute>]?,
     packs: [MSPack],
-    localImage: MSLocalImage?) {
+    localImage: MSLocalImage?,
+    characteristics: [MSAssortmentCharacteristics]?) {
         self.meta = meta
         self.id = id
         self.accountId = accountId
@@ -145,6 +147,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
         self.assortmentInfo = assortmentInfo
         self.packs = packs
         self.localImage = localImage
+        self.characteristics = characteristics
         super.init(attributes: attributes)
     }
     
@@ -186,7 +189,8 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             assortmentInfo: assortmentInfo,
                             attributes: attributes,
                             packs: packs,
-                            localImage: localImage)
+                            localImage: localImage,
+                            characteristics: characteristics)
     }
 }
 
@@ -371,6 +375,23 @@ public class MSPrice {
         self.priceType = priceType
         self.value = value
         self.currency = currency
+    }
+}
+
+public class MSAssortmentCharacteristics: Metable {
+    public let meta: MSMeta
+    public let id: MSID
+    public var name: String?
+    public var value: String?
+    
+    public init(meta: MSMeta,
+                id: MSID,
+                name: String?,
+                value: String?) {
+        self.meta = meta
+        self.id = id
+        self.name = name
+        self.value = value
     }
 }
 

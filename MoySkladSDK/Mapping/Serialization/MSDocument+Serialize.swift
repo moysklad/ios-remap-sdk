@@ -117,6 +117,9 @@ extension MSDocument {
         dict["operations"] = serialize(entities: operations,
                                        parent: self,
                                        objectType: MSObjectType.customerorder, collectionName: "operations")
+        dict["customerOrders"] = serialize(entities: customerOrders,
+                                           parent: self,
+                                           objectType: MSObjectType.customerorder, collectionName: "customerOrders")
         if let factureOut = factureOut {
             dict["factureOut"] = serialize(entity: factureOut, metaOnly: true)
         }

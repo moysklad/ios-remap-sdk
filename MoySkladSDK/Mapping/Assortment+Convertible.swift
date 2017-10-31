@@ -53,7 +53,7 @@ extension MSAssortment {
 		             attributes: dict.msArray("attributes").map { MSAttribute.from(dict: $0) }.flatMap { $0 },
 		             packs: (dict["packs"] as? [Any] ?? []).map { MSPack.from(dict: $0 as? Dictionary<String, Any> ?? [:]) }.flatMap { $0 },
 		             localImage: nil,
-                     characteristics: (dict["characteristics"] as? [Any] ?? []).map { MSAssortmentCharacteristics.from(dict: $0 as? Dictionary<String, Any> ?? [:]) }.flatMap { $0 }))
+                     characteristics: dict.msArray("characteristics").map { MSAssortmentCharacteristics.from(dict: $0) }.flatMap { $0 }))
 	}
 }
 
@@ -101,10 +101,15 @@ extension MSAssortmentInfo {
 }
 
 extension MSAssortmentCharacteristics {
-    public static func from(dict: Dictionary<String, Any>) -> MSAssortmentCharacteristics? {
+    public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSAssortmentCharacteristics>? {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else { return nil }
         
-        return MSAssortmentCharacteristics(meta: meta, id: MSID(dict: dict), name: dict.value("name"), value: dict.value("value"))
+        return MSEntity.entity(MSAssortmentCharacteristics(meta: meta,
+                                                           id: MSID(dict: dict),
+                                                           name: dict.value("name"),
+                                                           value: dict.value("value"),
+                                                           type: dict.value("type"),
+                                                           required: dict.value("required") ?? false))
     }
 }
 

@@ -1426,13 +1426,13 @@ public struct DataManager {
                                        expanders: [Expander] = [],
                                        filter: Filter? = nil,
                                        search: Search? = nil) -> Observable<[MSEntity<MSAttribute>]> {
-        return HttpClient.get(.variantMetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
+        return HttpClient.get(.variantMetadata, auth: auth)
             .flatMapLatest { result -> Observable<[MSEntity<MSAttribute>]> in
                 guard let result = result else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectVariantMetadataResponse.value))
                 }
                 
-                let deserialized = result.msArray("characteristics").map { MSAttribute.from(dict: $0) }
+                let deserialized = result.msArray("characteristics").map { MSAttribute.metaFrom(dict: $0) }
                 let withoutNills = deserialized.removeNils()
                 
                 return .just(withoutNills)

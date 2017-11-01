@@ -1415,4 +1415,23 @@ public struct DataManager {
                                         deserializer: { MSUOM.from(dict: $0) })
         }
     }
+    
+    /**
+    Load Variant metadata
+    - parameter auth: Authentication information
+    - returns: Metadata for object
+    */
+    public static func variantMetadata(auth: Auth) -> Observable<[MSEntity<MSAttribute>]> {
+        return HttpClient.get(.variantMetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
+            .flatMapLatest { result -> Observable<[MSEntity<MSAttribute>]> in
+                guard let result = result else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectVariantMetadataResponse.value))
+                }
+                
+                let deserialized = result.msArray("characteristics").map { MSAttribute.from(dict: $0) }
+                let withoutNills = deserialized.removeNils()
+                
+                return .just(withoutNills)
+        }
+    }
 }

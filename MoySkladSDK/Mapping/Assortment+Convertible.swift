@@ -53,9 +53,10 @@ extension MSAssortment {
 		             attributes: dict.msArray("attributes").map { MSAttribute.from(dict: $0) }.flatMap { $0 },
 		             packs: (dict["packs"] as? [Any] ?? []).map { MSPack.from(dict: $0 as? Dictionary<String, Any> ?? [:]) }.flatMap { $0 },
 		             localImage: nil,
-                     characteristics: dict.msArray("characteristics").map { MSAssortmentCharacteristics.from(dict: $0) }.flatMap { $0 }))
+                     characteristics: dict.msArray("characteristics").map { MSAttribute.from(dict: $0) }.flatMap { $0 }))
 	}
 }
+
 
 extension MSAlcohol {
 	public static func from(dict: Dictionary<String, Any>) -> MSAlcohol? {
@@ -97,19 +98,6 @@ extension MSAssortmentInfo {
         return MSAssortmentInfo(productFolder: MSProductFolder.from(dict: dict.msValue("productFolder")),
                                 product: MSProduct.from(dict: dict.msValue("product")),
                                 components: dict.msValue("components").msArray("rows").map { MSBundleComponent.from(dict: $0) }.removeNils())
-    }
-}
-
-extension MSAssortmentCharacteristics {
-    public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSAssortmentCharacteristics>? {
-        guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else { return nil }
-        
-        return MSEntity.entity(MSAssortmentCharacteristics(meta: meta,
-                                                           id: MSID(dict: dict),
-                                                           name: dict.value("name"),
-                                                           value: dict.value("value"),
-                                                           type: dict.value("type"),
-                                                           required: dict.value("required") ?? false))
     }
 }
 

@@ -364,8 +364,8 @@ public class MSProduct : Metable, DictConvertable {
 }
 
 public class MSVariantAttribute: Metable {
-    public let meta: MSMeta
-    public let id: MSID
+    public var meta: MSMeta
+    public var id: MSID
     public var name: String?
     public var value: String?
     public var type: String?

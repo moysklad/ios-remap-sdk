@@ -1421,7 +1421,11 @@ public struct DataManager {
     - parameter auth: Authentication information
     - returns: Metadata for object
     */
-    public static func variantMetadata(auth: Auth) -> Observable<[MSEntity<MSAttribute>]> {
+    public static func variantMetadata(auth: Auth,
+                                       offset: MSOffset? = nil,
+                                       expanders: [Expander] = [],
+                                       filter: Filter? = nil,
+                                       search: Search? = nil) -> Observable<[MSEntity<MSAttribute>]> {
         return HttpClient.get(.variantMetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
             .flatMapLatest { result -> Observable<[MSEntity<MSAttribute>]> in
                 guard let result = result else {

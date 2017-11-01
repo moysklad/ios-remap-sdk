@@ -67,7 +67,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     public var assortmentInfo: MSAssortmentInfo
     public var packs: [MSPack]
     public var localImage: MSLocalImage?
-    public var characteristics: [MSEntity<MSAttribute>]?
+    public var characteristics: [MSEntity<MSVariantAttribute>]?
     
     public init(meta: MSMeta,
     id: MSID,
@@ -108,7 +108,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     attributes: [MSEntity<MSAttribute>]?,
     packs: [MSPack],
     localImage: MSLocalImage?,
-    characteristics: [MSEntity<MSAttribute>]?) {
+    characteristics: [MSEntity<MSVariantAttribute>]?) {
         self.meta = meta
         self.id = id
         self.accountId = accountId
@@ -360,6 +360,29 @@ public class MSProduct : Metable, DictConvertable {
         self.buyPrice = buyPrice
         self.salePrices = salePrices
         self.supplier = supplier
+    }
+}
+
+public class MSVariantAttribute: Metable {
+    public let meta: MSMeta
+    public let id: MSID
+    public var name: String?
+    public var value: String?
+    public var type: String?
+    public var required: Bool
+    
+    public init(meta: MSMeta,
+                id: MSID,
+                name: String?,
+                value: String?,
+                type: String?,
+                required: Bool) {
+        self.meta = meta
+        self.id = id
+        self.name = name
+        self.value = value
+        self.type = type
+        self.required = required
     }
 }
 

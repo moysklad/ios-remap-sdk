@@ -1425,14 +1425,14 @@ public struct DataManager {
                                        offset: MSOffset? = nil,
                                        expanders: [Expander] = [],
                                        filter: Filter? = nil,
-                                       search: Search? = nil) -> Observable<[MSEntity<MSAttribute>]> {
+                                       search: Search? = nil) -> Observable<[MSEntity<MSVariantAttribute>]> {
         return HttpClient.get(.variantMetadata, auth: auth)
-            .flatMapLatest { result -> Observable<[MSEntity<MSAttribute>]> in
+            .flatMapLatest { result -> Observable<[MSEntity<MSVariantAttribute>]> in
                 guard let result = result else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectVariantMetadataResponse.value))
                 }
                 
-                let deserialized = result.msArray("characteristics").map { MSAttribute.metaFrom(dict: $0) }
+                let deserialized = result.msArray("characteristics").map { MSVariantAttribute.from(dict: $0) }
                 let withoutNills = deserialized.removeNils()
                 
                 return .just(withoutNills)

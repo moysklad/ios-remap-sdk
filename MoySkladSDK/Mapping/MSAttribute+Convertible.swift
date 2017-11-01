@@ -39,21 +39,6 @@ extension MSAttribute : DictConvertable {
         
         return dict
     }
-    
-    public static func metaFrom(dict: Dictionary<String, Any>) -> MSEntity<MSAttribute>? {
-        guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else {
-            return nil
-        }
-        
-        let name: String = dict.value("name") ?? ""
-        let id: String = dict.value("id") ?? ""
-        let value: String = dict.value("value") ?? ""
-        
-        return MSEntity.entity(MSAttribute(meta: meta,
-                                           id: id,
-                                           name:name,
-                                           value:.string(value)))
-    }
 
     public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSAttribute>? {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else {

@@ -185,7 +185,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             quantity: quantity,
                             assortmentInfo: assortmentInfo,
                             attributes: attributes,
-                            packs: packs,
+                            packs: packs.map { $0.copy() },
                             localImage: localImage)
     }
 }

@@ -65,9 +65,7 @@ extension MSAssortment {
         dict["barcodes"] = barcodes
         dict["attributes"] = attributes?.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
         
-        if packs.count > 0 {
-            dict["packs"] = packs.map { $0.dictionary() }
-        }
+        dict["packs"] = packs.map { $0.dictionary() }
         
         return dict
     }

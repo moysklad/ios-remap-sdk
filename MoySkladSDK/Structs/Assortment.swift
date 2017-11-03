@@ -166,8 +166,8 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             uom: uom,
                             image: image,
                             minPrice: minPrice,
-                            buyPrice: buyPrice,
-                            salePrices: salePrices,
+                            buyPrice: buyPrice?.copy(),
+                            salePrices: salePrices.map { $0.copy() },
                             supplier: supplier,
                             country: country,
                             article: article,
@@ -371,6 +371,10 @@ public class MSPrice {
         self.priceType = priceType
         self.value = value
         self.currency = currency
+    }
+    
+    public func copy() -> MSPrice {
+        return MSPrice(priceType: priceType, value: value, currency: currency)
     }
 }
 

@@ -69,7 +69,7 @@ extension MSAssortment {
             dict["packs"] = packs.map { $0.dictionary() }
         }
         
-        if meta.type == .variant, let serialized = serializeCharacteristics(characteristics) {
+        if let serialized = serializeCharacteristics(characteristics) {
             dict["characteristics"] = serialized
         }
         
@@ -96,7 +96,7 @@ func serializeCharacteristics(_ entities: [MSEntity<MSVariantAttribute>]?) -> Di
     var serialized = Dictionary<String, Any>()
     
     entities.forEach { value in
-        guard let object = value.value(), let id = object.id.syncID, let name = object.value else { return }
+        guard let object = value.value(), let id = object.id.msID?.uuidString, let name = object.value else { return }
         serialized["id"] = id
         serialized["value"] = name
     }

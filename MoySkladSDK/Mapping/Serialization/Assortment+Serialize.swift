@@ -90,15 +90,17 @@ extension MSAssortment {
     }
 }
 
-func serializeCharacteristics(_ entities: [MSEntity<MSVariantAttribute>]?) -> Dictionary<String, Any>? {
+func serializeCharacteristics(_ entities: [MSEntity<MSVariantAttribute>]?) -> [Dictionary<String, Any>]? {
     guard let entities = entities else { return nil }
     
-    var serialized = Dictionary<String, Any>()
+    var serialized = [Dictionary<String, Any>]()
     
     entities.forEach { value in
         guard let object = value.value(), let id = object.id.msID?.uuidString, let name = object.value else { return }
-        serialized["id"] = id
-        serialized["value"] = name
+        var dict = Dictionary<String, Any>()
+        dict["id"] = id
+        dict["value"] = name
+        serialized.append(dict)
     }
   
     return serialized.isEmpty ? nil : serialized

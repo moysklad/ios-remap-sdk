@@ -71,6 +71,10 @@ extension MSAssortment {
             dict["characteristics"] = serialized
         }
         
+        if meta.type == .variant {
+            dict["product"] = serialize(entity: assortmentInfo.product, metaOnly: true)
+        }
+        
         return dict
     }
     

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 //import Money
 
-public class MSAlcohol {
+public struct MSAlcohol {
     public var excise: Bool?
 	public var type: Int?
 	public var strength: Double?

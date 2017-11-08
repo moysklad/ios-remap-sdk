@@ -67,6 +67,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     public var assortmentInfo: MSAssortmentInfo
     public var packs: [MSPack]
     public var localImage: MSLocalImage?
+    public var characteristics: [MSEntity<MSVariantAttribute>]?
     
     public init(meta: MSMeta,
     id: MSID,
@@ -106,7 +107,8 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     assortmentInfo: MSAssortmentInfo,
     attributes: [MSEntity<MSAttribute>]?,
     packs: [MSPack],
-    localImage: MSLocalImage?) {
+    localImage: MSLocalImage?,
+    characteristics: [MSEntity<MSVariantAttribute>]?) {
         self.meta = meta
         self.id = id
         self.accountId = accountId
@@ -145,6 +147,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
         self.assortmentInfo = assortmentInfo
         self.packs = packs
         self.localImage = localImage
+        self.characteristics = characteristics
         super.init(attributes: attributes)
     }
     
@@ -186,7 +189,8 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             assortmentInfo: assortmentInfo,
                             attributes: attributes,
                             packs: packs.map { $0.copy() },
-                            localImage: localImage)
+                            localImage: localImage,
+                            characteristics: characteristics)
     }
 }
 
@@ -356,6 +360,29 @@ public class MSProduct : Metable, DictConvertable {
         self.buyPrice = buyPrice
         self.salePrices = salePrices
         self.supplier = supplier
+    }
+}
+
+public class MSVariantAttribute: Metable {
+    public var meta: MSMeta
+    public var id: MSID
+    public var name: String?
+    public var value: String?
+    public var type: String?
+    public var required: Bool
+    
+    public init(meta: MSMeta,
+                id: MSID,
+                name: String?,
+                value: String?,
+                type: String?,
+                required: Bool) {
+        self.meta = meta
+        self.id = id
+        self.name = name
+        self.value = value
+        self.type = type
+        self.required = required
     }
 }
 

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 //import Money
 
-public class MSAlcohol {
+public struct MSAlcohol {
     public var excise: Bool?
 	public var type: Int?
 	public var strength: Double?
@@ -169,8 +169,8 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             uom: uom,
                             image: image,
                             minPrice: minPrice,
-                            buyPrice: buyPrice,
-                            salePrices: salePrices,
+                            buyPrice: buyPrice?.copy(),
+                            salePrices: salePrices.map { $0.copy() },
                             supplier: supplier,
                             country: country,
                             article: article,
@@ -188,7 +188,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             quantity: quantity,
                             assortmentInfo: assortmentInfo,
                             attributes: attributes,
-                            packs: packs,
+                            packs: packs.map { $0.copy() },
                             localImage: localImage,
                             characteristics: characteristics)
     }
@@ -398,6 +398,10 @@ public class MSPrice {
         self.priceType = priceType
         self.value = value
         self.currency = currency
+    }
+    
+    public func copy() -> MSPrice {
+        return MSPrice(priceType: priceType, value: value, currency: currency)
     }
 }
 

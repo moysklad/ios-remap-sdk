@@ -20,4 +20,8 @@ public class MSPack {
         self.quantity = quantity
         self.uom = uom
     }
+    
+    public func copy() -> MSPack {
+        return MSPack(id: id, quantity: quantity, uom: uom)
+    }
 }

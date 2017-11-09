@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-//import Money
 
 public struct MSAlcohol {
     public var excise: Bool?
@@ -42,6 +41,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
 	public var pathName: String?
 	public var vat: Int?
 	public var effectiveVat: Int?
+    // Product fields
 	public var productFolder: MSEntity<MSProductFolder>?
     public var uom: MSEntity<MSUOM>?
 	public var image: MSImage?
@@ -54,7 +54,6 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
 	public var weighed: Bool
 	public var weight: Double
 	public var volume: Double
-	//public let packs
 	public var barcodes: [String]
 	public var alcohol: MSAlcohol?
 	public var modificationsCount: Int?
@@ -64,10 +63,13 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
 	public var reserve: Double?
 	public var inTransit: Double?
 	public var quantity: Double?
-    public var assortmentInfo: MSAssortmentInfo
+    // Variant fields
+    public var assortmentInfo: MSEntity<MSAssortment>?
     public var packs: [MSPack]
     public var localImage: MSLocalImage?
     public var characteristics: [MSEntity<MSVariantAttribute>]?
+    // Bundle fields
+    public let components: [MSEntity<MSBundleComponent>]
     
     public init(meta: MSMeta,
     id: MSID,
@@ -94,7 +96,6 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     weighed: Bool,
     weight: Double,
     volume: Double,
-    //packs
     barcodes: [String],
     alcohol: MSAlcohol?,
     modificationsCount: Int?,
@@ -104,11 +105,12 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     reserve: Double?,
     inTransit: Double?,
     quantity: Double?,
-    assortmentInfo: MSAssortmentInfo,
+    assortmentInfo: MSEntity<MSAssortment>?,
     attributes: [MSEntity<MSAttribute>]?,
     packs: [MSPack],
     localImage: MSLocalImage?,
-    characteristics: [MSEntity<MSVariantAttribute>]?) {
+    characteristics: [MSEntity<MSVariantAttribute>]?,
+    components: [MSEntity<MSBundleComponent>]) {
         self.meta = meta
         self.id = id
         self.accountId = accountId
@@ -134,7 +136,6 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
         self.weighed = weighed
         self.weight = weight
         self.volume = volume
-        //packs
         self.barcodes = barcodes
         self.alcohol = alcohol
         self.modificationsCount = modificationsCount
@@ -148,6 +149,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
         self.packs = packs
         self.localImage = localImage
         self.characteristics = characteristics
+        self.components = components
         super.init(attributes: attributes)
     }
     
@@ -190,7 +192,8 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             attributes: attributes,
                             packs: packs.map { $0.copy() },
                             localImage: localImage,
-                            characteristics: characteristics)
+                            characteristics: characteristics,
+                            components: components)
     }
 }
 
@@ -199,10 +202,10 @@ extension MSAssortment {
         return {
             if self.meta.type == .variant {
                 // если это вариант берем productFolder со связанного с ним родительского продукта
-                return self.assortmentInfo.product?.value()?.productFolder?.value()?.fullPath()
+                return self.assortmentInfo?.value()?.productFolder?.value()?.fullPath()
             }
             
-            return self.assortmentInfo.productFolder?.value()?.fullPath()
+            return self.productFolder?.value()?.fullPath()
         }()
     }
     
@@ -210,12 +213,12 @@ extension MSAssortment {
         let objCode: String? = {
             guard meta.type == .variant else { return code }
             
-            return code ?? assortmentInfo.product?.value()?.code
+            return code ?? assortmentInfo?.value()?.code
         }()
         
         let objArticle: String? = {
             if meta.type == .variant {
-                return assortmentInfo.product?.value()?.article
+                return assortmentInfo?.value()?.article
             }
             return article
         }()
@@ -235,21 +238,21 @@ extension MSAssortment {
     
     public func getDescription() -> String? {
         if meta.type == .variant {
-            return info.description ?? assortmentInfo.product?.value()?.info.description
+            return info.description ?? assortmentInfo?.value()?.info.description
         }
         return info.description
     }
     
     public func getSupplier() -> MSEntity<MSAgent>? {
         if meta.type == .variant {
-            return assortmentInfo.product?.value()?.supplier
+            return assortmentInfo?.value()?.supplier
         }
         return supplier
     }
     
     public func getImage() -> MSImage? {
         if meta.type == .variant {
-            return assortmentInfo.product?.value()?.image
+            return assortmentInfo?.value()?.image
         }
         return image
     }
@@ -257,7 +260,7 @@ extension MSAssortment {
     /// Обнуляет поле image у объекта, для удаления изображения товара
     public func clearImage() {
         if meta.type == .variant {
-            assortmentInfo.product?.value()?.image = nil
+            assortmentInfo?.value()?.image = nil
         }
         image = nil
     }
@@ -267,8 +270,8 @@ extension MSAssortment {
             var prices: [MSPrice] = []
             
             if salePrices.isEmpty {
-                prices.append(contentsOf: assortmentInfo.product?.value()?.salePrices ?? [])
-            } else if let productSalePrices = assortmentInfo.product?.value()?.salePrices {
+                prices.append(contentsOf: assortmentInfo?.value()?.salePrices ?? [])
+            } else if let productSalePrices = assortmentInfo?.value()?.salePrices {
                 for (index, priceArray) in salePrices.enumerated() {
                     if priceArray.value.floatValue > 0 {
                         prices.append(priceArray)
@@ -285,7 +288,7 @@ extension MSAssortment {
     }
     
     public func getBuyPrice() -> MSPrice? {
-        if meta.type == .variant, let price = (buyPrice ?? assortmentInfo.product?.value()?.buyPrice) {
+        if meta.type == .variant, let price = (buyPrice ?? assortmentInfo?.value()?.buyPrice) {
             return price
         }
         return buyPrice
@@ -300,66 +303,6 @@ extension MSAssortment {
 
         prices.append(contentsOf: getSalesPrices())
         return prices
-    }
-}
-
-public struct MSAssortmentInfo {
-    // Product fields
-    public let productFolder: MSEntity<MSProductFolder>?
-
-    // Variant fields
-    public let product: MSEntity<MSProduct>?
-    
-    // bundle fields
-    public let components: [MSEntity<MSBundleComponent>]
-    
-    public init(productFolder: MSEntity<MSProductFolder>?,
-                product: MSEntity<MSProduct>?,
-                components: [MSEntity<MSBundleComponent>]) {
-        self.product = product
-        self.productFolder = productFolder
-        self.components = components
-    }
-}
-
-public class MSProduct : Metable, DictConvertable {
-    public let meta: MSMeta
-    public let id: MSID
-    public let accountId: String
-    public let shared: Bool
-    public let info : MSInfo
-    public let productFolder: MSEntity<MSProductFolder>?
-    public let article: String?
-    public let code: String?
-    public var image: MSImage?
-    public let buyPrice: MSPrice?
-    public let salePrices: [MSPrice]
-    public let supplier: MSEntity<MSAgent>?
-    
-    public init(meta: MSMeta,
-    id: MSID,
-    accountId: String,
-    shared: Bool,
-    info : MSInfo,
-    productFolder: MSEntity<MSProductFolder>?,
-    article: String?,
-    code: String?,
-    image: MSImage?,
-    buyPrice: MSPrice?,
-    salePrices: [MSPrice],
-        supplier: MSEntity<MSAgent>?){
-        self.meta = meta
-        self.id = id
-        self.accountId = accountId
-        self.shared = shared
-        self.info = info
-        self.productFolder = productFolder
-        self.article = article
-        self.code = code
-        self.image = image
-        self.buyPrice = buyPrice
-        self.salePrices = salePrices
-        self.supplier = supplier
     }
 }
 

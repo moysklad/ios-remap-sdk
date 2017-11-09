@@ -49,11 +49,12 @@ extension MSAssortment {
 		             reserve: dict.value("reserve"),
 		             inTransit: dict.value("inTransit"),
 		             quantity: dict.value("quantity"),
-		             assortmentInfo: MSAssortmentInfo.from(dict: dict),
+		             assortmentInfo: MSAssortment.from(dict: dict.msValue("product")),
 		             attributes: dict.msArray("attributes").map { MSAttribute.from(dict: $0) }.flatMap { $0 },
 		             packs: (dict["packs"] as? [Any] ?? []).map { MSPack.from(dict: $0 as? Dictionary<String, Any> ?? [:]) }.flatMap { $0 },
 		             localImage: nil,
-                     characteristics: dict.msArray("characteristics").map { MSVariantAttribute.from(dict: $0) }.flatMap { $0 }))
+                     characteristics: dict.msArray("characteristics").map { MSVariantAttribute.from(dict: $0) }.flatMap { $0 },
+                     components: dict.msValue("components").msArray("rows").map { MSBundleComponent.from(dict: $0) }.removeNils()))
 	}
 }
 
@@ -66,39 +67,6 @@ extension MSAlcohol {
 		
 		return MSAlcohol(excise: dict.value("excise") ?? false, type: dict.value("type"), strength: dict.value("strength"), volume: dict.value("volume"))
 	}
-}
-
-extension MSProduct {
-    public func dictionary() -> Dictionary<String, Any> {
-        return [String:Any]()
-    }
-    
-    public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSProduct>? {
-        guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else {
-            return nil
-        }
-        
-        return MSEntity.entity(MSProduct(meta: meta,
-                  id: MSID(dict: dict),
-                  accountId: dict.value("accountId") ?? "",
-                  shared: dict.value("shared") ?? false,
-                  info: MSInfo(dict: dict),
-                  productFolder: MSProductFolder.from(dict: dict.msValue("productFolder")),
-                  article: dict.value("article"),
-                  code: dict.value("code"),
-                  image: MSImage.from(dict: dict.msValue("image")),
-                  buyPrice: MSPrice.from(dict: dict.msValue("buyPrice"), priceTypeOverride: "Цена закупки"),//LocalizedStrings.buyPrice.value),
-                  salePrices: (dict["salePrices"] as? [Any] ?? []).map { MSPrice.from(dict: $0 as? Dictionary<String, Any> ?? [:]) }.removeNils(),
-                  supplier: MSAgent.from(dict: dict.msValue("supplier"))))
-    }
-}
-
-extension MSAssortmentInfo {
-    public static func from(dict: Dictionary<String, Any>) -> MSAssortmentInfo {
-        return MSAssortmentInfo(productFolder: MSProductFolder.from(dict: dict.msValue("productFolder")),
-                                product: MSProduct.from(dict: dict.msValue("product")),
-                                components: dict.msValue("components").msArray("rows").map { MSBundleComponent.from(dict: $0) }.removeNils())
-    }
 }
 
 extension MSVariantAttribute {

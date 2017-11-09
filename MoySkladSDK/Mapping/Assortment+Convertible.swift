@@ -52,11 +52,9 @@ extension MSAssortment {
 		             assortmentInfo: MSAssortmentInfo.from(dict: dict),
 		             attributes: dict.msArray("attributes").map { MSAttribute.from(dict: $0) }.flatMap { $0 },
 		             packs: (dict["packs"] as? [Any] ?? []).map { MSPack.from(dict: $0 as? Dictionary<String, Any> ?? [:]) }.flatMap { $0 },
-		             localImage: nil,
-                     characteristics: dict.msArray("characteristics").map { MSVariantAttribute.from(dict: $0) }.flatMap { $0 }))
+		             localImage: nil))
 	}
 }
-
 
 extension MSAlcohol {
 	public static func from(dict: Dictionary<String, Any>) -> MSAlcohol? {
@@ -99,20 +97,6 @@ extension MSAssortmentInfo {
                                 product: MSProduct.from(dict: dict.msValue("product")),
                                 components: dict.msValue("components").msArray("rows").map { MSBundleComponent.from(dict: $0) }.removeNils())
     }
-}
-
-extension MSVariantAttribute {
-    public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSVariantAttribute>? {
-        guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else { return nil }
-        
-        return MSEntity.entity(MSVariantAttribute(meta: meta,
-                                                  id: MSID(dict: dict),
-                                                  name: dict.value("name"),
-                                                  value: dict.value("value"),
-                                                  type: dict.value("type"),
-                                                  required: dict.value("required") ?? false))
-    }
-
 }
 
 extension MSProductFolder : DictConvertable {

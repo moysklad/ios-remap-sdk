@@ -13,7 +13,7 @@ extension MSProductStockAll {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else {
                 return nil
         }
-        
+        let price: Double = dict.value("price") ?? 0
         return MSEntity.entity(MSProductStockAll(meta: meta,
                                  stock: dict.value("stock") ?? 0,
                                  inTransit: dict.value("inTransit") ?? 0,
@@ -21,7 +21,7 @@ extension MSProductStockAll {
                                  quantity: dict.value("quantity") ?? 0,
                                  name: dict.value("name") ?? "",
                                  code: dict.value("code") ?? "",
-                                 price: Money(minorUnits: dict.value("price") ?? 0),
+                                 price: Money(minorUnits: Int(price)),
                                  salePrice: Money(minorUnits: dict.value("salePrice") ?? 0),
                                  externalCode: dict.value("externalCode") ?? ""))
     }

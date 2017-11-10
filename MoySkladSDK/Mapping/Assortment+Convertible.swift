@@ -58,7 +58,6 @@ extension MSAssortment {
 	}
 }
 
-
 extension MSAlcohol {
 	public static func from(dict: Dictionary<String, Any>) -> MSAlcohol? {
 		guard dict.keys.count > 0 else {

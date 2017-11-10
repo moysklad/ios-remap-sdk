@@ -92,22 +92,6 @@ extension MSAssortment {
     }
 }
 
-func serializeCharacteristics(_ entities: [MSEntity<MSVariantAttribute>]?) -> [Dictionary<String, Any>]? {
-    guard let entities = entities else { return nil }
-    
-    var serialized = [Dictionary<String, Any>]()
-    
-    entities.forEach { value in
-        guard let object = value.value(), let id = object.id.msID?.uuidString, let name = object.value else { return }
-        var dict = Dictionary<String, Any>()
-        dict["id"] = id
-        dict["value"] = name
-        serialized.append(dict)
-    }
-  
-    return serialized.isEmpty ? nil : serialized
-}
-
 extension MSPrice {
     public func dictionary() -> Dictionary<String, Any> {
         var dict = [String: Any]()

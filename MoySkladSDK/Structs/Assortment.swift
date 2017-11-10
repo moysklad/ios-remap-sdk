@@ -183,7 +183,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             reserve: reserve,
                             inTransit: inTransit,
                             quantity: quantity,
-                            assortmentInfo: assortmentInfo,
+                            assortmentInfo: assortmentInfo.copy(),
                             attributes: attributes,
                             packs: packs.map { $0.copy() },
                             localImage: localImage)
@@ -315,6 +315,11 @@ public struct MSAssortmentInfo {
         self.product = product
         self.productFolder = productFolder
         self.components = components
+    }
+    
+    func copy() -> MSAssortmentInfo {
+        let componentsCopy = components.flatMap { $0.value() }.map { MSEntity.entity($0.copy()) }
+        return MSAssortmentInfo(productFolder: productFolder, product: product, components: componentsCopy)
     }
 }
 

@@ -27,9 +27,7 @@ extension MSAssortment {
         dict["supplier"] = serialize(entity: supplier, metaOnly: true)
         dict["uom"] = serialize(entity: uom, metaOnly: true)
 
-        if !assortmentInfo.dictionary().isEmpty {
-            dict["assortmentInfo"] = assortmentInfo.dictionary()
-        }
+        dict.merge(assortmentInfo.dictionary())
         
         var alcoholObject: MSAlcohol = MSAlcohol(excise: nil, type: nil, strength: nil, volume: nil)
         if let alcohol = alcohol {
@@ -175,7 +173,7 @@ extension MSBundleComponent {
         
         dict["accountId"] = accountId
         dict["quantity"] = quantity
-        dict["assortment"] = serialize(entity: assortment, metaOnly: false)
+        dict["assortment"] = serialize(entity: assortment, metaOnly: true)
        
         return dict
     }

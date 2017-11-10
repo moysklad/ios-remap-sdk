@@ -307,7 +307,7 @@ public struct MSAssortmentInfo {
     public let product: MSEntity<MSProduct>?
     
     // bundle fields
-    public let components: [MSEntity<MSBundleComponent>]
+    public var components: [MSEntity<MSBundleComponent>]
     
     public init(productFolder: MSEntity<MSProductFolder>?,
                 product: MSEntity<MSProduct>?,

@@ -74,7 +74,7 @@ extension MSAssortment {
         if meta.type == .variant {
             dict["product"] = serialize(entity: assortmentInfo, metaOnly: true)
         }
-        
+    
         return dict
     }
     
@@ -90,6 +90,22 @@ extension MSAssortment {
     public func deserializationError() -> MSError {
         return MSError.genericError(errorText: LocalizedStrings.incorrectProductResponse.value)
     }
+}
+
+func serializeCharacteristics(_ entities: [MSEntity<MSVariantAttribute>]?) -> [Dictionary<String, Any>]? {
+    guard let entities = entities else { return nil }
+    
+    var serialized = [Dictionary<String, Any>]()
+    
+    entities.forEach { value in
+        guard let object = value.value(), let id = object.id.msID?.uuidString, let name = object.value else { return }
+        var dict = Dictionary<String, Any>()
+        dict["id"] = id
+        dict["value"] = name
+        serialized.append(dict)
+    }
+  
+    return serialized.isEmpty ? nil : serialized
 }
 
 extension MSPrice {

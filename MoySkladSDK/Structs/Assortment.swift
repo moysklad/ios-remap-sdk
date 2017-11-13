@@ -69,7 +69,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     public var localImage: MSLocalImage?
     public var characteristics: [MSEntity<MSVariantAttribute>]?
     // Bundle fields
-    public let components: [MSEntity<MSBundleComponent>]
+    public var components: [MSEntity<MSBundleComponent>]
     
     public init(meta: MSMeta,
     id: MSID,
@@ -188,7 +188,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             reserve: reserve,
                             inTransit: inTransit,
                             quantity: quantity,
-                            assortmentInfo: assortmentInfo.copy(),
+                            assortmentInfo: assortmentInfo,
                             attributes: attributes,
                             packs: packs.map { $0.copy() },
                             localImage: localImage,
@@ -303,30 +303,6 @@ extension MSAssortment {
 
         prices.append(contentsOf: getSalesPrices())
         return prices
-    }
-}
-
-public struct MSAssortmentInfo {
-    // Product fields
-    public let productFolder: MSEntity<MSProductFolder>?
-
-    // Variant fields
-    public let product: MSEntity<MSProduct>?
-    
-    // bundle fields
-    public var components: [MSEntity<MSBundleComponent>]
-    
-    public init(productFolder: MSEntity<MSProductFolder>?,
-                product: MSEntity<MSProduct>?,
-                components: [MSEntity<MSBundleComponent>]) {
-        self.product = product
-        self.productFolder = productFolder
-        self.components = components
-    }
-    
-    func copy() -> MSAssortmentInfo {
-        let componentsCopy = components.flatMap { $0.value() }.map { MSEntity.entity($0.copy()) }
-        return MSAssortmentInfo(productFolder: productFolder, product: product, components: componentsCopy)
     }
 }
 

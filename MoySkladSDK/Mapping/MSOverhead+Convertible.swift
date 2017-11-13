@@ -19,3 +19,14 @@ extension MSOverhead {
         return ["sum": sum.minorUnits, "distribution":distribution.rawValue]
     }
 }
+
+extension MSBundleOverhead {
+    public static func from(dict: Dictionary<String, Any>) -> MSBundleOverhead? {
+        guard let currency = MSCurrency.from(dict: dict.msValue("currency")) else { return nil }
+        return MSBundleOverhead(value: Money(minorUnits: dict.value("value") ?? 0), currency: currency)
+    }
+    
+    public func dictionary() -> Dictionary<String, Any> {
+        return [:]
+    }
+}

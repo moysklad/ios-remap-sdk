@@ -27,6 +27,6 @@ extension MSBundleOverhead {
     }
     
     public func dictionary() -> Dictionary<String, Any> {
-        return [:]
+        return ["value": value.minorUnits, "currency": serialize(entity: currency)]
     }
 }

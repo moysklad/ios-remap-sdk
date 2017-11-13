@@ -78,6 +78,10 @@ extension MSAssortment {
         if meta.type == .variant {
             dict["product"] = serialize(entity: assortmentInfo, metaOnly: true)
         }
+        
+        if let overhead = overhead {
+            dict["overhead"] = overhead.dictionary()
+        }
     
         return dict
     }

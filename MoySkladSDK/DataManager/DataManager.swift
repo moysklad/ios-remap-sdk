@@ -1415,4 +1415,63 @@ public struct DataManager {
                                         deserializer: { MSUOM.from(dict: $0) })
         }
     }
+    
+    /**
+    Load Variant metadata
+    - parameter auth: Authentication information
+    - returns: Metadata for object
+    */
+    public static func variantMetadata(auth: Auth,
+                                       offset: MSOffset? = nil,
+                                       expanders: [Expander] = [],
+                                       filter: Filter? = nil,
+                                       search: Search? = nil) -> Observable<[MSEntity<MSVariantAttribute>]> {
+        return HttpClient.get(.variantMetadata, auth: auth)
+            .flatMapLatest { result -> Observable<[MSEntity<MSVariantAttribute>]> in
+                guard let result = result else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectVariantMetadataResponse.value))
+                }
+                
+                let deserialized = result.msArray("characteristics").map { MSVariantAttribute.from(dict: $0) }
+                let withoutNills = deserialized.removeNils()
+                
+                return .just(withoutNills)
+        }
+    }
+    
+    /**
+     Load Variants.
+     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#модификация-модификации)
+     - parameter auth: Authentication information
+     - parameter offset: Desired data offset
+     - parameter expanders: Additional objects to include into request
+     - parameter filter: Filter for request
+     - parameter search: Additional string for filtering by name
+     - returns: Collection of Variant
+     */
+    public static func variants(auth: Auth,
+                                offset: MSOffset? = nil,
+                                expanders: [Expander] = [],
+                                filter: Filter? = nil,
+                                search: Search? = nil)
+        -> Observable<[MSEntity<MSAssortment>]> {
+            
+            let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, CompositeExpander(expanders))
+            
+            return HttpClient.get(.variant, auth: auth, urlParameters: urlParameters)
+                .flatMapLatest { result -> Observable<[MSEntity<MSAssortment>]> in
+                    guard let result = result else {
+                        return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectVariantResponse.value))
+                    }
+                    
+                    let deserialized = result.msArray("rows").map { MSAssortment.from(dict: $0) }
+                    let withoutNills = deserialized.removeNils()
+                    
+                    guard withoutNills.count == deserialized.count else {
+                        return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectVariantResponse.value))
+                    }
+                    
+                    return Observable.just(withoutNills)
+            }
+    }
 }

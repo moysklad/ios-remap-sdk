@@ -27,7 +27,9 @@ extension MSAssortment {
         dict["supplier"] = serialize(entity: supplier, metaOnly: true)
         dict["uom"] = serialize(entity: uom, metaOnly: true)
 
-        dict.merge(assortmentInfo.dictionary())
+        if let assort = assortmentInfo?.value()?.dictionary(), !assort.isEmpty {
+            dict["assortmentInfo"] = assort
+        }
         
         var alcoholObject: MSAlcohol = MSAlcohol(excise: nil, type: nil, strength: nil, volume: nil)
         if let alcohol = alcohol {
@@ -65,6 +67,14 @@ extension MSAssortment {
         
         dict["packs"] = packs.map { $0.dictionary() }
         
+        if let serialized = serializeCharacteristics(characteristics) {
+            dict["characteristics"] = serialized
+        }
+        
+        if meta.type == .variant {
+            dict["product"] = serialize(entity: assortmentInfo, metaOnly: true)
+        }
+    
         return dict
     }
     
@@ -80,6 +90,22 @@ extension MSAssortment {
     public func deserializationError() -> MSError {
         return MSError.genericError(errorText: LocalizedStrings.incorrectProductResponse.value)
     }
+}
+
+func serializeCharacteristics(_ entities: [MSEntity<MSVariantAttribute>]?) -> [Dictionary<String, Any>]? {
+    guard let entities = entities else { return nil }
+    
+    var serialized = [Dictionary<String, Any>]()
+    
+    entities.forEach { value in
+        guard let object = value.value(), let id = object.id.msID?.uuidString, let name = object.value else { return }
+        var dict = Dictionary<String, Any>()
+        dict["id"] = id
+        dict["value"] = name
+        serialized.append(dict)
+    }
+  
+    return serialized.isEmpty ? nil : serialized
 }
 
 extension MSPrice {
@@ -105,47 +131,6 @@ extension MSAlcohol {
         dict["type"] = type
         dict["strength"] = strength
         dict["volume"] = volume
-        
-        return dict
-    }
-}
-
-extension MSAssortmentInfo {
-    public func dictionary() -> Dictionary<String, Any> {
-        var dict = [String: Any]()
-        
-        dict["productFolder"] = serialize(entity: productFolder, metaOnly: true)
-        dict["product"] = serialize(entity: product, metaOnly: true)
-        
-        if components.count > 0 {
-            dict["components"] = components.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
-        }
-        
-        return dict
-    }
-}
-
-extension MSProduct {
-    public func dictionary(metaOnly: Bool = true) -> Dictionary<String, Any> {
-        var dict = [String: Any]()
-        
-        dict["meta"] = meta.dictionary()
-        guard !metaOnly else { return dict }
-        
-        dict.merge(info.dictionary())
-        dict.merge(id.dictionary())
-        
-        dict["accountId"] = accountId
-        dict["shared"] = shared
-        dict["article"] = article ?? ""
-        dict["code"] = code ?? ""
-        dict["productFolder"] = serialize(entity: productFolder, metaOnly: true)
-        dict["supplier"] = serialize(entity: supplier, metaOnly: true)
-        dict["salePrices"] = salePrices.map { $0.dictionary() }
-        
-        if let buyPrice = buyPrice?.dictionary() {
-            dict["buyPrice"] = buyPrice
-        }
         
         return dict
     }

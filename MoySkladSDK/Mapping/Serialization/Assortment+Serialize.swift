@@ -67,12 +67,20 @@ extension MSAssortment {
         
         dict["packs"] = packs.map { $0.dictionary() }
         
+        if components.count > 0 {
+            dict["components"] = components.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
+        }
+        
         if let serialized = serializeCharacteristics(characteristics) {
             dict["characteristics"] = serialized
         }
         
         if meta.type == .variant {
             dict["product"] = serialize(entity: assortmentInfo, metaOnly: true)
+        }
+        
+        if let overhead = overhead {
+            dict["overhead"] = overhead.dictionary()
         }
     
         return dict
@@ -151,14 +159,19 @@ extension MSBundleComponent {
     public func dictionary(metaOnly: Bool = true) -> Dictionary<String, Any> {
         var dict = [String: Any]()
         
-        dict["meta"] = meta.dictionary()
+        if meta.href.count > 0 {
+            dict["meta"] = meta.dictionary()
+        }
+
         guard !metaOnly else { return dict }
         
-        dict.merge(id.dictionary())
+        if meta.href.count > 0 {
+            dict.merge(id.dictionary())
+        }
         
         dict["accountId"] = accountId
         dict["quantity"] = quantity
-        dict["assortment"] = serialize(entity: assortment, metaOnly: false)
+        dict["assortment"] = serialize(entity: assortment, metaOnly: true)
        
         return dict
     }

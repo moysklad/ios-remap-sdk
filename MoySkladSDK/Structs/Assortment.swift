@@ -69,7 +69,8 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     public var localImage: MSLocalImage?
     public var characteristics: [MSEntity<MSVariantAttribute>]?
     // Bundle fields
-    public let components: [MSEntity<MSBundleComponent>]
+    public var components: [MSEntity<MSBundleComponent>]
+    public var overhead: MSBundleOverhead?
     
     public init(meta: MSMeta,
     id: MSID,
@@ -110,7 +111,8 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     packs: [MSPack],
     localImage: MSLocalImage?,
     characteristics: [MSEntity<MSVariantAttribute>]?,
-    components: [MSEntity<MSBundleComponent>]) {
+    components: [MSEntity<MSBundleComponent>],
+    overhead: MSBundleOverhead?) {
         self.meta = meta
         self.id = id
         self.accountId = accountId
@@ -150,6 +152,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
         self.localImage = localImage
         self.characteristics = characteristics
         self.components = components
+        self.overhead = overhead
         super.init(attributes: attributes)
     }
     
@@ -193,7 +196,8 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             packs: packs.map { $0.copy() },
                             localImage: localImage,
                             characteristics: characteristics,
-                            components: components)
+                            components: components,
+                            overhead: overhead)
     }
 }
 

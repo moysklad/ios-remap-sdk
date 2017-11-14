@@ -12,7 +12,7 @@ public final class MSBundleComponent : Metable, DictConvertable {
     public let meta: MSMeta
     public let id: MSID
     public let accountId: String
-    public let quantity: Double
+    public var quantity: Double
     public let assortment: MSEntity<MSAssortment>
     
     public init(meta: MSMeta, id: MSID, accountId: String, quantity: Double, assortment: MSEntity<MSAssortment>) {
@@ -21,5 +21,9 @@ public final class MSBundleComponent : Metable, DictConvertable {
         self.accountId = accountId
         self.quantity = quantity
         self.assortment = assortment
+    }
+    
+    public func copy() -> MSBundleComponent {
+        return MSBundleComponent(meta: meta, id: id, accountId: accountId, quantity: quantity, assortment: assortment)
     }
 }

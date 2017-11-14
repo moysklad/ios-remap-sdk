@@ -42,3 +42,12 @@ public struct MSOverhead {
         self.distribution = distribution
     }
 }
+
+public struct MSBundleOverhead {
+    public var value: Money
+    public var currency: MSEntity<MSCurrency>
+    public init(value: Money, currency: MSEntity<MSCurrency>) {
+        self.value = value
+        self.currency = currency
+    }
+}

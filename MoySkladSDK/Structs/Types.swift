@@ -43,6 +43,7 @@ public enum MSObjectType : String {
     case invoiceposition
     case customerorderposition
     case purchaseorderposition
+    case moveposition
     case demandposition
     case purchaseorder
     case paymentin

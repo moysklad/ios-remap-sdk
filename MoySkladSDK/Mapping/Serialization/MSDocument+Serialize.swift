@@ -165,6 +165,10 @@ extension MSDocument {
                                        objectType: MSObjectType.invoicein,
                                        collectionName: "invoicesIn")
         
+        dict["sourceStore"] = serialize(entity: sourceStore, metaOnly: true)
+        dict["targetStore"] = serialize(entity: targetStore, metaOnly: true)
+        dict["internalOrder"] = serialize(entity: internalOrder, metaOnly: true)
+
         return dict
     }
 }

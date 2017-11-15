@@ -333,6 +333,9 @@ public struct DataManager {
             },
             productMetadata(auth: auth).map { item -> MetadataLoadResult in
                 return MetadataLoadResult(type: MSObjectType.product, attributes: item.attributes, priceTypes: item.priceTypes)
+            },
+            moveMetadata(auth: auth).map { item -> MetadataLoadResult in
+                return MetadataLoadResult.init(type: .move, states: item.states, attributes: item.attributes, tags: [])
             }
         ]
         
@@ -466,7 +469,23 @@ public struct DataManager {
     }
     
     /**
-     Load Counterparty metadata
+     Load Move metadata
+     - parameter auth: Authentication information
+     - returns: Metadata for object
+     */
+    public static func moveMetadata(auth: Auth) -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> {
+        return HttpClient.get(.movemetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
+            .flatMapLatest { result -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> in
+                guard let result = result else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectMoveMetadataResponse.value))
+                }
+                return deserializeCounterpartyMetadata(json: result,
+                                                       incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectMoveMetadataResponse.value))
+        }
+    }
+    
+    /**
+     Load Product metadata
      - parameter auth: Authentication information
      - returns: Metadata for object
      */

@@ -83,6 +83,8 @@ extension MSDocument {
                                             return MSObjectType.customerorderposition
                                         case MSObjectType.purchaseorder:
                                             return MSObjectType.purchaseorderposition
+                                        case MSObjectType.move:
+                                            return MSObjectType.moveposition
                                         default:
                                             return MSObjectType.customerorderposition
                                         }}(),

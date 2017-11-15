@@ -8,4 +8,8 @@
 
 import Foundation
 
-public protocol MSMoveType: MSGeneralDocument {}
+public protocol MSMoveType: MSGeneralDocument {
+    var sourceStore: MSEntity<MSStore>? { get set }
+    var targetStore: MSEntity<MSStore>? { get set }
+    var internalOrder: MSEntity<MSDocument>? { get set }
+}

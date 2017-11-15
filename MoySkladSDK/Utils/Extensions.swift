@@ -20,6 +20,7 @@ func newDocumentUrl(type: MSObjectType) -> MSApiRequest? {
     case MSObjectType.supply: return MSApiRequest.supplyNew
     case MSObjectType.invoicein: return MSApiRequest.invoiceInNew
     case MSObjectType.purchaseorder: return MSApiRequest.purchaseOrderNew
+    case MSObjectType.move: return MSApiRequest.moveNew
     default: return nil
     }
 }

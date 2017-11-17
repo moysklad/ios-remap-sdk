@@ -103,6 +103,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
     public var sourceStore: MSEntity<MSStore>?
     public var targetStore: MSEntity<MSStore>?
     public var internalOrder: MSEntity<MSDocument>?
+    public var targetStock: [MSEntity<MSDocumentStock>]
     
     public func copyDocument() -> MSDocument {
         let positionsCopy = positions.flatMap { $0.value() }.map { MSEntity.entity($0.copy()) }
@@ -172,7 +173,8 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
                           commitentSum: commitentSum,
                           sourceStore: sourceStore,
                           targetStore: targetStore,
-                          internalOrder: internalOrder)
+                          internalOrder: internalOrder,
+                          targetStock: targetStock)
     }
     
     public init(id : MSID,
@@ -239,7 +241,8 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
                 commitentSum: Money,
                 sourceStore: MSEntity<MSStore>?,
                 targetStore: MSEntity<MSStore>?,
-                internalOrder: MSEntity<MSDocument>?) {
+                internalOrder: MSEntity<MSDocument>?,
+                targetStock: [MSEntity<MSDocumentStock>]) {
         self.id = id
         self.meta = meta
         self.info = info
@@ -304,6 +307,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
         self.sourceStore = sourceStore
         self.targetStore = targetStore
         self.internalOrder = internalOrder
+        self.targetStock = targetStock
         super.init(attributes: attributes)
     }
 }

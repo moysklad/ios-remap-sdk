@@ -88,6 +88,7 @@ extension MSDocument : DictConvertable {
                    commitentSum: Money(minorUnits: dict.value("commitentSum") ?? 0),
                    sourceStore: MSStore.from(dict: dict.msValue("sourceStore")),
                    targetStore: MSStore.from(dict: dict.msValue("targetStore")),
-                   internalOrder: MSDocument.from(dict: dict.msValue("internalOrder"))))
+                   internalOrder: MSDocument.from(dict: dict.msValue("internalOrder")),
+                   targetStock: []))
     }
 }

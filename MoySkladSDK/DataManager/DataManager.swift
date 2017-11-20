@@ -750,6 +750,7 @@ public struct DataManager {
         }
         
         parameters.append(stockMode)
+        parameters.append(MSOffset(size: 100, limit: 100, offset: 0))
         
         return HttpClient.get(.stockAll, auth: auth, urlParameters: parameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSProductStockAll>]> in
@@ -776,7 +777,9 @@ public struct DataManager {
      - parameter assortment: Assortment for whick stock data should be loaded
     */
     public static func productStockByStore(auth: Auth, assortment: MSAssortment) -> Observable<[MSEntity<MSProductStockStore>]> {
-        return HttpClient.get(.stockByStore, auth: auth, urlParameters: [StockProductId(value: assortment.id.msID?.uuidString ?? "")])
+        let parameters: [UrlParameter] = [MSOffset(size: 100, limit: 100, offset: 0),
+                                          StockProductId(value: assortment.id.msID?.uuidString ?? "")]
+        return HttpClient.get(.stockByStore, auth: auth, urlParameters: parameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSProductStockStore>]> in
             guard let result = result else {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectStockByStoreResponse.value))

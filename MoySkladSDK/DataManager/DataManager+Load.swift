@@ -23,6 +23,7 @@ public enum MSDocumentLoadRequest {
     case supply
     case invoiceIn
     case purchaseOrder
+    case move
     
     var apiRequest: MSApiRequest {
         switch self {
@@ -37,6 +38,7 @@ public enum MSDocumentLoadRequest {
         case .supply: return .supply
         case .invoiceIn: return .invoiceIn
         case .purchaseOrder: return .purchaseOrder
+        case .move: return .move
         }
     }
     
@@ -53,6 +55,7 @@ public enum MSDocumentLoadRequest {
         case .supply: return .supplyMetadata
         case .invoiceIn: return .invoiceInMetadata
         case .purchaseOrder: return .purchaseOrderMetadata
+        case .move: return .movemetadata
         }
     }
     
@@ -69,6 +72,7 @@ public enum MSDocumentLoadRequest {
         case .supply: return MSError.genericError(errorText: LocalizedStrings.incorrectSupplyResponse.value)
         case .invoiceIn: return MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceInResponse.value)
         case .purchaseOrder: return MSError.genericError(errorText: LocalizedStrings.incorrectPurchaseOrderResponse.value)
+        case .move: return MSError.genericError(errorText: LocalizedStrings.incorrectMoveResponse.value)
         }
     }
 }
@@ -94,6 +98,8 @@ extension DataManager {
             return MSError.genericError(errorText: LocalizedStrings.incorrectSupplyResponse.value)
         case let t where t == MSInvoiceInType.self:
             return MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceInResponse.value)
+        case let t where t == MSMoveType.self:
+            return MSError.genericError(errorText: LocalizedStrings.incorrectMoveResponse.value)
         default:
             fatalError("Unknown ObjectType \(type)")
         }

@@ -83,6 +83,8 @@ extension MSDocument {
                                             return MSObjectType.customerorderposition
                                         case MSObjectType.purchaseorder:
                                             return MSObjectType.purchaseorderposition
+                                        case MSObjectType.move:
+                                            return MSObjectType.moveposition
                                         default:
                                             return MSObjectType.customerorderposition
                                         }}(),
@@ -163,6 +165,10 @@ extension MSDocument {
                                        objectType: MSObjectType.invoicein,
                                        collectionName: "invoicesIn")
         
+        dict["sourceStore"] = serialize(entity: sourceStore, metaOnly: true)
+        dict["targetStore"] = serialize(entity: targetStore, metaOnly: true)
+        dict["internalOrder"] = serialize(entity: internalOrder, metaOnly: true)
+
         return dict
     }
 }

@@ -10,7 +10,7 @@ import Foundation
 
 public class MSDocument: MSAttributedEntity, MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderType, MSDemandType,
                         MSInvoiceOutType, MSInvoiceInType, MSMoneyDocumentType, MSCashInType, MSCashOutType,
-                        MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShiftType {
+MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShiftType, MSMoveType {
     // MSBaseDocumentType
     public var id : MSID
     public var meta : MSMeta
@@ -99,6 +99,12 @@ public class MSDocument: MSAttributedEntity, MSBaseDocumentType, MSGeneralDocume
     // commissionreport
     public var commitentSum: Money
     
+    // MSMoveType
+    public var sourceStore: MSEntity<MSStore>?
+    public var targetStore: MSEntity<MSStore>?
+    public var internalOrder: MSEntity<MSDocument>?
+    public var targetStock: [MSEntity<MSDocumentStock>]
+    
     public func copyDocument() -> MSDocument {
         let positionsCopy = positions.flatMap { $0.value() }.map { MSEntity.entity($0.copy()) }
         let operationsCopy = operations.flatMap { $0.value() }.map { MSEntity.entity($0.copyDocument()) }
@@ -164,7 +170,11 @@ public class MSDocument: MSAttributedEntity, MSBaseDocumentType, MSGeneralDocume
                           receivedCash: receivedCash,
                           customerOrders: customerOrders,
                           supplies: supplies,
-                          commitentSum: commitentSum)
+                          commitentSum: commitentSum,
+                          sourceStore: sourceStore,
+                          targetStore: targetStore,
+                          internalOrder: internalOrder,
+                          targetStock: targetStock)
     }
     
     public init(id : MSID,
@@ -228,7 +238,11 @@ public class MSDocument: MSAttributedEntity, MSBaseDocumentType, MSGeneralDocume
                 receivedCash: Money,
                 customerOrders: [MSEntity<MSDocument>],
                 supplies: [MSSupplyType],
-                commitentSum: Money) {
+                commitentSum: Money,
+                sourceStore: MSEntity<MSStore>?,
+                targetStore: MSEntity<MSStore>?,
+                internalOrder: MSEntity<MSDocument>?,
+                targetStock: [MSEntity<MSDocumentStock>]) {
         self.id = id
         self.meta = meta
         self.info = info
@@ -290,6 +304,10 @@ public class MSDocument: MSAttributedEntity, MSBaseDocumentType, MSGeneralDocume
         self.customerOrders = customerOrders
         self.supplies = supplies
         self.commitentSum = commitentSum
+        self.sourceStore = sourceStore
+        self.targetStore = targetStore
+        self.internalOrder = internalOrder
+        self.targetStock = targetStock
         super.init(attributes: attributes)
     }
 }

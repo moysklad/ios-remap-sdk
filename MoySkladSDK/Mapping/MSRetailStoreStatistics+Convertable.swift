@@ -28,17 +28,17 @@ extension MSRetailStoreStatisticsData {
         return MSRetailStoreStatisticsData(
             retailShift: retailShift,
             salesQuantity: dict.value("salesQuantity") ?? 0,
-            salesSum: Money(minorUnits: dict.value("salesSum") ?? 0),
-            cashSum: Money(minorUnits: dict.value("cashSum") ?? 0),
-            nocashSum: Money(minorUnits: dict.value("nocashSum") ?? 0),
+            salesSum: (dict.value("salesSum") ?? 0.0).toMoney(),
+            cashSum: (dict.value("cashSum") ?? 0.0).toMoney(),
+            nocashSum: (dict.value("nocashSum") ?? 0.0).toMoney(),
             returnsQuantity: dict.value("returnsQuantity") ?? 0,
-            returnsSum: Money(minorUnits: dict.value("returnsSum") ?? 0),
+            returnsSum: (dict.value("returnsSum") ?? 0.0).toMoney(),
             retaildrawercashinQuantity: dict.value("retaildrawercashinQuantity") ?? 0,
-            retaildrawercashinSum: Money(minorUnits: dict.value("retaildrawercashinSum") ?? 0),
+            retaildrawercashinSum: (dict.value("retaildrawercashinSum") ?? 0.0).toMoney(),
             retaildrawercashoutQuantity: dict.value("retaildrawercashoutQuantity") ?? 0,
-            retaildrawercashoutSum: Money(minorUnits: dict.value("retaildrawercashoutSum") ?? 0),
-            balance: Money(minorUnits: dict.value("balance") ?? 0),
-            proceed: Money(minorUnits: dict.value("proceed") ?? 0),
-            profit: Money(minorUnits: dict.value("profit") ?? 0))
+            retaildrawercashoutSum: (dict.value("retaildrawercashoutSum") ?? 0.0).toMoney(),
+            balance: (dict.value("balance") ?? 0.0).toMoney(),
+            proceed: (dict.value("proceed") ?? 0.0).toMoney(),
+            profit: (dict.value("profit") ?? 0.0).toMoney())
     }
 }

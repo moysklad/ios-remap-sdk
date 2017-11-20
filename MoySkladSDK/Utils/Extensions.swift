@@ -394,6 +394,12 @@ public extension NSDecimalNumber {
 }
 
 public extension Double {
+    public func toMoney() -> Money {
+        let rounding = NSDecimalNumberHandler(roundingMode: .down, scale: 0, raiseOnExactness: false, raiseOnOverflow: false, raiseOnUnderflow: false, raiseOnDivideByZero: false)
+        let decimal = NSDecimalNumber(value: self).rounding(accordingToBehavior: rounding)
+        return Money(minorUnits: decimal.intValue)
+    }
+    
     public func toMSDoubleString(showPositiveSign: Bool = false) -> String {
         guard showPositiveSign, self != 0 else {
             return Double.msDoubleFormatter.string(from: NSNumber(floatLiteral: self)) ?? "0"

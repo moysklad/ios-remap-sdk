@@ -155,6 +155,10 @@ extension MSDocument {
         case .paymentin, .supply, .invoicein:
             dict["incomingDate"] = incomingDate?.toLongDate() ?? NSNull()
             dict["incomingNumber"] = incomingNumber ?? ""
+        case .move:
+            dict["sourceStore"] = serialize(entity: sourceStore, metaOnly: true)
+            dict["targetStore"] = serialize(entity: targetStore, metaOnly: true)
+            dict["internalOrder"] = serialize(entity: internalOrder, metaOnly: true)
         default:
             break
         }
@@ -164,10 +168,6 @@ extension MSDocument {
                                        metaOnly: true,
                                        objectType: MSObjectType.invoicein,
                                        collectionName: "invoicesIn")
-        
-        dict["sourceStore"] = serialize(entity: sourceStore, metaOnly: true)
-        dict["targetStore"] = serialize(entity: targetStore, metaOnly: true)
-        dict["internalOrder"] = serialize(entity: internalOrder, metaOnly: true)
 
         return dict
     }

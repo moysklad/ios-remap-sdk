@@ -132,6 +132,15 @@ struct StockMoment : UrlParameter {
     }
 }
 
+struct StockMomentAssortment: UrlParameter {
+    public let value: Date
+    public var urlParameters: [String : String] { return ["stockmoment": value.toLongDate()] }
+    
+    public init(value: Date) {
+        self.value = value
+    }
+}
+
 struct StockProductId: UrlParameter {
     public let value: String
     public var urlParameters: [String : String] { return ["product.id": value ] }

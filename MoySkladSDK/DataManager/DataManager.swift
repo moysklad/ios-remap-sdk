@@ -577,7 +577,9 @@ public struct DataManager {
                                   scope: AssortmentScope? = nil)
         -> Observable<[MSEntity<MSAssortment>]> {
             
-            let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, stockStore, scope, CompositeExpander(expanders))
+            var urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, stockStore, scope, CompositeExpander(expanders))
+            
+            urlParameters.append(StockMomentAssortment(value: Date()))
             
             return HttpClient.get(.assortment, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSAssortment>]> in

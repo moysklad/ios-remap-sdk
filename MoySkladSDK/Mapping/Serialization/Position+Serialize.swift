@@ -30,7 +30,7 @@ extension MSPosition {
         dict["vat"] = vat
         dict["inTransit"] = inTransit
         
-        if meta.type == .supplyposition, assortment.objectMeta().type != .service {
+        if (meta.type == .supplyposition || meta.type == .moveposition), assortment.objectMeta().type != .service {
             dict["country"] = serialize(entity: country, metaOnly: true)
             dict["gtd"] = ["name": gtd ?? ""]
         }

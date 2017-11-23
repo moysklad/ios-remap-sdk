@@ -22,6 +22,6 @@ extension MSMoneyBalance {
         
         return MSMoneyBalance(organizationName: organizationName,
                               accountName: accountName,
-                              balance: Money(minorUnits: dict.value("balance") ?? 0))
+                              balance: (dict.value("balance") ?? 0.0).toMoney())
     }
 }

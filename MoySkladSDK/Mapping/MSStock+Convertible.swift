@@ -21,8 +21,8 @@ extension MSProductStockAll {
                                  quantity: dict.value("quantity") ?? 0,
                                  name: dict.value("name") ?? "",
                                  code: dict.value("code") ?? "",
-                                 price: Money(minorUnits: Int(price)),
-                                 salePrice: Money(minorUnits: dict.value("salePrice") ?? 0),
+                                 price: price.toMoney(),
+                                 salePrice: (dict.value("salePrice") ?? 0.0).toMoney(),
                                  externalCode: dict.value("externalCode") ?? ""))
     }
 }
@@ -53,6 +53,6 @@ extension MSDocumentStock {
                                                reserve: dict.value("reserve") ?? 0,
                                                quantity: dict.value("quantity") ?? 0,
                                                name: dict.value("name") ?? "",
-                                               cost: Money(minorUnits: dict.value("cost") ?? 0)))
+                                               cost: (dict.value("cost") ?? 0.0).toMoney()))
     }
 }

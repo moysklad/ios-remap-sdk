@@ -17,8 +17,8 @@ extension MSRetailStore: DictConvertable {
         return MSEntity.entity(MSRetailStore(meta: meta,
                                              info: MSInfo(dict: retailstore),
                                              retailShift: MSRetailShift.from(dict: dict.msValue("retailshift")),
-                                             proceed: Money(minorUnits: dict.value("proceed") ?? 0),
-                                             balance: Money(minorUnits: dict.value("balance") ?? 0)))
+                                             proceed: (dict.value("proceed") ?? 0.0).toMoney(),
+                                             balance: (dict.value("balance") ?? 0.0).toMoney()))
     }
     
     public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {

@@ -45,7 +45,7 @@ extension MSContract : DictConvertable {
 		           externalCode: dict.value("externalCode"),
 		           archived: dict.value("archived") ?? false,
 		           moment: Date.fromMSDate(dict.value("moment") ?? ""),
-		           sum: Money(minorUnits: dict.value("sum") ?? 0),
+		           sum: (dict.value("sum") ?? 0.0).toMoney(),
 		           contractType: MSContractType(rawValue: dict.value("") ?? "contractType"),
 		           rewardType: MSRewardType(rawValue: dict.value("") ?? "rewardType"),
 		           rewardPercent: dict.value("rewardPercent"),

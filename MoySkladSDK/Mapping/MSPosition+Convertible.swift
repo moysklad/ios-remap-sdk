@@ -31,7 +31,7 @@ extension MSPosition : DictConvertable {
                    quantity: dict.value("quantity") ?? 0,
                    reserve: dict.value("reserve") ?? 0,
                    shipped: dict.value("shipped") ?? 0,
-                   price: Money(minorUnits: dict.value("price") ?? 0),
+                   price: (dict.value("price") ?? 0.0).toMoney(),
                    discount: dict.value("discount") ?? 0,
                    vat: dict.value("vat") ?? 0,
                    gtd: gtd,

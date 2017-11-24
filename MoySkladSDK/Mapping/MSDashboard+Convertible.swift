@@ -23,39 +23,39 @@ extension MSDashboard {
 
 extension MSDashboardMoney {
     public static func from(dict: Dictionary<String, Any>) -> MSDashboardMoney? {
-        guard let income: Int = dict.value("income"),
-            let outcome: Int = dict.value("outcome"),
-            let balance: Int = dict.value("balance"),
-            let todayMovement: Int = dict.value("todayMovement"),
-            let movement: Int = dict.value("movement") else { return nil }
+        guard let income: Double = dict.value("income"),
+            let outcome: Double = dict.value("outcome"),
+            let balance: Double = dict.value("balance"),
+            let todayMovement: Double = dict.value("todayMovement"),
+            let movement: Double = dict.value("movement") else { return nil }
         
-        return MSDashboardMoney(income: Money(minorUnits: income),
-                                outcome: Money(minorUnits: outcome),
-                                balance: Money(minorUnits: balance),
-                                todayMovement: Money(minorUnits: todayMovement),
-                                movement: Money(minorUnits: movement))
+        return MSDashboardMoney(income: income.toMoney(),
+                                outcome: outcome.toMoney(),
+                                balance: balance.toMoney(),
+                                todayMovement: todayMovement.toMoney(),
+                                movement: movement.toMoney())
     }
 }
 
 extension MSDashboardOrders {
     public static func from(dict: Dictionary<String, Any>) -> MSDashboardOrders? {
         guard let count: Int = dict.value("count"),
-            let amount: Int = dict.value("amount"),
-            let movementAmount: Int = dict.value("movementAmount") else {
+            let amount: Double = dict.value("amount"),
+            let movementAmount: Double = dict.value("movementAmount") else {
                 return nil
         }
 
-        return MSDashboardOrders(count: count, amount: Money(minorUnits: amount), movementAmount: Money(minorUnits: movementAmount))
+        return MSDashboardOrders(count: count, amount: amount.toMoney(), movementAmount: movementAmount.toMoney())
     }
 }
 
 extension MSDashboardSales {
     public static func from(dict: Dictionary<String, Any>) -> MSDashboardSales? {
         guard let count: Int = dict.value("count"),
-            let amount: Int = dict.value("amount"),
-            let movementAmount: Int = dict.value("movementAmount") else {
+            let amount: Double = dict.value("amount"),
+            let movementAmount: Double = dict.value("movementAmount") else {
                 return nil
         }
         
-        return MSDashboardSales(count: count, amount: Money(minorUnits: amount), movementAmount: Money(minorUnits: movementAmount))    }
+        return MSDashboardSales(count: count, amount: amount.toMoney(), movementAmount: movementAmount.toMoney()) }
 }

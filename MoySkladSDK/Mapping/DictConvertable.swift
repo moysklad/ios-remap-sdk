@@ -153,7 +153,7 @@ extension MSPrice {
             return priceTypeOverride
         }()
         
-        return MSPrice(priceType: priceType, value: Money(minorUnits: dict.value("value") ?? 0), currency: MSCurrency.from(dict: dict.msValue("currency")))
+        return MSPrice(priceType: priceType, value: (dict.value("value") ?? 0.0).toMoney(), currency: MSCurrency.from(dict: dict.msValue("currency")))
     }
 }
 

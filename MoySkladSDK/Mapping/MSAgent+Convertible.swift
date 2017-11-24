@@ -44,7 +44,7 @@ extension MSAgent : DictConvertable {
 		        certificateDate: Date.fromMSDate(dict.value("certificateDate") ?? ""),
 		        accounts: dict.msValue("accounts").msArray("rows").map { MSAccount.from(dict: $0) }.flatMap { $0 },
 		        agentInfo: MSAgentInfo.from(dict: dict),
-                salesAmount: Money(minorUnits: dict.value("salesAmount") ?? 0),
+                salesAmount: (dict.value("salesAmount") ?? 0.0).toMoney(),
                 attributes: dict.msArray("attributes").map { MSAttribute.from(dict: $0) }.flatMap { $0 },
                 report: nil
             ))

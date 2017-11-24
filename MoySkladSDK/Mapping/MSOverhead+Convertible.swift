@@ -12,7 +12,7 @@ extension MSOverhead {
     public static func from(dict: Dictionary<String, Any>) -> MSOverhead? {
         guard let distr = MSOverheadDistribution(rawValue: dict.value("distribution") ?? "") else { return nil }
         
-        return MSOverhead(sum: Money(minorUnits: dict.value("sum") ?? 0), distribution: distr)
+        return MSOverhead(sum: (dict.value("sum") ?? 0.0).toMoney(), distribution: distr)
     }
     
     public func dictionary() -> Dictionary<String, Any> {
@@ -23,7 +23,7 @@ extension MSOverhead {
 extension MSBundleOverhead {
     public static func from(dict: Dictionary<String, Any>) -> MSBundleOverhead? {
         guard let currency = MSCurrency.from(dict: dict.msValue("currency")) else { return nil }
-        return MSBundleOverhead(value: Money(minorUnits: dict.value("value") ?? 0), currency: currency)
+        return MSBundleOverhead(value: (dict.value("value") ?? 0.0).toMoney(), currency: currency)
     }
     
     public func dictionary() -> Dictionary<String, Any> {

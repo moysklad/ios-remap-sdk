@@ -24,6 +24,7 @@ public enum MSDocumentLoadRequest {
     case invoiceIn
     case purchaseOrder
     case move
+    case inventory
     
     var apiRequest: MSApiRequest {
         switch self {
@@ -39,6 +40,7 @@ public enum MSDocumentLoadRequest {
         case .invoiceIn: return .invoiceIn
         case .purchaseOrder: return .purchaseOrder
         case .move: return .move
+        case .inventory: return .inventory
         }
     }
     
@@ -56,6 +58,7 @@ public enum MSDocumentLoadRequest {
         case .invoiceIn: return .invoiceInMetadata
         case .purchaseOrder: return .purchaseOrderMetadata
         case .move: return .movemetadata
+        case .inventory: return .inventorymetadata
         }
     }
     
@@ -73,6 +76,7 @@ public enum MSDocumentLoadRequest {
         case .invoiceIn: return MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceInResponse.value)
         case .purchaseOrder: return MSError.genericError(errorText: LocalizedStrings.incorrectPurchaseOrderResponse.value)
         case .move: return MSError.genericError(errorText: LocalizedStrings.incorrectMoveResponse.value)
+        case .inventory: return MSError.genericError(errorText: LocalizedStrings.incorrectInventoryResponse.value)
         }
     }
 }

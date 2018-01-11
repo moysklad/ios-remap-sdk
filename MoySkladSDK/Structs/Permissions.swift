@@ -65,6 +65,7 @@ public struct MSUserPermissions {
     public let retailshift: MSPermission
     public let bundle: MSPermission
     public let dashboardMoney: MSPermission
+    public let inventory: MSPermission
     
     public init(uom: MSPermission,
     product: MSPermission,
@@ -119,7 +120,8 @@ public struct MSUserPermissions {
     commissionreportout: MSPermission,
     retailshift: MSPermission,
     bundle: MSPermission,
-    dashboardMoney: MSPermission) {
+    dashboardMoney: MSPermission,
+    inventory: MSPermission) {
         self.uom = uom
         self.product = product
         self.service = service
@@ -174,6 +176,7 @@ public struct MSUserPermissions {
         self.retailshift = retailshift
         self.bundle = bundle
         self.dashboardMoney = dashboardMoney
+        self.inventory = inventory
     }
     
 //    let retailstore: MSPermission

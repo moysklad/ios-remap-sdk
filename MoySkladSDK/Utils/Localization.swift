@@ -89,6 +89,7 @@ enum LocalizedStrings : String {
     case incorrectInvoiceInResponse
     case incorrectPurchaseOrderResponse
     case incorrectMoveResponse
+    case incorrectInventoryResponse
     case accessDeniedRate
     case accessDenied
     case incorrectExpenseItemResponse

@@ -251,6 +251,7 @@ extension MSUserPermissions {
                                  commissionreportin: MSPermission.from(dict: dict.msValue("commissionreportin")),
                                  commissionreportout: MSPermission.from(dict: dict.msValue("commissionreportout")),
                                  retailshift: MSPermission.from(dict: dict.msValue("retailshift")),
-                                 bundle: MSPermission.from(dict: dict.msValue("bundle")))
+                                 bundle: MSPermission.from(dict: dict.msValue("bundle")),
+                                 dashboardMoney: MSPermission.from(dict: dict.msValue("dashboardMoney")))
     }
 }

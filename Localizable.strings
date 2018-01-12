@@ -92,3 +92,4 @@
 "incorrectIResponse" = "Ошибка при обработке инвентаризаций, возвращенных сервером";
 "incorrectVariantMetadataResponse" = "Неизвестный ответ на запрос метаданных для модификаций";
 "incorrectMoveMetadataResponse" = "Неизвестный ответ на запрос метаданных для перемещений";
+"incorrectInventoryMetadataResponse" = "Неизвестный ответ на запрос метаданных для инвентаризаций";

@@ -84,6 +84,7 @@
 		6E75A1EE1EA8AA0100A05A83 /* MSGeneralDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1ED1EA8AA0100A05A83 /* MSGeneralDocument.swift */; };
 		6EA06D311F3B4E17001E2B66 /* MSUOM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA06D2D1F3AF00A001E2B66 /* MSUOM.swift */; };
 		6EA06D331F3B4E39001E2B66 /* MSUOM+Convertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA06D321F3B4E39001E2B66 /* MSUOM+Convertable.swift */; };
+		6EA80F052008C75200C7E938 /* MSInventoryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA80F042008C75200C7E938 /* MSInventoryType.swift */; };
 		6EBBF3611F4EED7500FA64FE /* MSCashType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBF3601F4EED7500FA64FE /* MSCashType.swift */; };
 		6EBBF3631F4EFC2100FA64FE /* BaseDocumentProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBBF3621F4EFC2100FA64FE /* BaseDocumentProtocols.swift */; };
 		6ED959E01F31ADB00082AB7A /* MSBankSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED959DF1F31ADB00082AB7A /* MSBankSearchResult.swift */; };
@@ -225,6 +226,7 @@
 		6E75A1ED1EA8AA0100A05A83 /* MSGeneralDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSGeneralDocument.swift; sourceTree = "<group>"; };
 		6EA06D2D1F3AF00A001E2B66 /* MSUOM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSUOM.swift; sourceTree = "<group>"; };
 		6EA06D321F3B4E39001E2B66 /* MSUOM+Convertable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSUOM+Convertable.swift"; sourceTree = "<group>"; };
+		6EA80F042008C75200C7E938 /* MSInventoryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSInventoryType.swift; sourceTree = "<group>"; };
 		6EBBF3601F4EED7500FA64FE /* MSCashType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSCashType.swift; sourceTree = "<group>"; };
 		6EBBF3621F4EFC2100FA64FE /* BaseDocumentProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseDocumentProtocols.swift; sourceTree = "<group>"; };
 		6ED959DF1F31ADB00082AB7A /* MSBankSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSBankSearchResult.swift; sourceTree = "<group>"; };
@@ -361,6 +363,7 @@
 				C9564DCD1F569FB80051E3BE /* MSPaymentType.swift */,
 				954897711F724714004ED60A /* MSProcurementType.swift */,
 				C96F52AA1FB471D600B885A7 /* MSMoveType.swift */,
+				6EA80F042008C75200C7E938 /* MSInventoryType.swift */,
 				C9564DD11F56B0DD0051E3BE /* MSExpenseItem.swift */,
 				55C05C091E028F9B008F4254 /* Account.swift */,
 				55C05C0A1E028F9B008F4254 /* Agent.swift */,
@@ -742,6 +745,7 @@
 				95E886E91F31E638009C21F2 /* MSRetailStore+Convertable.swift in Sources */,
 				55C05C441E028F9B008F4254 /* Contract.swift in Sources */,
 				55C05C691E028F9B008F4254 /* Decimal.swift in Sources */,
+				6EA80F052008C75200C7E938 /* MSInventoryType.swift in Sources */,
 				6E2266FA1E266F61003D2DC5 /* MSSaleByProduct+Convertible.swift in Sources */,
 				6E02E7DA1F470D93000EC1F8 /* MSTask+Convertable.swift in Sources */,
 				55C05C481E028F9B008F4254 /* MSInvoiceType.swift in Sources */,

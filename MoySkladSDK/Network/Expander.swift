@@ -59,6 +59,8 @@ public enum ExpandPath : String {
     case packs
     case sourceStore
     case targetStore
+	case losses
+	case enters
 }
 
 public protocol Expandable {

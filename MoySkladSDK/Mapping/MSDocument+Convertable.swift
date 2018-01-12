@@ -93,6 +93,8 @@ extension MSDocument : DictConvertable {
                    sourceStore: MSStore.from(dict: dict.msValue("sourceStore")),
                    targetStore: MSStore.from(dict: dict.msValue("targetStore")),
                    internalOrder: MSDocument.from(dict: dict.msValue("internalOrder")),
-                   targetStock: []))
+                   targetStock: [],
+				   enters: dict.msArray("enters").flatMap { MSDocument.from(dict: $0) },
+				   losses: dict.msArray("losses").flatMap { MSDocument.from(dict: $0) }))
     }
 }

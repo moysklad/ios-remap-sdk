@@ -23,6 +23,10 @@ extension MSDocument : DictConvertable {
         if let purchaseOrder = MSDocument.from(dict: dict.msValue("purchaseOrder")) {
             purchaseOrders.append(purchaseOrder)
         }
+		
+		// у инвентаризации нет поля applicable
+		// поэтому ставим его в true по умолчанию, что бы он не считался черновиком
+		let defaultApplicable = meta.type == .inventory
         
         return MSEntity.entity(MSDocument(id: MSID(dict: dict),
                                           meta: meta,
@@ -39,10 +43,10 @@ extension MSDocument : DictConvertable {
                    owner: MSEmployee.from(dict: dict.msValue("owner")),
                    group: group,
                    shared: dict.value("shared") ?? false,
-                   applicable: dict.value("applicable") ?? false,
+                   applicable: dict.value("applicable") ?? defaultApplicable,
                    state: MSState.from(dict: dict.msValue("state")),
                    attributes: dict.msArray("attributes").map { MSAttribute.from(dict: $0) }.flatMap { $0 },
-                   originalApplicable: dict.value("applicable") ?? false,
+                   originalApplicable: dict.value("applicable") ?? defaultApplicable,
                    agentAccount: MSAccount.from(dict: dict.msValue("agentAccount")),
                    organizationAccount: MSAccount.from(dict: dict.msValue("organizationAccount")),
                    vatIncluded: dict.value("vatIncluded") ?? false,

@@ -290,34 +290,3 @@ extension DataManager {
         }
     }
 }
-
-//private static func loadRecursive<T>(loader: @escaping (MSPOSApiRequest, [UrlParameter]) -> Observable<Dictionary<String, AnyObject>?>,
-//                                     request: MSPOSApiRequest,
-//                                     offset: Offset,
-//                                     observer: AnyObserver<[T]>,
-//                                     deserializer: @escaping (Dictionary<String, AnyObject>) -> [T],
-//                                     deserializationError: Error) -> Observable<Void> {
-//    return loader(request, [offset])
-//        .do(onError: { observer.onError($0) })
-//        .flatMapLatest { result -> Observable<Void> in
-//            guard let result = result else {
-//                return Observable.error(deserializationError)
-//            }
-//
-//            observer.onNext(deserializer(result))
-//
-//            if let nextHref: String = result.msValue("meta").value("nextHref"),
-//                let offsetId = URLComponents(string: nextHref)?.queryItems?.first(where: { $0.name == "offsetId" })?.value {
-//                return loadRecursive(loader: loader,
-//                                     request: request,
-//                                     offset: Offset(size: 0, limit: offsetLimit, offsetId: offsetId),
-//                                     observer: observer,
-//                                     deserializer: deserializer,
-//                                     deserializationError: deserializationError)
-//            } else {
-//                observer.onCompleted()
-//                return .empty()
-//            }
-//    }
-//}
-

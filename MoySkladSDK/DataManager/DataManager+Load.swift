@@ -250,4 +250,29 @@ extension DataManager {
                 return Observable.just(deserialized)
         }
     }
+    
+    /**
+     Load inventory positions
+     - parameter id: Inventory id
+     - parameter expanders: Additional objects to include into request
+     - parameter auth: Authentication information
+     - parameter offset: Desired data offset
+     */
+    public static func inventoryPositions(inventoryId: String,
+                                          auth: Auth,
+                                          expanders: [Expander] = [],
+                                          offset: MSOffset? = nil) -> Observable<[MSEntity<MSPosition>]>{
+        
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, CompositeExpander(expanders))
+        let pathComponents: [String] = [inventoryId, "positions"]
+        
+        return HttpClient.get(.inventory, auth: auth, urlPathComponents: pathComponents, urlParameters: urlParameters)
+            .flatMap{result -> Observable<[MSEntity<MSPosition>]> in
+              
+                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectInventoryPositionResponse.value)) }
+                
+                let deserialized = result.msArray("rows").flatMap { MSPosition.from(dict: $0) }
+                return Observable.just(deserialized)
+            }
+    }
 }

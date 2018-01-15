@@ -24,7 +24,7 @@ extension MSPosition : DictConvertable {
         if let gtdString: String = gtdDict.value("name") {
             gtd = gtdString
         }
-        
+     
         return MSEntity.entity(MSPosition(meta: meta,
                    id: MSID(dict: dict),
                    assortment: assortment,

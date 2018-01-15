@@ -80,5 +80,6 @@ public enum MSObjectType : String {
     case commissionreportin
     case commissionreportout
     case supplyposition
+    case inventoryposition
     case country
 }

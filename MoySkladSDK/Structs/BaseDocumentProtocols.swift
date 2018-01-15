@@ -48,6 +48,7 @@ public extension MSBaseDocumentType {
         case .invoicein: return .invoiceIn
         case .purchaseorder: return .purchaseOrder
         case .move: return .move
+        case .inventory: return .inventory
         default: return nil
         }
     }
@@ -65,6 +66,7 @@ public extension MSBaseDocumentType {
         case .invoicein: return MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceInResponse.value)
         case .purchaseorder: return MSError.genericError(errorText: LocalizedStrings.incorrectPurchaseOrderResponse.value)
         case .move: return MSError.genericError(errorText: LocalizedStrings.incorrectMoveResponse.value)
+        case .inventory: return MSError.genericError(errorText: LocalizedStrings.incorrectInventoryResponse.value)
         default: return MSError.genericError(errorText: LocalizedStrings.genericDeserializationError.value)
         }
     }

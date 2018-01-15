@@ -261,18 +261,63 @@ extension DataManager {
     public static func inventoryPositions(inventoryId: String,
                                           auth: Auth,
                                           expanders: [Expander] = [],
+                                          positions: [MSEntity<MSPosition>],
                                           offset: MSOffset? = nil) -> Observable<[MSEntity<MSPosition>]>{
-        
+
         let urlParameters: [UrlParameter] = mergeUrlParameters(offset, CompositeExpander(expanders))
         let pathComponents: [String] = [inventoryId, "positions"]
-        
         return HttpClient.get(.inventory, auth: auth, urlPathComponents: pathComponents, urlParameters: urlParameters)
-            .flatMap{result -> Observable<[MSEntity<MSPosition>]> in
-              
+            .flatMapLatest{result -> Observable<[MSEntity<MSPosition>]> in
+
                 guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectInventoryPositionResponse.value)) }
-                
-                let deserialized = result.msArray("rows").flatMap { MSPosition.from(dict: $0) }
-                return Observable.just(deserialized)
-            }
+                var currentPositions: [MSEntity<MSPosition>] = []
+                let newPositions = result.msArray("rows").flatMap { MSPosition.from(dict: $0) }
+                currentPositions.append(contentsOf: newPositions + positions)
+
+                if let nextHref: String = result.msValue("meta").value("nextHref"),
+                    let currentOffset: String = URLComponents(string: nextHref)?.queryItems?.first(where: { $0.name == "offset" })?.value,
+                    let size = offset?.size, let limit = offset?.limit, let currOffset = Int(currentOffset){
+                    return DataManager.inventoryPositions(inventoryId: inventoryId,
+                                                          auth: auth,
+                                                          expanders: expanders,
+                                                          positions: currentPositions,
+                                                          offset: MSOffset(size: size,
+                                                                           limit: limit,
+                                                                           offset: currOffset))
+                } else {
+                    return Observable.just(currentPositions)
+                }
+        }
     }
 }
+
+//private static func loadRecursive<T>(loader: @escaping (MSPOSApiRequest, [UrlParameter]) -> Observable<Dictionary<String, AnyObject>?>,
+//                                     request: MSPOSApiRequest,
+//                                     offset: Offset,
+//                                     observer: AnyObserver<[T]>,
+//                                     deserializer: @escaping (Dictionary<String, AnyObject>) -> [T],
+//                                     deserializationError: Error) -> Observable<Void> {
+//    return loader(request, [offset])
+//        .do(onError: { observer.onError($0) })
+//        .flatMapLatest { result -> Observable<Void> in
+//            guard let result = result else {
+//                return Observable.error(deserializationError)
+//            }
+//
+//            observer.onNext(deserializer(result))
+//
+//            if let nextHref: String = result.msValue("meta").value("nextHref"),
+//                let offsetId = URLComponents(string: nextHref)?.queryItems?.first(where: { $0.name == "offsetId" })?.value {
+//                return loadRecursive(loader: loader,
+//                                     request: request,
+//                                     offset: Offset(size: 0, limit: offsetLimit, offsetId: offsetId),
+//                                     observer: observer,
+//                                     deserializer: deserializer,
+//                                     deserializationError: deserializationError)
+//            } else {
+//                observer.onCompleted()
+//                return .empty()
+//            }
+//    }
+//}
+

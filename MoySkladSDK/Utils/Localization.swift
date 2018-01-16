@@ -45,6 +45,7 @@ enum LocalizedStrings : String {
     case incorrectCurrencyResponse
     case incorrectEmployeeResponse
     case incorrectCounterpartyResponse
+    case incorrectInventoryPositionResponse
     case incorrectContractResponse
     case incorrectCustomEntityResponse
     case incorrectCustomerOrderTemplateResponse

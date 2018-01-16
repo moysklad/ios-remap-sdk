@@ -95,6 +95,7 @@
 		6EF37A321F53F4800020BD78 /* MSDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF37A311F53F4800020BD78 /* MSDocument.swift */; };
 		6EF37A341F5409830020BD78 /* MSDocument+Convertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF37A331F5409830020BD78 /* MSDocument+Convertable.swift */; };
 		6EF37A361F540E4E0020BD78 /* MSDocument+Serialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF37A351F540E4E0020BD78 /* MSDocument+Serialize.swift */; };
+		715A2ABF200E5CA400E2E2E7 /* StockBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715A2ABE200E5CA400E2E2E7 /* StockBalance.swift */; };
 		8B3B57471E124BBC0023B75B /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B57461E124BBC0023B75B /* Attribute.swift */; };
 		8B3B57491E1257B50023B75B /* MSAttribute+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3B57481E1257B50023B75B /* MSAttribute+Convertible.swift */; };
 		951039211F79173C00AE52E0 /* MSRetailShiftType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951039201F79173C00AE52E0 /* MSRetailShiftType.swift */; };
@@ -237,6 +238,7 @@
 		6EF37A311F53F4800020BD78 /* MSDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSDocument.swift; sourceTree = "<group>"; };
 		6EF37A331F5409830020BD78 /* MSDocument+Convertable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSDocument+Convertable.swift"; sourceTree = "<group>"; };
 		6EF37A351F540E4E0020BD78 /* MSDocument+Serialize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSDocument+Serialize.swift"; sourceTree = "<group>"; };
+		715A2ABE200E5CA400E2E2E7 /* StockBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockBalance.swift; sourceTree = "<group>"; };
 		8B3B57461E124BBC0023B75B /* Attribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attribute.swift; sourceTree = "<group>"; };
 		8B3B57481E1257B50023B75B /* MSAttribute+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSAttribute+Convertible.swift"; sourceTree = "<group>"; };
 		951039201F79173C00AE52E0 /* MSRetailShiftType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSRetailShiftType.swift; sourceTree = "<group>"; };
@@ -376,6 +378,7 @@
 				55C05C131E028F9B008F4254 /* MSCurrency.swift */,
 				55C05C141E028F9B008F4254 /* MSDashboard.swift */,
 				55C05C151E028F9B008F4254 /* MSImage.swift */,
+				715A2ABE200E5CA400E2E2E7 /* StockBalance.swift */,
 				55C05C161E028F9B008F4254 /* MSState.swift */,
 				55C05C171E028F9B008F4254 /* MSStock.swift */,
 				55C05C181E028F9B008F4254 /* MSStore.swift */,
@@ -667,6 +670,7 @@
 				95535FAE1F1F93E000A5E717 /* ContactPerson.swift in Sources */,
 				95300F4E1ECB06A6009424BF /* Order.swift in Sources */,
 				6E4344E01E3B239A005D0DDE /* Position+Serialize.swift in Sources */,
+				715A2ABF200E5CA400E2E2E7 /* StockBalance.swift in Sources */,
 				55C05C5C1E028F9B008F4254 /* MSAgent+Convertible.swift in Sources */,
 				6E75A1D31EA89B9E00A05A83 /* Expander.swift in Sources */,
 				55C05C4D1E028F9B008F4254 /* MSState.swift in Sources */,

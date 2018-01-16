@@ -52,4 +52,8 @@ extension DataManager {
     public static func update(document: MSDocument, auth: Auth, expanders: [Expander] = []) -> Observable<MSDocument> {
         return update(entity: document, auth: auth, expanders: expanders)
     }
+    
+    public static func updatePositions(in document: MSDocument, positions: [MSPosition], auth: Auth, expanders: [Expander] = []) -> Observable<Void> {
+        return .empty()
+    }
 }

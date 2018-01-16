@@ -29,12 +29,16 @@ fileprivate extension URL {
 }
 
 struct HttpRouter {
+    enum BodyType {
+        case array([[String: Any]])
+        case dictionary([String: Any])
+    }
 	let apiRequest: MSApiRequest
 	let method : Alamofire.HTTPMethod
 	let contentType: HttpRequestContentType
     let urlPathComponents: [String]
-    let httpBody: [String: Any]?
-	let headers: [String: String]
+    let httpBody: BodyType?
+    let headers: [String: String]
     let urlParameters: [UrlParameter]
 }
 
@@ -42,9 +46,17 @@ extension HttpRouter {
 	var fullUrl: URL {
         return URL(baseUrl: apiRequest.url.appendingPathComponent(urlPathComponents.joined(separator: "/")).absoluteString, parameters: urlParameters)!
 	}
+    
+    func getHttpBody() -> Any? {
+        switch httpBody {
+        case .array(let a)?: return a
+        case .dictionary(let d)?: return d
+        default: return nil
+        }
+    }
 	
 	static func create(apiRequest: MSApiRequest, method: Alamofire.HTTPMethod = .get, contentType: HttpRequestContentType = .json,
-	                   urlPathComponents: [String] = [], httpBody: [String: Any]? = nil,
+	                   urlPathComponents: [String] = [], httpBody: BodyType? = nil,
 	                   headers: [String: String] = [:], urlParameters: [UrlParameter] = []) -> HttpRouter {
         var newHeaders = headers
         newHeaders["user-agent"] = "MoySklad_iOS_app_v"
@@ -58,15 +70,15 @@ extension HttpRouter : URLRequestConvertible {
 		var request = URLRequest(url: fullUrl.appendingPathComponent(""))
 		request.httpMethod = method.rawValue
         
-        if let httpBody = httpBody {
+        if let httpBody = getHttpBody() {
             switch contentType {
             case .json:
-                request = try JSONEncoding.default.encode(request, with: httpBody)
+                request = try JSONEncoding.default.encode(request, withJSONObject: httpBody)
             case .formUrlencoded:
-                request = try URLEncoding.httpBody.encode(request, with: httpBody)
+                request = try URLEncoding.httpBody.encode(request, with: httpBody as? [String: Any])
             }
         }
-		
+        
 		headers.forEach { request.addValue($1, forHTTPHeaderField: $0) }
         
         return request

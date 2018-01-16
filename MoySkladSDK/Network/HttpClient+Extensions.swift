@@ -14,7 +14,7 @@ extension HttpClient {
         let router = HttpRouter.create(apiRequest: .register,
                                        method: .post,
                                        contentType: .formUrlencoded,
-                                       httpBody: ["email": email])
+                                       httpBody: .dictionary(["email": email]))
         return resultCreate(router)
     }
     
@@ -48,11 +48,12 @@ extension HttpClient {
             headers["Content-Type"] = "application/json"
         }
         
+        let httpBody = body == nil ? nil : HttpRouter.BodyType.dictionary(body!)
 		let router = HttpRouter.create(apiRequest: request,
 		                               method: .put,
 		                               contentType: .json,
 		                               urlPathComponents: urlPathComponents,
-		                               httpBody: body,
+		                               httpBody: httpBody,
 		                               headers: headers,
 		                               urlParameters: urlParameters)
 		return resultCreate(router)
@@ -73,11 +74,12 @@ extension HttpClient {
             headers["Content-Type"] = "application/json"
         }
         
+        let httpBody = body == nil ? nil : HttpRouter.BodyType.dictionary(body!)
         let router = HttpRouter.create(apiRequest: request,
                                        method: .post,
                                        contentType: .json,
                                        urlPathComponents: urlPathComponents,
-                                       httpBody: body,
+                                       httpBody: httpBody,
                                        headers: headers,
                                        urlParameters: urlParameters)
         return resultCreateFromHeader(router)
@@ -94,7 +96,7 @@ extension HttpClient {
 		                               method: .post,
 		                               contentType: contentType,
 		                               urlPathComponents: urlPathComponents,
-		                               httpBody: body,
+		                               httpBody: HttpRouter.BodyType.dictionary(body),
 		                               headers: auth.header,
 		                               urlParameters: urlParameters)
 		return resultCreate(router)

@@ -35,4 +35,8 @@ extension DataManager {
     public static func delete(document: MSDocument, auth: Auth) -> Observable<Void> {
         return delete(entity: document, auth: auth)
     }
+    
+    public static func deletePositions(in document: MSDocument, positionsMeta: [MSMeta], auth: Auth, expanders: [Expander] = []) -> Observable<Void> {
+        return .empty()
+    }
 }

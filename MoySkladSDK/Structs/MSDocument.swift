@@ -10,7 +10,7 @@ import Foundation
 
 public class MSDocument: MSAttributedEntity, MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderType, MSDemandType,
                         MSInvoiceOutType, MSInvoiceInType, MSMoneyDocumentType, MSCashInType, MSCashOutType,
-MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShiftType, MSMoveType {
+MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShiftType, MSMoveType, MSInventoryType {
     // MSBaseDocumentType
     public var id : MSID
     public var meta : MSMeta
@@ -104,6 +104,10 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
     public var targetStore: MSEntity<MSStore>?
     public var internalOrder: MSEntity<MSDocument>?
     public var targetStock: [MSEntity<MSDocumentStock>]
+	
+	// MSInventoryType
+	public var enters: [MSEntity<MSDocument>]
+	public var losses: [MSEntity<MSDocument>]
     
     public func copyDocument() -> MSDocument {
         let positionsCopy = positions.flatMap { $0.value() }.map { MSEntity.entity($0.copy()) }
@@ -174,7 +178,9 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
                           sourceStore: sourceStore,
                           targetStore: targetStore,
                           internalOrder: internalOrder,
-                          targetStock: targetStock)
+                          targetStock: targetStock,
+						  enters: enters,
+						  losses: losses)
     }
     
     public init(id : MSID,
@@ -242,7 +248,9 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
                 sourceStore: MSEntity<MSStore>?,
                 targetStore: MSEntity<MSStore>?,
                 internalOrder: MSEntity<MSDocument>?,
-                targetStock: [MSEntity<MSDocumentStock>]) {
+                targetStock: [MSEntity<MSDocumentStock>],
+				enters: [MSEntity<MSDocument>],
+				losses: [MSEntity<MSDocument>]) {
         self.id = id
         self.meta = meta
         self.info = info
@@ -308,6 +316,8 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
         self.targetStore = targetStore
         self.internalOrder = internalOrder
         self.targetStock = targetStock
+		self.enters = enters
+		self.losses = losses
         super.init(attributes: attributes)
     }
 }

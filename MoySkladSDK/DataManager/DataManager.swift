@@ -336,7 +336,10 @@ public struct DataManager {
             },
             moveMetadata(auth: auth).map { item -> MetadataLoadResult in
                 return MetadataLoadResult.init(type: .move, states: item.states, attributes: item.attributes, tags: [])
-            }
+            },
+			inventoryMetadata(auth: auth).map { item -> MetadataLoadResult in
+				return MetadataLoadResult.init(type: .inventory, states: item.states, attributes: item.attributes, tags: [])
+			}
         ]
         
         return Observable.zip(requests) { $0 }
@@ -483,6 +486,22 @@ public struct DataManager {
                                                        incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectMoveMetadataResponse.value))
         }
     }
+	
+	/**
+	Load Inventory metadata
+	- parameter auth: Authentication information
+	- returns: Metadata for object
+	*/
+	public static func inventoryMetadata(auth: Auth) -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> {
+		return HttpClient.get(.inventorymetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
+			.flatMapLatest { result -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> in
+				guard let result = result else {
+					return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectInventoryMetadataResponse.value))
+				}
+				return deserializeCounterpartyMetadata(json: result,
+													   incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectInventoryMetadataResponse.value))
+		}
+	}
     
     /**
      Load Product metadata

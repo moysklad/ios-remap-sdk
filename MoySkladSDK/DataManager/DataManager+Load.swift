@@ -24,6 +24,7 @@ public enum MSDocumentLoadRequest {
     case invoiceIn
     case purchaseOrder
     case move
+    case inventory
     
     var apiRequest: MSApiRequest {
         switch self {
@@ -39,6 +40,7 @@ public enum MSDocumentLoadRequest {
         case .invoiceIn: return .invoiceIn
         case .purchaseOrder: return .purchaseOrder
         case .move: return .move
+        case .inventory: return .inventory
         }
     }
     
@@ -56,6 +58,7 @@ public enum MSDocumentLoadRequest {
         case .invoiceIn: return .invoiceInMetadata
         case .purchaseOrder: return .purchaseOrderMetadata
         case .move: return .movemetadata
+        case .inventory: return .inventorymetadata
         }
     }
     
@@ -73,6 +76,7 @@ public enum MSDocumentLoadRequest {
         case .invoiceIn: return MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceInResponse.value)
         case .purchaseOrder: return MSError.genericError(errorText: LocalizedStrings.incorrectPurchaseOrderResponse.value)
         case .move: return MSError.genericError(errorText: LocalizedStrings.incorrectMoveResponse.value)
+        case .inventory: return MSError.genericError(errorText: LocalizedStrings.incorrectInventoryResponse.value)
         }
     }
 }
@@ -244,6 +248,45 @@ extension DataManager {
                     .removeNils()
                 
                 return Observable.just(deserialized)
+        }
+    }
+    
+    /**
+     Load inventory positions
+     - parameter id: Inventory id
+     - parameter expanders: Additional objects to include into request
+     - parameter auth: Authentication information
+     - parameter offset: Desired data offset
+     */
+    public static func inventoryPositions(inventoryId: String,
+                                          auth: Auth,
+                                          expanders: [Expander] = [],
+                                          positions: [MSEntity<MSPosition>],
+                                          offset: MSOffset? = nil) -> Observable<[MSEntity<MSPosition>]>{
+
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, CompositeExpander(expanders))
+        let pathComponents: [String] = [inventoryId, "positions"]
+        return HttpClient.get(.inventory, auth: auth, urlPathComponents: pathComponents, urlParameters: urlParameters)
+            .flatMapLatest{result -> Observable<[MSEntity<MSPosition>]> in
+
+                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectInventoryPositionResponse.value)) }
+                var currentPositions: [MSEntity<MSPosition>] = []
+                let newPositions = result.msArray("rows").flatMap { MSPosition.from(dict: $0) }
+                currentPositions.append(contentsOf: newPositions + positions)
+
+                if let nextHref: String = result.msValue("meta").value("nextHref"),
+                    let currentOffset: String = URLComponents(string: nextHref)?.queryItems?.first(where: { $0.name == "offset" })?.value,
+                    let size = offset?.size, let limit = offset?.limit, let currOffset = Int(currentOffset){
+                    return DataManager.inventoryPositions(inventoryId: inventoryId,
+                                                          auth: auth,
+                                                          expanders: expanders,
+                                                          positions: currentPositions,
+                                                          offset: MSOffset(size: size,
+                                                                           limit: limit,
+                                                                           offset: currOffset))
+                } else {
+                    return Observable.just(currentPositions)
+                }
         }
     }
 }

@@ -70,25 +70,29 @@ extension MSDocument {
         dict["vatIncluded"] = vatIncluded
         dict["vatEnabled"] = vatEnabled
         dict["store"] = serialize(entity: store, metaOnly: true)
-        dict["positions"] = serialize(entities: positions,
-                                      parent: self,
-                                      metaOnly: false,
-                                      objectType: {
-                                        switch meta.type {
-                                        case MSObjectType.demand:
-                                            return MSObjectType.demandposition
-                                        case MSObjectType.invoiceout, MSObjectType.invoicein:
-                                            return MSObjectType.invoiceposition
-                                        case MSObjectType.customerorder:
-                                            return MSObjectType.customerorderposition
-                                        case MSObjectType.purchaseorder:
-                                            return MSObjectType.purchaseorderposition
-                                        case MSObjectType.move:
-                                            return MSObjectType.moveposition
-                                        default:
-                                            return MSObjectType.customerorderposition
-                                        }}(),
-                                      collectionName: "positions")
+        
+        // передаем позиции для всех документов, кроме инвентаризации
+        if meta.type != .inventory {
+            dict["positions"] = serialize(entities: positions,
+                                          parent: self,
+                                          metaOnly: false,
+                                          objectType: {
+                                            switch meta.type {
+                                            case MSObjectType.demand:
+                                                return MSObjectType.demandposition
+                                            case MSObjectType.invoiceout, MSObjectType.invoicein:
+                                                return MSObjectType.invoiceposition
+                                            case MSObjectType.customerorder:
+                                                return MSObjectType.customerorderposition
+                                            case MSObjectType.purchaseorder:
+                                                return MSObjectType.purchaseorderposition
+                                            case MSObjectType.move:
+                                                return MSObjectType.moveposition
+                                            default:
+                                                return MSObjectType.customerorderposition
+                                            }}(),
+                                          collectionName: "positions")
+        }
 
         dict["deliveryPlannedMoment"] = deliveryPlannedMoment?.toLongDate() ?? NSNull()
         dict["purchaseOrders"] = serialize(entities: purchaseOrders,

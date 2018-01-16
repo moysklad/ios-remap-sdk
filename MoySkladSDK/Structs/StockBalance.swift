@@ -10,6 +10,6 @@ import Foundation
 
 public struct StockBalance {
     
-    var correctionAmount: Double
-    var calculatedQuantity: Double
+    public   var correctionAmount: Double
+    public  var calculatedQuantity: Double
 }

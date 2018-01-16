@@ -37,7 +37,7 @@ extension HttpClient {
                        auth: Auth,
                        urlPathComponents: [String] = [],
                        urlParameters: [UrlParameter] = [],
-                       body: [String: Any]?) -> Observable<Dictionary<String,AnyObject>?> {
+                       body: HttpRouter.BodyType?) -> Observable<Dictionary<String,AnyObject>?> {
         
         #if DEBUG
             print(body ?? [:])
@@ -48,12 +48,11 @@ extension HttpClient {
             headers["Content-Type"] = "application/json"
         }
         
-        let httpBody = body == nil ? nil : HttpRouter.BodyType.dictionary(body!)
 		let router = HttpRouter.create(apiRequest: request,
 		                               method: .put,
 		                               contentType: .json,
 		                               urlPathComponents: urlPathComponents,
-		                               httpBody: httpBody,
+		                               httpBody: body,
 		                               headers: headers,
 		                               urlParameters: urlParameters)
 		return resultCreate(router)

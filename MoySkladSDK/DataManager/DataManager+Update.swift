@@ -31,7 +31,7 @@ extension DataManager {
                                  auth: auth,
                                  urlPathComponents: [id.uuidString],
                                  urlParameters: urlParameters,
-                                 body: entity.dictionary(metaOnly: false))
+                                 body: entity.dictionary(metaOnly: false).toHttpBodyType())
             .flatMapLatest { result -> Observable<T.Element> in
                 guard let result = result else { return Observable.error(entity.deserializationError()) }
                 let t : [String: Any] = result

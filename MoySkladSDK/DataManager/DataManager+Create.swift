@@ -65,7 +65,7 @@ extension DataManager {
         return HttpClient.update(url,
                                  auth: auth,
                                  urlParameters: urlParameters,
-                                 body: fromDocument?.templateBody(forDocument: toType))
+                                 body: fromDocument?.templateBody(forDocument: toType)?.toHttpBodyType())
             .flatMapLatest { result -> Observable<MSGeneralDocument> in
                 guard var result = result else { return Observable.error(createdDocumentError(type: toType)) }
                 

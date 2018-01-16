@@ -53,7 +53,20 @@ extension DataManager {
         return update(entity: document, auth: auth, expanders: expanders)
     }
     
-    public static func updatePositions(in document: MSDocument, positions: [MSPosition], auth: Auth, expanders: [Expander] = []) -> Observable<Void> {
-        return .empty()
+    public static func updateOrCreate(positions: [MSPosition], in document: MSDocument, auth: Auth, expanders: [Expander] = []) -> Observable<Void> {
+        let urlParameters: [UrlParameter] = mergeUrlParameters(CompositeExpander(expanders))
+        
+        guard let url = document.requestUrl() else {
+            return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
+        }
+        
+        guard let id = document.id.msID?.uuidString else {
+            return Observable.error(MSError.genericError(errorText: LocalizedStrings.emptyObjectId.value))
+        }
+        
+        let body = positions.map { $0.dictionary(metaOnly: false) }.toHttpBodyType()
+        
+        return HttpClient.update(url, auth: auth, urlPathComponents: [id, "positions"], urlParameters: urlParameters, body: body)
+            .flatMapLatest { _ in return Observable.just(()) }
     }
 }

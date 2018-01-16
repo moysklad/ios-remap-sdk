@@ -36,7 +36,18 @@ extension DataManager {
         return delete(entity: document, auth: auth)
     }
     
-    public static func deletePositions(in document: MSDocument, positionsMeta: [MSMeta], auth: Auth, expanders: [Expander] = []) -> Observable<Void> {
-        return .empty()
+    public static func delete(positions positionsMeta: [MSMeta], in document: MSDocument, auth: Auth) -> Observable<Void> {
+        guard let url = document.requestUrl() else {
+            return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
+        }
+        
+        guard let id = document.id.msID?.uuidString else {
+            return Observable.error(MSError.genericError(errorText: LocalizedStrings.emptyObjectId.value))
+        }
+        
+        let body = positionsMeta.map { $0.dictionary() }.toHttpBodyType()
+        
+        return HttpClient.update(url, auth: auth, urlPathComponents: [id, "positions", "delete"], urlParameters: [], body: body)
+            .flatMap { _ -> Observable<Void> in return .just(()) }
     }
 }

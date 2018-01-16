@@ -14,7 +14,7 @@ extension HttpClient {
         let router = HttpRouter.create(apiRequest: .register,
                                        method: .post,
                                        contentType: .formUrlencoded,
-                                       httpBody: .dictionary(["email": email]))
+                                       httpBody: ["email": email].toHttpBodyType())
         return resultCreate(router)
     }
     
@@ -62,7 +62,7 @@ extension HttpClient {
                                         auth: Auth,
                                         urlPathComponents: [String] = [],
                                         urlParameters: [UrlParameter] = [],
-                                        body: [String: Any]?) -> Observable<Dictionary<String,String>?> {
+                                        body: HttpRouter.BodyType?) -> Observable<Dictionary<String,String>?> {
         
         #if DEBUG
             print(body ?? [:])
@@ -73,12 +73,11 @@ extension HttpClient {
             headers["Content-Type"] = "application/json"
         }
         
-        let httpBody = body == nil ? nil : HttpRouter.BodyType.dictionary(body!)
         let router = HttpRouter.create(apiRequest: request,
                                        method: .post,
                                        contentType: .json,
                                        urlPathComponents: urlPathComponents,
-                                       httpBody: httpBody,
+                                       httpBody: body,
                                        headers: headers,
                                        urlParameters: urlParameters)
         return resultCreateFromHeader(router)
@@ -88,14 +87,14 @@ extension HttpClient {
                        auth: Auth,
                        urlPathComponents: [String] = [],
                        urlParameters: [UrlParameter] = [],
-                       body: [String: Any], 
+                       body: HttpRouter.BodyType,
                        contentType: HttpRequestContentType = .json) -> Observable<Dictionary<String,AnyObject>?> {
 
 		let router = HttpRouter.create(apiRequest: request,
 		                               method: .post,
 		                               contentType: contentType,
 		                               urlPathComponents: urlPathComponents,
-		                               httpBody: HttpRouter.BodyType.dictionary(body),
+		                               httpBody: body,
 		                               headers: auth.header,
 		                               urlParameters: urlParameters)
 		return resultCreate(router)
@@ -103,7 +102,8 @@ extension HttpClient {
 	
 	static func delete(_ request: MSApiRequest,
 	                   auth: Auth,
-	                   urlPathComponents: [String] = []) -> Observable<Dictionary<String,AnyObject>?> {
+	                   urlPathComponents: [String] = [],
+                       body: HttpRouter.BodyType? = nil) -> Observable<Dictionary<String,AnyObject>?> {
         
         var headers = auth.header
         headers["Content-Type"] = "application/json"
@@ -111,6 +111,7 @@ extension HttpClient {
 		                               method: .delete,
 		                               contentType: .json,
 		                               urlPathComponents: urlPathComponents,
+                                       httpBody: body,
 		                               headers: headers)
 		return resultCreate(router)
 	}

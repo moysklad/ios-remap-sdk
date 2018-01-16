@@ -180,7 +180,7 @@ extension DataManager {
         
         let body: [String: Any] = ["counterparties": counterparties.map { ["counterparty": ["meta": $0.objectMeta().dictionary()]] }]
         
-        return HttpClient.create(.counterpartyReport, auth: auth, body: body, contentType: .json)
+        return HttpClient.create(.counterpartyReport, auth: auth, body: body.toHttpBodyType(), contentType: .json)
             .flatMapLatest { result -> Observable<[MSEntity<MSAgentReport>]> in
                 guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyReportResponse.value)) }
                 

@@ -47,7 +47,7 @@ extension DataManager {
         let urlPathComponents: [String] = [id, "export"]
         var body = meta.dictionaryForTemplate()
         body["extension"] = "pdf"
-        return HttpClient.updateWithHeadersResult(request.apiRequest, auth: auth, urlPathComponents: urlPathComponents, body: body).flatMapLatest { result -> Observable<String> in
+        return HttpClient.updateWithHeadersResult(request.apiRequest, auth: auth, urlPathComponents: urlPathComponents, body: body.toHttpBodyType()).flatMapLatest { result -> Observable<String> in
             
             guard let result = result else {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecDocumentFromTemplateResponse.value))
@@ -71,7 +71,7 @@ extension DataManager {
     public static func publicationFromTemplate(request: MSDocumentLoadRequest, auth: Auth, id: String, meta: MSMeta) -> Observable<String> {
         let urlPathComponents: [String] = [id, "publication"]
         let body = meta.dictionaryForTemplate()
-        return HttpClient.create(request.apiRequest, auth: auth, urlPathComponents: urlPathComponents, body: body, contentType: .json).flatMapLatest { result -> Observable<String> in
+        return HttpClient.create(request.apiRequest, auth: auth, urlPathComponents: urlPathComponents, body: body.toHttpBodyType(), contentType: .json).flatMapLatest { result -> Observable<String> in
             guard let result = result else {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecPublicationFromTemplateResponse.value))
             }

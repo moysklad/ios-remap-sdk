@@ -94,6 +94,18 @@ extension Dictionary {
     }
 }
 
+extension Dictionary where Key == String, Value == Any {
+    func toHttpBodyType() -> HttpRouter.BodyType {
+        return .dictionary(self)
+    }
+}
+
+extension Array where Element == [String: Any] {
+    func toHttpBodyType() -> HttpRouter.BodyType {
+        return .array(self)
+    }
+}
+
 extension MSAgent: MSRequestEntity {
     public func requestUrl() -> MSApiRequest? {
         if meta.type == .counterparty {

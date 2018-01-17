@@ -6,6 +6,7 @@
   Copyright © 2017 Andrey Parshakov. All rights reserved.
 */
 
+"incorrectPositionsResponse" = "Ошибка при обработке позиций, возвращенных сервером";
 "incorrectRegistrationResponse" = "Неизвестный ответ на запрос регистрации";
 "incorrectLoginResponse" = "Неизвестный ответ на запрос входа в систему";
 "incorrectStockAllResponse" = "Неизвестный ответ на запрос остатков";

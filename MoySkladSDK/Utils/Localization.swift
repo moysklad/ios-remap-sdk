@@ -9,6 +9,7 @@
 import Foundation
 
 enum LocalizedStrings : String {
+    case incorrectPositionsResponse
     case incorrectEmailFormat = "incorrect-email-format"
     case registrationRequestError = "registration-request-error"
     case registrationAttemptsExceeded = "registration-attempts-exceeded"

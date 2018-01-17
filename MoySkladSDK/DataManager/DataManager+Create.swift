@@ -26,7 +26,7 @@ extension DataManager {
         return HttpClient.create(url,
                                  auth: auth,
                                  urlParameters: urlParameters,
-                                 body: entity.dictionary(metaOnly: false))
+                                 body: entity.dictionary(metaOnly: false).toHttpBodyType())
             .flatMapLatest { result -> Observable<T.Element> in
                 guard let result = result else { return Observable.error(entity.deserializationError()) }
                 
@@ -65,7 +65,7 @@ extension DataManager {
         return HttpClient.update(url,
                                  auth: auth,
                                  urlParameters: urlParameters,
-                                 body: fromDocument?.templateBody(forDocument: toType))
+                                 body: fromDocument?.templateBody(forDocument: toType)?.toHttpBodyType())
             .flatMapLatest { result -> Observable<MSGeneralDocument> in
                 guard var result = result else { return Observable.error(createdDocumentError(type: toType)) }
                 

@@ -53,7 +53,8 @@ extension DataManager {
         return update(entity: document, auth: auth, expanders: expanders)
     }
     
-    public static func updateOrCreate(positions: [MSPosition], in document: MSDocument, auth: Auth, expanders: [Expander] = []) -> Observable<Void> {
+    public static func updateOrCreate(positions: [MSPosition], in document: MSDocument, auth: Auth, expanders: [Expander] = [])
+        -> Observable<[MSEntity<MSPosition>]> {
         let urlParameters: [UrlParameter] = mergeUrlParameters(CompositeExpander(expanders))
         
         guard let url = document.requestUrl() else {
@@ -67,6 +68,14 @@ extension DataManager {
         let body = positions.map { $0.dictionary(metaOnly: false) }.toJSONType()
         
         return HttpClient.create(url, auth: auth, urlPathComponents: [id, "positions"], urlParameters: urlParameters, body: body)
-            .flatMapLatest { _ in return Observable.just(()) }
+            .flatMapLatest { result -> Observable<[MSEntity<MSPosition>]> in
+                guard let result = result?.toArray() else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPositionsResponse.value))
+                }
+                
+                let deserialized = result.flatMap { MSPosition.from(dict: $0) }
+                
+                return Observable.just(deserialized)
+        }
     }
 }

@@ -122,7 +122,7 @@ extension DataManager {
                                 expanders: [Expander] = []) -> Observable<MSDocument>  {
         return HttpClient.get(request.apiRequest, auth: auth, urlPathComponents: [documentId.uuidString], urlParameters: [CompositeExpander(expanders)])
             .flatMapLatest { result -> Observable<MSDocument> in
-                guard let result = result else { return Observable.error(request.requestError) }
+                guard let result = result?.toDictionary() else { return Observable.error(request.requestError) }
                 
                 guard let deserialized = MSDocument.from(dict: result)?.value() else {
                     return Observable.error(request.requestError)
@@ -142,7 +142,7 @@ extension DataManager {
     public static func loadById(auth: Auth, counterpartyId: UUID, expanders: [Expander] = []) -> Observable<MSEntity<MSAgent>> {
         return HttpClient.get(.counterparty, auth: auth, urlPathComponents: [counterpartyId.uuidString], urlParameters: [CompositeExpander(expanders)])
             .flatMapLatest { result -> Observable<MSEntity<MSAgent>> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
                 
                 guard let deserialized = MSAgent.from(dict: result) else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value))
@@ -160,7 +160,7 @@ extension DataManager {
     public static func loadReportById(auth: Auth, counterpartyId: UUID) -> Observable<MSEntity<MSAgentReport>> {
         return HttpClient.get(.counterpartyReport, auth: auth, urlPathComponents: [counterpartyId.uuidString])
             .flatMapLatest { result -> Observable<MSEntity<MSAgentReport>> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyReportResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyReportResponse.value)) }
                 
                 guard let deserialized = MSAgentReport.from(dict: result) else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyReportResponse.value))
@@ -180,9 +180,9 @@ extension DataManager {
         
         let body: [String: Any] = ["counterparties": counterparties.map { ["counterparty": ["meta": $0.objectMeta().dictionary()]] }]
         
-        return HttpClient.create(.counterpartyReport, auth: auth, body: body.toHttpBodyType(), contentType: .json)
+        return HttpClient.create(.counterpartyReport, auth: auth, body: body.toJSONType(), contentType: .json)
             .flatMapLatest { result -> Observable<[MSEntity<MSAgentReport>]> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyReportResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyReportResponse.value)) }
                 
                 let deserialized = result.msArray("rows").flatMap { MSAgentReport.from(dict: $0) }
                 
@@ -241,7 +241,7 @@ extension DataManager {
         
         return HttpClient.get(request.apiRequest, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSDocument]> in
-                guard let result = result else { return Observable.error(request.requestError) }
+                guard let result = result?.toDictionary() else { return Observable.error(request.requestError) }
                 
                 let deserialized = result.msArray("rows")
                     .map { MSDocument.from(dict: $0)?.value() }
@@ -269,7 +269,7 @@ extension DataManager {
         return HttpClient.get(.inventory, auth: auth, urlPathComponents: pathComponents, urlParameters: urlParameters)
             .flatMapLatest{result -> Observable<[MSEntity<MSPosition>]> in
 
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectInventoryPositionResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectInventoryPositionResponse.value)) }
                 var currentPositions: [MSEntity<MSPosition>] = []
                 let newPositions = result.msArray("rows").flatMap { MSPosition.from(dict: $0) }
                 currentPositions.append(contentsOf: newPositions + positions)

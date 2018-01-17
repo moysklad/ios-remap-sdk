@@ -31,9 +31,9 @@ extension DataManager {
                                  auth: auth,
                                  urlPathComponents: [id.uuidString],
                                  urlParameters: urlParameters,
-                                 body: entity.dictionary(metaOnly: false).toHttpBodyType())
+                                 body: entity.dictionary(metaOnly: false).toJSONType())
             .flatMapLatest { result -> Observable<T.Element> in
-                guard let result = result else { return Observable.error(entity.deserializationError()) }
+                guard let result = result?.toDictionary() else { return Observable.error(entity.deserializationError()) }
                 let t : [String: Any] = result
                 guard let deserialized = T.from(dict: t)?.value() else {
                     return Observable.error(entity.deserializationError())
@@ -64,7 +64,7 @@ extension DataManager {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.emptyObjectId.value))
         }
         
-        let body = positions.map { $0.dictionary(metaOnly: false) }.toHttpBodyType()
+        let body = positions.map { $0.dictionary(metaOnly: false) }.toJSONType()
         
         return HttpClient.create(url, auth: auth, urlPathComponents: [id, "positions"], urlParameters: urlParameters, body: body)
             .flatMapLatest { _ in return Observable.just(()) }

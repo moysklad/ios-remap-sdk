@@ -10,6 +10,29 @@ import Foundation
 import Alamofire
 import RxSwift
 
+enum JSONType {
+    case array([[String: Any]])
+    case dictionary([String: Any])
+    
+    func toDictionary() -> [String: Any]? {
+        guard case .dictionary(let v) = self else { return nil }
+        return v
+    }
+    
+    func toArray() -> [[String: Any]]? {
+        guard case .array(let v) = self else { return nil }
+        return v
+    }
+    
+    static func fromRaw(_ data: Data) -> JSONType? {
+        switch try? JSONSerialization.jsonObject(with: data, options: []) {
+        case let d as [String: Any]: return .dictionary(d)
+        case let a as [[String: Any]]: return .array(a)
+        default: return nil
+        }
+    }
+}
+
 public protocol UrlParameter {
     var urlParameters: [String: String] { get }
 }
@@ -308,7 +331,7 @@ final class HttpClient {
         }
     }
     
-    static func resultCreate(_ router : HttpRouter) -> Observable<Dictionary<String,AnyObject>?> {
+    static func resultCreate(_ router : HttpRouter) -> Observable<JSONType?> {
         return Observable.create { observer -> Disposable in
             #if DEBUG
                 let request = manager.request(router).debugLog()
@@ -339,15 +362,14 @@ final class HttpClient {
                     return
 				}
 
-                // в ответе может прийти array. Пока что просто считаем, нам пришел пустой ответ в таком случае
-                let responseDict = (try? JSONSerialization.jsonObject(with: data, options: []) as? Dictionary<String,AnyObject>) ?? nil
-                
+                let json = JSONType.fromRaw(data)
+
                 guard 200..<300 ~= dataResponse.response?.statusCode ?? 0 else {
-                    observer.onError(convertToError(httpCode: dataResponse.response?.statusCode ?? -1, errorDict: responseDict ?? [:]));
+                    observer.onError(convertToError(httpCode: dataResponse.response?.statusCode ?? -1, errorDict: json?.toDictionary() ?? [:]));
                     return
                 }
 				
-				observer.onNext(responseDict)
+				observer.onNext(json)
 				observer.onCompleted()
 			}
 						
@@ -357,7 +379,7 @@ final class HttpClient {
         }
     }
     
-    static func convertToError(httpCode: Int, errorDict: Dictionary<String, AnyObject>) -> MSError {
+    static func convertToError(httpCode: Int, errorDict: Dictionary<String, Any>) -> MSError {
         guard let errors = errorDict["errors"] as? [Any] else { return MSError.unknown }
         var convertedErrors: [MSErrorStruct] = []
         for error in errors {

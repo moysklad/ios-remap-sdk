@@ -66,7 +66,7 @@ extension DataManager {
         
         let body = positions.map { $0.dictionary(metaOnly: false) }.toHttpBodyType()
         
-        return HttpClient.update(url, auth: auth, urlPathComponents: [id, "positions"], urlParameters: urlParameters, body: body)
+        return HttpClient.create(url, auth: auth, urlPathComponents: [id, "positions"], urlParameters: urlParameters, body: body)
             .flatMapLatest { _ in return Observable.just(()) }
     }
 }

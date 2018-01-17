@@ -338,14 +338,12 @@ final class HttpClient {
                     observer.onNext(nil); observer.onCompleted()
                     return
 				}
-				
-				guard let responseDict = (try? JSONSerialization.jsonObject(with: data, options: []) as? Dictionary<String,AnyObject>) ?? nil else {
-					observer.onError(MSError.unknown)
-					return
-				}
+
+                // в ответе может прийти array. Пока что просто считаем, нам пришел пустой ответ в таком случае
+                let responseDict = (try? JSONSerialization.jsonObject(with: data, options: []) as? Dictionary<String,AnyObject>) ?? nil
                 
                 guard 200..<300 ~= dataResponse.response?.statusCode ?? 0 else {
-                    observer.onError(convertToError(httpCode: dataResponse.response?.statusCode ?? -1, errorDict: responseDict));
+                    observer.onError(convertToError(httpCode: dataResponse.response?.statusCode ?? -1, errorDict: responseDict ?? [:]));
                     return
                 }
 				

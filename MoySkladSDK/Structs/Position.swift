@@ -22,8 +22,9 @@ public class MSPosition : Metable {
     public var gtd : String?
     public var country: MSEntity<MSCountry>?
     public var inTransit: Double
-    public var stockBalance: StockBalance?
-    public var correctionSum: Double?
+    public var correctionAmount: Double
+    public var calculatedQuantity: Double
+    public var correctionSum: Double
     
     public init(meta : MSMeta,
     id : MSID,
@@ -37,8 +38,9 @@ public class MSPosition : Metable {
     gtd : String?,
     country : MSEntity<MSCountry>?,
     inTransit: Double,
-    stockBalance: StockBalance? = nil,
-    correctionSum: Double? = 0.0) {
+    correctionAmount: Double,
+    calculatedQuantity: Double,
+    correctionSum: Double) {
         self.meta = meta
         self.id = id
         self.assortment = assortment
@@ -51,7 +53,8 @@ public class MSPosition : Metable {
         self.gtd = gtd
         self.country = country
         self.inTransit = inTransit
-        self.stockBalance = stockBalance
+        self.correctionAmount = correctionAmount
+        self.calculatedQuantity = calculatedQuantity
         self.correctionSum = correctionSum
     }
     
@@ -68,7 +71,8 @@ public class MSPosition : Metable {
                           gtd: gtd,
                           country: country,
                           inTransit: inTransit,
-                          stockBalance: stockBalance,
+                          correctionAmount: correctionAmount,
+                          calculatedQuantity: calculatedQuantity,
                           correctionSum: correctionSum)
     }
 }

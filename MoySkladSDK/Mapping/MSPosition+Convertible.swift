@@ -25,11 +25,14 @@ extension MSPosition : DictConvertable {
             gtd = gtdString
         }
         
+        var corrAmount: Double? = nil
+        var calcQuantity: Double? = nil
         var corrSum: Double? = nil
-        var stockBalance: StockBalance? = nil
+        
         if let correctionAmount: Double = dict.value("correctionAmount"), let calculatedQuantity: Double = dict.value("calculatedQuantity"), let correctionSum: Double = dict.value("correctionSum") {
+            corrAmount = correctionAmount
+            calcQuantity = calculatedQuantity
             corrSum = correctionSum
-            stockBalance = StockBalance(correctionAmount: correctionAmount, calculatedQuantity: calculatedQuantity)
         }
      
         return MSEntity.entity(MSPosition(meta: meta,
@@ -44,7 +47,8 @@ extension MSPosition : DictConvertable {
                    gtd: gtd,
                    country: MSCountry.from(dict: dict.msValue("country")),
                    inTransit: dict.value("inTransit") ?? 0,
-                   stockBalance: stockBalance,
-                   correctionSum: corrSum))
+                   correctionAmount: corrAmount ?? 0.0,
+                   calculatedQuantity: calcQuantity ?? 0.0,
+                   correctionSum: corrSum ?? 0.0))
     }
 }

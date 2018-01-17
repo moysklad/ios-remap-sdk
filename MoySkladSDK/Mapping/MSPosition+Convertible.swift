@@ -16,7 +16,7 @@ extension MSPosition : DictConvertable {
     public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSPosition>? {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict),
             let assortment = MSAssortment.from(dict: dict.msValue("assortment")) else {
-            return nil
+                return nil
         }
         
         let gtdDict = dict.msValue("gtd")
@@ -24,18 +24,22 @@ extension MSPosition : DictConvertable {
         if let gtdString: String = gtdDict.value("name") {
             gtd = gtdString
         }
-     
+        
         return MSEntity.entity(MSPosition(meta: meta,
-                   id: MSID(dict: dict),
-                   assortment: assortment,
-                   quantity: dict.value("quantity") ?? 0,
-                   reserve: dict.value("reserve") ?? 0,
-                   shipped: dict.value("shipped") ?? 0,
-                   price: (dict.value("price") ?? 0.0).toMoney(),
-                   discount: dict.value("discount") ?? 0,
-                   vat: dict.value("vat") ?? 0,
-                   gtd: gtd,
-                   country: MSCountry.from(dict: dict.msValue("country")),
-                   inTransit: dict.value("inTransit") ?? 0))
+                                          id: MSID(dict: dict),
+                                          assortment: assortment,
+                                          quantity: dict.value("quantity") ?? 0,
+                                          reserve: dict.value("reserve") ?? 0,
+                                          shipped: dict.value("shipped") ?? 0,
+                                          price: (dict.value("price") ?? 0.0).toMoney(),
+                                          discount: dict.value("discount") ?? 0,
+                                          vat: dict.value("vat") ?? 0,
+                                          gtd: gtd,
+                                          country: MSCountry.from(dict: dict.msValue("country")),
+                                          inTransit: dict.value("inTransit") ?? 0,
+                                          correctionAmount: dict.value("correctionAmount") ?? 0.0,
+                                          calculatedQuantity: dict.value("calculatedQuantity") ?? 0.0,
+                                          correctionSum: dict.value("correctionSum") ?? 0.0))
     }
 }
+

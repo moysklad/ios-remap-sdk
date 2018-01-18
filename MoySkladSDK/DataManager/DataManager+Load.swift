@@ -271,7 +271,7 @@ extension DataManager {
 
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectInventoryPositionResponse.value)) }
                 let newPositions = result.msArray("rows").flatMap { MSPosition.from(dict: $0) }
-                let currentPositions = newPositions + positions
+                let currentPositions = positions + newPositions
 
                 if let nextHref: String = result.msValue("meta").value("nextHref"),
                     let currentOffset: String = URLComponents(string: nextHref)?.queryItems?.first(where: { $0.name == "offset" })?.value,

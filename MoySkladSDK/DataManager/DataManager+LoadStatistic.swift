@@ -45,7 +45,7 @@ extension DataManager {
         return HttpClient.get(.plotseries, auth: auth, urlPathComponents: [type.rawValue], urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<MSEntity<MSStatistics>> in
                 
-                guard let result = result else { return Observable.error(getStatisticsError(for: type)) }
+                guard let result = result?.toDictionary() else { return Observable.error(getStatisticsError(for: type)) }
                 
                 guard let deserialized = MSStatistics.from(dict: result) else {
                     return Observable.error(getStatisticsError(for: type))
@@ -75,7 +75,7 @@ extension DataManager {
         return HttpClient.get(.plotseries, auth: auth, urlPathComponents: [type.rawValue], urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<MSEntity<MSMoneyStatistics>> in
                 
-                guard let result = result else { return Observable.error(getStatisticsError(for: type)) }
+                guard let result = result?.toDictionary() else { return Observable.error(getStatisticsError(for: type)) }
                 
                 guard let deserialized = MSMoneyStatistics.from(dict: result) else {
                     return Observable.error(getStatisticsError(for: type))
@@ -99,7 +99,7 @@ extension DataManager {
         return HttpClient.get(.reportMoneyByAccount, auth: auth, urlParameters: mergeUrlParameters(offset))
             .flatMapLatest { result -> Observable<[MSMoneyBalance]> in
                 
-                guard let result = result else {
+                guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPlotseriesMoneyBalanceResponse.value))
                 }
                 
@@ -124,7 +124,7 @@ extension DataManager {
         return HttpClient.get(.reportRetailstore, auth: auth)
             .flatMapLatest { result -> Observable<[MSEntity<MSRetailStore>]> in
                 
-                guard let result = result else {
+                guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPlotseriesRetailStoresReportResponse.value))
                 }
                 
@@ -151,7 +151,7 @@ extension DataManager {
         return HttpClient.get(.reportRetailstore, auth: auth, urlPathComponents: [id.uuidString, MSApiRequest.reportRetailstoreRetailshift.rawValue])
             .flatMapLatest { result -> Observable<MSEntity<MSRetailStoreStatistics>> in
                 
-                guard let result = result else {
+                guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPlotseriesRetailStoreReportResponse.value))
                 }
                 

@@ -26,9 +26,9 @@ extension DataManager {
         return HttpClient.create(url,
                                  auth: auth,
                                  urlParameters: urlParameters,
-                                 body: entity.dictionary(metaOnly: false).toHttpBodyType())
+                                 body: entity.dictionary(metaOnly: false).toJSONType())
             .flatMapLatest { result -> Observable<T.Element> in
-                guard let result = result else { return Observable.error(entity.deserializationError()) }
+                guard let result = result?.toDictionary() else { return Observable.error(entity.deserializationError()) }
                 
                 guard let deserialized = T.from(dict: result)?.value() else {
                     return Observable.error(entity.deserializationError())
@@ -65,9 +65,9 @@ extension DataManager {
         return HttpClient.update(url,
                                  auth: auth,
                                  urlParameters: urlParameters,
-                                 body: fromDocument?.templateBody(forDocument: toType)?.toHttpBodyType())
+                                 body: fromDocument?.templateBody(forDocument: toType)?.toJSONType())
             .flatMapLatest { result -> Observable<MSGeneralDocument> in
-                guard var result = result else { return Observable.error(createdDocumentError(type: toType)) }
+                guard var result = result?.toDictionary() else { return Observable.error(createdDocumentError(type: toType)) }
                 
                 // подставляем в шаблон мету-заглушку
                 result["meta"] = emptyMeta(type: toType).dictionary() as AnyObject

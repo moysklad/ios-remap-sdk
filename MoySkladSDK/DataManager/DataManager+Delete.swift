@@ -45,7 +45,7 @@ extension DataManager {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.emptyObjectId.value))
         }
         
-        let body = positions.map { ["meta": $0.meta.dictionary()] }.toHttpBodyType()
+        let body = positions.map { ["meta": $0.meta.dictionary()] }.toJSONType()
         
         return HttpClient.create(url, auth: auth, urlPathComponents: [id, "positions", "delete"], urlParameters: [], body: body)
             .flatMap { _ -> Observable<Void> in return .just(()) }

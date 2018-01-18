@@ -95,13 +95,13 @@ extension Dictionary {
 }
 
 extension Dictionary where Key == String, Value == Any {
-    func toHttpBodyType() -> HttpRouter.BodyType {
+    func toJSONType() -> JSONType {
         return .dictionary(self)
     }
 }
 
 extension Array where Element == [String: Any] {
-    func toHttpBodyType() -> HttpRouter.BodyType {
+    func toJSONType() -> JSONType {
         return .array(self)
     }
 }

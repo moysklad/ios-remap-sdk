@@ -205,7 +205,7 @@ public struct DataManager {
      */
     public static func register(email: String) -> Observable<MSRegistrationResult> {
         return HttpClient.register(email: email).flatMapLatest { result -> Observable<MSRegistrationResult> in
-            guard let result = result else {
+            guard let result = result?.toDictionary() else {
                 return  Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectRegistrationResponse.value))
             }
             guard let registration = MSRegistrationResult.from(dict: result) else {
@@ -225,7 +225,7 @@ public struct DataManager {
         
         let employeeRequest = HttpClient.get(.contextEmployee, auth: auth)
             .flatMapLatest { result -> Observable<MSEmployee> in
-                guard let result = result else {
+                guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectLoginResponse.value))
                 }
                 guard let employee = MSEmployee.from(dict: result)?.value() else {
@@ -237,7 +237,7 @@ public struct DataManager {
         
         let settingsRequest = HttpClient.get(.companySettings, auth: auth, urlParameters: [Expander(.currency)])
             .flatMapLatest { result -> Observable<MSCompanySettings> in
-                guard let result = result else {
+                guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCompanySettingsResponse.value))
                 }
                 guard let settings = MSCompanySettings.from(dict: result)?.value() else {
@@ -249,7 +249,7 @@ public struct DataManager {
         
         let currenciesRequest = HttpClient.get(.currency, auth: auth, urlParameters: [MSOffset(size: 100, limit: 100, offset: 0)])
             .flatMapLatest { result -> Observable<[MSCurrency]> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCurrencyResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCurrencyResponse.value)) }
                 
                 let deserialized = result.msArray("rows").map { MSCurrency.from(dict: $0) }
                 
@@ -265,7 +265,7 @@ public struct DataManager {
         
         let groupsRequest = HttpClient.get(.group, auth: auth, urlParameters: [MSOffset(size: 100, limit: 100, offset: 0)])
             .flatMapLatest { result -> Observable<[MSGroup]> in
-                guard let result = result else {
+                guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectGroupResponse.value))
                 }
                 let deserialized = result.msArray("rows").map { MSGroup.from(dict: $0)?.value() }.removeNils()
@@ -463,7 +463,7 @@ public struct DataManager {
     public static func counterpartyMetadata(auth: Auth) -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> {
         return HttpClient.get(.counterpartymetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
             .flatMapLatest { result -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> in
-                guard let result = result else {
+                guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyMetadataResponse.value))
                 }
                 return deserializeCounterpartyMetadata(json: result,
@@ -479,7 +479,7 @@ public struct DataManager {
     public static func moveMetadata(auth: Auth) -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> {
         return HttpClient.get(.movemetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
             .flatMapLatest { result -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> in
-                guard let result = result else {
+                guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectMoveMetadataResponse.value))
                 }
                 return deserializeCounterpartyMetadata(json: result,
@@ -495,7 +495,7 @@ public struct DataManager {
 	public static func inventoryMetadata(auth: Auth) -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> {
 		return HttpClient.get(.inventorymetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
 			.flatMapLatest { result -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> in
-				guard let result = result else {
+				guard let result = result?.toDictionary() else {
 					return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectInventoryMetadataResponse.value))
 				}
 				return deserializeCounterpartyMetadata(json: result,
@@ -511,7 +511,7 @@ public struct DataManager {
     public static func productMetadata(auth: Auth) -> Observable<(attributes: [MSAttributeDefinition], priceTypes: [String])> {
         return HttpClient.get(.productMetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
             .flatMapLatest { result -> Observable<(attributes: [MSAttributeDefinition], priceTypes: [String])> in
-                guard let result = result else {
+                guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProductMetadataResponse.value))
                 }
                 return deserializeAssortmentMetadata(json: result,
@@ -522,7 +522,7 @@ public struct DataManager {
     static func documentMetadata(request: MSApiRequest, error: Error, auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
         return HttpClient.get(request, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
             .flatMapLatest { result -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> in
-                guard let result = result else { return Observable.error(error) }
+                guard let result = result?.toDictionary() else { return Observable.error(error) }
                 return deserializeDocumentMetadata(json: result, incorrectJsonError: error)
         }
     }
@@ -535,7 +535,7 @@ public struct DataManager {
     public static func dashboardDay(auth: Auth) -> Observable<MSDashboard> {
         return HttpClient.get(.dashboardDay, auth: auth)
             .flatMapLatest { result -> Observable<MSDashboard> in
-                guard let result = result else { return Observable.empty() }
+                guard let result = result?.toDictionary() else { return Observable.empty() }
                 guard let dash = MSDashboard.from(dict: result) else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectDashboardResponse.value))
                 }
@@ -551,7 +551,7 @@ public struct DataManager {
     public static func dashboardWeek(auth: Auth) -> Observable<MSDashboard> {
         return HttpClient.get(.dashboardWeek, auth: auth)
             .flatMapLatest { result -> Observable<MSDashboard> in
-                guard let result = result else { return Observable.empty() }
+                guard let result = result?.toDictionary() else { return Observable.empty() }
                 guard let dash = MSDashboard.from(dict: result) else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectDashboardResponse.value))
                 }
@@ -567,7 +567,7 @@ public struct DataManager {
     public static func dashboardMonth(auth: Auth) -> Observable<MSDashboard> {
         return HttpClient.get(.dashboardMonth, auth: auth)
             .flatMapLatest { result -> Observable<MSDashboard> in
-                guard let result = result else { return Observable.empty() }
+                guard let result = result?.toDictionary() else { return Observable.empty() }
                 guard let dash = MSDashboard.from(dict: result) else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectDashboardResponse.value))
                 }
@@ -600,7 +600,7 @@ public struct DataManager {
             
             return HttpClient.get(.assortment, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSAssortment>]> in
-                guard let result = result else {
+                guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectAssortmentResponse.value))
                 }
                 
@@ -632,7 +632,7 @@ public struct DataManager {
             let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, CompositeExpander(expanders))
             return HttpClient.get(.organization, auth: auth, urlParameters: urlParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
-                    guard let result = result else {
+                    guard let result = result?.toDictionary() else {
                         return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectOrganizationResponse.value))
                     }
                     
@@ -665,7 +665,7 @@ public struct DataManager {
             
             return HttpClient.get(.counterparty, auth: auth, urlParameters: urlParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
-                    guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
+                    guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
                     
                     return deserializeArray(json: result,
                                             incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value),
@@ -691,7 +691,7 @@ public struct DataManager {
             
             return HttpClient.get(.counterparty, auth: auth, urlParameters: urlParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
-                    guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
+                    guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
                     
                     return deserializeArray(json: result,
                                             incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value),
@@ -773,7 +773,7 @@ public struct DataManager {
         
         return HttpClient.get(.stockAll, auth: auth, urlParameters: parameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSProductStockAll>]> in
-            guard let result = result else {
+            guard let result = result?.toDictionary() else {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectStockAllResponse.value))
                 }
             
@@ -800,7 +800,7 @@ public struct DataManager {
                                           StockProductId(value: assortment.id.msID?.uuidString ?? "")]
         return HttpClient.get(.stockByStore, auth: auth, urlParameters: parameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSProductStockStore>]> in
-            guard let result = result else {
+            guard let result = result?.toDictionary() else {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectStockByStoreResponse.value))
                 }
             
@@ -874,7 +874,7 @@ public struct DataManager {
         return HttpClient.get(.productFolder, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSProductFolder>]> in
                 
-                guard let result = result else {
+                guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProductFolderResponse.value))
                 }
                 
@@ -908,7 +908,7 @@ public struct DataManager {
         return HttpClient.get(.store, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSStore>]> in
                 
-                guard let result = result else {
+                guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectStoreResponse.value))
                 }
                 
@@ -941,7 +941,7 @@ public struct DataManager {
         
         return HttpClient.get(.project, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSProject>]> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProjectResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProjectResponse.value)) }
                 
                 return deserializeArray(json: result,
                                  incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectProjectResponse.value),
@@ -968,7 +968,7 @@ public struct DataManager {
         
         return HttpClient.get(.group, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSGroup>]> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectGroupResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectGroupResponse.value)) }
                 
                 return deserializeArray(json: result,
                                         incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectGroupResponse.value),
@@ -994,7 +994,7 @@ public struct DataManager {
         
         return HttpClient.get(.currency, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSCurrency>]> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCurrencyResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCurrencyResponse.value)) }
                 
                 return deserializeArray(json: result,
                                         incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectCurrencyResponse.value),
@@ -1020,7 +1020,7 @@ public struct DataManager {
         
         return HttpClient.get(.contract, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSContract>]> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectContractResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectContractResponse.value)) }
                 
                 return deserializeArray(json: result,
                                         incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectContractResponse.value),
@@ -1046,7 +1046,7 @@ public struct DataManager {
         
         return HttpClient.get(.employee, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSEmployee>]> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value)) }
                 
                 return deserializeArray(json: result,
                                         incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value),
@@ -1074,7 +1074,7 @@ public struct DataManager {
         
         return HttpClient.get(.employee, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value)) }
                 
                 return deserializeArray(json: result,
                                         incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value),
@@ -1103,7 +1103,7 @@ public struct DataManager {
         
         let pathComponents = [agent.id.msID?.uuidString ?? "", "accounts"]
         
-        let request: Observable<Dictionary<String, AnyObject>?> = {
+        let request: Observable<JSONType?> = {
             switch agent.meta.type {
             case MSObjectType.counterparty: return HttpClient.get(.counterparty, auth: auth,
                                                                   urlPathComponents: pathComponents, urlParameters: urlParameters)
@@ -1114,7 +1114,7 @@ public struct DataManager {
         }()
         
         return request.flatMapLatest { result -> Observable<[MSEntity<MSAccount>]> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value)) }
                 
                 return deserializeArray(json: result,
                                         incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value),
@@ -1134,7 +1134,7 @@ public struct DataManager {
                                              expanders: [Expander] = []) -> Observable<MSEntity<MSAssortment>> {
         return HttpClient.get(.product, auth: auth, urlPathComponents: [id.uuidString], urlParameters: [CompositeExpander(expanders)])
             .flatMapLatest { result -> Observable<MSEntity<MSAssortment>> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProductResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProductResponse.value)) }
                 
                 guard let deserialized = MSAssortment.from(dict: result) else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProductResponse.value))
@@ -1154,7 +1154,7 @@ public struct DataManager {
     public static func bundleAssortmentById(auth: Auth, id : UUID, expanders: [Expander] = []) -> Observable<MSEntity<MSAssortment>> {
         return HttpClient.get(.bundle, auth: auth, urlPathComponents: [id.uuidString], urlParameters: [CompositeExpander(expanders)])
             .flatMapLatest { result -> Observable<MSEntity<MSAssortment>> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectBundleResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectBundleResponse.value)) }
                 
                 guard let deserialized = MSAssortment.from(dict: result) else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectBundleResponse.value))
@@ -1174,7 +1174,7 @@ public struct DataManager {
     public static func variantAssortmentById(auth: Auth, id : UUID, expanders: [Expander] = []) -> Observable<MSEntity<MSAssortment>> {
         return HttpClient.get(.variant, auth: auth, urlPathComponents: [id.uuidString], urlParameters: [CompositeExpander(expanders)])
             .flatMapLatest { result -> Observable<MSEntity<MSAssortment>> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectVariantResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectVariantResponse.value)) }
                 
                 guard let deserialized = MSAssortment.from(dict: result) else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectVariantResponse.value))
@@ -1200,7 +1200,7 @@ public struct DataManager {
         
         return HttpClient.get(.customEntity, auth: auth, urlPathComponents: [metadataId], urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSCustomEntity>]> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCustomEntityResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCustomEntityResponse.value)) }
                 
                 return deserializeArray(json: result,
                                         incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectCustomEntityResponse.value),
@@ -1220,7 +1220,7 @@ public struct DataManager {
                                              expanders: [Expander] = []) -> Observable<MSEntity<MSAssortment>> {
         return HttpClient.get(.service, auth: auth, urlPathComponents: [id.uuidString], urlParameters: [CompositeExpander(expanders)])
             .flatMapLatest { result -> Observable<MSEntity<MSAssortment>> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectServiceResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectServiceResponse.value)) }
                 
                 guard let deserialized = MSAssortment.from(dict: result) else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectServiceResponse.value))
@@ -1279,7 +1279,7 @@ public struct DataManager {
         
         return HttpClient.get(.salesByProduct, auth: auth, urlParameters: urlParameters).flatMapLatest { result -> Observable<[MSSaleByProduct]> in
             
-            guard let result = result else {
+            guard let result = result?.toDictionary() else {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectSalesByProductResponse.value))
             }
             
@@ -1306,7 +1306,7 @@ public struct DataManager {
         let urlPathComponents: [String] = [id, "contactpersons"]
         return HttpClient.get(.counterparty, auth: auth, urlPathComponents: urlPathComponents, urlParameters: [])
             .flatMapLatest { result -> Observable<[MSEntity<MSContactPerson>]> in
-                guard let results = result?.msArray("rows") else {
+                guard let results = result?.toDictionary()?.msArray("rows") else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecContactPersonsResponse.value))
                 }
                 
@@ -1325,7 +1325,7 @@ public struct DataManager {
     public static func searchCounterpartyByInn(auth: Auth, inn: String) -> Observable<[MSCounterpartySearchResult]> {
         return HttpClient.get(.suggestCounterparty, auth: auth, urlParameters: [GenericUrlParameter(name: "search", value: inn)])
             .flatMapLatest { result -> Observable<[MSCounterpartySearchResult]> in
-                guard let results = result?.msArray("rows") else {
+                guard let results = result?.toDictionary()?.msArray("rows") else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartySearchResponse.value))
                 }
                 
@@ -1342,7 +1342,7 @@ public struct DataManager {
     public static func searchBankByBic(auth: Auth, bic: String) -> Observable<[MSBankSearchResult]> {
         return HttpClient.get(.suggestBank, auth: auth, urlParameters: [GenericUrlParameter(name: "search", value: bic)])
             .flatMapLatest { result -> Observable<[MSBankSearchResult]> in
-                guard let results = result?.msArray("rows") else {
+                guard let results = result?.toDictionary()?.msArray("rows") else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectBankSearchResponse.value))
                 }
                 
@@ -1369,7 +1369,7 @@ public struct DataManager {
         
         return HttpClient.get(.task, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSTask>]> in
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectTasksResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectTasksResponse.value)) }
                 
                 return deserializeArray(json: result,
                                         incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value),
@@ -1396,7 +1396,7 @@ public struct DataManager {
         return HttpClient.get(.task, auth: auth, urlPathComponents: [taskId.uuidString], urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<MSEntity<MSTask>> in
 
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectTasksResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectTasksResponse.value)) }
                 
                 guard let deserialized = MSTask.from(dict: result) else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectTasksResponse.value))
@@ -1415,7 +1415,7 @@ public struct DataManager {
         return HttpClient.get(.expenseitem, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSExpenseItem>]> in
     
-            guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectExpenseItemResponse.value)) }
+            guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectExpenseItemResponse.value)) }
                 
             return deserializeArray(json: result,
                                     incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectExpenseItemResponse.value),
@@ -1432,7 +1432,7 @@ public struct DataManager {
         return HttpClient.get(.country, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSCountry>]> in
                 
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCountiesResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCountiesResponse.value)) }
                 
                 return deserializeArray(json: result,
                                         incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectCountiesResponse.value),
@@ -1449,7 +1449,7 @@ public struct DataManager {
         return HttpClient.get(.uom, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSUOM>]> in
                 
-                guard let result = result else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectUomResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectUomResponse.value)) }
                 
                 return deserializeArray(json: result,
                                         incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectUomResponse.value),
@@ -1469,7 +1469,7 @@ public struct DataManager {
                                        search: Search? = nil) -> Observable<[MSEntity<MSVariantAttribute>]> {
         return HttpClient.get(.variantMetadata, auth: auth)
             .flatMapLatest { result -> Observable<[MSEntity<MSVariantAttribute>]> in
-                guard let result = result else {
+                guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectVariantMetadataResponse.value))
                 }
                 
@@ -1501,7 +1501,7 @@ public struct DataManager {
             
             return HttpClient.get(.variant, auth: auth, urlParameters: urlParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAssortment>]> in
-                    guard let result = result else {
+                    guard let result = result?.toDictionary() else {
                         return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectVariantResponse.value))
                     }
                     

@@ -29,15 +29,11 @@ fileprivate extension URL {
 }
 
 struct HttpRouter {
-    enum BodyType {
-        case array([[String: Any]])
-        case dictionary([String: Any])
-    }
 	let apiRequest: MSApiRequest
 	let method : Alamofire.HTTPMethod
 	let contentType: HttpRequestContentType
     let urlPathComponents: [String]
-    let httpBody: BodyType?
+    let httpBody: JSONType?
     let headers: [String: String]
     let urlParameters: [UrlParameter]
 }
@@ -56,7 +52,7 @@ extension HttpRouter {
     }
 	
 	static func create(apiRequest: MSApiRequest, method: Alamofire.HTTPMethod = .get, contentType: HttpRequestContentType = .json,
-	                   urlPathComponents: [String] = [], httpBody: BodyType? = nil,
+	                   urlPathComponents: [String] = [], httpBody: JSONType? = nil,
 	                   headers: [String: String] = [:], urlParameters: [UrlParameter] = []) -> HttpRouter {
         var newHeaders = headers
         newHeaders["user-agent"] = "MoySklad_iOS_app_v"

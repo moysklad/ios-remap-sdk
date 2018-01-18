@@ -270,9 +270,8 @@ extension DataManager {
             .flatMapLatest{result -> Observable<[MSEntity<MSPosition>]> in
 
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectInventoryPositionResponse.value)) }
-                var currentPositions: [MSEntity<MSPosition>] = []
                 let newPositions = result.msArray("rows").flatMap { MSPosition.from(dict: $0) }
-                currentPositions.append(contentsOf: newPositions + positions)
+                let currentPositions = newPositions + positions
 
                 if let nextHref: String = result.msValue("meta").value("nextHref"),
                     let currentOffset: String = URLComponents(string: nextHref)?.queryItems?.first(where: { $0.name == "offset" })?.value,

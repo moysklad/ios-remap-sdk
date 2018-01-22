@@ -88,4 +88,5 @@ public protocol MSGeneralDocument: MSBaseDocumentType {
     /// данное значение показывает реальное количество позиций в документе
     var totalPositionsCount: Int { get }
     var stock : [MSEntity<MSDocumentStock>] { get set }
+    var positionsManager: ObjectManager<MSPosition>? { get set }
 }

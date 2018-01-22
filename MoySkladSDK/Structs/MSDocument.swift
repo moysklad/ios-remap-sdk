@@ -44,6 +44,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
     public var positions : [MSEntity<MSPosition>]
     public let totalPositionsCount: Int
     public var stock : [MSEntity<MSDocumentStock>]
+    public var positionsManager: ObjectManager<MSPosition>?
     
     // MSCustomerOrderType
     public var deliveryPlannedMoment : Date?
@@ -180,7 +181,8 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
                           internalOrder: internalOrder,
                           targetStock: targetStock,
 						  enters: enters,
-						  losses: losses)
+						  losses: losses,
+                          positionsManager: positionsManager)
     }
     
     public init(id : MSID,
@@ -250,7 +252,8 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
                 internalOrder: MSEntity<MSDocument>?,
                 targetStock: [MSEntity<MSDocumentStock>],
 				enters: [MSEntity<MSDocument>],
-				losses: [MSEntity<MSDocument>]) {
+				losses: [MSEntity<MSDocument>],
+                positionsManager: ObjectManager<MSPosition>?) {
         self.id = id
         self.meta = meta
         self.info = info
@@ -318,6 +321,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
         self.targetStock = targetStock
 		self.enters = enters
 		self.losses = losses
+        self.positionsManager = positionsManager
         super.init(attributes: attributes)
     }
 }

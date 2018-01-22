@@ -10,9 +10,9 @@ import Foundation
 
 public class ObjectManager<Element> {
     private(set) var current: [Element]
-    private(set) var deleted: [Element]
-    private(set) var added: [Element]
-    private(set) var updated: [Element]
+    public private(set) var deleted: [Element]
+    public private(set) var added: [Element]
+    public private(set) var updated: [Element]
     private(set) var filtered: [Element]
     
     let isEqual: (Element, Element) -> Bool
@@ -73,6 +73,34 @@ public class ObjectManager<Element> {
     
     public func removeFilter() {
         filtered = current
+    }
+    
+    public func dropDeleted(count: Int) {
+        deleted = Array(deleted.dropFirst(count))
+    }
+    
+    public func refreshUpdated(with data: [Element]) {
+        data.forEach { updatedElement in
+            if let currentIndex = current.index(where: { isEqual($0, updatedElement) }) {
+                current[currentIndex] = updatedElement
+            }
+            
+            if let updatedIndex = updated.index(where: { isEqual($0, updatedElement) }) {
+                updated.remove(at: updatedIndex)
+            }
+        }
+    }
+    
+    public func refreshAdded(with data: [Element]) {
+        data.forEach { updatedElement in
+            if let currentIndex = current.index(where: { isEqual($0, updatedElement) }) {
+                current[currentIndex] = updatedElement
+            }
+            
+            if let addedIndex = added.index(where: { isEqual($0, updatedElement) }) {
+                added.remove(at: addedIndex)
+            }
+        }
     }
 }
 

@@ -95,6 +95,7 @@ extension MSDocument : DictConvertable {
                    internalOrder: MSDocument.from(dict: dict.msValue("internalOrder")),
                    targetStock: [],
 				   enters: dict.msArray("enters").flatMap { MSDocument.from(dict: $0) },
-				   losses: dict.msArray("losses").flatMap { MSDocument.from(dict: $0) }))
+				   losses: dict.msArray("losses").flatMap { MSDocument.from(dict: $0) },
+                   positionsManager: nil))
     }
 }

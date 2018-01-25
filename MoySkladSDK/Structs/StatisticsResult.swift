@@ -22,7 +22,7 @@ public class MoneyStatisticsResult {
     public let current: MSEntity<MSMoneyStatistics>
     public let last: MSEntity<MSMoneyStatistics>
     
-    init(current: MSEntity<MSMoneyStatistics>, last: MSEntity<MSMoneyStatistics>) {
+    public init(current: MSEntity<MSMoneyStatistics>, last: MSEntity<MSMoneyStatistics>) {
         self.current = current
         self.last = last
     }

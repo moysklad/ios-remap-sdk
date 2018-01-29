@@ -86,7 +86,7 @@ public protocol MSGeneralDocument: MSBaseDocumentType {
     var positions : [MSEntity<MSPosition>] { get set }
     /// Через expand в поле positions можно загрузить максимум 100 объектов,
     /// данное значение показывает реальное количество позиций в документе
-    var totalPositionsCount: Int { get }
+    var totalPositionsCount: Int { get set }
     var stock : [MSEntity<MSDocumentStock>] { get set }
     var positionsManager: ObjectManager<MSPosition>? { get set }
 }

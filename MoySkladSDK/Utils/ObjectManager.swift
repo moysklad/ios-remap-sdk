@@ -39,12 +39,17 @@ public class ObjectManager<Element> {
     
     public func update(_ value: Element) {
         // если нет в списке - выходим
-        guard contains(where: { isEqual($0, value) }) else { return }
+        guard let currentIndex = index(where: { isEqual($0, value) }) else { return }
         // если есть в списке добавленных - выходим
         guard !added.contains(where: { isEqual($0, value) }) else { return }
-        // если уже есть в списке обновленных - выходим
-        guard !updated.contains(where: { isEqual($0, value) }) else { return }
-        updated.append(value)
+        
+        if let updatedIndex = updated.index(where:{ isEqual($0, value) }) {
+          updated[updatedIndex] = value
+        } else {
+            updated.append(value)
+        }
+        
+        current[currentIndex] = value
         filtered = current
     }
     

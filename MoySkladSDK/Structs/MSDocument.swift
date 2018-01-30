@@ -42,7 +42,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
     public var store : MSEntity<MSStore>?
     public var originalStoreId: UUID?
     public var positions : [MSEntity<MSPosition>]
-    public let totalPositionsCount: Int
+    public var totalPositionsCount: Int
     public var stock : [MSEntity<MSDocumentStock>]
     public var positionsManager: ObjectManager<MSPosition>?
     

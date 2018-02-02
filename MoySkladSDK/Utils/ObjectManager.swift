@@ -107,6 +107,11 @@ public class ObjectManager<Element> {
             }
         }
     }
+    public func hasChanges() -> Bool {
+        return deleted.count > 0 ||
+            filtered.count > 0 ||
+            updated.count > 0
+    }
 }
 
 extension ObjectManager: Collection {

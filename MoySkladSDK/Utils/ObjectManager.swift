@@ -30,18 +30,27 @@ public class ObjectManager<Element> {
         return current.contains(where: { isEqual($0, value) })
     }
     
-    public func append(_ value: Element) {
-        guard !contains(where: { isEqual($0, value) }) else { return }
+    public func append(_ value: Element) -> (Bool, count: Int) {
+        guard !contains(where: { isEqual($0, value) }) else { return (false, current.count) }
+        
         current.append(value)
         added.append(value)
         filtered = current
+        
+        return (true, current.count)
     }
     
-    public func update(_ value: Element) {
+    public func appendOrUpdate(_ value: Element) -> Int {
+        guard !append(value).0 else { return current.count }
+        _ = update(value)
+        return 0
+    }
+    
+    public func update(_ value: Element) -> (Bool, count: Int)  {
         // если нет в списке - выходим
-        guard let currentIndex = index(where: { isEqual($0, value) }) else { return }
+        guard let currentIndex = index(where: { isEqual($0, value) }) else { return (false, current.count) }
         // если есть в списке добавленных - выходим
-        guard !added.contains(where: { isEqual($0, value) }) else { return }
+        guard !added.contains(where: { isEqual($0, value) }) else { return (false, current.count)  }
         
         if let updatedIndex = updated.index(where:{ isEqual($0, value) }) {
           updated[updatedIndex] = value
@@ -51,10 +60,12 @@ public class ObjectManager<Element> {
         
         current[currentIndex] = value
         filtered = current
+        
+        return (true, current.count)
     }
     
-    public func remove(_ value: Element) {
-        guard let index = current.index(where: { isEqual($0, value) }) else { return }
+    public func remove(_ value: Element) -> (Bool, count: Int) {
+        guard let index = current.index(where: { isEqual($0, value) }) else { return (false, current.count) }
         current.remove(at: index)
         
         // если объект был добавлен, то удаляем его из списка добавленных
@@ -70,6 +81,7 @@ public class ObjectManager<Element> {
             deleted.append(value)
         }
         filtered = current
+        return (true, current.count)
     }
     
     public func filter(_ isIncluded: (Element) -> Bool) {

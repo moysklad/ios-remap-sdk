@@ -30,6 +30,7 @@ public class ObjectManager<Element> {
         return current.contains(where: { isEqual($0, value) })
     }
     
+    @discardableResult
     public func append(_ value: Element) -> (Bool, count: Int) {
         guard !contains(where: { isEqual($0, value) }) else { return (false, current.count) }
         
@@ -40,12 +41,14 @@ public class ObjectManager<Element> {
         return (true, current.count)
     }
     
+    @discardableResult
     public func appendOrUpdate(_ value: Element) -> Int {
         guard !append(value).0 else { return current.count }
         _ = update(value)
         return 0
     }
     
+    @discardableResult
     public func update(_ value: Element) -> (Bool, count: Int)  {
         // если нет в списке - выходим
         guard let currentIndex = index(where: { isEqual($0, value) }) else { return (false, current.count) }
@@ -64,6 +67,7 @@ public class ObjectManager<Element> {
         return (true, current.count)
     }
     
+    @discardableResult
     public func remove(_ value: Element) -> (Bool, count: Int) {
         guard let index = current.index(where: { isEqual($0, value) }) else { return (false, current.count) }
         current.remove(at: index)
@@ -121,8 +125,12 @@ public class ObjectManager<Element> {
     }
     public func hasChanges() -> Bool {
         return deleted.count > 0 ||
-            filtered.count > 0 ||
+            added.count > 0 ||
             updated.count > 0
+    }
+    
+    public func getItems(where isIncluded: (Element) -> Bool) -> [Element] {
+        return current.filter(isIncluded)
     }
 }
 

@@ -9,7 +9,7 @@
 import Foundation
 
 public class ObjectManager<Element> {
-    private(set) var current: [Element]
+    public private(set) var current: [Element]
     public private(set) var deleted: [Element]
     public private(set) var added: [Element]
     public private(set) var updated: [Element]

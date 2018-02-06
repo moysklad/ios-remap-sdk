@@ -28,6 +28,14 @@ public struct MSErrorStruct: Error {
         self.code = code
         self.httpStatusCode = httpStatusCode
     }
+    
+    public init(genericError: String) {
+        self.error = genericError
+        self.message = nil
+        self.parameter = nil
+        self.code = MSErrorCode.generic
+        self.httpStatusCode = -1
+    }
 }
 
 extension MSErrorStruct: Equatable {

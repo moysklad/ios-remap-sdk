@@ -182,7 +182,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
                           targetStock: targetStock,
 						  enters: enters,
 						  losses: losses,
-                          positionsManager: positionsManager)
+                          positionsManager: positionsManager?.copy())
     }
     
     public init(id : MSID,

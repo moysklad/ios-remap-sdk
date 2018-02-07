@@ -134,6 +134,17 @@ public class ObjectManager<Element> {
     public func getItems(where isIncluded: (Element) -> Bool) -> [Element] {
         return current.filter(isIncluded)
     }
+    
+    public func copy() -> ObjectManager<Element> {
+        let new = ObjectManager(data: current, isEqual: isEqual)
+        
+        new.filtered = filtered
+        new.added = added
+        new.updated = updated
+        new.deleted = deleted
+        
+        return new
+    }
 }
 
 extension ObjectManager: Collection {

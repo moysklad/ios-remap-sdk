@@ -463,6 +463,7 @@ public extension Date {
     public static var msCurrentLocaleDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
     

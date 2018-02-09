@@ -44,8 +44,7 @@ public class ObjectManager<Element> {
     @discardableResult
     public func appendOrUpdate(_ value: Element) -> Int {
         guard !append(value).0 else { return current.count }
-        _ = update(value)
-        return current.count
+        return update(value).count
     }
     
     @discardableResult

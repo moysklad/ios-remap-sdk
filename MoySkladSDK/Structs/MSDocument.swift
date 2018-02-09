@@ -110,6 +110,10 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
 	public var enters: [MSEntity<MSDocument>]
 	public var losses: [MSEntity<MSDocument>]
     
+    public func copy(with zone: NSZone? = nil) -> Any {
+        return copyDocument()
+    }
+    
     public func copyDocument() -> MSDocument {
         let positionsCopy = positions.flatMap { $0.value() }.map { MSEntity.entity($0.copy()) }
         let operationsCopy = operations.flatMap { $0.value() }.map { MSEntity.entity($0.copyDocument()) }

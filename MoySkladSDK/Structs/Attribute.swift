@@ -32,7 +32,7 @@ public enum MSAttributeValue {
     case string(String?)
     case link(String?)
     case text(String?)
-    case file(String?)
+	case file(name: String?, url: URL?, mediaType: String?)
     case int(Int?)
     case date(Date?)
     case double(Double?)

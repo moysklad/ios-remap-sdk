@@ -243,7 +243,7 @@ final class HttpClient {
                 let fileURL = documentsURL.appendingPathComponent("localFile.pdf")
                 return (fileURL, [.removePreviousFile])
             }
-            
+			
             #if DEBUG
                 let request = Alamofire.download(url, to: destination).debugLog()
             #else

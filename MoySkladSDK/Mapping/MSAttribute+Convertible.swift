@@ -28,7 +28,7 @@ extension MSAttribute : DictConvertable {
             case .bool(let v): return v ?? NSNull()
             case .date(let v): return v?.toLongDate() ?? NSNull()
             case .double(let v): return v ?? NSNull()
-            case .file(let v): return v ?? NSNull()
+            case .file(let v): return v.name ?? NSNull()
             case .int(let v): return v ?? NSNull()
             case .link(let v): return v ?? NSNull()
             case .string(let v): return v ?? NSNull()
@@ -93,11 +93,14 @@ extension MSAttribute : DictConvertable {
             guard let value: String = dict.value("value") else {
                 return MSEntity.meta(meta)
             }
+			
+			let url = URL(string: dict.msValue("download").value("href") ?? "")
+			let mediaType: String? = dict.msValue("download").value("mediaType")
             
             return MSEntity.entity(MSAttribute(meta: meta,
                                                id: id,
                                                name:name,
-                                               value:.file(value)))
+                                               value: MSAttributeValue.file(name: value, url: url, mediaType: mediaType)))
         } else if type.lowercased() == "boolean" {
             guard let value: Bool = dict.value("value") else {
                 return MSEntity.meta(meta)
@@ -189,7 +192,7 @@ extension MSAttributeDefinition {
             case "product": return MSAttributeValue.customentity(meta: MSMeta(name: name, href: "", type: .product), name: name, value: "")
             case "counterparty": return MSAttributeValue.customentity(meta: MSMeta(name: name, href: "", type: .counterparty), name: name, value: "")
             case "productfolder": return MSAttributeValue.customentity(meta: MSMeta(name: name, href: "", type: .productfolder), name: name, value: "")
-            case "file": return .file("")
+            case "file": return MSAttributeValue.file(name: "", url: nil, mediaType: nil)
             default: return nil 
             }
         }()

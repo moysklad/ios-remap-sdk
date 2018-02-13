@@ -100,7 +100,7 @@ extension MSAttribute : DictConvertable {
             return MSEntity.entity(MSAttribute(meta: meta,
                                                id: id,
                                                name:name,
-                                               value: MSAttributeValue.file(name: value, url: url, mediaType: mediaType)))
+                                               value: MSAttributeValue.file(name: value, url: url, mediaType: mediaType, instruction: nil)))
         } else if type.lowercased() == "boolean" {
             guard let value: Bool = dict.value("value") else {
                 return MSEntity.meta(meta)
@@ -192,7 +192,7 @@ extension MSAttributeDefinition {
             case "product": return MSAttributeValue.customentity(meta: MSMeta(name: name, href: "", type: .product), name: name, value: "")
             case "counterparty": return MSAttributeValue.customentity(meta: MSMeta(name: name, href: "", type: .counterparty), name: name, value: "")
             case "productfolder": return MSAttributeValue.customentity(meta: MSMeta(name: name, href: "", type: .productfolder), name: name, value: "")
-            case "file": return MSAttributeValue.file(name: "", url: nil, mediaType: nil)
+            case "file": return MSAttributeValue.file(name: "", url: nil, mediaType: nil, instruction: nil)
             default: return nil 
             }
         }()

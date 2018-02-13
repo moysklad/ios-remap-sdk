@@ -22,20 +22,33 @@ extension MSAttribute : DictConvertable {
         if let type = value.type {
             dict["type"] = type
         }
-        
-        dict["value"] = {
-            switch value {
-            case .bool(let v): return v ?? NSNull()
-            case .date(let v): return v?.toLongDate() ?? NSNull()
-            case .double(let v): return v ?? NSNull()
-            case .file(let v): return v.name ?? NSNull()
-            case .int(let v): return v ?? NSNull()
-            case .link(let v): return v ?? NSNull()
-            case .string(let v): return v ?? NSNull()
-            case .text(let v): return v ?? NSNull()
-            case .customentity(let custMeta, _, let custValue): return custMeta != nil ? ["meta":custMeta!.dictionary(), "name":custValue ?? ""] : NSNull()
+
+        if case .file(let file) = value {
+            if let instruction = file.instruction {
+                dict["file"] = {
+                    switch instruction {
+                    case .delete: return NSNull()
+                    case .upload(let url):
+                        return ["filename": url.lastPathComponent,
+                         "content": try? Data(contentsOf: url).base64EncodedString()]
+                    }
+                }()
             }
-        }()
+        } else {
+            dict["value"] = {
+                switch value {
+                case .bool(let v): return v ?? NSNull()
+                case .date(let v): return v?.toLongDate() ?? NSNull()
+                case .double(let v): return v ?? NSNull()
+                case .int(let v): return v ?? NSNull()
+                case .link(let v): return v ?? NSNull()
+                case .string(let v): return v ?? NSNull()
+                case .text(let v): return v ?? NSNull()
+                case .customentity(let custMeta, _, let custValue): return custMeta != nil ? ["meta":custMeta!.dictionary(), "name":custValue ?? ""] : NSNull()
+                default: return nil
+                }
+            }()
+        }
         
         return dict
     }

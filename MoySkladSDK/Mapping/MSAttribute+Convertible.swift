@@ -22,20 +22,33 @@ extension MSAttribute : DictConvertable {
         if let type = value.type {
             dict["type"] = type
         }
-        
-        dict["value"] = {
-            switch value {
-            case .bool(let v): return v ?? NSNull()
-            case .date(let v): return v?.toLongDate() ?? NSNull()
-            case .double(let v): return v ?? NSNull()
-            case .file(let v): return v ?? NSNull()
-            case .int(let v): return v ?? NSNull()
-            case .link(let v): return v ?? NSNull()
-            case .string(let v): return v ?? NSNull()
-            case .text(let v): return v ?? NSNull()
-            case .customentity(let custMeta, _, let custValue): return custMeta != nil ? ["meta":custMeta!.dictionary(), "name":custValue ?? ""] : NSNull()
+
+        if case .file(let file) = value {
+            if let instruction = file.instruction {
+                dict["file"] = {
+                    switch instruction {
+                    case .delete: return NSNull()
+                    case .upload(let url):
+                        return ["filename": url.lastPathComponent,
+                         "content": try? Data(contentsOf: url).base64EncodedString()]
+                    }
+                }()
             }
-        }()
+        } else {
+            dict["value"] = {
+                switch value {
+                case .bool(let v): return v ?? NSNull()
+                case .date(let v): return v?.toLongDate() ?? NSNull()
+                case .double(let v): return v ?? NSNull()
+                case .int(let v): return v ?? NSNull()
+                case .link(let v): return v ?? NSNull()
+                case .string(let v): return v ?? NSNull()
+                case .text(let v): return v ?? NSNull()
+                case .customentity(let custMeta, _, let custValue): return custMeta != nil ? ["meta":custMeta!.dictionary(), "name":custValue ?? ""] : NSNull()
+                default: return nil
+                }
+            }()
+        }
         
         return dict
     }
@@ -93,11 +106,14 @@ extension MSAttribute : DictConvertable {
             guard let value: String = dict.value("value") else {
                 return MSEntity.meta(meta)
             }
+			
+			let url = URL(string: dict.msValue("download").value("href") ?? "")
+			let mediaType: String? = dict.msValue("download").value("mediaType")
             
             return MSEntity.entity(MSAttribute(meta: meta,
                                                id: id,
                                                name:name,
-                                               value:.file(value)))
+                                               value: MSAttributeValue.file(name: value, url: url, mediaType: mediaType, instruction: nil)))
         } else if type.lowercased() == "boolean" {
             guard let value: Bool = dict.value("value") else {
                 return MSEntity.meta(meta)
@@ -189,7 +205,7 @@ extension MSAttributeDefinition {
             case "product": return MSAttributeValue.customentity(meta: MSMeta(name: name, href: "", type: .product), name: name, value: "")
             case "counterparty": return MSAttributeValue.customentity(meta: MSMeta(name: name, href: "", type: .counterparty), name: name, value: "")
             case "productfolder": return MSAttributeValue.customentity(meta: MSMeta(name: name, href: "", type: .productfolder), name: name, value: "")
-            case "file": return .file("")
+            case "file": return MSAttributeValue.file(name: "", url: nil, mediaType: nil, instruction: nil)
             default: return nil 
             }
         }()

@@ -38,11 +38,6 @@ extension HttpClient {
                        urlPathComponents: [String] = [],
                        urlParameters: [UrlParameter] = [],
                        body: JSONType?) -> Observable<JSONType?> {
-        
-        #if DEBUG
-            print(body ?? [:])
-        #endif
-        
         var headers = auth.header
         if body == nil {
             headers["Content-Type"] = "application/json"
@@ -63,11 +58,6 @@ extension HttpClient {
                                         urlPathComponents: [String] = [],
                                         urlParameters: [UrlParameter] = [],
                                         body: JSONType?) -> Observable<Dictionary<String,String>?> {
-        
-        #if DEBUG
-            print(body ?? [:])
-        #endif
-        
         var headers = auth.header
         if body == nil {
             headers["Content-Type"] = "application/json"

@@ -1515,4 +1515,10 @@ public struct DataManager {
                     return Observable.just(withoutNills)
             }
     }
+    
+    public static func downloadFile(auth: Auth, url: URL) -> Observable<URL> {
+        var request = URLRequest(url: url)
+        request.addValue(auth.header.values.first!, forHTTPHeaderField: auth.header.keys.first!)
+        return HttpClient.resultCreateForDownloadFile(request)
+    }
 }

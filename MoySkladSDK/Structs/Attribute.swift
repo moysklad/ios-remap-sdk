@@ -29,10 +29,14 @@ public protocol MSAttributeType {
 }
 
 public enum MSAttributeValue {
+    public enum FileInstruction {
+        case delete
+        case upload(URL)
+    }
     case string(String?)
     case link(String?)
     case text(String?)
-    case file(String?)
+	case file(name: String?, url: URL?, mediaType: String?, instruction: FileInstruction?)
     case int(Int?)
     case date(Date?)
     case double(Double?)

@@ -236,6 +236,45 @@ final class HttpClient {
         return result
     }()
     
+    static func resultCreateForDownloadFile(_ request: URLRequest) -> Observable<URL> {
+        return Observable.create { observer in
+            let destination: DownloadRequest.DownloadFileDestination = { temporaryURL, response in
+                let documentsURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+                let fileURL = documentsURL.appendingPathComponent(response.suggestedFilename ?? "unknown")
+                return (fileURL, [.removePreviousFile])
+            }
+
+            let request = Alamofire.download(request, to: destination)
+            
+            request.response { response in
+                if let error = response.error {
+                    switch error {
+                    case let p as URLError where p.code == URLError.notConnectedToInternet:
+                        observer.onError(MSError.genericError(errorText: LocalizedStrings.notOnline.value))
+                    default: observer.onError(MSError.httpRequestFailure(error))
+                    }
+                    return
+                }
+                
+                if response.response?.statusCode == 401 {
+                    observer.onError(MSError.unauthorizedError())
+                }
+                
+                guard let data = response.destinationURL else {
+                    observer.onError(MSError.unknown)
+                    return
+                }
+                
+                observer.onNext(data)
+                observer.onCompleted()
+            }
+            
+            return Disposables.create {
+                request.cancel()
+            }
+        }
+    }
+    
     static func resultCreateFromData(_ url: URL) -> Observable<URL?> {
         return Observable.create { observer -> Disposable in
             let destination: DownloadRequest.DownloadFileDestination = { _, _ in
@@ -243,7 +282,7 @@ final class HttpClient {
                 let fileURL = documentsURL.appendingPathComponent("localFile.pdf")
                 return (fileURL, [.removePreviousFile])
             }
-            
+			
             #if DEBUG
                 let request = Alamofire.download(url, to: destination).debugLog()
             #else

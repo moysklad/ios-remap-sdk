@@ -14,6 +14,11 @@ public enum MSCompanyType : String {
 	case individual
 }
 
+public struct MSDiscount: Metable {
+    public var meta: MSMeta
+    public var personalDiscount: Double
+}
+
 public class MSAgentInfo {
 	// Organization fields
 	public let isEgaisEnable: Bool?
@@ -26,8 +31,9 @@ public class MSAgentInfo {
 	// Counterparty fields
     public var tags: [String]
     public var contactpersons: [MSEntity<MSContactPerson>]
-    public var discounts: MSMeta?
+    public var discounts: MSDiscount?
     public var state: MSEntity<MSState>?
+    public var discountCardNumber: String?
     
     public init(isEgaisEnable: Bool?,
     fsrarId: String?,
@@ -39,8 +45,9 @@ public class MSAgentInfo {
     // Counterparty fields
     tags: [String],
     contactpersons: [MSEntity<MSContactPerson>],
-    discounts: MSMeta?,
-    state: MSEntity<MSState>?) {
+    discounts: MSDiscount?,
+    state: MSEntity<MSState>?,
+    discountCardNumber: String?) {
         self.isEgaisEnable = isEgaisEnable
         self.fsrarId = fsrarId
         self.payerVat = payerVat
@@ -53,7 +60,7 @@ public class MSAgentInfo {
         self.contactpersons = contactpersons
         self.discounts = discounts
         self.state = state
-    
+        self.discountCardNumber = discountCardNumber
     }
     
     func copy() -> MSAgentInfo {
@@ -66,7 +73,8 @@ public class MSAgentInfo {
                            tags: tags,
                            contactpersons: contactpersons,
                            discounts: discounts,
-                           state: state)
+                           state: state,
+                           discountCardNumber: discountCardNumber)
     }
 }
 

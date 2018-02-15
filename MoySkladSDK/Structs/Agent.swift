@@ -31,7 +31,7 @@ public class MSAgentInfo {
 	// Counterparty fields
     public var tags: [String]
     public var contactpersons: [MSEntity<MSContactPerson>]
-    public var discounts: MSDiscount?
+    public var discounts: [MSDiscount]
     public var state: MSEntity<MSState>?
     public var discountCardNumber: String?
     
@@ -45,7 +45,7 @@ public class MSAgentInfo {
     // Counterparty fields
     tags: [String],
     contactpersons: [MSEntity<MSContactPerson>],
-    discounts: MSDiscount?,
+    discounts: [MSDiscount],
     state: MSEntity<MSState>?,
     discountCardNumber: String?) {
         self.isEgaisEnable = isEgaisEnable
@@ -236,7 +236,7 @@ public class MSAgent : MSAttributedEntity, Metable, NSCopying {
             certificateNumber: nil,
             certificateDate: nil,
             accounts: [],
-            agentInfo: MSAgentInfo(isEgaisEnable: nil, fsrarId: nil, payerVat: false, utmUrl: nil, director: nil, chiefAccountant: nil, tags: [], contactpersons: [], discounts: nil, state: state),
+            agentInfo: MSAgentInfo(isEgaisEnable: nil, fsrarId: nil, payerVat: false, utmUrl: nil, director: nil, chiefAccountant: nil, tags: [], contactpersons: [], discounts: [], state: state, discountCardNumber: nil),
             salesAmount: Money(minorUnits: 0),
             attributes: [],
             report: nil

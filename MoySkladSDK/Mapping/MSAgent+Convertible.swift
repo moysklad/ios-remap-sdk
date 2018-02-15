@@ -65,7 +65,7 @@ extension MSAgentInfo {
 		                   chiefAccountant: dict.value("chiefAccountant"),
 		                   tags: dict.value("tags") ?? [],
 		                   contactpersons: dict.msValue("contactpersons").msArray("rows").map { MSContactPerson.from(dict: $0) }.flatMap { $0 },
-		                   discounts: nil,
+                           discounts: dict.msArray("discounts").map { MSDiscount.from(dict: $0) }.flatMap { $0 },
 		                   state: MSState.from(dict: dict.msValue("state")),
                            discountCardNumber: dict.value("discountCardNumber"))
 	}

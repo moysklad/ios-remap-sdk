@@ -49,13 +49,14 @@ extension MSAssortment {
 		             reserve: dict.value("reserve"),
 		             inTransit: dict.value("inTransit"),
 		             quantity: dict.value("quantity"),
-		             assortmentInfo: MSAssortment.from(dict: dict.msValue("product")),
+		             product: MSAssortment.from(dict: dict.msValue("product")),
 		             attributes: dict.msArray("attributes").map { MSAttribute.from(dict: $0) }.flatMap { $0 },
 		             packs: (dict["packs"] as? [Any] ?? []).map { MSPack.from(dict: $0 as? Dictionary<String, Any> ?? [:]) }.flatMap { $0 },
 		             localImage: nil,
                      characteristics: dict.msArray("characteristics").map { MSVariantAttribute.from(dict: $0) }.flatMap { $0 },
                      components: dict.msValue("components").msArray("rows").map { MSBundleComponent.from(dict: $0) }.removeNils(),
-                     overhead: MSBundleOverhead.from(dict: dict.msValue("overhead"))))
+                     overhead: MSBundleOverhead.from(dict: dict.msValue("overhead")),
+                     assortment: MSAssortment.from(dict: dict.msValue("assortment"))))
 	}
 }
 

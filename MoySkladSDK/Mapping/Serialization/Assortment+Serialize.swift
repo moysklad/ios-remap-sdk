@@ -26,10 +26,6 @@ extension MSAssortment {
         dict["productFolder"] = serialize(entity: productFolder, metaOnly: true)
         dict["supplier"] = serialize(entity: supplier, metaOnly: true)
         dict["uom"] = serialize(entity: uom, metaOnly: true)
-
-        if let assort = assortmentInfo?.value()?.dictionary(), !assort.isEmpty {
-            dict["assortmentInfo"] = assort
-        }
         
         var alcoholObject: MSAlcohol = MSAlcohol(excise: nil, type: nil, strength: nil, volume: nil)
         if let alcohol = alcohol {
@@ -76,7 +72,7 @@ extension MSAssortment {
         }
         
         if meta.type == .variant {
-            dict["product"] = serialize(entity: assortmentInfo, metaOnly: true)
+            dict["product"] = serialize(entity: product, metaOnly: true)
         }
         
         if let overhead = overhead {

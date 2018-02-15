@@ -64,13 +64,15 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
 	public var inTransit: Double?
 	public var quantity: Double?
     // Variant fields
-    public var assortmentInfo: MSEntity<MSAssortment>?
+    public var product: MSEntity<MSAssortment>?
     public var packs: [MSPack]
     public var localImage: MSLocalImage?
     public var characteristics: [MSEntity<MSVariantAttribute>]?
     // Bundle fields
     public var components: [MSEntity<MSBundleComponent>]
     public var overhead: MSBundleOverhead?
+    // Consignment fields
+    public let assortment: MSEntity<MSAssortment>?
     
     public init(meta: MSMeta,
     id: MSID,
@@ -106,13 +108,14 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     reserve: Double?,
     inTransit: Double?,
     quantity: Double?,
-    assortmentInfo: MSEntity<MSAssortment>?,
+    product: MSEntity<MSAssortment>?,
     attributes: [MSEntity<MSAttribute>]?,
     packs: [MSPack],
     localImage: MSLocalImage?,
     characteristics: [MSEntity<MSVariantAttribute>]?,
     components: [MSEntity<MSBundleComponent>],
-    overhead: MSBundleOverhead?) {
+    overhead: MSBundleOverhead?,
+    assortment: MSEntity<MSAssortment>?) {
         self.meta = meta
         self.id = id
         self.accountId = accountId
@@ -147,12 +150,13 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
         self.reserve = reserve
         self.inTransit = inTransit
         self.quantity = quantity
-        self.assortmentInfo = assortmentInfo
+        self.product = product
         self.packs = packs
         self.localImage = localImage
         self.characteristics = characteristics
         self.components = components
         self.overhead = overhead
+        self.assortment = assortment
         super.init(attributes: attributes)
     }
     
@@ -191,13 +195,14 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             reserve: reserve,
                             inTransit: inTransit,
                             quantity: quantity,
-                            assortmentInfo: assortmentInfo,
+                            product: product,
                             attributes: attributes,
                             packs: packs.map { $0.copy() },
                             localImage: localImage,
                             characteristics: characteristics,
                             components: components,
-                            overhead: overhead)
+                            overhead: overhead,
+                            assortment: assortment)
     }
 }
 
@@ -206,7 +211,7 @@ extension MSAssortment {
         return {
             if self.meta.type == .variant {
                 // если это вариант берем productFolder со связанного с ним родительского продукта
-                return self.assortmentInfo?.value()?.productFolder?.value()?.fullPath()
+                return self.product?.value()?.productFolder?.value()?.fullPath()
             }
             
             return self.productFolder?.value()?.fullPath()
@@ -217,12 +222,12 @@ extension MSAssortment {
         let objCode: String? = {
             guard meta.type == .variant else { return code }
             
-            return code ?? assortmentInfo?.value()?.code
+            return code ?? product?.value()?.code
         }()
         
         let objArticle: String? = {
             if meta.type == .variant {
-                return assortmentInfo?.value()?.article
+                return product?.value()?.article
             }
             return article
         }()
@@ -242,21 +247,21 @@ extension MSAssortment {
     
     public func getDescription() -> String? {
         if meta.type == .variant {
-            return info.description ?? assortmentInfo?.value()?.info.description
+            return info.description ?? product?.value()?.info.description
         }
         return info.description
     }
     
     public func getSupplier() -> MSEntity<MSAgent>? {
         if meta.type == .variant {
-            return assortmentInfo?.value()?.supplier
+            return product?.value()?.supplier
         }
         return supplier
     }
     
     public func getImage() -> MSImage? {
         if meta.type == .variant {
-            return assortmentInfo?.value()?.image
+            return product?.value()?.image
         }
         return image
     }
@@ -264,7 +269,7 @@ extension MSAssortment {
     /// Обнуляет поле image у объекта, для удаления изображения товара
     public func clearImage() {
         if meta.type == .variant {
-            assortmentInfo?.value()?.image = nil
+            product?.value()?.image = nil
         }
         image = nil
     }
@@ -274,8 +279,8 @@ extension MSAssortment {
             var prices: [MSPrice] = []
             
             if salePrices.isEmpty {
-                prices.append(contentsOf: assortmentInfo?.value()?.salePrices ?? [])
-            } else if let productSalePrices = assortmentInfo?.value()?.salePrices {
+                prices.append(contentsOf: product?.value()?.salePrices ?? [])
+            } else if let productSalePrices = product?.value()?.salePrices {
                 for (index, priceArray) in salePrices.enumerated() {
                     if priceArray.value.floatValue > 0 {
                         prices.append(priceArray)
@@ -292,7 +297,7 @@ extension MSAssortment {
     }
     
     public func getBuyPrice() -> MSPrice? {
-        if meta.type == .variant, let price = (buyPrice ?? assortmentInfo?.value()?.buyPrice) {
+        if meta.type == .variant, let price = (buyPrice ?? product?.value()?.buyPrice) {
             return price
         }
         return buyPrice

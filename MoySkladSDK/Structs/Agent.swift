@@ -75,7 +75,7 @@ public class MSAgentInfo {
  
  For more information, see API reference for [counterparty](https://online.moysklad.ru/api/remap/1.1/doc/index.html#контрагент-контрагенты) and [organization](https://online.moysklad.ru/api/remap/1.1/doc/index.html#юрлицо)
 */
-public class MSAgent : MSAttributedEntity, Metable {
+public class MSAgent : MSAttributedEntity, Metable, NSCopying {
 	public let meta: MSMeta
 	public let id: MSID
 	public let accountId: String
@@ -165,7 +165,11 @@ public class MSAgent : MSAttributedEntity, Metable {
         super.init(attributes: attributes)
     }
     
-    public func copy() -> MSAgent {
+    public func copy(with zone: NSZone? = nil) -> Any {
+        return copyAgent()
+    }
+    
+    public func copyAgent() -> MSAgent {
         return MSAgent(meta: meta,
                        id: id,
                        accountId: accountId,
@@ -195,10 +199,6 @@ public class MSAgent : MSAttributedEntity, Metable {
                        salesAmount: salesAmount,
                        attributes: attributes,
                        report: report)
-    }
-    
-    public func copyAgent() -> MSAgent {
-        return copy()
     }
     
     public static func empty(withState state: MSEntity<MSState>? = nil) -> MSAgent {

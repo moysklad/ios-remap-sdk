@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol MSBaseDocumentType : class, Metable, MSRequestEntity {
+public protocol MSBaseDocumentType : class, Metable, MSRequestEntity, NSCopying {
     var id : MSID { get }
     var meta : MSMeta { get }
     var info : MSInfo { get set }

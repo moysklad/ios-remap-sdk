@@ -150,7 +150,8 @@ extension MSBaseDocumentType {
         case .demand: return ["demands": [dictionary(metaOnly: true)]]
         case .invoiceout: return ["invoicesOut": [dictionary(metaOnly: true)]]
         case .purchaseorder: return ["purchaseOrder": dictionary(metaOnly: true)]
-        case .invoicein: return ["invoiceIn": dictionary(metaOnly: true)]
+        case .invoicein: return type == .supply ? ["invoicesIn": [dictionary(metaOnly: true)]] : ["invoiceIn": dictionary(metaOnly: true)]
+        case .supply: return ["supplies": [dictionary(metaOnly: true)]]
         default: return nil
         }
     }

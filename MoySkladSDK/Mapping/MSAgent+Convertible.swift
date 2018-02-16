@@ -77,7 +77,7 @@ extension MSDiscount {
     }
     
     public static func from(dict: Dictionary<String, Any>) -> MSDiscount? {
-        guard let meta = MSMeta.from(dict: dict.msValue("discount").msValue("meta"), parent: dict) else { return nil }
+        guard let meta = MSMeta.from(dict: dict.msValue("discount").msValue("meta"), parent: dict.msValue("discount")) else { return nil }
         
         return MSDiscount(meta: meta,
                           personalDiscount: dict.value("personalDiscount") ?? 0.0)

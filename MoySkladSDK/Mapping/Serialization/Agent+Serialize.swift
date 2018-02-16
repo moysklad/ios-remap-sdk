@@ -72,6 +72,8 @@ extension MSAgent {
         
         dict["discountCardNumber"] = agentInfo.discountCardNumber
         
+        dict["priceType"] = agentInfo.priceType
+        
         return dict
     }
 }

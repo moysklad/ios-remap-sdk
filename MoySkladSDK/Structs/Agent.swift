@@ -34,6 +34,7 @@ public class MSAgentInfo {
     public var discounts: [MSDiscount]
     public var state: MSEntity<MSState>?
     public var discountCardNumber: String?
+    public var priceType: String?
     
     public init(isEgaisEnable: Bool?,
     fsrarId: String?,
@@ -47,7 +48,8 @@ public class MSAgentInfo {
     contactpersons: [MSEntity<MSContactPerson>],
     discounts: [MSDiscount],
     state: MSEntity<MSState>?,
-    discountCardNumber: String?) {
+    discountCardNumber: String?,
+    priceType: String?) {
         self.isEgaisEnable = isEgaisEnable
         self.fsrarId = fsrarId
         self.payerVat = payerVat
@@ -61,6 +63,7 @@ public class MSAgentInfo {
         self.discounts = discounts
         self.state = state
         self.discountCardNumber = discountCardNumber
+        self.priceType = priceType
     }
     
     func copy() -> MSAgentInfo {
@@ -74,7 +77,8 @@ public class MSAgentInfo {
                            contactpersons: contactpersons,
                            discounts: discounts,
                            state: state,
-                           discountCardNumber: discountCardNumber)
+                           discountCardNumber: discountCardNumber,
+                           priceType: priceType)
     }
 }
 
@@ -236,7 +240,7 @@ public class MSAgent : MSAttributedEntity, Metable, NSCopying {
             certificateNumber: nil,
             certificateDate: nil,
             accounts: [],
-            agentInfo: MSAgentInfo(isEgaisEnable: nil, fsrarId: nil, payerVat: false, utmUrl: nil, director: nil, chiefAccountant: nil, tags: [], contactpersons: [], discounts: [], state: state, discountCardNumber: nil),
+            agentInfo: MSAgentInfo(isEgaisEnable: nil, fsrarId: nil, payerVat: false, utmUrl: nil, director: nil, chiefAccountant: nil, tags: [], contactpersons: [], discounts: [], state: state, discountCardNumber: nil, priceType: nil),
             salesAmount: Money(minorUnits: 0),
             attributes: [],
             report: nil

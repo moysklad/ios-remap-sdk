@@ -92,7 +92,7 @@ public class MSAgent : MSAttributedEntity, Metable, NSCopying {
 	public let id: MSID
 	public let accountId: String
 	public var owner: MSEntity<MSEmployee>?
-	public let shared: Bool
+	public var shared: Bool
 	public var group: MSEntity<MSGroup>
 	public var info : MSInfo
 	public var code: String?

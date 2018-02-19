@@ -88,7 +88,7 @@ extension MSDocument : DictConvertable {
                    receivedNoCash: (dict.value("receivedNoCash") ?? 0.0).toMoney(),
                    receivedCash: (dict.value("receivedCash") ?? 0.0).toMoney(),
                    customerOrders: dict.msArray("customerOrders").map { MSDocument.from(dict: $0) }.flatMap { $0 },
-                   supplies: dict.msArray("supplies").map { MSDocument.from(dict: $0)?.value() }.removeNils(),
+                   supplies: dict.msArray("supplies").flatMap { MSDocument.from(dict: $0) },
                    commitentSum: (dict.value("commitentSum") ?? 0.0).toMoney(),
                    sourceStore: MSStore.from(dict: dict.msValue("sourceStore")),
                    targetStore: MSStore.from(dict: dict.msValue("targetStore")),

@@ -55,7 +55,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
     
     // MSPurchaseOrderType
     public var customerOrders : [MSEntity<MSDocument>]
-    public var supplies : [MSSupplyType]
+    public var supplies : [MSEntity<MSDocument>]
     
     // MSDemandType
     public var returns: [MSEntity<MSDocument>]
@@ -249,7 +249,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
                 receivedNoCash: Money,
                 receivedCash: Money,
                 customerOrders: [MSEntity<MSDocument>],
-                supplies: [MSSupplyType],
+                supplies: [MSEntity<MSDocument>],
                 commitentSum: Money,
                 sourceStore: MSEntity<MSStore>?,
                 targetStore: MSEntity<MSStore>?,

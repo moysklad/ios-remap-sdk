@@ -172,6 +172,12 @@ extension MSDocument {
                                        metaOnly: true,
                                        objectType: MSObjectType.invoicein,
                                        collectionName: "invoicesIn")
+        
+        dict["supplies"] = serialize(entities: supplies,
+                                       parent: self,
+                                       metaOnly: true,
+                                       objectType: MSObjectType.supply,
+                                       collectionName: "supplies")
 
         return dict
     }

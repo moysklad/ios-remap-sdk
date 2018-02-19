@@ -82,33 +82,6 @@ public enum MSDocumentLoadRequest {
 }
 
 extension DataManager {
-    static func loadPositionsError<T: MSGeneralDocument>(type: T.Type) -> MSError {
-        switch T.self {
-        case let t where t == MSCustomerOrderType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
-        case let t where t == MSDemandType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectDemandsResponse.value)
-        case let t where t == MSInvoiceOutType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectInvoicesOutResponse.value)
-        case let t where t == MSCashInType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectCashInResponse.value)
-        case let t where t == MSCashOutType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectCashOutResponse.value)
-        case let t where t == MSPaymentInType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInResponse.value)
-        case let t where t == MSPaymentOutType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutResponse.value)
-        case let t where t == MSSupplyType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectSupplyResponse.value)
-        case let t where t == MSInvoiceInType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceInResponse.value)
-        case let t where t == MSMoveType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectMoveResponse.value)
-        default:
-            fatalError("Unknown ObjectType \(type)")
-        }
-    }
-    
     /**
      Load document by Id
      - parameter request: Type of document request
@@ -262,12 +235,12 @@ extension DataManager {
                                           auth: Auth,
                                           expanders: [Expander] = [],
                                           positions: [MSEntity<MSPosition>],
-                                          offset: MSOffset? = nil) -> Observable<[MSEntity<MSPosition>]>{
+                                          offset: MSOffset? = nil) -> Observable<[MSEntity<MSPosition>]> {
 
         let urlParameters: [UrlParameter] = mergeUrlParameters(offset, CompositeExpander(expanders))
         let pathComponents: [String] = [inventoryId, "positions"]
         return HttpClient.get(.inventory, auth: auth, urlPathComponents: pathComponents, urlParameters: urlParameters)
-            .flatMapLatest{result -> Observable<[MSEntity<MSPosition>]> in
+            .flatMapLatest { result -> Observable<[MSEntity<MSPosition>]> in
 
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectInventoryPositionResponse.value)) }
                 let newPositions = result.msArray("rows").flatMap { MSPosition.from(dict: $0) }
@@ -286,6 +259,29 @@ extension DataManager {
                 } else {
                     return Observable.just(currentPositions)
                 }
+        }
+    }
+    
+    public static func positions(in document: MSDocument,
+                                 auth: Auth,
+                                 expanders: [Expander] = [],
+                                 offset: MSOffset? = nil) -> Observable<[MSEntity<MSPosition>]> {
+        guard let url = document.requestUrl() else {
+            return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
+        }
+        
+        guard let id = document.id.msID?.uuidString else {
+            return Observable.error(MSError.genericError(errorText: LocalizedStrings.emptyObjectId.value))
+        }
+        
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, CompositeExpander(expanders))
+        let pathComponents: [String] = [id, "positions"]
+        
+        return HttpClient.get(url, auth: auth, urlPathComponents: pathComponents, urlParameters: urlParameters)
+            .flatMapLatest { result -> Observable<[MSEntity<MSPosition>]> in
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPositionsResponse.value)) }
+                let deserialized = result.msArray("rows").flatMap { MSPosition.from(dict: $0) }
+                return .just(deserialized)
         }
     }
 }

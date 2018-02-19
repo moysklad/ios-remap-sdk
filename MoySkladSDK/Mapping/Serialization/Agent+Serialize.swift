@@ -50,10 +50,8 @@ extension MSAgent {
         dict["archived"] = self.archived
         
         dict["okpo"] = self.okpo ?? ""
-        if meta.href.count > 0 {
-            dict["owner"] = serialize(entity: owner)
-            dict["group"] = serialize(entity: group)
-        }
+        dict["group"] = serialize(entity: group, metaOnly: true)
+        dict["owner"] = serialize(entity: owner, metaOnly: true)
         dict["phone"] = self.phone ?? ""
 
         dict["tags"] = agentInfo.tags

@@ -212,38 +212,4 @@ public class MSAgent : MSAttributedEntity, Metable, NSCopying {
                        attributes: attributes,
                        report: report)
     }
-    
-    public static func empty(withState state: MSEntity<MSState>? = nil) -> MSAgent {
-        return MSAgent(
-            meta: MSMeta(name: "", href: "", type: .counterparty),
-            id: MSID(msID: nil, syncID: nil),
-            accountId: "",
-            owner: nil,
-            shared: false,
-            group: MSEntity.entity(MSGroup(meta: MSMeta(name: "", href: "", type: .group), name: "")),
-            info: MSInfo(version: 0, updated: nil, deleted: nil, name: "", description: nil),
-            code: nil,
-            externalCode: nil,
-            archived: false,
-            actualAddress: nil,
-            companyType: .legal,
-            email: nil,
-            phone: nil,
-            fax: nil,
-            legalTitle: nil,
-            legalAddress: nil,
-            inn: nil,
-            kpp: nil,
-            ogrn: nil,
-            ogrnip: nil,
-            okpo: nil,
-            certificateNumber: nil,
-            certificateDate: nil,
-            accounts: [],
-            agentInfo: MSAgentInfo(isEgaisEnable: nil, fsrarId: nil, payerVat: false, utmUrl: nil, director: nil, chiefAccountant: nil, tags: [], contactpersons: [], discounts: [], state: state, discountCardNumber: nil, priceType: nil),
-            salesAmount: Money(minorUnits: 0),
-            attributes: [],
-            report: nil
-        )
-    }
 }

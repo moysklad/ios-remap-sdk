@@ -65,9 +65,24 @@ extension MSAgentInfo {
 		                   chiefAccountant: dict.value("chiefAccountant"),
 		                   tags: dict.value("tags") ?? [],
 		                   contactpersons: dict.msValue("contactpersons").msArray("rows").map { MSContactPerson.from(dict: $0) }.flatMap { $0 },
-		                   discounts: nil,
-		                   state: MSState.from(dict: dict.msValue("state")))
+                           discounts: dict.msArray("discounts").map { MSDiscount.from(dict: $0) }.flatMap { $0 },
+		                   state: MSState.from(dict: dict.msValue("state")),
+                           discountCardNumber: dict.value("discountCardNumber"),
+                           priceType: dict.value("priceType"))
 	}
+}
+
+extension MSDiscount {
+    public func dictionary() -> Dictionary<String, Any> {
+        return [String:Any]()
+    }
+    
+    public static func from(dict: Dictionary<String, Any>) -> MSDiscount? {
+        guard let meta = MSMeta.from(dict: dict.msValue("discount").msValue("meta"), parent: dict.msValue("discount")) else { return nil }
+        
+        return MSDiscount(meta: meta,
+                          personalDiscount: dict.value("personalDiscount") ?? 0.0)
+    }
 }
 
 extension MSContactPerson: DictConvertable {

@@ -82,4 +82,5 @@ public enum MSObjectType : String {
     case supplyposition
     case inventoryposition
     case country
+    case personaldiscount
 }

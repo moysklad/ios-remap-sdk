@@ -55,7 +55,7 @@ extension MSAgent {
             dict["group"] = serialize(entity: group)
         }
         dict["phone"] = self.phone ?? ""
-        //dict["shared"] = self.shared
+
         dict["tags"] = agentInfo.tags
         
         dict["state"] = serialize(entity: agentInfo.state)
@@ -69,6 +69,10 @@ extension MSAgent {
         }
         
         dict["attributes"] = attributes?.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
+        
+        dict["discountCardNumber"] = agentInfo.discountCardNumber
+        
+        dict["priceType"] = agentInfo.priceType
         
         return dict
     }

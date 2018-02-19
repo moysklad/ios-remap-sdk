@@ -14,6 +14,11 @@ public enum MSCompanyType : String {
 	case individual
 }
 
+public struct MSDiscount: Metable {
+    public var meta: MSMeta
+    public var personalDiscount: Double
+}
+
 public class MSAgentInfo {
 	// Organization fields
 	public let isEgaisEnable: Bool?
@@ -26,8 +31,10 @@ public class MSAgentInfo {
 	// Counterparty fields
     public var tags: [String]
     public var contactpersons: [MSEntity<MSContactPerson>]
-    public var discounts: MSMeta?
+    public var discounts: [MSDiscount]
     public var state: MSEntity<MSState>?
+    public var discountCardNumber: String?
+    public var priceType: String?
     
     public init(isEgaisEnable: Bool?,
     fsrarId: String?,
@@ -39,8 +46,10 @@ public class MSAgentInfo {
     // Counterparty fields
     tags: [String],
     contactpersons: [MSEntity<MSContactPerson>],
-    discounts: MSMeta?,
-    state: MSEntity<MSState>?) {
+    discounts: [MSDiscount],
+    state: MSEntity<MSState>?,
+    discountCardNumber: String?,
+    priceType: String?) {
         self.isEgaisEnable = isEgaisEnable
         self.fsrarId = fsrarId
         self.payerVat = payerVat
@@ -53,7 +62,8 @@ public class MSAgentInfo {
         self.contactpersons = contactpersons
         self.discounts = discounts
         self.state = state
-    
+        self.discountCardNumber = discountCardNumber
+        self.priceType = priceType
     }
     
     func copy() -> MSAgentInfo {
@@ -66,7 +76,9 @@ public class MSAgentInfo {
                            tags: tags,
                            contactpersons: contactpersons,
                            discounts: discounts,
-                           state: state)
+                           state: state,
+                           discountCardNumber: discountCardNumber,
+                           priceType: priceType)
     }
 }
 
@@ -228,7 +240,7 @@ public class MSAgent : MSAttributedEntity, Metable, NSCopying {
             certificateNumber: nil,
             certificateDate: nil,
             accounts: [],
-            agentInfo: MSAgentInfo(isEgaisEnable: nil, fsrarId: nil, payerVat: false, utmUrl: nil, director: nil, chiefAccountant: nil, tags: [], contactpersons: [], discounts: nil, state: state),
+            agentInfo: MSAgentInfo(isEgaisEnable: nil, fsrarId: nil, payerVat: false, utmUrl: nil, director: nil, chiefAccountant: nil, tags: [], contactpersons: [], discounts: [], state: state, discountCardNumber: nil, priceType: nil),
             salesAmount: Money(minorUnits: 0),
             attributes: [],
             report: nil

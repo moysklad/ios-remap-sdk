@@ -82,30 +82,33 @@ public enum MSDocumentLoadRequest {
 }
 
 extension DataManager {
-    static func loadPositionsError<T: MSGeneralDocument>(type: T.Type) -> MSError {
-        switch T.self {
-        case let t where t == MSCustomerOrderType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
-        case let t where t == MSDemandType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectDemandsResponse.value)
-        case let t where t == MSInvoiceOutType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectInvoicesOutResponse.value)
-        case let t where t == MSCashInType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectCashInResponse.value)
-        case let t where t == MSCashOutType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectCashOutResponse.value)
-        case let t where t == MSPaymentInType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInResponse.value)
-        case let t where t == MSPaymentOutType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutResponse.value)
-        case let t where t == MSSupplyType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectSupplyResponse.value)
-        case let t where t == MSInvoiceInType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceInResponse.value)
-        case let t where t == MSMoveType.self:
-            return MSError.genericError(errorText: LocalizedStrings.incorrectMoveResponse.value)
-        default:
-            fatalError("Unknown ObjectType \(type)")
+    private static func loadRecursive<T>(loader: @escaping (MSApiRequest, MSOffset) -> Observable<JSONType?>,
+                                         request: MSApiRequest,
+                                         offset: MSOffset,
+                                         observer: AnyObserver<[T]>,
+                                         deserializer: @escaping (JSONType) -> [T],
+                                         deserializationError: Error) -> Observable<Void> {
+        return loader(request, offset)
+            .do(onError: { observer.onError($0) })
+            .flatMapLatest { result -> Observable<Void> in
+                guard let result = result else {
+                    return Observable.error(deserializationError)
+                }
+                
+                observer.onNext(deserializer(result))
+                
+                if let nextHref: String = result.toDictionary()?.msValue("meta").value("nextHref"),
+                    let newOffset = Int(URLComponents(string: nextHref)?.queryItems?.first(where: { $0.name == "offset" })?.value ?? "") {
+                    return loadRecursive(loader: loader,
+                                         request: request,
+                                         offset: MSOffset(size: offset.size, limit: offset.limit, offset: newOffset),
+                                         observer: observer,
+                                         deserializer: deserializer,
+                                         deserializationError: deserializationError)
+                } else {
+                    observer.onCompleted()
+                    return .empty()
+                }
         }
     }
     
@@ -252,40 +255,64 @@ extension DataManager {
     }
     
     /**
-     Load inventory positions
-     - parameter id: Inventory id
-     - parameter expanders: Additional objects to include into request
+     Load document positions
+     - parameter in: Document
      - parameter auth: Authentication information
      - parameter offset: Desired data offset
+     - parameter expanders: Additional objects to include into request
      */
-    public static func inventoryPositions(inventoryId: String,
-                                          auth: Auth,
-                                          expanders: [Expander] = [],
-                                          positions: [MSEntity<MSPosition>],
-                                          offset: MSOffset? = nil) -> Observable<[MSEntity<MSPosition>]>{
-
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, CompositeExpander(expanders))
-        let pathComponents: [String] = [inventoryId, "positions"]
-        return HttpClient.get(.inventory, auth: auth, urlPathComponents: pathComponents, urlParameters: urlParameters)
-            .flatMapLatest{result -> Observable<[MSEntity<MSPosition>]> in
-
-                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectInventoryPositionResponse.value)) }
-                let newPositions = result.msArray("rows").flatMap { MSPosition.from(dict: $0) }
-                let currentPositions = positions + newPositions
-
-                if let nextHref: String = result.msValue("meta").value("nextHref"),
-                    let currentOffset: String = URLComponents(string: nextHref)?.queryItems?.first(where: { $0.name == "offset" })?.value,
-                    let size = offset?.size, let limit = offset?.limit, let currOffset = Int(currentOffset){
-                    return DataManager.inventoryPositions(inventoryId: inventoryId,
-                                                          auth: auth,
-                                                          expanders: expanders,
-                                                          positions: currentPositions,
-                                                          offset: MSOffset(size: size,
-                                                                           limit: limit,
-                                                                           offset: currOffset))
-                } else {
-                    return Observable.just(currentPositions)
-                }
+    public static func positions(in document: MSDocument,
+                                 auth: Auth,
+                                 offset: MSOffset? = nil,
+                                 expanders: [Expander] = []) -> Observable<[MSEntity<MSPosition>]> {
+        guard let url = document.requestUrl() else {
+            return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
         }
+        
+        guard let id = document.id.msID?.uuidString else {
+            return Observable.error(MSError.genericError(errorText: LocalizedStrings.emptyObjectId.value))
+        }
+        
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, CompositeExpander(expanders))
+        let pathComponents: [String] = [id, "positions"]
+        
+        return HttpClient.get(url, auth: auth, urlPathComponents: pathComponents, urlParameters: urlParameters)
+            .flatMapLatest { result -> Observable<[MSEntity<MSPosition>]> in
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPositionsResponse.value)) }
+                let deserialized = result.msArray("rows").flatMap { MSPosition.from(dict: $0) }
+                return .just(deserialized)
+        }
+    }
+    
+    /**
+     Load document positions recursively
+     - parameter in: Document
+     - parameter auth: Authentication information
+     - parameter limit: Return objects limit
+     - parameter expanders: Additional objects to include into request
+     */
+    public static func positionsRecursive(in document: MSDocument,
+                                          auth: Auth,
+                                          limit: Int,
+                                          expanders: [Expander] = []) -> Observable<[MSEntity<MSPosition>]> {
+        guard let url = document.requestUrl() else {
+            return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
+        }
+        
+        guard let id = document.id.msID?.uuidString else {
+            return Observable.error(MSError.genericError(errorText: LocalizedStrings.emptyObjectId.value))
+        }
+        let pathComponents: [String] = [id, "positions"]
+        
+        return Observable.create { observer in
+            let subscription = DataManager.loadRecursive(loader: { HttpClient.get($0, auth: auth, urlPathComponents: pathComponents, urlParameters: mergeUrlParameters($1, CompositeExpander(expanders))) },
+                                                         request: url,
+                                                         offset: MSOffset(size: 0, limit: limit, offset: 0),
+                                                         observer: observer,
+                                                         deserializer: { $0.toDictionary()?.msArray("rows").flatMap { MSPosition.from(dict: $0) } ?? [] },
+                                                         deserializationError: MSError.genericError(errorText: LocalizedStrings.incorrectPositionsResponse.value)).subscribe()
+            
+            return Disposables.create { subscription.dispose() }
+            }.reduce([], accumulator: { $0 + $1 })
     }
 }

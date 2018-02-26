@@ -32,9 +32,7 @@ extension MSCompanySettings : DictConvertable {
                                   rate: 0,
                                   code: nil,
                                   isoCode: nil,
-                                  isDefault: false,
-                                  isIndirect: false,
-                                  multiplicity: 0)
+                                  isDefault: false)
             }
             return cur
         }()
@@ -59,17 +57,26 @@ extension MSCurrency : DictConvertable {
         guard let name: String = dict.value("name"), name.count > 0 else {
             return MSEntity.meta(meta)
         }
-        let rate: Double = dict.value("rate") ?? 0
-        let multiplicity: Double = dict.value("multiplicity") ?? 0
+        
+        let rate: Double = {
+            // если валюта с обратным курсом, то конвертируем в "обычный"
+            if dict.value("indirect") == true {
+                guard let rate: Double = dict.value("rate"), rate > 0 else { return 0 }
+                
+                guard let multiplicity: Double = dict.value("multiplicity") else { return 0 }
+                
+                return NSDecimalNumber.one.dividing(by: NSDecimalNumber(value: rate)).multiplying(by: NSDecimalNumber(value: multiplicity)).doubleValue
+            } else {
+                return dict.value("rate") ?? 0
+            }
+        }()
         
         return MSEntity.entity(MSCurrency(meta: meta,
                                           name: name,
                                           rate: rate,
                                           code: dict.value("code"),
                                           isoCode: dict.value("isoCode"),
-                                          isDefault: dict.value("default") ?? false,
-                                          isIndirect: dict.value("indirect") ?? false,
-                                          multiplicity: multiplicity))
+                                          isDefault: dict.value("default") ?? false))
     }
     
     public func dictionary(metaOnly: Bool = true) -> Dictionary<String, Any> {

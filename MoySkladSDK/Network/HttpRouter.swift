@@ -9,7 +9,11 @@
 import Foundation
 import Alamofire
 
-fileprivate extension URL {
+extension URL {
+    func queryParameter(_ name: String) -> String? {
+        return URLComponents(url: self, resolvingAgainstBaseURL: false)?.queryItems?.first(where: { $0.name == name })?.value
+    }
+    
     init?(baseUrl: String, parameters: [UrlParameter] = []) {
         let convertedParameters = parameters.reduce([(key: String, value: String)](), {
             return $0 + $1.urlParameters.map { param -> (key: String, value: String) in

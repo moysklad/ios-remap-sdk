@@ -34,9 +34,13 @@ import Foundation
  
  It is generic over the decimal number behavior type, which defines the rounding
  and scale rules for base 10 decimal arithmetic.
-*/
+ */
 public struct _Decimal<Behavior: DecimalNumberBehaviorType>: DecimalNumberType, Comparable {
-    public var magnitude: NSDecimalNumber
+    public typealias Magnitude = Double
+    
+    public typealias DecimalNumberBehavior = Behavior
+    
+    public var magnitude: Magnitude
     
     public static func -=(lhs: inout _Decimal<Behavior>, rhs: _Decimal<Behavior>) {
         lhs = lhs.subtract(rhs)
@@ -64,6 +68,10 @@ public struct _Decimal<Behavior: DecimalNumberBehaviorType>: DecimalNumberType, 
     
     public static prefix func +(lhs: _Decimal<Behavior>) -> _Decimal<Behavior> {
         return lhs
+    }
+    
+    public static prefix func -(lhs: _Decimal<Behavior>) -> _Decimal<Behavior> {
+        return lhs.multiply(by: -1)
     }
     
     public static func ==(lhs: _Decimal<Behavior>, rhs: _Decimal<Behavior>) -> Bool {
@@ -99,28 +107,25 @@ public struct _Decimal<Behavior: DecimalNumberBehaviorType>: DecimalNumberType, 
     public static func >(lhs: _Decimal<Behavior>, rhs: _Decimal<Behavior>) -> Bool {
         return lhs.storage > lhs.storage
     }
-
-    public typealias Magnitude = NSDecimalNumber
-
-    public typealias DecimalNumberBehavior = Behavior
-
+    
+    
     /// Access the underlying decimal storage.
     /// - returns: the `NSDecimalNumber`
     public let storage: NSDecimalNumber
-
+    
     public init?<T>(exactly source: T) where T : BinaryInteger {
         self.storage = NSDecimalNumber(integerLiteral: Int(source))
-        self.magnitude = NSDecimalNumber(string: source.magnitude as? String)
+        self.magnitude =  Double(source.magnitude as? String ?? "0.0")!//NSDecimalNumber(string: source.magnitude as? String)
     }
     
     /**
      Initialize a new value using the underlying decimal storage.
-
+     
      - parameter storage: a `NSDecimalNumber` defaults to zero.
-    */
+     */
     public init(storage: NSDecimalNumber = NSDecimalNumber.zero) {
         self.storage = storage
-        self.magnitude = storage
+        self.magnitude = storage.doubleValue
     }
 }
 
@@ -150,21 +155,21 @@ extension _Decimal: ValueCoding {
 
 /**
  Coding class to support `_Decimal` `ValueCoding` conformance.
-*/
+ */
 public final class _DecimalCoder<Behavior: DecimalNumberBehaviorType>: NSObject, NSCoding, CodedValue,
-        CodingProtocol{
-
+CodingProtocol{
+    
     public let value: _Decimal<Behavior>
-
+    
     public required init(_ v: _Decimal<Behavior>) {
         value = v
     }
-
+    
     public init?(coder aDecoder: NSCoder) {
         let storage = aDecoder.decodeObject(forKey: "storage") as! NSDecimalNumber
         value = _Decimal<Behavior>(storage: storage)
     }
-
+    
     public func encode(with aCoder: NSCoder) {
         aCoder.encode(value.storage, forKey: "storage")
     }

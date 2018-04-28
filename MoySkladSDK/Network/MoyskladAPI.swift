@@ -240,7 +240,7 @@ final class HttpClient {
         return Observable.create { observer in
             let destination: DownloadRequest.DownloadFileDestination = { temporaryURL, response in
                 let documentsURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-                let fileURL = documentsURL.appendingPathComponent(response.suggestedFilename ?? "unknown")
+                let fileURL = documentsURL.appendingPathComponent(response.url?.queryParameter("filename") ?? response.suggestedFilename ?? "unknown")
                 return (fileURL, [.removePreviousFile])
             }
 

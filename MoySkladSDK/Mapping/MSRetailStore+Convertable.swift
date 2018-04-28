@@ -18,7 +18,9 @@ extension MSRetailStore: DictConvertable {
                                              info: MSInfo(dict: retailstore),
                                              retailShift: MSRetailShift.from(dict: dict.msValue("retailshift")),
                                              proceed: (dict.value("proceed") ?? 0.0).toMoney(),
-                                             balance: (dict.value("balance") ?? 0.0).toMoney()))
+                                             balance: (dict.value("balance") ?? 0.0).toMoney(),
+                                             environment: MSRetailStoreEnvironment.from(dict: dict.msValue("environment")),
+                                             state: MSRetailStoreState.from(dict: dict.msValue("state"))))
     }
     
     public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {

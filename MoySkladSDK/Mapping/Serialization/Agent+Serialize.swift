@@ -58,13 +58,11 @@ extension MSAgent {
         
         dict["state"] = serialize(entity: agentInfo.state)
         
-        if !self.agentInfo.contactpersons.isEmpty {
-            dict["contactpersons"] = serialize(entities: self.agentInfo.contactpersons,
-                                     parent: self,
-                                     metaOnly: false,
-                                     objectType: MSObjectType.contactperson,
-                                     collectionName: "contactpersons")
-        }
+        dict["contactpersons"] = serialize(entities: self.agentInfo.contactpersons,
+                                           parent: self,
+                                           metaOnly: false,
+                                           objectType: MSObjectType.contactperson,
+                                           collectionName: "contactpersons")
         
         dict["attributes"] = attributes?.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
         

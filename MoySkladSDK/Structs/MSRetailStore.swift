@@ -11,9 +11,10 @@ import Foundation
 public struct MSRetailStoreState {
     public struct Sync {
         public let message: String?
-        public let lastAttemptMoment: Date?
-        public static func from(dict: [String: Any]) -> Sync {
-            return Sync(message: dict.value("message"), lastAttemptMoment: Date.fromMSDate(dict.value("lastAttempMoment") ?? ""))
+        public let lastAttempMoment: Date
+        public static func from(dict: [String: Any]) -> Sync? {
+            guard let lastAttempMoment = Date.fromMSDate(dict.value("lastAttempMoment") ?? "") else { return nil }
+            return Sync(message: dict.value("message"), lastAttempMoment: lastAttempMoment)
         }
     }
     
@@ -25,8 +26,10 @@ public struct MSRetailStoreState {
     public let acquiringType: String?
     public let lastCheckMoment: Date?
     
-    public static func from(dict: [String: Any]) -> MSRetailStoreState {
-        return MSRetailStoreState(sync: Sync.from(dict: dict.msValue("sync")),
+    public static func from(dict: [String: Any]) -> MSRetailStoreState? {
+        guard let sync = Sync.from(dict: dict.msValue("sync")) else { return nil }
+        
+        return MSRetailStoreState(sync: sync,
                                   errorCode: dict.msValue("fiscalMemory").msValue("error").value("code"),
                                   errorMessage: dict.msValue("fiscalMemory").msValue("error").value("message"),
                                   notSendDocCount: dict.msValue("fiscalMemory").value("notSendDocCount") ?? 0,
@@ -94,9 +97,9 @@ public class MSRetailStore: Metable {
     public let proceed: Money
     public let balance: Money
     public let environment: MSRetailStoreEnvironment?
-    public let state: MSRetailStoreState
+    public let state: MSRetailStoreState?
     
-    init(meta: MSMeta, info: MSInfo, retailShift: MSEntity<MSRetailShift>?, proceed: Money, balance: Money, environment: MSRetailStoreEnvironment?, state: MSRetailStoreState) {
+    init(meta: MSMeta, info: MSInfo, retailShift: MSEntity<MSRetailShift>?, proceed: Money, balance: Money, environment: MSRetailStoreEnvironment?, state: MSRetailStoreState?) {
         self.meta = meta
         self.info = info
         self.retailShift = retailShift

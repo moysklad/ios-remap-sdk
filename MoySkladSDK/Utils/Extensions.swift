@@ -278,7 +278,7 @@ public extension Date {
     
     public static var msDisplayLongDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy HH:mm:ss"
+        formatter.dateFormat = "dd.MM.yyyy HH:mm"
         formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()

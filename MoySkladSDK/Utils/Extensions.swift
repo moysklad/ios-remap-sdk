@@ -209,6 +209,10 @@ public extension Date {
         return Date.msDateFormatter.string(from: self)
     }
     
+    public func toDisplayLongDate() -> String {
+        return Date.msDisplayLongDateFormatter.string(from: self)
+    }
+    
     public func toShortDate() -> String {
         return Date.msShortDateFormatter.string(from: self)
     }
@@ -269,6 +273,13 @@ public extension Date {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         formatter.locale = Locale(identifier: "ru_RU")
         formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
+        return formatter
+    }()
+    
+    public static var msDisplayLongDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy HH:mm"
+        formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
     

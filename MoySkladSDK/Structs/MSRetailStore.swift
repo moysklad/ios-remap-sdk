@@ -21,7 +21,7 @@ public struct MSRetailStoreState {
     public let sync: Sync
     public let errorCode: String?
     public let errorMessage: String?
-    public let notSendDocCount: Int
+    public let notSendDocCount: Int?
     public let notSendFirstDocMoment: Date?
     public let acquiringType: String?
     public let lastCheckMoment: Date?
@@ -32,7 +32,7 @@ public struct MSRetailStoreState {
         return MSRetailStoreState(sync: sync,
                                   errorCode: dict.msValue("fiscalMemory").msValue("error").value("code"),
                                   errorMessage: dict.msValue("fiscalMemory").msValue("error").value("message"),
-                                  notSendDocCount: dict.msValue("fiscalMemory").value("notSendDocCount") ?? 0,
+                                  notSendDocCount: dict.msValue("fiscalMemory").value("notSendDocCount"),
                                   notSendFirstDocMoment: Date.fromMSDate(dict.msValue("fiscalMemory").value("notSendFirstDocMoment") ?? ""),
                                   acquiringType: dict.msValue("paymentTerminal").value("acquiringType"),
                                   lastCheckMoment: Date.fromMSDate(dict.value("lastCheckMoment") ?? ""))

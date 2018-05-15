@@ -9,17 +9,21 @@
 import Foundation
 
 func serialize<T:  DictConvertable>(entity: MSEntity<T>?, metaOnly: Bool = true) -> Any {
+    return serialize(entity: entity, serializeObject: { $0.dictionary(metaOnly: metaOnly) })
+}
+
+func serialize<T:  DictConvertable>(entity: MSEntity<T>?, serializeObject: (T) -> (Any)) -> Any {
     guard let entity = entity else { return NSNull() }
-    
+
     guard let object = entity.value() else {
         return ["meta": entity.objectMeta().dictionary()]
     }
-    
-    return object.dictionary(metaOnly: metaOnly)
+
+    return serializeObject(object)
 }
 
-func serialize<T:  DictConvertable>(entities: [MSEntity<T>], parent: Metable, metaOnly: Bool = true, objectType: MSObjectType, collectionName: String) -> Any {
-    let serialized = entities.map { serialize(entity: $0, metaOnly: metaOnly) }.filter { o in
+func serialize<T:  DictConvertable>(entities: [MSEntity<T>], parent: Metable, metaOnly: Bool = true, objectType: MSObjectType, collectionName: String, serializeObject: ((T) -> (Any))? = nil) -> Any {
+    let serialized = entities.map { serialize(entity: $0, serializeObject: serializeObject ?? { $0.dictionary(metaOnly: metaOnly) } ) }.filter { o in
         if o is [String:Any] {
             return true
         }
@@ -37,15 +41,22 @@ func serialize<T:  DictConvertable>(entities: [MSEntity<T>], parent: Metable, me
 }
 
 extension MSDocument {
+    public func metaAndLinkedSumDictionary() -> [String : Any] {
+        var dict = dictionary(metaOnly: true)
+        dict["linkedSum"] = linkedSum.minorUnits
+        return dict
+    }
+    
     public func dictionary(metaOnly: Bool = true) -> Dictionary<String, Any> {
         var dict = [String: Any]()
         dict["meta"] = meta.dictionary()
-        dict["linkedSum"] = linkedSum.minorUnits
+        
         guard !metaOnly else { return dict }
         
         dict.merge(info.dictionary())
         dict.merge(id.dictionary())
         
+        dict["linkedSum"] = linkedSum.minorUnits
         dict["sum"] = sum.minorUnits
         dict["agent"] = serialize(entity: agent, metaOnly: true)
         dict["contract"] = serialize(entity: contract, metaOnly: true)
@@ -60,7 +71,7 @@ extension MSDocument {
         dict["shared"] = shared
         dict["applicable"] = applicable
         dict["state"] = serialize(entity: state, metaOnly: true)
-        dict["attributes"] = attributes?.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
+        dict["attributes"] = attributes?.compactMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
         if let agentAccount = agentAccount {
             dict["agentAccount"] = serialize(entity: agentAccount, metaOnly: true)
         }
@@ -100,7 +111,7 @@ extension MSDocument {
                                            metaOnly: false,
                                            objectType: MSObjectType.purchaseorder,
                                            collectionName: "purchaseOrders")
-        dict["demands"] = serialize(entities: demands.flatMap { $0 as? MSDocument }.map { MSEntity<MSDocument>.entity($0) },
+        dict["demands"] = serialize(entities: demands.compactMap { $0 as? MSDocument }.map { MSEntity<MSDocument>.entity($0) },
                                     parent: self,
                                     metaOnly: true,
                                     objectType: MSObjectType.demand,
@@ -110,7 +121,7 @@ extension MSDocument {
                                      metaOnly: false,
                                      objectType: MSObjectType.paymentin,
                                      collectionName: "payments")
-        dict["invoicesOut"] = serialize(entities: invoicesOut.flatMap { $0 as? MSDocument }.map { MSEntity<MSDocument>.entity($0) },
+        dict["invoicesOut"] = serialize(entities: invoicesOut.compactMap { $0 as? MSDocument }.map { MSEntity<MSDocument>.entity($0) },
                                         parent: self,
                                         metaOnly: true,
                                         objectType: MSObjectType.invoiceout,
@@ -122,7 +133,9 @@ extension MSDocument {
                                     collectionName: "returns")
         dict["operations"] = serialize(entities: operations,
                                        parent: self,
-                                       objectType: MSObjectType.customerorder, collectionName: "operations")
+                                       objectType: MSObjectType.customerorder,
+                                       collectionName: "operations",
+                                       serializeObject: { $0.metaAndLinkedSumDictionary() })
         dict["customerOrders"] = serialize(entities: customerOrders,
                                            parent: self,
                                            objectType: MSObjectType.customerorder, collectionName: "customerOrders")

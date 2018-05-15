@@ -149,10 +149,10 @@ extension DataManager {
         retailStoreId id: UUID
     ) -> Observable<MSEntity<MSRetailStoreStatistics>> {
         return HttpClient.get(.reportRetailstore, auth: auth, urlPathComponents: [id.uuidString, MSApiRequest.reportRetailstoreRetailshift.rawValue])
+            .catchErrorJustReturn(nil)
             .flatMapLatest { result -> Observable<MSEntity<MSRetailStoreStatistics>> in
-                
                 guard let result = result?.toDictionary() else {
-                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPlotseriesRetailStoreReportResponse.value))
+                    return Observable.just(MSEntity.entity(MSRetailStoreStatistics(meta: MSMeta.init(name: "", href: "", type: .ordersstatistics), series: [])))
                 }
                 
                 guard let deserialized = MSRetailStoreStatistics.from(dict: result) else {

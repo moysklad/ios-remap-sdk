@@ -23,12 +23,7 @@ func serialize<T:  DictConvertable>(entity: MSEntity<T>?, serializeObject: (T) -
 }
 
 func serialize<T:  DictConvertable>(entities: [MSEntity<T>], parent: Metable, metaOnly: Bool = true, objectType: MSObjectType, collectionName: String, serializeObject: ((T) -> (Any))? = nil) -> Any {
-    let serialized = entities.map { serialize(entity: $0, serializeObject: serializeObject ?? { $0.dictionary(metaOnly: metaOnly) } ) }.filter { o in
-        if o is [String:Any] {
-            return true
-        }
-        return false
-    }
+    let serialized = entities.map { serialize(entity: $0, serializeObject: serializeObject ?? { $0.dictionary(metaOnly: metaOnly) } ) }.filter { $0 is [String:Any] }
     let endIndex = parent.meta.href.range(of: "?")?.lowerBound ?? parent.meta.href.endIndex
     let meta: [String:Any] = ["href":"\(parent.meta.href.prefix(upTo: endIndex))/\(collectionName)",
         "type":objectType.rawValue,

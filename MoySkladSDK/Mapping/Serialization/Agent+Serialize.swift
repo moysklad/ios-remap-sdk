@@ -35,7 +35,7 @@ extension MSAgent {
         dict["certificateDate"] = self.certificateDate?.toLongDate() ?? NSNull()
         
         dict["certificateNumber"] = self.certificateNumber ?? ""
-        dict["code"] = self.code ?? ""
+        dict["code"] = self.code
         dict["companyType"] = self.companyType.rawValue
         dict["email"] = self.email ?? ""
         dict["externalCode"] = self.externalCode ?? ""
@@ -64,7 +64,7 @@ extension MSAgent {
                                            objectType: MSObjectType.contactperson,
                                            collectionName: "contactpersons")
         
-        dict["attributes"] = attributes?.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
+        dict["attributes"] = attributes?.compactMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
         
         dict["discountCardNumber"] = agentInfo.discountCardNumber
         

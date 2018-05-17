@@ -22,6 +22,7 @@ public struct LogInInfo {
     public let counterpartyTags: [String]
     public let priceTypes: [String]
     public let groups: [String: MSGroup]
+    public let createShared: [MSObjectType: Bool]
 }
 
 struct MetadataLoadResult {
@@ -30,14 +31,7 @@ struct MetadataLoadResult {
     let attributes: [MSAttributeDefinition]
     let tags: [String]
     let priceTypes: [String]
-    
-    init(type: MSObjectType, states: [MSState] = [], attributes: [MSAttributeDefinition] = [], tags: [String] = [], priceTypes: [String] = []) {
-        self.type = type
-        self.states = states
-        self.attributes = attributes
-        self.tags = tags
-        self.priceTypes = priceTypes
-    }
+    let createShared: Bool
 }
 
 public struct DataManager {
@@ -109,7 +103,7 @@ public struct DataManager {
         var groups: [Date: [MSEntity<T>]] = [:]
         
         // скорее всего это не самый оптимальный способ группировки
-        data.flatMap { $0.value() }.forEach { object in
+        data.compactMap { $0.value() }.forEach { object in
             let moment = date(object).beginningOfDay()
             var group = groups[moment]
             if group != nil {
@@ -131,58 +125,13 @@ public struct DataManager {
         return groups.map { (date: $0.key, data: $0.value) }.sorted(by: { $0.date > $1.date })
     }
     
-    static func deserializeDocumentMetadata(json: [String:Any], incorrectJsonError: Error) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        let deserializedStates = json.msArray("states").map { MSState.from(dict: $0) }
-        let statesWithoutNills = deserializedStates.map { $0?.value() }.removeNils()
-        
-        guard statesWithoutNills.count == deserializedStates.count else {
-            return Observable.error(incorrectJsonError)
-        }
-        
-        let deserializedAttrs = json.msArray("attributes").map { MSAttributeDefinition.from(dict: $0) }
-        let attrsWithoutNills = deserializedAttrs.removeNils()
-        
-        guard attrsWithoutNills.count == deserializedAttrs.count else {
-            return Observable.error(incorrectJsonError)
-        }
-        
-        return Observable.just((states: statesWithoutNills, attributes: attrsWithoutNills))
-    }
-    
-    static func deserializeCounterpartyMetadata(json: [String:Any], incorrectJsonError: Error) -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> {
-        let deserializedStates = json.msArray("states").map { MSState.from(dict: $0) }
-        let statesWithoutNills = deserializedStates.map { $0?.value() }.removeNils()
-        
-        guard statesWithoutNills.count == deserializedStates.count else {
-            return Observable.error(incorrectJsonError)
-        }
-        
-        let deserializedAttrs = json.msArray("attributes").map { MSAttributeDefinition.from(dict: $0) }
-        let attrsWithoutNills = deserializedAttrs.removeNils()
-        
-        guard attrsWithoutNills.count == deserializedAttrs.count else {
-            return Observable.error(incorrectJsonError)
-        }
-        
-        return Observable.just((states: statesWithoutNills, tags: json.value("groups") ?? [], attributes: attrsWithoutNills))
-    }
-    
-    static func deserializeAssortmentMetadata(json: [String:Any], incorrectJsonError: Error) -> Observable<(attributes: [MSAttributeDefinition], priceTypes: [String])> {
-        let deserializedAttrs = json.msArray("attributes").map { MSAttributeDefinition.from(dict: $0) }
-        let attrsWithoutNills = deserializedAttrs.removeNils()
-        
-        guard attrsWithoutNills.count == deserializedAttrs.count else {
-            return Observable.error(incorrectJsonError)
-        }
-        
-        let priceTypes: [String?] = json.msArray("priceTypes").map { $0.value("name") }
-        let priceTypesWithoutNills = priceTypes.removeNils()
-        
-        guard priceTypes.count == priceTypesWithoutNills.count else {
-            return Observable.error(incorrectJsonError)
-        }
-        
-        return Observable.just((attributes: attrsWithoutNills, priceTypes: priceTypesWithoutNills))
+    static func deserializeObjectMetadata(objectType: MSObjectType, from json: [String:Any]) -> MetadataLoadResult {
+        let metadata = json.msValue(objectType.rawValue)
+        let states: [MSState] = metadata.msArray("states").map { MSState.from(dict: $0) }.compactMap { $0?.value() }
+        let attrs: [MSAttributeDefinition] = metadata.msArray("attributes").map { MSAttributeDefinition.from(dict: $0) }.compactMap { $0 }
+        let priceTypes: [String] = metadata.msArray("priceTypes").map { $0.value("name") }.compactMap { $0 }
+        let createShared: Bool = metadata.value("createShared") ?? false
+        return MetadataLoadResult(type: objectType, states: states, attributes: attrs, tags: metadata.value("groups") ?? [], priceTypes: priceTypes, createShared: createShared)
     }
     
     static func deserializeArray<T>(json: [String:Any],
@@ -277,12 +226,13 @@ public struct DataManager {
         return Observable.combineLatest(employeeRequest,
                                         settingsRequest,
                                         currenciesRequest,
-                                        loadAllMetadata(auth: auth),
+                                        loadMetadata(auth: auth),
                                         groupsRequest,
                                         resultSelector: {
                                             let states = $3.toDictionary(key: { $0.type }, element: { $0.states })
                                             let attributes = $3.toDictionary(key: { $0.type }, element: { $0.attributes })
-                                            let counerpartyTags = $3.first(where: { $0.type == .counterparty })?.tags ?? []
+                                            let createShared = $3.toDictionary(key: { $0.type }, element: { $0.createShared })
+                                            let counterpartyTags = $3.first(where: { $0.type == .counterparty })?.tags ?? []
                                             let assortmentPrices = $3.first(where: { $0.type == .product })?.priceTypes ?? []
                                             
                                             return LogInInfo(employee: $0,
@@ -290,240 +240,33 @@ public struct DataManager {
                                                              states: states,
                                                              documentAttributes: attributes,
                                                              currencies: $2.toDictionary { $0.meta.href.withoutParameters() },
-                                                             counterpartyTags: counerpartyTags,
+                                                             counterpartyTags: counterpartyTags,
                                                              priceTypes: assortmentPrices,
-                                                             groups: $4.toDictionary({ $0.meta.href.withoutParameters() }))
+                                                             groups: $4.toDictionary({ $0.meta.href.withoutParameters() }),
+                                                             createShared: createShared)
         })
     }
     
-    private static func loadAllMetadata(auth: Auth) -> Observable<[MetadataLoadResult]> {
-        let requests: [Observable<MetadataLoadResult>] = [
-            customerOrderMetadata(auth: auth).map { item -> MetadataLoadResult in
-                return MetadataLoadResult(type: MSObjectType.customerorder, states: item.states, attributes: item.attributes, tags: [])
-            },
-            demandMetadata(auth: auth).map { item -> MetadataLoadResult in
-                return MetadataLoadResult(type: MSObjectType.demand, states: item.states, attributes: item.attributes, tags: [])
-            },
-            invoiceOutMetadata(auth: auth).map { item -> MetadataLoadResult in
-                return MetadataLoadResult(type: MSObjectType.invoiceout, states: item.states, attributes: item.attributes, tags: [])
-            },
-            cashInMetadata(auth: auth).map { item -> MetadataLoadResult in
-                return MetadataLoadResult(type: MSObjectType.cashin, states: item.states, attributes: item.attributes, tags: [])
-            },
-            cashOutMetadata(auth: auth).map { item -> MetadataLoadResult in
-                return MetadataLoadResult(type: MSObjectType.cashout, states: item.states, attributes: item.attributes, tags: [])
-            },
-            paymentInMetadata(auth: auth).map { item -> MetadataLoadResult in
-                return MetadataLoadResult(type: MSObjectType.paymentin, states: item.states, attributes: item.attributes, tags: [])
-            },
-            paymentOutMetadata(auth: auth).map { item -> MetadataLoadResult in
-                return MetadataLoadResult(type: MSObjectType.paymentout, states: item.states, attributes: item.attributes, tags: [])
-            },
-            supplyMetadata(auth: auth).map { item -> MetadataLoadResult in
-                return MetadataLoadResult(type: MSObjectType.supply, states: item.states, attributes: item.attributes, tags: [])
-            },
-            invoiceInMetadata(auth: auth).map { item -> MetadataLoadResult in
-                return MetadataLoadResult(type: MSObjectType.invoicein, states: item.states, attributes: item.attributes, tags: [])
-            },
-            purchaseOrderMetadata(auth: auth).map { item -> MetadataLoadResult in
-                return MetadataLoadResult(type: MSObjectType.purchaseorder, states: item.states, attributes: item.attributes, tags: [])
-            },
-            counterpartyMetadata(auth: auth).map { item -> MetadataLoadResult in
-                return MetadataLoadResult(type: MSObjectType.counterparty, states: item.states, attributes: item.attributes, tags: item.tags)
-            },
-            productMetadata(auth: auth).map { item -> MetadataLoadResult in
-                return MetadataLoadResult(type: MSObjectType.product, attributes: item.attributes, priceTypes: item.priceTypes)
-            },
-            moveMetadata(auth: auth).map { item -> MetadataLoadResult in
-                return MetadataLoadResult.init(type: .move, states: item.states, attributes: item.attributes, tags: [])
-            },
-			inventoryMetadata(auth: auth).map { item -> MetadataLoadResult in
-				return MetadataLoadResult.init(type: .inventory, states: item.states, attributes: item.attributes, tags: [])
-			}
-        ]
-        
-        return Observable.zip(requests) { $0 }
-    }
-    
-    /**
-     Load CustomerOrder metadata
-     - parameter auth: Authentication information
-     - returns: Metadata for object
-    */
-    public static func customerOrderMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return documentMetadata(request: .customerordermetadata,
-                              error: MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrderMetadataResponse.value),
-                              auth: auth)
-    }
-    
-    /**
-     Load Demand metadata
-     - parameter auth: Authentication information
-     - returns: Metadata for object
-     */
-    public static func demandMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return documentMetadata(request: .demandmetadata, 
-                              error: MSError.genericError(errorText: LocalizedStrings.incorrectDemandsMetadataResponse.value),
-                              auth: auth)
-    }
-    
-    /**
-     Load InvoiceOut metadata
-     - parameter auth: Authentication information
-     - returns: Metadata for object
-     */
-    public static func invoiceOutMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return documentMetadata(request: .invoiceOutMetadata,
-                              error: MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceOutMetadataResponse.value),
-                              auth: auth)
-    }
-    
-    /**
-     Load CashIn metadata
-     - parameter auth: Authentication information
-     - returns: Metadata for object
-     */
-    public static func cashInMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return documentMetadata(request: .cashInMetadata,
-                                error: MSError.genericError(errorText: LocalizedStrings.incorrectCashInMetadataResponse.value),
-                                auth: auth)
-    }
-    
-    /**
-     Load CashOut metadata
-     - parameter auth: Authentication information
-     - returns: Metadata for object
-     */
-    public static func cashOutMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return documentMetadata(request: .cashOutMetadata,
-                                error: MSError.genericError(errorText: LocalizedStrings.incorrectCashOutMetadataResponse.value),
-                                auth: auth)
-    }
-    
-    /**
-     Load PaymentIn metadata
-     - parameter auth: Authentication information
-     - returns: Metadata for object
-     */
-    public static func paymentInMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return documentMetadata(request: .paymentInMetadata,
-                                error: MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInMetadataResponse.value),
-                                auth: auth)
-    }
-    
-    /**
-     Load PaymentOut metadata
-     - parameter auth: Authentication information
-     - returns: Metadata for object
-     */
-    public static func paymentOutMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return documentMetadata(request: .paymentOutMetadata,
-                                error: MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutMetadataResponse.value),
-                                auth: auth)
-    }
-    
-    /**
-     Load Supply metadata
-     - parameter auth: Authentication information
-     - returns: Metadata for object
-     */
-    public static func supplyMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return documentMetadata(request: .supplyMetadata,
-                                error: MSError.genericError(errorText: LocalizedStrings.incorrectSupplyMetadataResponse.value),
-                                auth: auth)
-    }
-    
-    /**
-     Load InvoiceIn metadata
-     - parameter auth: Authentication information
-     - returns: Metadata for object
-     */
-    public static func invoiceInMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return documentMetadata(request: .invoiceInMetadata,
-                                error: MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceInMetadataResponse.value),
-                                auth: auth)
-    }
-    
-    /**
-     Load PurchaseOrder metadata
-     - parameter auth: Authentication information
-     - returns: Metadata for object
-     */
-    public static func purchaseOrderMetadata(auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return documentMetadata(request: .purchaseOrderMetadata,
-                                error: MSError.genericError(errorText: LocalizedStrings.incorrectPurchaseOrderMetadataResponse.value),
-                                auth: auth)
-    }
-    
-    /**
-     Load Counterparty metadata
-     - parameter auth: Authentication information
-     - returns: Metadata for object
-    */
-    public static func counterpartyMetadata(auth: Auth) -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> {
-        return HttpClient.get(.counterpartymetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
-            .flatMapLatest { result -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> in
-                guard let result = result?.toDictionary() else {
-                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyMetadataResponse.value))
-                }
-                return deserializeCounterpartyMetadata(json: result,
-                                                       incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyMetadataResponse.value))
-        }
-    }
-    
-    /**
-     Load Move metadata
-     - parameter auth: Authentication information
-     - returns: Metadata for object
-     */
-    public static func moveMetadata(auth: Auth) -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> {
-        return HttpClient.get(.movemetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
-            .flatMapLatest { result -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> in
-                guard let result = result?.toDictionary() else {
-                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectMoveMetadataResponse.value))
-                }
-                return deserializeCounterpartyMetadata(json: result,
-                                                       incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectMoveMetadataResponse.value))
-        }
-    }
-	
-	/**
-	Load Inventory metadata
-	- parameter auth: Authentication information
-	- returns: Metadata for object
-	*/
-	public static func inventoryMetadata(auth: Auth) -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> {
-		return HttpClient.get(.inventorymetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
-			.flatMapLatest { result -> Observable<(states: [MSState], tags: [String], attributes: [MSAttributeDefinition])> in
-				guard let result = result?.toDictionary() else {
-					return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectInventoryMetadataResponse.value))
-				}
-				return deserializeCounterpartyMetadata(json: result,
-													   incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectInventoryMetadataResponse.value))
-		}
-	}
-    
-    /**
-     Load Product metadata
-     - parameter auth: Authentication information
-     - returns: Metadata for object
-     */
-    public static func productMetadata(auth: Auth) -> Observable<(attributes: [MSAttributeDefinition], priceTypes: [String])> {
-        return HttpClient.get(.productMetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
-            .flatMapLatest { result -> Observable<(attributes: [MSAttributeDefinition], priceTypes: [String])> in
-                guard let result = result?.toDictionary() else {
-                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProductMetadataResponse.value))
-                }
-                return deserializeAssortmentMetadata(json: result,
-                                                       incorrectJsonError: MSError.genericError(errorText: LocalizedStrings.incorrectProductMetadataResponse.value))
-        }
-    }
-    
-    static func documentMetadata(request: MSApiRequest, error: Error, auth: Auth) -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> {
-        return HttpClient.get(request, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
-            .flatMapLatest { result -> Observable<(states: [MSState], attributes: [MSAttributeDefinition])> in
-                guard let result = result?.toDictionary() else { return Observable.error(error) }
-                return deserializeDocumentMetadata(json: result, incorrectJsonError: error)
+    static func loadMetadata(auth: Auth) -> Observable<[MetadataLoadResult]> {
+        return HttpClient.get(.entityMetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
+            .flatMapLatest { result -> Observable<[MetadataLoadResult]> in
+                guard let json = result?.toDictionary() else { return.just([]) }
+                let metadata: [MetadataLoadResult] = [deserializeObjectMetadata(objectType: .customerorder, from: json),
+                                                      deserializeObjectMetadata(objectType: .demand, from: json),
+                                                      deserializeObjectMetadata(objectType: .invoicein, from: json),
+                                                      deserializeObjectMetadata(objectType: .cashin, from: json),
+                                                      deserializeObjectMetadata(objectType: .cashout, from: json),
+                                                      deserializeObjectMetadata(objectType: .paymentin, from: json),
+                                                      deserializeObjectMetadata(objectType: .paymentout, from: json),
+                                                      deserializeObjectMetadata(objectType: .supply, from: json),
+                                                      deserializeObjectMetadata(objectType: .invoicein, from: json),
+                                                      deserializeObjectMetadata(objectType: .invoiceout, from: json),
+                                                      deserializeObjectMetadata(objectType: .purchaseorder, from: json),
+                                                      deserializeObjectMetadata(objectType: .counterparty, from: json),
+                                                      deserializeObjectMetadata(objectType: .move, from: json),
+                                                      deserializeObjectMetadata(objectType: .inventory, from: json),
+                                                      deserializeObjectMetadata(objectType: .product, from: json)]
+                return .just(metadata)
         }
     }
     

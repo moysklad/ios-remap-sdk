@@ -113,7 +113,7 @@ public struct DataManager {
                 groups[moment] = [MSEntity.entity(object)]
             }
         }
-        
+
         previousData?.forEach { prev in
             if let group = groups[prev.date] {
                 groups[prev.date] = prev.data + group
@@ -127,9 +127,9 @@ public struct DataManager {
     
     static func deserializeObjectMetadata(objectType: MSObjectType, from json: [String:Any]) -> MetadataLoadResult {
         let metadata = json.msValue(objectType.rawValue)
-        let states: [MSState] = metadata.msArray("states").map { MSState.from(dict: $0) }.compactMap { $0?.value() }
-        let attrs: [MSAttributeDefinition] = metadata.msArray("attributes").map { MSAttributeDefinition.from(dict: $0) }.compactMap { $0 }
-        let priceTypes: [String] = metadata.msArray("priceTypes").map { $0.value("name") }.compactMap { $0 }
+        let states: [MSState] = metadata.msArray("states").compactMap { MSState.from(dict: $0)?.value() }
+        let attrs: [MSAttributeDefinition] = metadata.msArray("attributes").compactMap { MSAttributeDefinition.from(dict: $0) }
+        let priceTypes: [String] = metadata.msArray("priceTypes").compactMap { $0.value("name") }
         let createShared: Bool = metadata.value("createShared") ?? false
         return MetadataLoadResult(type: objectType, states: states, attributes: attrs, tags: metadata.value("groups") ?? [], priceTypes: priceTypes, createShared: createShared)
     }

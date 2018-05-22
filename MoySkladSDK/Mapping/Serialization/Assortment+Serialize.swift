@@ -59,12 +59,12 @@ extension MSAssortment {
         dict["isSerialTrackable"] = isSerialTrackable
         dict["salePrices"] = salePrices.map { $0.dictionary() }
         dict["barcodes"] = barcodes
-        dict["attributes"] = attributes?.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
+        dict["attributes"] = attributes?.compactMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
         
         dict["packs"] = packs.map { $0.dictionary() }
         
         if components.count > 0 {
-            dict["components"] = components.flatMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
+            dict["components"] = components.compactMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
         }
         
         if let serialized = serializeCharacteristics(characteristics) {

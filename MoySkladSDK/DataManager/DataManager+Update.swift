@@ -73,7 +73,7 @@ extension DataManager {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPositionsResponse.value))
                 }
                 
-                let deserialized = result.flatMap { MSPosition.from(dict: $0) }
+                let deserialized = result.compactMap { MSPosition.from(dict: $0) }
                 
                 return Observable.just(deserialized)
         }

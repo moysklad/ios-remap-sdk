@@ -42,10 +42,10 @@ extension MSAgent : DictConvertable {
 		        okpo: dict.value("okpo"),
 		        certificateNumber: dict.value("certificateNumber"),
 		        certificateDate: Date.fromMSDate(dict.value("certificateDate") ?? ""),
-		        accounts: dict.msValue("accounts").msArray("rows").map { MSAccount.from(dict: $0) }.flatMap { $0 },
+		        accounts: dict.msValue("accounts").msArray("rows").map { MSAccount.from(dict: $0) }.compactMap { $0 },
 		        agentInfo: MSAgentInfo.from(dict: dict),
                 salesAmount: (dict.value("salesAmount") ?? 0.0).toMoney(),
-                attributes: dict.msArray("attributes").map { MSAttribute.from(dict: $0) }.flatMap { $0 },
+                attributes: dict.msArray("attributes").map { MSAttribute.from(dict: $0) }.compactMap { $0 },
                 report: nil
             ))
 	}
@@ -64,8 +64,8 @@ extension MSAgentInfo {
 		                   director: dict.value("director"),
 		                   chiefAccountant: dict.value("chiefAccountant"),
 		                   tags: dict.value("tags") ?? [],
-		                   contactpersons: dict.msValue("contactpersons").msArray("rows").map { MSContactPerson.from(dict: $0) }.flatMap { $0 },
-                           discounts: dict.msArray("discounts").map { MSDiscount.from(dict: $0) }.flatMap { $0 },
+		                   contactpersons: dict.msValue("contactpersons").msArray("rows").map { MSContactPerson.from(dict: $0) }.compactMap { $0 },
+                           discounts: dict.msArray("discounts").map { MSDiscount.from(dict: $0) }.compactMap { $0 },
 		                   state: MSState.from(dict: dict.msValue("state")),
                            discountCardNumber: dict.value("discountCardNumber"),
                            priceType: dict.value("priceType"))

@@ -26,6 +26,7 @@ public enum MSDocumentLoadRequest {
     case move
     case inventory
     
+    // TODO:
     var apiRequest: MSApiRequest {
         switch self {
         case .customerOrder: return .customerorder

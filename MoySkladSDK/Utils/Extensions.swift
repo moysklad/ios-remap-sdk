@@ -134,6 +134,7 @@ extension MSTask: MSRequestEntity {
     }
 }
 
+// TODO: 
 extension MSBaseDocumentType {
     func templateBody(forDocument type: MSObjectType) -> [String: Any]? {
         // если будет создаваться платежный документ, то для него связанные документы нужно класть в operations

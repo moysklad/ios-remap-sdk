@@ -34,6 +34,7 @@ public protocol MSBaseDocumentType : class, Metable, MSRequestEntity, NSCopying 
     func dictionary(metaOnly: Bool) -> [String: Any]
 }
 
+// TODO:
 public extension MSBaseDocumentType {
     public func requestUrl() -> MSApiRequest? {
         switch meta.type {

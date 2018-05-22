@@ -90,7 +90,7 @@ public extension ValueCoding where Coder: NSCoding, Coder.Value == Self {
     - returns: the array of values which were able to be unarchived.
     */
     static func decode<S: Sequence>(_ objects: S?) -> [Self] where S.Iterator.Element: Any {
-        return objects?.flatMap(Self.decode) ?? []
+        return objects?.compactMap(Self.decode) ?? []
     }
 
     /**
@@ -100,7 +100,7 @@ public extension ValueCoding where Coder: NSCoding, Coder.Value == Self {
      - returns: the array of arrays of values which were able to be unarchived.
      */
     static func decode<S: Sequence>(_ objects: S?) -> [[Self]] where S.Iterator.Element: Sequence, S.Iterator.Element.Iterator.Element: Any {
-        return objects?.flatMap(Self.decode) ?? []
+        return objects?.compactMap(Self.decode) ?? []
     }
 
     /**

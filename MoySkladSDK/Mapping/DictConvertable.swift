@@ -18,7 +18,7 @@ extension Dictionary where Key : ExpressibleByStringLiteral, Value : Any {
     public func msArray(_ key: Key) -> [Dictionary<String, Any>] {
         return (self[key] as? Array<Any> ?? []).map {
             $0 as? Dictionary<String, Any>
-            }.flatMap { $0 }
+            }.compactMap { $0 }
     }
 }
 

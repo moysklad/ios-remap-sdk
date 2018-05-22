@@ -115,8 +115,8 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
     }
     
     public func copyDocument() -> MSDocument {
-        let positionsCopy = positions.flatMap { $0.value() }.map { MSEntity.entity($0.copy()) }
-        let operationsCopy = operations.flatMap { $0.value() }.map { MSEntity.entity($0.copyDocument()) }
+        let positionsCopy = positions.compactMap { $0.value() }.map { MSEntity.entity($0.copy()) }
+        let operationsCopy = operations.compactMap { $0.value() }.map { MSEntity.entity($0.copyDocument()) }
 
         return MSDocument(id: id,
                           meta: meta,

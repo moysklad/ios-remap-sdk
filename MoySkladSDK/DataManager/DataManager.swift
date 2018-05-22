@@ -1053,7 +1053,7 @@ public struct DataManager {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecContactPersonsResponse.value))
                 }
                 
-                return Observable.just(results.flatMap({ (contact) -> MSEntity<MSContactPerson>? in
+                return Observable.just(results.compactMap({ (contact) -> MSEntity<MSContactPerson>? in
                     return MSContactPerson.from(dict: contact)
                 }))
         }

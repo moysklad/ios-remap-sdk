@@ -19,7 +19,7 @@ extension MSDocument : DictConvertable {
                 return MSEntity.meta(meta)
         }
         
-        var purchaseOrders = dict.msArray("purchaseOrders").map { MSDocument.from(dict: $0) }.flatMap { $0 }
+        var purchaseOrders = dict.msArray("purchaseOrders").map { MSDocument.from(dict: $0) }.compactMap { $0 }
         if let purchaseOrder = MSDocument.from(dict: dict.msValue("purchaseOrder")) {
             purchaseOrders.append(purchaseOrder)
         }
@@ -45,7 +45,7 @@ extension MSDocument : DictConvertable {
                    shared: dict.value("shared") ?? false,
                    applicable: dict.value("applicable") ?? defaultApplicable,
                    state: MSState.from(dict: dict.msValue("state")),
-                   attributes: dict.msArray("attributes").map { MSAttribute.from(dict: $0) }.flatMap { $0 },
+                   attributes: dict.msArray("attributes").map { MSAttribute.from(dict: $0) }.compactMap { $0 },
                    originalApplicable: dict.value("applicable") ?? defaultApplicable,
                    agentAccount: MSAccount.from(dict: dict.msValue("agentAccount")),
                    organizationAccount: MSAccount.from(dict: dict.msValue("organizationAccount")),
@@ -53,15 +53,15 @@ extension MSDocument : DictConvertable {
                    vatEnabled: dict.value("vatEnabled") ?? false,
                    store: MSStore.from(dict: dict.msValue("store")),
                    originalStoreId: MSStore.from(dict: dict.msValue("store"))?.value()?.id.msID,
-                   positions: dict.msValue("positions").msArray("rows").map { MSPosition.from(dict: $0) }.flatMap { $0 },
+                   positions: dict.msValue("positions").msArray("rows").map { MSPosition.from(dict: $0) }.compactMap { $0 },
                    totalPositionsCount: dict.msValue("positions").msValue("meta").value("size") ?? 0,
                    stock: [],
                    deliveryPlannedMoment: Date.fromMSDate(dict.value("deliveryPlannedMoment") ?? ""),
                    purchaseOrders: purchaseOrders,
                    demands: dict.msArray("demands").map { MSDocument.from(dict: $0)?.value() }.removeNils(),
-                   payments: dict.msArray("payments").map { MSDocument.from(dict: $0) }.flatMap { $0 },
+                   payments: dict.msArray("payments").map { MSDocument.from(dict: $0) }.compactMap { $0 },
                    invoicesOut: dict.msArray("invoicesOut").map { MSDocument.from(dict: $0)?.value() }.removeNils(),
-                   returns: dict.msArray("returns").map { MSDocument.from(dict: $0) }.flatMap { $0 },
+                   returns: dict.msArray("returns").map { MSDocument.from(dict: $0) }.compactMap { $0 },
                    factureOut: MSDocument.from(dict: dict.msValue("factureOut")),
                    overhead: MSOverhead.from(dict: dict.msValue("overhead")),
                    customerOrder: MSDocument.from(dict: dict.msValue("customerOrder"))?.value(),
@@ -79,23 +79,23 @@ extension MSDocument : DictConvertable {
                    paymentPurpose: dict.value("paymentPurpose"),
                    factureIn: MSDocument.from(dict: dict.msValue("factureIn")),
                    expenseItem: MSExpenseItem.from(dict: dict.value("expenseItem") ?? ["": ""]),
-                   operations: dict.msArray("operations").map { MSDocument.from(dict: $0) }.flatMap { $0 },
+                   operations: dict.msArray("operations").map { MSDocument.from(dict: $0) }.compactMap { $0 },
                    linkedSum: (dict.value("linkedSum") ?? 0.0).toMoney(),
                    stateContractId: dict.value("stateContractId"),
-                   invoicesIn: dict.msArray("invoicesIn").map { MSDocument.from(dict: $0) }.flatMap { $0 },
+                   invoicesIn: dict.msArray("invoicesIn").map { MSDocument.from(dict: $0) }.compactMap { $0 },
                    proceedsNoCash: (dict.value("proceedsNoCash") ?? 0.0).toMoney(),
                    proceedsCash: (dict.value("proceedsCash") ?? 0.0).toMoney(),
                    receivedNoCash: (dict.value("receivedNoCash") ?? 0.0).toMoney(),
                    receivedCash: (dict.value("receivedCash") ?? 0.0).toMoney(),
-                   customerOrders: dict.msArray("customerOrders").map { MSDocument.from(dict: $0) }.flatMap { $0 },
-                   supplies: dict.msArray("supplies").flatMap { MSDocument.from(dict: $0) },
+                   customerOrders: dict.msArray("customerOrders").map { MSDocument.from(dict: $0) }.compactMap { $0 },
+                   supplies: dict.msArray("supplies").compactMap { MSDocument.from(dict: $0) },
                    commitentSum: (dict.value("commitentSum") ?? 0.0).toMoney(),
                    sourceStore: MSStore.from(dict: dict.msValue("sourceStore")),
                    targetStore: MSStore.from(dict: dict.msValue("targetStore")),
                    internalOrder: MSDocument.from(dict: dict.msValue("internalOrder")),
                    targetStock: [],
-				   enters: dict.msArray("enters").flatMap { MSDocument.from(dict: $0) },
-				   losses: dict.msArray("losses").flatMap { MSDocument.from(dict: $0) },
+				   enters: dict.msArray("enters").compactMap { MSDocument.from(dict: $0) },
+				   losses: dict.msArray("losses").compactMap { MSDocument.from(dict: $0) },
                    positionsManager: nil))
     }
 }

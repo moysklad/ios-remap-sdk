@@ -187,7 +187,7 @@ extension DataManager {
             .flatMapLatest { result -> Observable<[MSEntity<MSAgentReport>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyReportResponse.value)) }
                 
-                let deserialized = result.msArray("rows").flatMap { MSAgentReport.from(dict: $0) }
+                let deserialized = result.msArray("rows").compactMap { MSAgentReport.from(dict: $0) }
                 
                 return Observable.just(deserialized)
         }
@@ -279,7 +279,7 @@ extension DataManager {
         return HttpClient.get(url, auth: auth, urlPathComponents: pathComponents, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSPosition>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPositionsResponse.value)) }
-                let deserialized = result.msArray("rows").flatMap { MSPosition.from(dict: $0) }
+                let deserialized = result.msArray("rows").compactMap { MSPosition.from(dict: $0) }
                 return .just(deserialized)
         }
     }
@@ -309,7 +309,7 @@ extension DataManager {
                                                          request: url,
                                                          offset: MSOffset(size: 0, limit: limit, offset: 0),
                                                          observer: observer,
-                                                         deserializer: { $0.toDictionary()?.msArray("rows").flatMap { MSPosition.from(dict: $0) } ?? [] },
+                                                         deserializer: { $0.toDictionary()?.msArray("rows").compactMap { MSPosition.from(dict: $0) } ?? [] },
                                                          deserializationError: MSError.genericError(errorText: LocalizedStrings.incorrectPositionsResponse.value)).subscribe()
             
             return Disposables.create { subscription.dispose() }

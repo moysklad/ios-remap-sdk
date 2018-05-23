@@ -32,44 +32,19 @@ public protocol MSBaseDocumentType : class, Metable, MSRequestEntity, NSCopying 
     
     func copyDocument() -> MSDocument
     func dictionary(metaOnly: Bool) -> [String: Any]
+    
+    var documentType: MSDocumentType? { get }
 }
 
-// TODO:
 public extension MSBaseDocumentType {
+    public var documentType: MSDocumentType? { return MSDocumentType(rawValue: meta.type.rawValue) }
+    
     public func requestUrl() -> MSApiRequest? {
-        switch meta.type {
-        case .customerorder: return .customerorder
-        case .demand: return .demand
-        case .invoiceout: return .invoiceOut
-        case .cashin: return .cashIn
-        case .cashout: return .cashOut
-        case .paymentin: return .paymentIn
-        case .paymentout: return .paymentOut
-        case .supply: return .supply
-        case .invoicein: return .invoiceIn
-        case .purchaseorder: return .purchaseOrder
-        case .move: return .move
-        case .inventory: return .inventory
-        default: return nil
-        }
+        return MSDocumentType.fromMSObjectType(meta.type)?.apiRequest
     }
     
     public func deserializationError() -> MSError {
-        switch meta.type {
-        case .customerorder: return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
-        case .demand: return MSError.genericError(errorText: LocalizedStrings.incorrectDemandsResponse.value)
-        case .invoiceout: return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
-        case .cashin: return MSError.genericError(errorText: LocalizedStrings.incorrectCashInResponse.value)
-        case .cashout: return MSError.genericError(errorText: LocalizedStrings.incorrectCashOutResponse.value)
-        case .paymentin: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInResponse.value)
-        case .paymentout: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutResponse.value)
-        case .supply: return MSError.genericError(errorText: LocalizedStrings.incorrectSupplyResponse.value)
-        case .invoicein: return MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceInResponse.value)
-        case .purchaseorder: return MSError.genericError(errorText: LocalizedStrings.incorrectPurchaseOrderResponse.value)
-        case .move: return MSError.genericError(errorText: LocalizedStrings.incorrectMoveResponse.value)
-        case .inventory: return MSError.genericError(errorText: LocalizedStrings.incorrectInventoryResponse.value)
-        default: return MSError.genericError(errorText: LocalizedStrings.genericDeserializationError.value)
-        }
+        return MSDocumentType.fromMSObjectType(meta.type)?.requestError ?? MSError.genericError(errorText: LocalizedStrings.genericDeserializationError.value)
     }
 }
 

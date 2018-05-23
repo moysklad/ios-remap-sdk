@@ -84,3 +84,40 @@ public enum MSObjectType : String {
     case country
     case personaldiscount
 }
+
+/// Subset of MSObjectType's for representing documents
+public enum MSDocumentType: String {
+    case customerorder
+    case demand
+    case invoiceout
+    case paymentin
+    case paymentout
+    case cashin
+    case cashout
+    case operation
+    case supply
+    case invoicein
+    case purchaseorder
+    case move
+    case inventory
+    
+    public var objectType: MSObjectType {
+        return MSObjectType(rawValue: rawValue)!
+    }
+    
+    public var positionType: MSObjectType? {
+        switch self {
+        case .customerorder: return .customerorderposition
+        case .demand: return .demandposition
+        case .invoiceout: return .invoiceposition
+        case .supply: return .supplyposition
+        case .inventory: return .inventoryposition
+        case .paymentin, .paymentout, .cashin, .cashout, .operation, .invoicein, .purchaseorder, .move: return nil
+        }
+    }
+    
+    public static func fromMSObjectType(_ value: MSObjectType) -> MSDocumentType? {
+        return MSDocumentType(rawValue: value.rawValue)
+    }
+}
+

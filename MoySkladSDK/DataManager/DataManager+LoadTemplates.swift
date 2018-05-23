@@ -13,12 +13,12 @@ extension DataManager {
     /**
      Load print templates for document type.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#шаблон-печатной-формы)
-     - parameter request: Request metadata type for which templates should be loaded
+     - parameter forDocument: Request metadata type for which templates should be loaded
      - parameter auth: Authentication information
      - parameter type: Type of Template that should be loaded
      */
-    public static func templates(request: MSDocumentLoadRequest, auth: Auth, type: MSTemplateType) -> Observable<[MSEntity<MSTemplate>]> {
-        return HttpClient.get(request.metadataRequest, auth: auth, urlPathComponents: [type.rawValue])
+    public static func templates(forDocument documentType: MSDocumentType, auth: Auth, type: MSTemplateType) -> Observable<[MSEntity<MSTemplate>]> {
+        return HttpClient.get(documentType.metadataRequest, auth: auth, urlPathComponents: [type.rawValue])
             .flatMapLatest { result -> Observable<[MSEntity<MSTemplate>]> in
                 guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectTemplateResponse.value))
@@ -37,17 +37,17 @@ extension DataManager {
     /**
      Load link to created PDF for document from template.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#печать-документов)
+     - parameter forDocument: Document type for which PDF should be loaded
      - parameter auth: Authentication information
-     - parameter docType: Document type for which PDF should be loaded
      - parameter id: Id of document
      - parameter meta: Document template metadata
      - returns: Observable sequence with http link to PDF document
      */
-    public static func documentFromTemplate(request: MSDocumentLoadRequest, auth: Auth, id: String, meta: MSMeta) -> Observable<String> {
+    public static func documentFromTemplate(forDocument documentType: MSDocumentType, auth: Auth, id: String, meta: MSMeta) -> Observable<String> {
         let urlPathComponents: [String] = [id, "export"]
         var body = meta.dictionaryForTemplate()
         body["extension"] = "pdf"
-        return HttpClient.updateWithHeadersResult(request.apiRequest, auth: auth, urlPathComponents: urlPathComponents, body: body.toJSONType()).flatMapLatest { result -> Observable<String> in
+        return HttpClient.updateWithHeadersResult(documentType.apiRequest, auth: auth, urlPathComponents: urlPathComponents, body: body.toJSONType()).flatMapLatest { result -> Observable<String> in
             
             guard let result = result else {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecDocumentFromTemplateResponse.value))
@@ -62,16 +62,16 @@ extension DataManager {
     /**
      Load link to created publication for document from template.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#публикация-документов)
+     - parameter forDocument: Document type for which publication should be loaded
      - parameter auth: Authentication information
-     - parameter docType: Document type for which publication should be loaded
      - parameter id: Id of document
      - parameter meta: Document template metadata
      - returns: Observable sequence with http link to publication
      */
-    public static func publicationFromTemplate(request: MSDocumentLoadRequest, auth: Auth, id: String, meta: MSMeta) -> Observable<String> {
+    public static func publicationFromTemplate(forDocument documentType: MSDocumentType, auth: Auth, id: String, meta: MSMeta) -> Observable<String> {
         let urlPathComponents: [String] = [id, "publication"]
         let body = meta.dictionaryForTemplate()
-        return HttpClient.create(request.apiRequest, auth: auth, urlPathComponents: urlPathComponents, body: body.toJSONType(), contentType: .json).flatMapLatest { result -> Observable<String> in
+        return HttpClient.create(documentType.apiRequest, auth: auth, urlPathComponents: urlPathComponents, body: body.toJSONType(), contentType: .json).flatMapLatest { result -> Observable<String> in
             guard let result = result?.toDictionary() else {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecPublicationFromTemplateResponse.value))
             }

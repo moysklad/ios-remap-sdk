@@ -9,36 +9,20 @@
 import Foundation
 import RxSwift
 
-public typealias GroupedMoment<T>  = (date: Date, data: [T])  where T: MSGeneralDocument, T: DictConvertable
-
-public enum MSDocumentLoadRequest {
-    case customerOrder
-    case demand
-    case invoiceOut
-    case paymentIn
-    case paymentOut
-    case cashIn
-    case cashOut
-    case operation
-    case supply
-    case invoiceIn
-    case purchaseOrder
-    case move
-    case inventory
-    
+extension MSDocumentType {
     var apiRequest: MSApiRequest {
         switch self {
-        case .customerOrder: return .customerorder
+        case .customerorder: return .customerorder
         case .demand: return .demand
-        case .invoiceOut: return .invoiceOut
-        case .cashIn: return .cashIn
-        case .cashOut: return .cashOut
-        case .paymentIn: return .paymentIn
-        case .paymentOut: return .paymentOut
+        case .invoiceout: return .invoiceOut
+        case .cashin: return .cashIn
+        case .cashout: return .cashOut
+        case .paymentin: return .paymentIn
+        case .paymentout: return .paymentOut
         case .operation: return .operation
         case .supply: return .supply
-        case .invoiceIn: return .invoiceIn
-        case .purchaseOrder: return .purchaseOrder
+        case .invoicein: return .invoiceIn
+        case .purchaseorder: return .purchaseOrder
         case .move: return .move
         case .inventory: return .inventory
         }
@@ -46,40 +30,42 @@ public enum MSDocumentLoadRequest {
     
     var metadataRequest: MSApiRequest {
         switch self {
-        case .customerOrder: return .customerordermetadata
+        case .customerorder: return .customerordermetadata
         case .demand: return .demandmetadata
-        case .invoiceOut: return .invoiceOutMetadata
-        case .cashIn: return .cashInMetadata
-        case .cashOut: return .cashOutMetadata
-        case .paymentIn: return .paymentInMetadata
-        case .paymentOut: return .paymentOutMetadata
+        case .invoiceout: return .invoiceOutMetadata
+        case .cashin: return .cashInMetadata
+        case .cashout: return .cashOutMetadata
+        case .paymentin: return .paymentInMetadata
+        case .paymentout: return .paymentOutMetadata
         case .operation: return .operation
         case .supply: return .supplyMetadata
-        case .invoiceIn: return .invoiceInMetadata
-        case .purchaseOrder: return .purchaseOrderMetadata
+        case .invoicein: return .invoiceInMetadata
+        case .purchaseorder: return .purchaseOrderMetadata
         case .move: return .movemetadata
         case .inventory: return .inventorymetadata
         }
     }
     
-    var requestError: Error {
+    var requestError: MSError {
         switch self {
-        case .customerOrder: return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
+        case .customerorder: return MSError.genericError(errorText: LocalizedStrings.incorrectCustomerOrdersResponse.value)
         case .demand: return MSError.genericError(errorText: LocalizedStrings.incorrectDemandsResponse.value)
-        case .invoiceOut: return MSError.genericError(errorText: LocalizedStrings.incorrectInvoicesOutResponse.value)
-        case .cashIn: return MSError.genericError(errorText: LocalizedStrings.incorrectCashInResponse.value)
-        case .cashOut: return MSError.genericError(errorText: LocalizedStrings.incorrectCashOutResponse.value)
-        case .paymentIn: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInResponse.value)
-        case .paymentOut: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutResponse.value)
+        case .invoiceout: return MSError.genericError(errorText: LocalizedStrings.incorrectInvoicesOutResponse.value)
+        case .cashin: return MSError.genericError(errorText: LocalizedStrings.incorrectCashInResponse.value)
+        case .cashout: return MSError.genericError(errorText: LocalizedStrings.incorrectCashOutResponse.value)
+        case .paymentin: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentInResponse.value)
+        case .paymentout: return MSError.genericError(errorText: LocalizedStrings.incorrectPaymentOutResponse.value)
         case .operation: return MSError.genericError(errorText: LocalizedStrings.incorrectOperationResponse.value)
         case .supply: return MSError.genericError(errorText: LocalizedStrings.incorrectSupplyResponse.value)
-        case .invoiceIn: return MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceInResponse.value)
-        case .purchaseOrder: return MSError.genericError(errorText: LocalizedStrings.incorrectPurchaseOrderResponse.value)
+        case .invoicein: return MSError.genericError(errorText: LocalizedStrings.incorrectInvoiceInResponse.value)
+        case .purchaseorder: return MSError.genericError(errorText: LocalizedStrings.incorrectPurchaseOrderResponse.value)
         case .move: return MSError.genericError(errorText: LocalizedStrings.incorrectMoveResponse.value)
         case .inventory: return MSError.genericError(errorText: LocalizedStrings.incorrectInventoryResponse.value)
         }
     }
 }
+
+public typealias GroupedMoment<T>  = (date: Date, data: [T])  where T: MSGeneralDocument, T: DictConvertable
 
 extension DataManager {
     private static func loadRecursive<T>(loader: @escaping (MSApiRequest, MSOffset) -> Observable<JSONType?>,
@@ -114,21 +100,21 @@ extension DataManager {
     
     /**
      Load document by Id
-     - parameter request: Type of document request
+     - parameter forDocument: Type of document request
      - parameter auth: Authentication information
      - parameter documentId: Document Id
      - parameter expanders: Additional objects to include into request
      */
-    public static func loadById(forRequest request: MSDocumentLoadRequest,
+    public static func loadById(forDocument documentType: MSDocumentType,
                                 auth: Auth,
                                 documentId: UUID,
                                 expanders: [Expander] = []) -> Observable<MSDocument>  {
-        return HttpClient.get(request.apiRequest, auth: auth, urlPathComponents: [documentId.uuidString], urlParameters: [CompositeExpander(expanders)])
+        return HttpClient.get(documentType.apiRequest, auth: auth, urlPathComponents: [documentId.uuidString], urlParameters: [CompositeExpander(expanders)])
             .flatMapLatest { result -> Observable<MSDocument> in
-                guard let result = result?.toDictionary() else { return Observable.error(request.requestError) }
+                guard let result = result?.toDictionary() else { return Observable.error(documentType.requestError) }
                 
                 guard let deserialized = MSDocument.from(dict: result)?.value() else {
-                    return Observable.error(request.requestError)
+                    return Observable.error(documentType.requestError)
                 }
                 
                 return Observable.just(deserialized)
@@ -195,7 +181,7 @@ extension DataManager {
 
     /**
      Load documents and group by document moment
-     - parameter request: Type of document request
+     - parameter forDocument: Type of document request
      - parameter auth: Authentication information
      - parameter offset: Desired data offset
      - parameter expanders: Additional objects to include into request
@@ -205,7 +191,7 @@ extension DataManager {
      - parameter stateId: If of state to filter by
      - parameter withPrevious: Grouped data returned by previous invocation of groupedByMoment (useful for paged loading)
      */
-    public static func loadDocumentsGroupedByMoment(forRequest request: MSDocumentLoadRequest,
+    public static func loadDocumentsGroupedByMoment(forDocument documentType: MSDocumentType,
                                                     auth: Auth,
                                                     offset: MSOffset? = nil,
                                                     expanders: [Expander] = [],
@@ -213,7 +199,7 @@ extension DataManager {
                                                     withPrevious: [GroupedMoment<MSDocument>]? = nil)
         -> Observable<[GroupedMoment<MSDocument>]> {
             
-            return DataManager.loadDocuments(forRequest: request, auth: auth, offset: offset, expanders: expanders, filters: filters, orderBy: Order(OrderArgument(field: .moment)))
+            return DataManager.loadDocuments(forDocument: documentType, auth: auth, offset: offset, expanders: expanders, filters: filters, orderBy: Order(OrderArgument(field: .moment)))
                 .flatMapLatest { result -> Observable<[GroupedMoment<MSDocument>]> in
                     
                     let grouped = DataManager.groupByDate2(data: result,
@@ -224,7 +210,7 @@ extension DataManager {
     
     /**
      Load documents
-     - parameter request: Type of document request
+     - parameter forDocument: Type of document request
      - parameter auth: Authentication information
      - parameter offset: Desired data offset
      - parameter expanders: Additional objects to include into request
@@ -233,7 +219,7 @@ extension DataManager {
      - parameter organizationId: Id of organization to filter by
      - parameter stateId: If of state to filter by
      */
-    public static func loadDocuments(forRequest request: MSDocumentLoadRequest,
+    public static func loadDocuments(forDocument documentType: MSDocumentType,
                                      auth: Auth,
                                      offset: MSOffset? = nil,
                                      expanders: [Expander] = [],
@@ -242,9 +228,9 @@ extension DataManager {
         
         let urlParameters: [UrlParameter] = mergeUrlParameters(filters?.search, filters?.filter, offset, orderBy, CompositeExpander(expanders), filters?.organization)
         
-        return HttpClient.get(request.apiRequest, auth: auth, urlParameters: urlParameters)
+        return HttpClient.get(documentType.apiRequest, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSDocument]> in
-                guard let result = result?.toDictionary() else { return Observable.error(request.requestError) }
+                guard let result = result?.toDictionary() else { return Observable.error(documentType.requestError) }
                 
                 let deserialized = result.msArray("rows")
                     .map { MSDocument.from(dict: $0)?.value() }

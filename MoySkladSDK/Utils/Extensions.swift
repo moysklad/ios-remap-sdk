@@ -134,30 +134,6 @@ extension MSTask: MSRequestEntity {
     }
 }
 
-// TODO: 
-extension MSBaseDocumentType {
-    func templateBody(forDocument type: MSObjectType) -> [String: Any]? {
-        // если будет создаваться платежный документ, то для него связанные документы нужно класть в operations
-        switch type{
-        case .cashin: fallthrough
-        case .cashout: fallthrough
-        case .paymentin: fallthrough
-        case .paymentout: return ["operations": [dictionary(metaOnly: true)]]
-        default: break
-        }
-        
-        switch self.meta.type {
-        case .customerorder: return type == .purchaseorder ? ["customerOrders": [dictionary(metaOnly: true)]] : ["customerOrder": dictionary(metaOnly: true)]
-        case .demand: return ["demands": [dictionary(metaOnly: true)]]
-        case .invoiceout: return ["invoicesOut": [dictionary(metaOnly: true)]]
-        case .purchaseorder: return ["purchaseOrder": dictionary(metaOnly: true)]
-        case .invoicein: return type == .supply ? ["invoicesIn": [dictionary(metaOnly: true)]] : ["invoiceIn": dictionary(metaOnly: true)]
-        case .supply: return ["supplies": [dictionary(metaOnly: true)]]
-        default: return nil
-        }
-    }
-}
-
 extension UserDefaults {
     var moySkladHost: String {
         get {

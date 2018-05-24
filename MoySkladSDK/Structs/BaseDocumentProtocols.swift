@@ -32,6 +32,7 @@ public protocol MSBaseDocumentType : class, Metable, MSRequestEntity, NSCopying 
     
     func copyDocument() -> MSDocument
     func dictionary(metaOnly: Bool) -> [String: Any]
+    func templateBody(forDocument type: MSObjectType) -> [String: Any]?
     
     var documentType: MSDocumentType? { get }
 }
@@ -45,6 +46,29 @@ public extension MSBaseDocumentType {
     
     public func deserializationError() -> MSError {
         return MSDocumentType.fromMSObjectType(meta.type)?.requestError ?? MSError.genericError(errorText: LocalizedStrings.genericDeserializationError.value)
+    }
+    
+    func templateBody(forDocument type: MSObjectType) -> [String: Any]? {
+        guard let newDocType = MSDocumentType.fromMSObjectType(type) else { return nil }
+        // если будет создаваться платежный документ, то для него связанные документы нужно класть в operations
+        switch newDocType {
+        case .cashin: fallthrough
+        case .cashout: fallthrough
+        case .paymentin: fallthrough
+        case .paymentout: return ["operations": [dictionary(metaOnly: true)]]
+        case .customerorder, .demand, .invoiceout, .operation, .supply, .invoicein, .purchaseorder, .move, .inventory: break
+        }
+        
+        guard let currentDocType = self.documentType else { return nil }
+        switch currentDocType {
+        case .customerorder: return type == .purchaseorder ? ["customerOrders": [dictionary(metaOnly: true)]] : ["customerOrder": dictionary(metaOnly: true)]
+        case .demand: return ["demands": [dictionary(metaOnly: true)]]
+        case .invoiceout: return ["invoicesOut": [dictionary(metaOnly: true)]]
+        case .purchaseorder: return ["purchaseOrder": dictionary(metaOnly: true)]
+        case .invoicein: return type == .supply ? ["invoicesIn": [dictionary(metaOnly: true)]] : ["invoiceIn": dictionary(metaOnly: true)]
+        case .supply: return ["supplies": [dictionary(metaOnly: true)]]
+        case .paymentin, .paymentout, .cashin, .cashout, .operation, .move, .inventory: return nil
+        }
     }
 }
 

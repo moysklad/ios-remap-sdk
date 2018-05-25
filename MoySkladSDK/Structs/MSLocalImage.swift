@@ -10,11 +10,14 @@ import UIKit
 
 public class MSLocalImage {
     public var title: String
-    public var image: Data
+    public var minImage: Data
+    public var fullImageURL: URL
     
     public init(title: String,
-                image: Data) {
+                minImage: Data,
+                fullImageURL: URL) {
         self.title = title
-        self.image = image
+        self.minImage = minImage
+        self.fullImageURL = fullImageURL
     }
 }

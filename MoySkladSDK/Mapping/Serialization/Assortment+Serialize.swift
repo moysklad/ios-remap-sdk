@@ -147,10 +147,8 @@ extension MSLocalImage {
         dict["filename"] = title
         
         do {
-            let fullImageData = try Data(contentsOf: fullImageURL)
-            dict["content"] = fullImageData.base64EncodedString()
-        } catch {
-            print("Full image data read and save error")
+            let fullImageData = try? Data(contentsOf: fullImageURL)
+            dict["content"] = fullImageData?.base64EncodedString()
         }
         
         return dict

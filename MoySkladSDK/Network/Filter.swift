@@ -37,6 +37,7 @@ public enum EntityField: String {
     case id
     case productid
     case phone
+    case kpp
 }
 
 public enum FilterOperator : String {

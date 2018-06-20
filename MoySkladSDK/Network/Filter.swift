@@ -36,6 +36,7 @@ public enum EntityField: String {
     case paidCash = "isPaidInCash"
     case id
     case productid
+    case phone
 }
 
 public enum FilterOperator : String {

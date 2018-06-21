@@ -328,6 +328,7 @@ public struct DataManager {
      - parameter search: Additional string for filtering by name
      - parameter stockStore: Specifies specific Store for filtering
      - parameter scope: Filter data for scope. For example if product specified, query will not return variants for product
+     - parameter urlParameters: Any other URL parameters
      - returns: Collection of Assortment
     */
     public static func assortment(auth: Auth,
@@ -336,10 +337,11 @@ public struct DataManager {
                                   filter: Filter? = nil,
                                   search: Search? = nil, 
                                   stockStore: StockStore? = nil, 
-                                  scope: AssortmentScope? = nil)
+                                  scope: AssortmentScope? = nil,
+                                  urlParameters otherParameters: [UrlParameter] = [])
         -> Observable<[MSEntity<MSAssortment>]> {
             
-            let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, stockStore, scope, CompositeExpander(expanders), StockMomentAssortment(value: Date()))
+            let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, stockStore, scope, CompositeExpander(expanders), StockMomentAssortment(value: Date())) + otherParameters
             
             return HttpClient.get(.assortment, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSAssortment>]> in
@@ -468,6 +470,7 @@ public struct DataManager {
      - parameter search: Additional string for filtering by name
      - parameter stockStore: Specifies specific Store for filtering
      - parameter scope: Filter data for scope. For example if product specified, query will not return variants for product
+     - parameter urlParameters: Any other URL parameters
      - parameter withPrevious: Grouped data returned by previous invocation of assortmentGroupedByProductFolder (useful for paged loading)
      - returns: Collection of grouped Assortment
      */
@@ -478,9 +481,10 @@ public struct DataManager {
                                                         search: Search? = nil, 
                                                         stockStore: StockStore? = nil,
                                                         scope: AssortmentScope? = nil,
+                                                        urlParameters otherParameters: [UrlParameter] = [],
                                                         withPrevious: [(groupKey: String, data: [MSEntity<MSAssortment>])]? = nil)
         -> Observable<[(groupKey: String, data: [MSEntity<MSAssortment>])]> {
-            return assortment(auth: auth, offset: offset, expanders: expanders, filter: filter, search: search, stockStore: stockStore, scope: scope)
+            return assortment(auth: auth, offset: offset, expanders: expanders, filter: filter, search: search, stockStore: stockStore, scope: scope, urlParameters: otherParameters)
                 .flatMapLatest { result -> Observable<[(groupKey: String, data: [MSEntity<MSAssortment>])]> in
                     
                     let grouped = DataManager.groupBy(data: result, groupingKey: { $0.getFolderName() ?? "" }, withPrevious: withPrevious)

@@ -423,14 +423,16 @@ public struct DataManager {
      - parameter expanders: Additional objects to include into request
      - parameter filter: Filter for request
      - parameter search: Additional string for filtering by name
+     - parameter urlParameters: Any other URL parameters
      */
     public static func counterpartiesWithReport(auth: Auth,
                                       offset: MSOffset? = nil,
                                       expanders: [Expander] = [],
                                       filter: Filter? = nil,
-                                      search: Search? = nil)
+                                      search: Search? = nil,
+                                      urlParameters otherParameters: [UrlParameter] = [])
         -> Observable<[MSEntity<MSAgent>]> {
-            let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter)
+            let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter) + otherParameters
             
             return HttpClient.get(.counterparty, auth: auth, urlParameters: urlParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in

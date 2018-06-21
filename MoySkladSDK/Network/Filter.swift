@@ -38,6 +38,10 @@ public enum EntityField: String {
     case productid
     case phone
     case kpp
+    case code
+    case discountCardNumber
+    case legalAddress
+    case inn
 }
 
 public enum FilterOperator : String {

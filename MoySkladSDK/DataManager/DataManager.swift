@@ -334,12 +334,13 @@ public struct DataManager {
                                   offset: MSOffset? = nil, 
                                   expanders: [Expander] = [], 
                                   filter: Filter? = nil,
-                                  search: Search? = nil, 
+                                  search: Search? = nil,
+                                  orderBy: Order? = nil,
                                   stockStore: StockStore? = nil, 
                                   scope: AssortmentScope? = nil)
         -> Observable<[MSEntity<MSAssortment>]> {
             
-            let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, stockStore, scope, CompositeExpander(expanders), StockMomentAssortment(value: Date()))
+            let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, orderBy, stockStore, scope, CompositeExpander(expanders), StockMomentAssortment(value: Date()))
             
             return HttpClient.get(.assortment, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSAssortment>]> in
@@ -369,10 +370,11 @@ public struct DataManager {
     public static func organizations(auth: Auth,
                                      offset: MSOffset? = nil, 
                                      expanders: [Expander] = [], 
-                                     filter: Filter? = nil, 
+                                     filter: Filter? = nil,
+                                     orderBy: Order? = nil,
                                      search: Search? = nil)
         -> Observable<[MSEntity<MSAgent>]> {
-            let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, CompositeExpander(expanders))
+            let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, orderBy, CompositeExpander(expanders))
             return HttpClient.get(.organization, auth: auth, urlParameters: urlParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
                     guard let result = result?.toDictionary() else {
@@ -401,10 +403,11 @@ public struct DataManager {
     public static func counterparties(auth: Auth,
                                       offset: MSOffset? = nil, 
                                       expanders: [Expander] = [], 
-                                      filter: Filter? = nil, 
+                                      filter: Filter? = nil,
+                                      orderBy: Order? = nil,
                                       search: Search? = nil)
         -> Observable<[MSEntity<MSAgent>]> {
-            let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter)
+            let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter, orderBy)
             
             return HttpClient.get(.counterparty, auth: auth, urlParameters: urlParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
@@ -613,8 +616,9 @@ public struct DataManager {
                                       offset: MSOffset? = nil,
                                       expanders: [Expander] = [],
                                       filter: Filter? = nil,
+                                      orderBy: Order? = nil,
                                       search: Search? = nil) -> Observable<[MSEntity<MSProductFolder>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, CompositeExpander(expanders))
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, orderBy, CompositeExpander(expanders))
         
         return HttpClient.get(.productFolder, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSProductFolder>]> in
@@ -646,9 +650,10 @@ public struct DataManager {
     public static func stores(auth: Auth,
                               offset: MSOffset? = nil,
                               expanders: [Expander] = [],
-                              filter: Filter? = nil, 
+                              filter: Filter? = nil,
+                              orderBy: Order? = nil,
                               search: Search? = nil) -> Observable<[MSEntity<MSStore>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, CompositeExpander(expanders))
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, orderBy, CompositeExpander(expanders))
         
         return HttpClient.get(.store, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSStore>]> in
@@ -680,9 +685,10 @@ public struct DataManager {
     public static func projects(auth: Auth,
                                 offset: MSOffset? = nil, 
                                 expanders: [Expander] = [],
-                                filter: Filter? = nil, 
+                                filter: Filter? = nil,
+                                orderBy: Order? = nil,
                                 search: Search? = nil) -> Observable<[MSEntity<MSProject>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, filter, CompositeExpander(expanders))
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, filter, orderBy, CompositeExpander(expanders))
         
         return HttpClient.get(.project, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSProject>]> in
@@ -706,10 +712,11 @@ public struct DataManager {
     public static func groups(auth: Auth,
                               offset: MSOffset? = nil, 
                               expanders: [Expander] = [], 
-                              filter: Filter? = nil, 
+                              filter: Filter? = nil,
+                              orderBy: Order? = nil,
                               search: Search? = nil)
         -> Observable<[MSEntity<MSGroup>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, CompositeExpander(expanders))
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, orderBy, CompositeExpander(expanders))
         
         return HttpClient.get(.group, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSGroup>]> in
@@ -734,8 +741,9 @@ public struct DataManager {
                                   offset: MSOffset? = nil,
                                   expanders: [Expander] = [],
                                   filter: Filter? = nil,
+                                  orderBy: Order? = nil,
                                   search: Search? = nil) -> Observable<[MSEntity<MSCurrency>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter)
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, orderBy, CompositeExpander(expanders), filter)
         
         return HttpClient.get(.currency, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSCurrency>]> in
@@ -760,8 +768,9 @@ public struct DataManager {
                                  offset: MSOffset? = nil, 
                                  expanders: [Expander] = [],
                                  filter: Filter? = nil,
+                                 orderBy: Order? = nil,
                                  search: Search? = nil) -> Observable<[MSEntity<MSContract>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter)
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, orderBy, CompositeExpander(expanders), filter)
         
         return HttpClient.get(.contract, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSContract>]> in
@@ -785,9 +794,10 @@ public struct DataManager {
     public static func employees(auth: Auth, 
                                  offset: MSOffset? = nil, 
                                  expanders: [Expander] = [], 
-                                 filter: Filter? = nil, 
+                                 filter: Filter? = nil,
+                                 orderBy: Order? = nil,
                                  search: Search? = nil) -> Observable<[MSEntity<MSEmployee>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter)
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, orderBy, CompositeExpander(expanders), filter)
         
         return HttpClient.get(.employee, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSEmployee>]> in
@@ -814,8 +824,9 @@ public struct DataManager {
                                  offset: MSOffset? = nil,
                                  expanders: [Expander] = [],
                                  filter: Filter? = nil,
+                                 orderBy: Order? = nil,
                                  search: Search? = nil) -> Observable<[MSEntity<MSAgent>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter)
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter, orderBy)
         
         return HttpClient.get(.employee, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
@@ -842,9 +853,10 @@ public struct DataManager {
                                      auth: Auth,
                                      offset: MSOffset? = nil, 
                                      expanders: [Expander] = [], 
-                                     filter: Filter? = nil, 
+                                     filter: Filter? = nil,
+                                     orderBy: Order? = nil,
                                      search: Search? = nil) -> Observable<[MSEntity<MSAccount>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter)
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, orderBy, CompositeExpander(expanders), filter)
         
         let pathComponents = [agent.id.msID?.uuidString ?? "", "accounts"]
         
@@ -1155,8 +1167,9 @@ public struct DataManager {
                                         offset: MSOffset? = nil,
                                         expanders: [Expander] = [],
                                         filter: Filter? = nil,
+                                        orderBy: Order? = nil,
                                         search: Search? = nil) -> Observable<[MSEntity<MSExpenseItem>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, CompositeExpander(expanders))
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, orderBy, CompositeExpander(expanders))
         return HttpClient.get(.expenseitem, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSExpenseItem>]> in
     
@@ -1172,6 +1185,7 @@ public struct DataManager {
                                         offset: MSOffset? = nil,
                                         expanders: [Expander] = [],
                                         filter: Filter? = nil,
+                                        orderBy: Order? = nil,
                                         search: Search? = nil) -> Observable<[MSEntity<MSCountry>]> {
         let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, CompositeExpander(expanders))
         return HttpClient.get(.country, auth: auth, urlParameters: urlParameters)
@@ -1189,8 +1203,9 @@ public struct DataManager {
                                      offset: MSOffset? = nil,
                                      expanders: [Expander] = [],
                                      filter: Filter? = nil,
+                                     orderBy: Order? = nil,
                                      search: Search? = nil) -> Observable<[MSEntity<MSUOM>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, CompositeExpander(expanders))
+        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, orderBy, search, CompositeExpander(expanders))
         return HttpClient.get(.uom, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSUOM>]> in
                 
@@ -1211,6 +1226,7 @@ public struct DataManager {
                                        offset: MSOffset? = nil,
                                        expanders: [Expander] = [],
                                        filter: Filter? = nil,
+                                       orderBy: Order? = nil,
                                        search: Search? = nil) -> Observable<[MSEntity<MSVariantAttribute>]> {
         return HttpClient.get(.variantMetadata, auth: auth)
             .flatMapLatest { result -> Observable<[MSEntity<MSVariantAttribute>]> in

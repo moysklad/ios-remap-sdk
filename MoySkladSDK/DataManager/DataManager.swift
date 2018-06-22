@@ -35,12 +35,12 @@ struct MetadataLoadResult {
 }
 
 public struct UrlRequestParameters {
-    let auth: Auth
-    let offset: MSOffset?
-    let expanders: [Expander]
-    let filter: Filter?
-    let search: Search?
-    let orderBy: Order?
+    public let auth: Auth
+    public let offset: MSOffset?
+    public let expanders: [Expander]
+    public let filter: Filter?
+    public let search: Search?
+    public let orderBy: Order?
     
     public init(auth: Auth, offset: MSOffset? = nil, expanders: [Expander], filter: Filter? = nil, search: Search? = nil, orderBy: Order? = nil) {
         self.auth = auth

@@ -185,10 +185,8 @@ extension DataManager {
      - parameter auth: Authentication information
      - parameter offset: Desired data offset
      - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
-     - parameter organizationId: Id of organization to filter by
-     - parameter stateId: If of state to filter by
+     - parameter filters: Filters for request
+     - parameter urlParameters: Any other URL parameters
      - parameter withPrevious: Grouped data returned by previous invocation of groupedByMoment (useful for paged loading)
      */
     public static func loadDocumentsGroupedByMoment(forDocument documentType: MSDocumentType,
@@ -196,16 +194,12 @@ extension DataManager {
                                                     offset: MSOffset? = nil,
                                                     expanders: [Expander] = [],
                                                     filters: DocumentsFilter? = nil,
+                                                    urlParameters otherParameters: [UrlParameter] = [],
                                                     withPrevious: [GroupedMoment<MSDocument>]? = nil)
         -> Observable<[GroupedMoment<MSDocument>]> {
             
-            return DataManager.loadDocuments(forDocument: documentType, auth: auth, offset: offset, expanders: expanders, filters: filters, orderBy: Order(OrderArgument(field: .moment)))
-                .flatMapLatest { result -> Observable<[GroupedMoment<MSDocument>]> in
-                    
-                    let grouped = DataManager.groupByDate2(data: result,
-                                                           withPrevious: withPrevious)
-                    return Observable.just(grouped)
-            }
+            return DataManager.loadDocuments(forDocument: documentType, auth: auth, offset: offset, expanders: expanders, filters: filters, urlParameters: otherParameters, orderBy: Order(OrderArgument(field: .moment)))
+                .flatMapLatest { Observable.just(DataManager.groupByDate2(data: $0, withPrevious: withPrevious)) }
     }
     
     /**
@@ -214,19 +208,19 @@ extension DataManager {
      - parameter auth: Authentication information
      - parameter offset: Desired data offset
      - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
-     - parameter organizationId: Id of organization to filter by
-     - parameter stateId: If of state to filter by
+     - parameter filters: Filters for request
+     - parameter urlParameters: Any other URL parameters
+     - parameter orderBy: Order by instruction
      */
     public static func loadDocuments(forDocument documentType: MSDocumentType,
                                      auth: Auth,
                                      offset: MSOffset? = nil,
                                      expanders: [Expander] = [],
                                      filters: DocumentsFilter? = nil,
+                                     urlParameters otherParameters: [UrlParameter] = [],
                                      orderBy: Order? = nil) -> Observable<[MSDocument]>  {
         
-        let urlParameters: [UrlParameter] = mergeUrlParameters(filters?.search, filters?.filter, offset, orderBy, CompositeExpander(expanders), filters?.organization)
+        let urlParameters = mergeUrlParameters(filters?.search, filters?.filter, offset, orderBy, CompositeExpander(expanders), filters?.organization) + otherParameters
         
         return HttpClient.get(documentType.apiRequest, auth: auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSDocument]> in

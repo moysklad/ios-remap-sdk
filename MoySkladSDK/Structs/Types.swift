@@ -101,6 +101,13 @@ public enum MSDocumentType: String {
     case move
     case inventory
     
+    public var isMoneyDocument: Bool {
+        switch self {
+        case .paymentin, .paymentout, .cashin, .cashout: return true
+        default: return false
+        }
+    }
+    
     public var objectType: MSObjectType {
         return MSObjectType(rawValue: rawValue)!
     }

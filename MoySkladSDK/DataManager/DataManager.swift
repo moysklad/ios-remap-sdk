@@ -433,16 +433,12 @@ public struct DataManager {
      - parameter search: Additional string for filtering by name
      - parameter urlParameters: Any other URL parameters
      */
-    public static func counterpartiesWithReport(auth: Auth,
-                                      offset: MSOffset? = nil,
-                                      expanders: [Expander] = [],
-                                      filter: Filter? = nil,
-                                      search: Search? = nil,
+    public static func counterpartiesWithReport(parameters: UrlRequestParameters,
                                       urlParameters otherParameters: [UrlParameter] = [])
         -> Observable<[MSEntity<MSAgent>]> {
-            let urlParameters: [UrlParameter] = mergeUrlParameters(offset, search, CompositeExpander(expanders), filter) + otherParameters
+            let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, CompositeExpander(parameters.expanders), parameters.filter) + otherParameters
             
-            return HttpClient.get(.counterparty, auth: auth, urlParameters: urlParameters)
+            return HttpClient.get(.counterparty, auth: parameters.auth, urlParameters: urlParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
                     guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
                     
@@ -451,7 +447,7 @@ public struct DataManager {
                                             deserializer: { MSAgent.from(dict: $0) })
             }
                 .flatMapLatest { counterparties -> Observable<[MSEntity<MSAgent>]> in
-                    return loadReportsForCounterparties(auth: auth, counterparties: counterparties)
+                    return loadReportsForCounterparties(auth: parameters.auth, counterparties: counterparties)
                         .catchError { e in
                             guard MSError.isCrmAccessDenied(from: e) else { throw e }
                             
@@ -480,17 +476,13 @@ public struct DataManager {
      - parameter withPrevious: Grouped data returned by previous invocation of assortmentGroupedByProductFolder (useful for paged loading)
      - returns: Collection of grouped Assortment
      */
-    public static func assortmentGroupedByProductFolder(auth: Auth, 
-                                                        offset: MSOffset? = nil, 
-                                                        expanders: [Expander] = [],
-                                                        filter: Filter? = nil, 
-                                                        search: Search? = nil, 
+    public static func assortmentGroupedByProductFolder(parameters: UrlRequestParameters,
                                                         stockStore: StockStore? = nil,
                                                         scope: AssortmentScope? = nil,
                                                         urlParameters otherParameters: [UrlParameter] = [],
                                                         withPrevious: [(groupKey: String, data: [MSEntity<MSAssortment>])]? = nil)
         -> Observable<[(groupKey: String, data: [MSEntity<MSAssortment>])]> {
-            let parameters = UrlRequestParameters(auth: auth, offset: offset, expanders: expanders, filter: filter, search: search, orderBy: nil)
+            let parameters = UrlRequestParameters(auth: parameters.auth, offset: parameters.offset, expanders: parameters.expanders, filter: parameters.filter, search: parameters.search, orderBy: nil)
             return assortment(parameters: parameters, stockStore: stockStore, scope: scope, urlParameters: otherParameters)
                 .flatMapLatest { result -> Observable<[(groupKey: String, data: [MSEntity<MSAssortment>])]> in
                     
@@ -1186,16 +1178,12 @@ public struct DataManager {
      - parameter search: Additional string for filtering by name
      - returns: Collection of Variant
      */
-    public static func variants(auth: Auth,
-                                offset: MSOffset? = nil,
-                                expanders: [Expander] = [],
-                                filter: Filter? = nil,
-                                search: Search? = nil)
+    public static func variants(parameters: UrlRequestParameters)
         -> Observable<[MSEntity<MSAssortment>]> {
             
-            let urlParameters: [UrlParameter] = mergeUrlParameters(offset, filter, search, CompositeExpander(expanders))
+            let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, CompositeExpander(parameters.expanders))
             
-            return HttpClient.get(.variant, auth: auth, urlParameters: urlParameters)
+            return HttpClient.get(.variant, auth: parameters.auth, urlParameters: urlParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAssortment>]> in
                     guard let result = result?.toDictionary() else {
                         return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectVariantResponse.value))

@@ -194,11 +194,12 @@ extension DataManager {
                                                     offset: MSOffset? = nil,
                                                     expanders: [Expander] = [],
                                                     filters: DocumentsFilter? = nil,
+                                                    orderBy: Order? = nil,
                                                     urlParameters otherParameters: [UrlParameter] = [],
                                                     withPrevious: [GroupedMoment<MSDocument>]? = nil)
         -> Observable<[GroupedMoment<MSDocument>]> {
             
-            return DataManager.loadDocuments(forDocument: documentType, auth: auth, offset: offset, expanders: expanders, filters: filters, urlParameters: otherParameters, orderBy: Order(OrderArgument(field: .moment)))
+            return DataManager.loadDocuments(forDocument: documentType, auth: auth, offset: offset, expanders: expanders, filters: filters, urlParameters: otherParameters, orderBy: orderBy ?? Order(OrderArgument(field: .moment)))
                 .flatMapLatest { Observable.just(DataManager.groupByDate2(data: $0, withPrevious: withPrevious)) }
     }
     

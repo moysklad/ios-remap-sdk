@@ -200,7 +200,7 @@ extension DataManager {
         -> Observable<[GroupedMoment<MSDocument>]> {
             
             return DataManager.loadDocuments(forDocument: documentType, auth: auth, offset: offset, expanders: expanders, filters: filters, urlParameters: otherParameters, orderBy: orderBy ?? Order(OrderArgument(field: .moment)))
-                .flatMapLatest { Observable.just(DataManager.groupByDate2(data: $0, withPrevious: withPrevious, orderBy: orderBy)) }
+                .flatMapLatest { Observable.just(DataManager.groupByDate2(data: $0, withPrevious: withPrevious)) }
     }
     
     /**

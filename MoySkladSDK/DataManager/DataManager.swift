@@ -88,7 +88,7 @@ public struct DataManager {
     }
     
     static func groupByDate2(data: [MSDocument],
-                             withPrevious previousData: [(date: Date, data: [MSDocument])]? = nil, orderBy: Order?) -> [(date: Date, data: [MSDocument])] {
+                             withPrevious previousData: [(date: Date, data: [MSDocument])]? = nil) -> [(date: Date, data: [MSDocument])] {
         // объекты группируются по дню (moment)
         var groups: [Date: [MSDocument]] = [:]
         
@@ -112,11 +112,7 @@ public struct DataManager {
             }
         }
         
-        guard let order = orderBy?.arguments.last else {
-            return groups.map { (date: $0.key, data: $0.value) }.sorted(by: { $0.date > $1.date } )
-        }
-        
-        return groups.map { (date: $0.key, data: $0.value) }.sorted(by: order.direction == .asc && order.field == .moment ? { $0.date < $1.date } : { $0.date > $1.date })
+        return groups.map { (date: $0.key, data: $0.value) }
     }
     
     static func groupByDate<T: MSGeneralDocument>(data: [MSEntity<T>], date: ((T) -> Date),

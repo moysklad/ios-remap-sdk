@@ -42,6 +42,7 @@ public enum EntityField: String {
     case discountCardNumber
     case legalAddress
     case inn
+    case updatedBy
 }
 
 public enum FilterOperator : String {
@@ -129,7 +130,7 @@ public struct StockStore: UrlParameter {
     }
 }
 
-struct StockMoment : UrlParameter {
+public struct StockMoment : UrlParameter {
     public let value: Date
     public var urlParameters: [String : String] { return ["moment": value.toLongDate()] }
     
@@ -138,7 +139,7 @@ struct StockMoment : UrlParameter {
     }
 }
 
-struct StockMomentAssortment: UrlParameter {
+public struct StockMomentAssortment: UrlParameter {
     public let value: Date
     public var urlParameters: [String : String] { return ["stockmoment": value.toLongDate()] }
     
@@ -147,7 +148,7 @@ struct StockMomentAssortment: UrlParameter {
     }
 }
 
-struct StockProductId: UrlParameter {
+public struct StockProductId: UrlParameter {
     public let value: String
     public var urlParameters: [String : String] { return ["product.id": value ] }
     public init(value: String) {
@@ -155,9 +156,17 @@ struct StockProductId: UrlParameter {
     }
 }
 
-struct StockStoretId: UrlParameter {
+public struct StockStoretId: UrlParameter {
     public let value: String
     public var urlParameters: [String : String] { return ["store.id": value ] }
+    public init(value: String) {
+        self.value = value
+    }
+}
+
+public struct UpdatedByIdParameter: UrlParameter {
+    public let value: String
+    public var urlParameters: [String : String] { return ["updatedBy": value ] }
     public init(value: String) {
         self.value = value
     }

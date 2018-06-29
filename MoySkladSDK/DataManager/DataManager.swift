@@ -436,7 +436,7 @@ public struct DataManager {
     public static func counterpartiesWithReport(parameters: UrlRequestParameters,
                                       urlParameters otherParameters: [UrlParameter] = [])
         -> Observable<[MSEntity<MSAgent>]> {
-            let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, CompositeExpander(parameters.expanders), parameters.filter) + otherParameters
+            let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, CompositeExpander(parameters.expanders), parameters.filter, parameters.orderBy) + otherParameters
             
             return HttpClient.get(.counterparty, auth: parameters.auth, urlParameters: urlParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
@@ -458,7 +458,13 @@ public struct DataManager {
                             reports.forEach {
                                 new[$0.value()?.agent.objectMeta().objectId ?? ""]?.value()?.report = $0
                             }
-                            return .just(Array(new.values))
+                            
+                            var result = [MSEntity<MSAgent>]()
+                            counterparties.forEach {
+                                if let newElement = new[$0.objectMeta().objectId] { result.append(newElement) }
+                            }
+
+                            return .just(result)
                     }
             }
     }

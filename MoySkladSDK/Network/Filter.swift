@@ -43,6 +43,7 @@ public enum EntityField: String {
     case legalAddress
     case inn
     case updatedBy
+    case companyType
 }
 
 public enum FilterOperator : String {

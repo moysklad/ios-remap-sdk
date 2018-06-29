@@ -458,13 +458,8 @@ public struct DataManager {
                             reports.forEach {
                                 new[$0.value()?.agent.objectMeta().objectId ?? ""]?.value()?.report = $0
                             }
-                            
-                            var result = [MSEntity<MSAgent>]()
-                            counterparties.forEach {
-                                if let newElement = new[$0.objectMeta().objectId] { result.append(newElement) }
-                            }
 
-                            return .just(result)
+                            return .just(counterparties.compactMap { new[$0.objectMeta().objectId] })
                     }
             }
     }

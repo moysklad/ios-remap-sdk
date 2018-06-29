@@ -44,6 +44,8 @@ public enum EntityField: String {
     case inn
     case updatedBy
     case companyType
+    case externalCode
+    case supplier
 }
 
 public enum FilterOperator : String {

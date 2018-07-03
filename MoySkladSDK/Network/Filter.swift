@@ -92,6 +92,12 @@ extension Bool: FilterArgumentValue {
     }
 }
 
+extension Date: FilterArgumentValue {
+    public func toFilterValue() -> String {
+        return "\(self.toLongDate())"
+    }
+}
+
 /**
  Specifies stock type
 */

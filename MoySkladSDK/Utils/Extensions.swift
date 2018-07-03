@@ -182,6 +182,10 @@ public extension Dictionary {
 }
 
 public extension Date {
+    public func isCurrentYear() -> Bool {
+        return Calendar.current.component(.year, from: Date()) == Calendar.current.component(.year, from: self)
+    }
+    
     public func toLongDate() -> String {
         return Date.msDateFormatter.string(from: self)
     }

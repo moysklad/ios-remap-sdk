@@ -223,28 +223,25 @@ public struct DataManager {
         }
         
         // комбинируем все ответы от запросов и возвращаем LogInInfo
-        return Observable.combineLatest(employeeRequest,
-                                        settingsRequest,
-                                        currenciesRequest,
-                                        loadMetadata(auth: auth),
-                                        groupsRequest,
-                                        resultSelector: {
-                                            let states = $3.toDictionary(key: { $0.type }, element: { $0.states })
-                                            let attributes = $3.toDictionary(key: { $0.type }, element: { $0.attributes })
-                                            let createShared = $3.toDictionary(key: { $0.type }, element: { $0.createShared })
-                                            let counterpartyTags = $3.first(where: { $0.type == .counterparty })?.tags ?? []
-                                            let assortmentPrices = $3.first(where: { $0.type == .product })?.priceTypes ?? []
-                                            
-                                            return LogInInfo(employee: $0,
-                                                             companySettings: $1,
-                                                             states: states,
-                                                             documentAttributes: attributes,
-                                                             currencies: $2.toDictionary { $0.meta.href.withoutParameters() },
-                                                             counterpartyTags: counterpartyTags,
-                                                             priceTypes: assortmentPrices,
-                                                             groups: $4.toDictionary({ $0.meta.href.withoutParameters() }),
-                                                             createShared: createShared)
-        })
+        return employeeRequest.flatMapLatest { employee -> Observable<LogInInfo> in
+            return Observable.combineLatest(settingsRequest, currenciesRequest, loadMetadata(auth: auth), groupsRequest) { settings, currencies, metadata, groups -> LogInInfo in
+                let states = metadata.toDictionary(key: { $0.type }, element: { $0.states })
+                let attributes = metadata.toDictionary(key: { $0.type }, element: { $0.attributes })
+                let createShared = metadata.toDictionary(key: { $0.type }, element: { $0.createShared })
+                let counterpartyTags = metadata.first(where: { $0.type == .counterparty })?.tags ?? []
+                let assortmentPrices = metadata.first(where: { $0.type == .product })?.priceTypes ?? []
+                
+                return LogInInfo(employee: employee,
+                                 companySettings: settings,
+                                 states: states,
+                                 documentAttributes: attributes,
+                                 currencies: currencies.toDictionary { $0.meta.href.withoutParameters() },
+                                 counterpartyTags: counterpartyTags,
+                                 priceTypes: assortmentPrices,
+                                 groups: groups.toDictionary({ $0.meta.href.withoutParameters() }),
+                                 createShared: createShared)
+            }
+        }
     }
     
     static func loadMetadata(auth: Auth) -> Observable<[MetadataLoadResult]> {

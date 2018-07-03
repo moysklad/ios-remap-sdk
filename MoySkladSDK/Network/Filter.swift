@@ -47,6 +47,7 @@ public enum EntityField: String {
     case externalCode
     case supplier
     case shared
+    case archived
 }
 
 public enum FilterOperator : String {

@@ -65,8 +65,6 @@ extension MSDocumentType {
     }
 }
 
-public typealias GroupedMoment<T>  = (date: Date, data: [T])  where T: MSGeneralDocument, T: DictConvertable
-
 extension DataManager {
     private static func loadRecursive<T>(loader: @escaping (MSApiRequest, MSOffset) -> Observable<JSONType?>,
                                          request: MSApiRequest,
@@ -196,11 +194,11 @@ extension DataManager {
                                                     filters: DocumentsFilter? = nil,
                                                     orderBy: Order? = nil,
                                                     urlParameters otherParameters: [UrlParameter] = [],
-                                                    withPrevious: [GroupedMoment<MSDocument>]? = nil)
-        -> Observable<[GroupedMoment<MSDocument>]> {
+                                                    withPrevious: [(groupKey: Date, data: [MSDocument])]? = nil)
+        -> Observable<[(groupKey: Date, data: [MSDocument])]> {
             
             return DataManager.loadDocuments(forDocument: documentType, auth: auth, offset: offset, expanders: expanders, filters: filters, urlParameters: otherParameters, orderBy: orderBy ?? Order(OrderArgument(field: .moment)))
-                .flatMapLatest { Observable.just(DataManager.groupByDate2(data: $0, withPrevious: withPrevious, orderDirection: orderBy?.arguments.first?.direction ?? .desc)) }
+                .flatMapLatest { Observable.just(DataManager.groupBy(data: $0, groupingKey: { $0.moment.beginningOfDay() }, withPrevious: withPrevious)) }
     }
     
     /**

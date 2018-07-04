@@ -65,8 +65,6 @@ extension MSDocumentType {
     }
 }
 
-//public typealias GroupedMoment<T>  = (date: Date, data: [T])  where T: MSGeneralDocument, T: DictConvertable
-
 extension DataManager {
     private static func loadRecursive<T>(loader: @escaping (MSApiRequest, MSOffset) -> Observable<JSONType?>,
                                          request: MSApiRequest,

@@ -87,62 +87,6 @@ public struct DataManager {
         return groups
     }
     
-//    static func groupByDate2(data: [MSDocument],
-//                             withPrevious previousData: [(date: Date, data: [MSDocument])]? = nil, orderDirection: OrderByDirection) -> [(date: Date, data: [MSDocument])] {
-//        // объекты группируются по дню (moment)
-//        var groups: [Date: [MSDocument]] = [:]
-//
-//        // скорее всего это не самый оптимальный способ группировки
-//        data.forEach { object in
-//            let moment = object.moment.beginningOfDay()
-//            var group = groups[moment]
-//            if group != nil {
-//                group!.append(object)
-//                groups[moment] = group
-//            } else {
-//                groups[moment] = [object]
-//            }
-//        }
-//
-//        previousData?.forEach { prev in
-//            if let group = groups[prev.date] {
-//                groups[prev.date] = prev.data + group
-//            } else {
-//                groups[prev.date] = prev.data
-//            }
-//        }
-//
-//        return groups.map { (date: $0.key, data: $0.value) }.sorted(by: orderDirection == .desc ? { $0.date > $1.date } : { $0.date < $1.date })
-//    }
-    
-//    static func groupByDate<T: MSGeneralDocument>(data: [MSEntity<T>], date: ((T) -> Date),
-//                            withPrevious previousData: [(date: Date, data: [MSEntity<T>])]? = nil) -> [(date: Date, data: [MSEntity<T>])] {
-//        // объекты группируются по дню (moment)
-//        var groups: [Date: [MSEntity<T>]] = [:]
-//
-//        // скорее всего это не самый оптимальный способ группировки
-//        data.compactMap { $0.value() }.forEach { object in
-//            let moment = date(object).beginningOfDay()
-//            var group = groups[moment]
-//            if group != nil {
-//                group!.append(MSEntity.entity(object))
-//                groups[moment] = group
-//            } else {
-//                groups[moment] = [MSEntity.entity(object)]
-//            }
-//        }
-//
-//        previousData?.forEach { prev in
-//            if let group = groups[prev.date] {
-//                groups[prev.date] = prev.data + group
-//            } else {
-//                groups[prev.date] = prev.data
-//            }
-//        }
-//
-//        return groups.map { (date: $0.key, data: $0.value) }.sorted(by: { $0.date > $1.date })
-//    }
-    
     static func deserializeObjectMetadata(objectType: MSObjectType, from json: [String:Any]) -> MetadataLoadResult {
         let metadata = json.msValue(objectType.rawValue)
         let states: [MSState] = metadata.msArray("states").compactMap { MSState.from(dict: $0)?.value() }

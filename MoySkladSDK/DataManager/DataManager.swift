@@ -66,20 +66,20 @@ public struct DataManager {
         return result
     }
     
-    static func groupBy<T, K: Hashable>(data: [MSEntity<T>], groupingKey: ((T) -> K),
-                            withPrevious previousData: [(groupKey: K, data: [MSEntity<T>])]? = nil) -> [(groupKey: K, data: [MSEntity<T>])] {
-        var groups: [(groupKey: K, data: [MSEntity<T>])] = previousData ?? []
+    static func groupBy<T, K: Hashable>(data: [T], groupingKey: ((T) -> K),
+                                        withPrevious previousData: [(groupKey: K, data: [T])]? = nil) -> [(groupKey: K, data: [T])] {
+        var groups: [(groupKey: K, data: [T])] = previousData ?? []
         
         var lastKroupKey = groups.last?.groupKey
         
-        data.map { $0.value() }.removeNils().forEach { object in
+        data.forEach { object in
             let groupingValue = groupingKey(object)
             if groupingValue == lastKroupKey {
                 var lastGroup = groups[groups.count - 1].data
-                lastGroup.append(MSEntity.entity(object))
+                lastGroup.append(object)
                 groups[groups.count - 1] = (groupKey: groupingValue, data: lastGroup)
             } else {
-                groups.append((groupKey: groupingValue, data: [MSEntity.entity(object)]))
+                groups.append((groupKey: groupingValue, data: [object]))
                 lastKroupKey = groupingValue
             }
         }
@@ -428,7 +428,7 @@ public struct DataManager {
             return assortment(parameters: parameters, stockStore: stockStore, scope: scope, urlParameters: otherParameters)
                 .flatMapLatest { result -> Observable<[(groupKey: String, data: [MSEntity<MSAssortment>])]> in
                     
-                    let grouped = DataManager.groupBy(data: result, groupingKey: { $0.getFolderName() ?? "" }, withPrevious: withPrevious)
+                    let grouped = DataManager.groupBy(data: result, groupingKey: { $0.value()?.getFolderName() ?? "" }, withPrevious: withPrevious)
                     
                     return Observable.just(grouped)
             }

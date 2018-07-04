@@ -194,14 +194,11 @@ extension DataManager {
                                                     filters: DocumentsFilter? = nil,
                                                     orderBy: Order? = nil,
                                                     urlParameters otherParameters: [UrlParameter] = [],
-                                                    withPrevious: [(groupKey: Date, data: [MSEntity<MSDocument>])]? = nil)
-        -> Observable<[(groupKey: Date, data: [MSEntity<MSDocument>])]> {
+                                                    withPrevious: [(groupKey: Date, data: [MSDocument])]? = nil)
+        -> Observable<[(groupKey: Date, data: [MSDocument])]> {
             
             return DataManager.loadDocuments(forDocument: documentType, auth: auth, offset: offset, expanders: expanders, filters: filters, urlParameters: otherParameters, orderBy: orderBy ?? Order(OrderArgument(field: .moment)))
-                .flatMapLatest({ result ->  Observable<[(groupKey: Date, data: [MSEntity<MSDocument>])]> in
-                    let documents = result.compactMap { MSEntity.from($0) }
-                    return Observable.just(DataManager.groupBy(data: documents, groupingKey: { $0.moment.beginningOfDay() }, withPrevious: withPrevious))
-                })
+                .flatMapLatest { Observable.just(DataManager.groupBy(data: $0, groupingKey: { $0.moment.beginningOfDay() }, withPrevious: withPrevious)) }
     }
     
     /**

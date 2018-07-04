@@ -201,7 +201,7 @@ extension DataManager {
             
             return DataManager.loadDocuments(forDocument: documentType, auth: auth, offset: offset, expanders: expanders, filters: filters, urlParameters: otherParameters, orderBy: orderBy ?? Order(OrderArgument(field: .moment)))
                 .flatMapLatest({ result ->  Observable<[(groupKey: Date, data: [MSEntity<MSDocument>])]> in
-                    let documents = result.map { MSEntity.entity($0) }
+                    let documents = result.compactMap { MSEntity.from($0) }
                     return Observable.just(DataManager.groupBy(data: documents, groupingKey: { $0.moment.beginningOfDay() }, withPrevious: withPrevious))
                 })
     }

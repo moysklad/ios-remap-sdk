@@ -49,6 +49,7 @@ public enum EntityField: String {
     case shared
     case archived
     case applicable
+    case updated
 }
 
 public enum FilterOperator : String {

@@ -43,3 +43,9 @@ public struct Order : UrlParameter {
         return ["order": args]
     }
 }
+
+extension Order: Equatable {
+    public static func == (lhs: Order, rhs: Order) -> Bool {
+        return lhs.urlParameters == rhs.urlParameters
+    }
+}

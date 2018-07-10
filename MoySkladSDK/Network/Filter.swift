@@ -41,6 +41,7 @@ public enum EntityField: String {
     case code
     case discountCardNumber
     case legalAddress
+    case actualAddress
     case inn
     case updatedBy
     case companyType

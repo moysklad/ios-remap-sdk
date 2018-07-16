@@ -37,6 +37,7 @@ public enum EntityField: String {
     case id
     case productid
     case phone
+    case article
     case kpp
     case code
     case discountCardNumber
@@ -48,6 +49,7 @@ public enum EntityField: String {
     case externalCode
     case supplier
     case shared
+    case weighed
     case archived
     case applicable
     case updated

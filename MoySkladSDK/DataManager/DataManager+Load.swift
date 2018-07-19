@@ -25,6 +25,7 @@ extension MSDocumentType {
         case .purchaseorder: return .purchaseOrder
         case .move: return .move
         case .inventory: return .inventory
+        case .retaildemand: return .retaildemand
         }
     }
     
@@ -43,6 +44,7 @@ extension MSDocumentType {
         case .purchaseorder: return .purchaseOrderMetadata
         case .move: return .movemetadata
         case .inventory: return .inventorymetadata
+        case .retaildemand: return .retaildemandmetadata
         }
     }
     
@@ -61,6 +63,7 @@ extension MSDocumentType {
         case .purchaseorder: return MSError.genericError(errorText: LocalizedStrings.incorrectPurchaseOrderResponse.value)
         case .move: return MSError.genericError(errorText: LocalizedStrings.incorrectMoveResponse.value)
         case .inventory: return MSError.genericError(errorText: LocalizedStrings.incorrectInventoryResponse.value)
+        case .retaildemand: return MSError.genericError(errorText: LocalizedStrings.incorrectRetailDemandResponse.value)
         }
     }
 }

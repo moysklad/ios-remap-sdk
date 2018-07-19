@@ -100,6 +100,7 @@ public enum MSDocumentType: String {
     case purchaseorder
     case move
     case inventory
+    case retaildemand
     
     public var isMoneyDocument: Bool {
         switch self {
@@ -134,6 +135,7 @@ public enum MSDocumentType: String {
         case .supply: return .supplyposition
         case .inventory: return .inventoryposition
         case .paymentin, .paymentout, .cashin, .cashout, .operation, .invoicein, .purchaseorder, .move: return nil
+        case .retaildemand: return .demandposition
         }
     }
     

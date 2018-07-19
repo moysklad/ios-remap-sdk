@@ -253,6 +253,10 @@ extension MSUserPermissions {
                                  retailshift: MSPermission.from(dict: dict.msValue("retailshift")),
                                  bundle: MSPermission.from(dict: dict.msValue("bundle")),
                                  dashboardMoney: MSPermission.from(dict: dict.msValue("dashboardMoney")),
-                                 inventory: MSPermission.from(dict: dict.msValue("inventory")))
+                                 inventory: MSPermission.from(dict: dict.msValue("inventory")),
+                                 retaildemand: MSPermission.from(dict: dict.msValue("retaildemand")),
+                                 retailsalesreturn: MSPermission.from(dict: dict.msValue("retailsalesreturn")),
+                                 retaildrawercashin: MSPermission.from(dict: dict.msValue("retaildrawercashin")),
+                                 retaildrawercashout: MSPermission.from(dict: dict.msValue("retaildrawercashout")))
     }
 }

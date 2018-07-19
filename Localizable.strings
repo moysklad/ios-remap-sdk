@@ -90,7 +90,9 @@
 "incorrectUomResponse" = "Неизвестный ответ на запрос единиц измерения";
 "incorrectProductMetadataResponse" = "Неизвестный ответ на запрос метаданных для товаров";
 "incorrectMoveResponse" = "Ошибка при обработке перемещений, возвращенных сервером";
+"incorrectRetailDemandResponse" = "Неизвестный ответ на запрос розничных продаж";
 "incorrectIResponse" = "Ошибка при обработке инвентаризаций, возвращенных сервером";
 "incorrectVariantMetadataResponse" = "Неизвестный ответ на запрос метаданных для модификаций";
 "incorrectMoveMetadataResponse" = "Неизвестный ответ на запрос метаданных для перемещений";
+"incorrectRetailDemandMetadataResponse" = "Неизвестный ответ на запрос метаданных для розничных продаж";
 "incorrectInventoryMetadataResponse" = "Неизвестный ответ на запрос метаданных для инвентаризаций";

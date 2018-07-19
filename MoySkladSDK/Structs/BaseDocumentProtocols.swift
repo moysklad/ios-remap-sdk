@@ -57,6 +57,7 @@ public extension MSBaseDocumentType {
         case .paymentin: fallthrough
         case .paymentout: return ["operations": [dictionary(metaOnly: true)]]
         case .customerorder, .demand, .invoiceout, .operation, .supply, .invoicein, .purchaseorder, .move, .inventory: break
+        case .retaildemand: break
         }
         
         guard let currentDocType = self.documentType else { return nil }
@@ -68,6 +69,7 @@ public extension MSBaseDocumentType {
         case .invoicein: return type == .supply ? ["invoicesIn": [dictionary(metaOnly: true)]] : ["invoiceIn": dictionary(metaOnly: true)]
         case .supply: return ["supplies": [dictionary(metaOnly: true)]]
         case .paymentin, .paymentout, .cashin, .cashout, .operation, .move, .inventory: return nil
+        case .retaildemand: return nil
         }
     }
 }

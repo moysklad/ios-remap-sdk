@@ -34,6 +34,16 @@ struct MetadataLoadResult {
     let createShared: Bool
 }
 
+/**
+Container structure for loading methods' parameters
+ - parameter auth: Authentication information
+ - parameter offset: Desired data offset
+ - parameter expanders: Additional objects to include into request
+ - parameter filter: Filter for request
+ - parameter search: Additional string for filtering by name
+ - parameter orderBy: Order by instruction
+ */
+
 public struct UrlRequestParameters {
     public let auth: Auth
     public let offset: MSOffset?
@@ -280,11 +290,12 @@ public struct DataManager {
     /**
      Load Assortment.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#ассортимент)
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
+     - parameter parameters: container for parameters like:
+                                         authentication information,
+                                         desired data offset,
+                                         filter for request,
+                                         Additional objects to include into request,
+                                         Order by instruction
      - parameter stockStore: Specifies specific Store for filtering
      - parameter scope: Filter data for scope. For example if product specified, query will not return variants for product
      - parameter urlParameters: Any other URL parameters
@@ -318,10 +329,12 @@ public struct DataManager {
     /**
      Load organizations.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#юрлицо)
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
+     - parameter parameters: container for parameters like:
+                                     authentication information,
+                                     desired data offset,
+                                     filter for request,
+                                     Additional objects to include into request,
+                                     Order by instruction
     */
     public static func organizations(parameters: UrlRequestParameters)
         -> Observable<[MSEntity<MSAgent>]> {
@@ -346,10 +359,12 @@ public struct DataManager {
     /**
      Load counterparties.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#контрагент)
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
+     - parameter parameters: container for parameters like:
+                                         authentication information,
+                                         desired data offset,
+                                         filter for request,
+                                         Additional objects to include into request,
+                                         Order by instruction
      */
     public static func counterparties(parameters: UrlRequestParameters)
         -> Observable<[MSEntity<MSAgent>]> {
@@ -368,11 +383,12 @@ public struct DataManager {
     /**
      Load counterparties with report.
      Also see API reference [ for counterparties](https://online.moysklad.ru/api/remap/1.1/doc/index.html#контрагент) and [ counterparty reports](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-показатели-контрагентов-показатели-контрагентов)
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
-     - parameter urlParameters: Any other URL parameters
+     - parameter parameters: container for parameters like:
+                                         authentication information,
+                                         desired data offset,
+                                         filter for request,
+                                         Additional objects to include into request,
+                                         Order by instruction
      */
     public static func counterpartiesWithReport(parameters: UrlRequestParameters,
                                       urlParameters otherParameters: [UrlParameter] = [])
@@ -407,11 +423,12 @@ public struct DataManager {
     
     /**
      Load Assortment and group result by product folder
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
+     - parameter parameters: container for parameters like:
+                                                 authentication information,
+                                                 desired data offset,
+                                                 filter for request,
+                                                 Additional objects to include into request,
+                                                 Order by instruction
      - parameter stockStore: Specifies specific Store for filtering
      - parameter scope: Filter data for scope. For example if product specified, query will not return variants for product
      - parameter urlParameters: Any other URL parameters
@@ -548,11 +565,7 @@ public struct DataManager {
     /**
      Load Product folders.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#группа-товаров)
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy
     */
     public static func productFolders(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSProductFolder>]> {
         let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders))
@@ -578,11 +591,7 @@ public struct DataManager {
     /**
      Load stores.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#склад)
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy
     */
     public static func stores(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSStore>]> {
         let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders))
@@ -608,11 +617,12 @@ public struct DataManager {
     /**
      Load projects.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#проект)
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
+     - parameter parameters: container for parameters like:
+                                                     authentication information,
+                                                     desired data offset,
+                                                     filter for request,
+                                                     Additional objects to include into request,
+                                                     Order by instruction
     */
     public static func projects(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSProject>]> {
         let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, parameters.filter, parameters.orderBy, CompositeExpander(parameters.expanders))
@@ -630,11 +640,12 @@ public struct DataManager {
     /**
      Load groups.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отдел)
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
+     - parameter parameters: container for parameters like:
+                                             authentication information,
+                                             desired data offset,
+                                             filter for request,
+                                             Additional objects to include into request,
+                                             Order by instruction
     */
     public static func groups(parameters: UrlRequestParameters)
         -> Observable<[MSEntity<MSGroup>]> {
@@ -653,11 +664,12 @@ public struct DataManager {
     /**
      Load currencies.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#валюта)
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
+     - parameter parameters: container for parameters like:
+                                         authentication information,
+                                         desired data offset,
+                                         filter for request,
+                                         Additional objects to include into request,
+                                         Order by instruction
     */
     public static func currencies(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSCurrency>]> {
         let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders), parameters.filter)
@@ -675,11 +687,12 @@ public struct DataManager {
     /**
      Load contracts.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#договор)
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
+     - parameter parameters: container for parameters like:
+                                             authentication information,
+                                             desired data offset,
+                                             filter for request,
+                                             Additional objects to include into request,
+                                             Order by instruction
      */
     public static func contracts(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSContract>]> {
         let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders), parameters.filter)
@@ -697,11 +710,12 @@ public struct DataManager {
     /**
      Load employees.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#сотрудник)
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
+     - parameter parameters: container for parameters like:
+                                         authentication information,
+                                         desired data offset,
+                                         filter for request,
+                                         Additional objects to include into request,
+                                         Order by instruction
      */
     public static func employees(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSEmployee>]> {
         let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders), parameters.filter)
@@ -719,11 +733,12 @@ public struct DataManager {
     /**
      Load employees to agent
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#сотрудник)
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
+     - parameter parameters: container for parameters like:
+                                             authentication information,
+                                             desired data offset,
+                                             filter for request,
+                                             Additional objects to include into request,
+                                             Order by instruction
      
      Реализовано для возможности совмещать на одном экране контрагентов и сотрудников. Релизовано на экране выбора контрагента
      */
@@ -745,11 +760,12 @@ public struct DataManager {
      Also see API reference for [ counterparty](https://online.moysklad.ru/api/remap/1.1/doc/index.html#контрагент-счета-контрагента-get)
      and [ organizaiton](https://online.moysklad.ru/api/remap/1.1/doc/index.html#юрлицо-счета-юрлица-get)
      - parameter agent: Agent for which accounts will be loaded
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
+     - parameter auth: Auth- parameter parameters: container for parameters like:
+                                                         authentication information,
+                                                         desired data offset,
+                                                         filter for request,
+                                                         Additional objects to include into request,
+                                                         Order by instruction by name
      */
     public static func agentAccounts(agent: MSAgent, parameters: UrlRequestParameters) -> Observable<[MSEntity<MSAccount>]> {
         let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders), parameters.filter)
@@ -840,10 +856,13 @@ public struct DataManager {
     /**
      Load custom entities
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#пользовательский-справочник)
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like:
+                         authentication information,
+                         desired data offset,
+                         filter for request,
+                         Additional objects to include into request,
+                         Order by instruction
      - parameter metadataId: Id of custom entity
-     - parameter offset: Desired data offset
-     - parameter search: Additional string for filtering by name
     */
     public static func customEntities(parameters: UrlRequestParameters,
                                       metadataId: String) -> Observable<[MSEntity<MSCustomEntity>]> {
@@ -1004,11 +1023,12 @@ public struct DataManager {
     /**
      Load tasks.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#задача)
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
+     - parameter parameters: container for parameters like:
+                                         authentication information,
+                                         desired data offset,
+                                         filter for request,
+                                         Additional objects to include into request,
+                                         Order by instruction
      */
     public static func tasks(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSTask>]> {
         let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, CompositeExpander(parameters.expanders), parameters.filter, parameters.orderBy)
@@ -1026,11 +1046,12 @@ public struct DataManager {
     /**
      Load task by id.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#задача)
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
+     - parameter parameters: container for parameters like:
+                                         authentication information,
+                                         desired data offset,
+                                         filter for request,
+                                         Additional objects to include into request,
+                                         Order by instruction
      */
     public static func loadById(auth: Auth,
                              taskId: UUID,
@@ -1113,11 +1134,12 @@ public struct DataManager {
     /**
      Load Variants.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#модификация-модификации)
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filter: Filter for request
-     - parameter search: Additional string for filtering by name
+     - parameter parameters: container for parameters like:
+                                                 authentication information,
+                                                 desired data offset,
+                                                 filter for request,
+                                                 Additional objects to include into request,
+                                                 Order by instruction
      - returns: Collection of Variant
      */
     public static func variants(parameters: UrlRequestParameters)

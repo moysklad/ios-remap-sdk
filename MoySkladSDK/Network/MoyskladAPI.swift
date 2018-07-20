@@ -181,6 +181,12 @@ public enum MSApiRequest : String {
     case entityMetadata = "entity/metadata"
     case retaildemand = "entity/retaildemand"
     case retaildemandmetadata = "entity/retaildemand/metadata"
+    case retailsalesreturn = "entity/retailsalesreturn"
+    case retailsalesreturnmetadata = "entity/retailsalesreturn/metadata"
+    case retaildrawercashin = "entity/retaildrawercashin"
+    case retaildrawercashinmetadata = "entity/retaildrawercashin/metadata"
+    case retaildrawercashout = "entity/retaildrawercashout"
+    case retaildrawercashoutmetadata = "entity/retaildrawercashout/metadata"
 }
 
 extension MSApiRequest {

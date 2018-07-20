@@ -104,6 +104,12 @@ enum LocalizedStrings : String {
 	case incorrectInventoryMetadataResponse
     case incorrectRetailDemandResponse
     case incorrectRetailDemandMetadataResponse
+    case incorrectRetailSalesReturnResponse
+    case incorrectRetailSalesReturnMetadataResponse
+    case incorrectRetailDrawerCashInResponse
+    case incorrectRetailDrawerCashInMetadataResponse
+    case incorrectRetailDrawerCashOutResponse
+    case incorrectRetailDrawerCashOutMetadataResponse
     
     var value: String {
         return NSLocalizedString(rawValue, tableName: nil, bundle: Bundle(for: MSAssortment.self), value: "", comment: "")

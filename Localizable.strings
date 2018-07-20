@@ -96,3 +96,9 @@
 "incorrectMoveMetadataResponse" = "Неизвестный ответ на запрос метаданных для перемещений";
 "incorrectRetailDemandMetadataResponse" = "Неизвестный ответ на запрос метаданных для розничных продаж";
 "incorrectInventoryMetadataResponse" = "Неизвестный ответ на запрос метаданных для инвентаризаций";
+"incorrectRetailSalesReturnResponse" = "Неизвестный ответ на запрос розничных возвратов";
+"incorrectRetailSalesReturnMetadataResponse" = "Неизвестный ответ на запрос метаданных для розничных возвратов";
+"incorrectRetailDrawerCashInResponse" = "Неизвестный ответ на запрос внесений денег";
+"incorrectRetailDrawerCashInMetadataResponse" = "Неизвестный ответ на запрос метаданных для внесений денег";
+"incorrectRetailDrawerCashOutResponse" = "Неизвестный ответ на запрос выплат денег";
+"incorrectRetailDrawerCashOutMetadataResponse" = "Неизвестный ответ на запрос метаданных для выплат денег";

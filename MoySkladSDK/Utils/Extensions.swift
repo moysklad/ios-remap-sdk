@@ -190,47 +190,17 @@ public extension Date {
         return Date.msDateFormatter.string(from: self)
     }
     
-    public func toDisplayLongDate() -> String {
-        return Date.msDisplayLongDateFormatter.string(from: self)
-    }
-    
     public func toShortDate() -> String {
         return Date.msShortDateFormatter.string(from: self)
-    }
-    
-    public func toDayDate() -> String {
-        return Date.msDayDateFormatter.string(from: self)
     }
     
     public func toShortTime() -> String {
         return Date.msHourAndMinuteFormatter.string(from: self)
     }
     
-    public func toShortDateAndTime() -> String {
-        return Date.msShortDateAndTimeFormatter.string(from: self)
-    }
-    
-    public func toHourFromDate() -> String {
-        return Date.msHourFormatter.string(from: self)
-    }
-    
-    public static var msShortDateAndTimeFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "d MMMM H:mm"
-        formatter.locale = Locale(identifier: "ru_RU")
-        return formatter
-    }()
-    
     public static var msShortDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM"
-        formatter.locale = Locale(identifier: "ru_RU")
-        return formatter
-    }()
-    
-    public static var msDayDateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd"
+        formatter.dateFormat = "d MMMM"
         formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
@@ -238,13 +208,6 @@ public extension Date {
     public static var msHourAndMinuteFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "H:mm"
-        formatter.locale = Locale(identifier: "ru_RU")
-        return formatter
-    }()
-    
-    public static var msHourFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH"
         formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
@@ -257,13 +220,6 @@ public extension Date {
         return formatter
     }()
     
-    public static var msDisplayLongDateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy HH:mm"
-        formatter.locale = Locale(identifier: "ru_RU")
-        return formatter
-    }()
-    
     public static func fromMSDate(_ value: String) -> Date? {
         guard value.count > 0 else {
             return nil
@@ -273,7 +229,7 @@ public extension Date {
     
     static var msLongDateTimeFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM yyyy HH:mm"
+        formatter.dateFormat = "d MMMM yyyy H:mm"
         formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
@@ -289,7 +245,7 @@ public extension Date {
     
     static var msLongDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM yyyy"
+        formatter.dateFormat = "d MMMM yyyy"
         formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
         formatter.locale = Locale(identifier: "ru_RU")
         return formatter
@@ -361,7 +317,7 @@ public extension Date {
     
     static var msStatisticsFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM, HH:mm"
+        formatter.dateFormat = "d MMMM, H:mm"
         formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
         formatter.locale = Locale(identifier: "ru_RU")
         return formatter

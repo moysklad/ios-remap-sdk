@@ -26,6 +26,7 @@ public enum EntityField: String {
     case state
     case productFolder
     case store
+    case retailShift
     case search
     case done
     case assignee

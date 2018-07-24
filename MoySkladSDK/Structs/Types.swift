@@ -45,6 +45,7 @@ public enum MSObjectType : String {
     case purchaseorderposition
     case moveposition
     case demandposition
+    case salesreturnposition
     case purchaseorder
     case paymentin
     case paymentout
@@ -100,6 +101,10 @@ public enum MSDocumentType: String {
     case purchaseorder
     case move
     case inventory
+    case retaildemand
+    case retailsalesreturn
+    case retaildrawercashin
+    case retaildrawercashout
     
     public var isMoneyDocument: Bool {
         switch self {
@@ -133,7 +138,9 @@ public enum MSDocumentType: String {
         case .invoiceout: return .invoiceposition
         case .supply: return .supplyposition
         case .inventory: return .inventoryposition
-        case .paymentin, .paymentout, .cashin, .cashout, .operation, .invoicein, .purchaseorder, .move: return nil
+        case .paymentin, .paymentout, .cashin, .cashout, .operation, .invoicein, .purchaseorder, .move, .retaildrawercashin, .retaildrawercashout: return nil
+        case .retaildemand: return .demandposition
+        case .retailsalesreturn: return .salesreturnposition
         }
     }
     

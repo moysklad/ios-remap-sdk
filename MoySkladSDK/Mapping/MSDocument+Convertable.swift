@@ -33,7 +33,7 @@ extension MSDocument : DictConvertable {
                    info: MSInfo(dict: dict),
                    agent: MSAgent.from(dict: dict.msValue("agent")),
                    contract: MSContract.from(dict: dict.msValue("contract")),
-                   sum: (dict.value("sum") ?? 0.0).toMoney(),
+                   sum: ((dict["sum"] as? NSNumber)?.doubleValue ?? 0.0).toMoney(),
                    vatSum: (dict.value("vatSum") ?? 0.0).toMoney(),
                    payedSum: (dict.value("payedSum") ?? 0.0).toMoney(),
                    rate: MSRate.from(dict: dict.msValue("rate")),

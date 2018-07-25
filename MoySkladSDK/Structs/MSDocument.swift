@@ -10,7 +10,7 @@ import Foundation
 
 public class MSDocument: MSAttributedEntity, MSBaseDocumentType, MSGeneralDocument, MSCustomerOrderType, MSDemandType,
                         MSInvoiceOutType, MSInvoiceInType, MSMoneyDocumentType, MSCashInType, MSCashOutType,
-MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShiftType, MSMoveType, MSInventoryType {
+MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShiftType, MSMoveType, MSInventoryType, MSRetailType {
     // MSBaseDocumentType
     public var id : MSID
     public var meta : MSMeta
@@ -110,6 +110,9 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
 	public var enters: [MSEntity<MSDocument>]
 	public var losses: [MSEntity<MSDocument>]
     
+    // MSRetailType
+    public var retailShift: MSEntity<MSRetailShift>?
+    
     public func copy(with zone: NSZone? = nil) -> Any {
         return copyDocument()
     }
@@ -186,6 +189,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
                           targetStock: targetStock,
 						  enters: enters,
 						  losses: losses,
+                          retailShift: retailShift,
                           positionsManager: positionsManager?.copy())
     }
     
@@ -257,6 +261,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
                 targetStock: [MSEntity<MSDocumentStock>],
 				enters: [MSEntity<MSDocument>],
 				losses: [MSEntity<MSDocument>],
+                retailShift: MSEntity<MSRetailShift>?,
                 positionsManager: ObjectManager<MSPosition>?) {
         self.id = id
         self.meta = meta
@@ -325,6 +330,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
         self.targetStock = targetStock
 		self.enters = enters
 		self.losses = losses
+        self.retailShift = retailShift
         self.positionsManager = positionsManager
         super.init(attributes: attributes)
     }

@@ -42,6 +42,7 @@ public enum ExpandPath : String {
     case consignee
     case carrier
     case positions
+    case retailshift = "retailShift"
     case productfolder = "productFolder"
     case product
     case assortment

@@ -9,5 +9,5 @@
 import Foundation
 
 public protocol MSRetailType: MSGeneralDocument {
-    var retailShift: MSEntity<MSRetailShift>? { get set }
+    var retailShift: MSEntity<MSReportRetailShift>? { get set }
 }

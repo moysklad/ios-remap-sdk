@@ -111,7 +111,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
 	public var losses: [MSEntity<MSDocument>]
     
     // MSRetailType
-    public var retailShift: MSEntity<MSRetailShift>?
+    public var retailShift: MSEntity<MSReportRetailShift>?
     
     public func copy(with zone: NSZone? = nil) -> Any {
         return copyDocument()
@@ -261,7 +261,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
                 targetStock: [MSEntity<MSDocumentStock>],
 				enters: [MSEntity<MSDocument>],
 				losses: [MSEntity<MSDocument>],
-                retailShift: MSEntity<MSRetailShift>?,
+                retailShift: MSEntity<MSReportRetailShift>?,
                 positionsManager: ObjectManager<MSPosition>?) {
         self.id = id
         self.meta = meta

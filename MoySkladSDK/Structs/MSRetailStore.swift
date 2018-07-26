@@ -90,16 +90,16 @@ public struct MSRetailStoreEnvironment {
     }
 }
 
-public class MSRetailStore: Metable {
+public class MSReportRetailStore: Metable {
     public let meta: MSMeta
     public let info: MSInfo
-    public let retailShift: MSEntity<MSRetailShift>?
+    public let retailShift: MSEntity<MSReportRetailShift>?
     public let proceed: Money
     public let balance: Money
     public let environment: MSRetailStoreEnvironment?
     public let state: MSRetailStoreState?
     
-    init(meta: MSMeta, info: MSInfo, retailShift: MSEntity<MSRetailShift>?, proceed: Money, balance: Money, environment: MSRetailStoreEnvironment?, state: MSRetailStoreState?) {
+    init(meta: MSMeta, info: MSInfo, retailShift: MSEntity<MSReportRetailShift>?, proceed: Money, balance: Money, environment: MSRetailStoreEnvironment?, state: MSRetailStoreState?) {
         self.meta = meta
         self.info = info
         self.retailShift = retailShift

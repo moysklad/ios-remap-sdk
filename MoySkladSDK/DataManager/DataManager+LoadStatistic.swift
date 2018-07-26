@@ -120,15 +120,15 @@ extension DataManager {
      */
     public static func loadRetailStoresReport(
         auth: Auth
-    ) -> Observable<[MSEntity<MSRetailStore>]> {
+    ) -> Observable<[MSEntity<MSReportRetailStore>]> {
         return HttpClient.get(.reportRetailstore, auth: auth)
-            .flatMapLatest { result -> Observable<[MSEntity<MSRetailStore>]> in
+            .flatMapLatest { result -> Observable<[MSEntity<MSReportRetailStore>]> in
                 
                 guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPlotseriesRetailStoresReportResponse.value))
                 }
                 
-                let deserialized = result.msArray("rows").map { MSRetailStore.from(dict: $0) }
+                let deserialized = result.msArray("rows").map { MSReportRetailStore.from(dict: $0) }
                 let withoutNills = deserialized.removeNils()
                 
                 guard withoutNills.count == deserialized.count else {

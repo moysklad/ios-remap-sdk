@@ -13,7 +13,7 @@ public enum MSRetailShiftStateType: String {
     case open
 }
 
-public class MSRetailShift: Metable {
+public class MSReportRetailShift: Metable {
     public let meta: MSMeta
     public let created: Date
     public let closeDate: Date?

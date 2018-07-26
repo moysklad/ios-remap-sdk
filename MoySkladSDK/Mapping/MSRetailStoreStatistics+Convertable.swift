@@ -23,7 +23,7 @@ extension MSRetailStoreStatistics: DictConvertable {
 
 extension MSRetailStoreStatisticsData {
     public static func from(dict: Dictionary<String, Any>) -> MSRetailStoreStatisticsData? {
-        guard let retailShift = MSRetailShift.from(dict: dict.msValue("retailShift")) else { return nil }
+        guard let retailShift = MSReportRetailShift.from(dict: dict.msValue("retailShift")) else { return nil }
         
         return MSRetailStoreStatisticsData(
             retailShift: retailShift,

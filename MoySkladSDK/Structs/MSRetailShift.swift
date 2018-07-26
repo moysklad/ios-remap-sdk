@@ -26,3 +26,18 @@ public class MSReportRetailShift: Metable {
         self.state = state
     }
 }
+
+public class MSRetailShift: Metable {
+    public let meta: MSMeta
+    public let moment: Date
+    public let closeDate: Date?
+    public let owner: MSEntity<MSEmployee>?
+    public var isOpen: Bool { return closeDate == nil }
+    
+    init(meta: MSMeta, moment: Date, closeDate: Date?, owner: MSEntity<MSEmployee>?) {
+        self.meta = meta
+        self.moment = moment
+        self.closeDate = closeDate
+        self.owner = owner
+    }
+}

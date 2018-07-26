@@ -42,3 +42,18 @@ extension MSReportRetailShift: DictConvertable {
         return [:]
     }
 }
+
+extension MSRetailShift: DictConvertable {
+    public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSRetailShift>? {
+        guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict),
+            let moment = Date.fromMSDate(dict.value("moment") ?? "") else { return nil }
+        
+        return MSEntity.entity(
+            MSRetailShift(meta: meta, moment: moment, closeDate: Date.fromMSDate(dict.value("closeDate") ?? ""), owner: MSEmployee.from(dict: dict.msValue("owner")))
+        )
+    }
+    
+    public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {
+        return [:]
+    }
+}

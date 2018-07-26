@@ -96,7 +96,7 @@ extension MSDocument : DictConvertable {
                    targetStock: [],
 				   enters: dict.msArray("enters").compactMap { MSDocument.from(dict: $0) },
 				   losses: dict.msArray("losses").compactMap { MSDocument.from(dict: $0) },
-                   retailShift: MSReportRetailShift.from(dict: dict.msValue("retailShift")),
+                   retailShift: MSRetailShift.from(dict: dict.msValue("retailShift")),
                    positionsManager: nil))
     }
 }

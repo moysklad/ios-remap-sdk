@@ -99,6 +99,7 @@ extension MSDocument : DictConvertable {
                    retailShift: MSRetailShift.from(dict: dict.msValue("retailShift")),
                    cashSum: ((dict["cashSum"] as? NSNumber)?.doubleValue ?? 0.0).toMoney(),
                    noCashSum: ((dict["noCashSum"] as? NSNumber)?.doubleValue ?? 0.0).toMoney(),
+                   demand: MSDocument.from(dict: dict.msValue("demand")),
                    positionsManager: nil))
     }
 }

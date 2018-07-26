@@ -12,4 +12,5 @@ public protocol MSRetailType: MSGeneralDocument {
     var retailShift: MSEntity<MSRetailShift>? { get set }
     var cashSum: Money? { get set }
     var noCashSum: Money? { get set }
+    var demand: MSEntity<MSDocument>? { get set }
 }

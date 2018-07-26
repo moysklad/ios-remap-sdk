@@ -114,6 +114,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
     public var retailShift: MSEntity<MSRetailShift>?
     public var cashSum: Money?
     public var noCashSum: Money?
+    public var demand: MSEntity<MSDocument>?
     
     public func copy(with zone: NSZone? = nil) -> Any {
         return copyDocument()
@@ -194,6 +195,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
                           retailShift: retailShift,
                           cashSum: cashSum,
                           noCashSum: noCashSum,
+                          demand: demand,
                           positionsManager: positionsManager?.copy())
     }
     
@@ -268,6 +270,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
                 retailShift: MSEntity<MSRetailShift>?,
                 cashSum: Money?,
                 noCashSum: Money?,
+                demand: MSEntity<MSDocument>?,
                 positionsManager: ObjectManager<MSPosition>?) {
         self.id = id
         self.meta = meta
@@ -339,6 +342,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
         self.retailShift = retailShift
         self.cashSum = cashSum
         self.noCashSum = noCashSum
+        self.demand = demand
         self.positionsManager = positionsManager
         super.init(attributes: attributes)
     }

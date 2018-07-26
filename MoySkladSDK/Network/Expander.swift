@@ -62,6 +62,7 @@ public enum ExpandPath : String {
     case targetStore
 	case losses
 	case enters
+    case demand
 }
 
 public protocol Expandable {

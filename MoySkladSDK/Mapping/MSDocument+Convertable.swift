@@ -97,6 +97,8 @@ extension MSDocument : DictConvertable {
 				   enters: dict.msArray("enters").compactMap { MSDocument.from(dict: $0) },
 				   losses: dict.msArray("losses").compactMap { MSDocument.from(dict: $0) },
                    retailShift: MSRetailShift.from(dict: dict.msValue("retailShift")),
+                   cashSum: ((dict["cashSum"] as? NSNumber)?.doubleValue ?? 0.0).toMoney(),
+                   noCashSum: ((dict["noCashSum"] as? NSNumber)?.doubleValue ?? 0.0).toMoney(),
                    positionsManager: nil))
     }
 }

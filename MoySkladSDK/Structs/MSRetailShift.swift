@@ -13,7 +13,7 @@ public enum MSRetailShiftStateType: String {
     case open
 }
 
-public class MSRetailShift: Metable {
+public class MSReportRetailShift: Metable {
     public let meta: MSMeta
     public let created: Date
     public let closeDate: Date?
@@ -24,5 +24,20 @@ public class MSRetailShift: Metable {
         self.created = created
         self.closeDate = closeDate
         self.state = state
+    }
+}
+
+public class MSRetailShift: Metable {
+    public let meta: MSMeta
+    public let moment: Date
+    public let closeDate: Date?
+    public let owner: MSEntity<MSEmployee>?
+    public var isOpen: Bool { return closeDate == nil }
+    
+    init(meta: MSMeta, moment: Date, closeDate: Date?, owner: MSEntity<MSEmployee>?) {
+        self.meta = meta
+        self.moment = moment
+        self.closeDate = closeDate
+        self.owner = owner
     }
 }

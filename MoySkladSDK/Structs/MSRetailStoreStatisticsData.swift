@@ -9,7 +9,7 @@
 import Foundation
 
 public class MSRetailStoreStatisticsData {
-    public let retailShift: MSEntity<MSRetailShift>
+    public let retailShift: MSEntity<MSReportRetailShift>
     public let salesQuantity: Double
     public let salesSum: Money
     public let cashSum: Money
@@ -24,7 +24,7 @@ public class MSRetailStoreStatisticsData {
     public let proceed: Money
     public let profit: Money
     
-    init(retailShift: MSEntity<MSRetailShift>,
+    init(retailShift: MSEntity<MSReportRetailShift>,
          salesQuantity: Double,
          salesSum: Money,
          cashSum: Money,

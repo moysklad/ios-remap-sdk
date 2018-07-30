@@ -20,6 +20,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
     /// Приходит в валюте документа
     public var sum : Money
     public var vatSum : Money
+    public let toPay: Money
     /// Приходит в валюте учета (валюта по умолчанию для учетной записи)
     public var payedSum: Money
     public var rate : MSRate?
@@ -278,6 +279,7 @@ MSPaymentInType, MSPaymentOutType, MSProcurementType, MSSupplyType, MSRetailShif
         self.agent = agent
         self.contract = contract
         self.sum = sum
+        self.toPay = sum
         self.vatSum = vatSum
         self.payedSum = payedSum
         self.rate = rate

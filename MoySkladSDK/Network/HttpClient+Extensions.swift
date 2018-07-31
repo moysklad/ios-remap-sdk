@@ -14,7 +14,7 @@ extension HttpClient {
         let router = HttpRouter.create(apiRequest: .register,
                                        method: .post,
                                        contentType: .formUrlencoded,
-                                       httpBody: ["email": email].toJSONType())
+                                       httpBody: ["email": email, "source": "msappstore"].toJSONType())
         return resultCreate(router)
     }
     

@@ -51,6 +51,8 @@ public enum EntityField: String {
     case externalCode
     case supplier
     case shared
+    case published
+    case printed
     case weighed
     case archived
     case applicable

@@ -13,6 +13,8 @@ public enum EntityField: String {
     case description
     case sum
     case moment
+    case paymentPlannedMoment
+    case incomingDate
     case agent
     case ownAgent
     case owner
@@ -39,6 +41,7 @@ public enum EntityField: String {
     case id
     case productid
     case phone
+    case incomingNumber
     case article
     case kpp
     case code

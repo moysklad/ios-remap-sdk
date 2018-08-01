@@ -303,4 +303,21 @@ extension DataManager {
                                             return MoneyStatisticsResult(current: current, last: last)
         })
     }
+    
+    public static func loadMoneyStatisticsOf(moment: StatisticsMoment,
+                                             auth: Auth,
+                                             retailStore: StatisticsRerailStoreArgument? = nil
+        ) -> Observable<MoneyStatisticsResult> {
+        let interval = StatisticsIntervalArgument(type: .day)
+        
+        let currentRequest = loadMoneyStatistics(auth: auth,
+                                                 moment: moment,
+                                                 interval: interval,
+                                                 retailStore: retailStore)
+        
+        return Observable.combineLatest(currentRequest, currentRequest,
+                                        resultSelector: { current, last in
+                                            return MoneyStatisticsResult(current: current, last: last)
+        })
+    }
 }

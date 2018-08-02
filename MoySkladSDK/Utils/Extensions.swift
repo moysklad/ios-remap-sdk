@@ -182,6 +182,13 @@ public extension Dictionary {
 }
 
 public extension Date {
+    public static func lastPeriodFrom(date1: Date, date2: Date) -> (bottom: Date, top: Date) {
+        let daysInterval = Calendar.current.dateComponents([.day], from: date1, to: date2).day ?? 0
+        let lastTop = Calendar.current.date(byAdding: .day, value: -1, to: date1) ?? Date()
+        let lastBottom = Calendar.current.date(byAdding: .day, value: -daysInterval, to: lastTop) ?? Date()
+        return (lastBottom, lastTop)
+    }
+    
     public func isCurrentYear() -> Bool {
         return Calendar.current.component(.year, from: Date()) == Calendar.current.component(.year, from: self)
     }

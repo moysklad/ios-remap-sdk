@@ -238,6 +238,26 @@ extension DataManager {
         })
     }
     
+    public static func loadStatisticsOfPeriod(
+        auth: Auth,
+        moment: StatisticsMoment,
+        type: MSStatisticsType,
+        retailStore: StatisticsRerailStoreArgument? = nil
+        )-> Observable<StatisticsResult> {
+        let interval = StatisticsIntervalArgument(type: .day)
+        
+        let currentRequest = loadStatistics(auth: auth,
+                                            type: type,
+                                            moment: moment,
+                                            interval: interval,
+                                            retailStore: retailStore)
+        
+        return Observable.combineLatest(currentRequest, currentRequest,
+                                        resultSelector: { current, last in
+                                            return StatisticsResult(current: current, last: last)
+        })
+    }
+    
     public static func loadMoneyStatisticsOfDay(
         auth: Auth,
         retailStore: StatisticsRerailStoreArgument? = nil

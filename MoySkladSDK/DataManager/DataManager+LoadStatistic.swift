@@ -238,6 +238,34 @@ extension DataManager {
         })
     }
     
+    public static func loadStatisticsOfPeriod(
+        auth: Auth,
+        moment: StatisticsMoment,
+        type: MSStatisticsType,
+        retailStore: StatisticsRerailStoreArgument? = nil
+        )-> Observable<StatisticsResult> {
+        let interval = StatisticsIntervalArgument(type: .day)
+        
+        let currentRequest = loadStatistics(auth: auth,
+                                            type: type,
+                                            moment: moment,
+                                            interval: interval,
+                                            retailStore: retailStore)
+        
+        let lastDate = Date.lastPeriodFrom(date1: moment.from, date2: moment.to)
+        
+        let lastRequest = loadStatistics(auth: auth,
+                                         type: type,
+                                         moment: StatisticsMoment.init(from: lastDate.bottom.beginningOfDay(), to: lastDate.top.endOfDay()),
+                                         interval: interval,
+                                         retailStore: retailStore)
+        
+        return Observable.combineLatest(currentRequest, lastRequest,
+                                        resultSelector: { current, last in
+                                            return StatisticsResult(current: current, last: last)
+        })
+    }
+    
     public static func loadMoneyStatisticsOfDay(
         auth: Auth,
         retailStore: StatisticsRerailStoreArgument? = nil
@@ -315,7 +343,14 @@ extension DataManager {
                                                  interval: interval,
                                                  retailStore: retailStore)
         
-        return Observable.combineLatest(currentRequest, currentRequest,
+        let lastDate = Date.lastPeriodFrom(date1: moment.from, date2: moment.to)
+        
+        let lastRequest = loadMoneyStatistics(auth: auth,
+                                         moment: StatisticsMoment.init(from: lastDate.bottom.beginningOfDay(), to: lastDate.top.endOfDay()),
+                                         interval: interval,
+                                         retailStore: retailStore)
+        
+        return Observable.combineLatest(currentRequest, lastRequest,
                                         resultSelector: { current, last in
                                             return MoneyStatisticsResult(current: current, last: last)
         })

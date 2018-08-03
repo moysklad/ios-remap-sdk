@@ -931,6 +931,17 @@ public struct DataManager {
     }
     
     /**
+     Load SalesByProduct report for period.
+     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-товарам-get)
+     - parameter auth: Authentication information
+     - parameter offset: Desired data offset
+     - parameter period: Desired period
+     */
+    public static func salesByProductPeriod(auth: Auth, offset: MSOffset? = nil, period: StatisticsMoment) -> Observable<[MSSaleByProduct]> {
+        return salesByProduct(auth: auth, from: period.from, to: period.to, offset: offset)
+    }
+    
+    /**
      Load SalesByProduct report.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-товарам-get)
      - parameter auth: Authentication information

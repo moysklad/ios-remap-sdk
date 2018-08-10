@@ -244,7 +244,8 @@ extension DataManager {
         type: MSStatisticsType,
         retailStore: StatisticsRerailStoreArgument? = nil
         )-> Observable<StatisticsResult> {
-        let interval = StatisticsIntervalArgument(type: .day)
+        
+        let interval = Calendar.current.isDate(moment.from, inSameDayAs: moment.to) ? StatisticsIntervalArgument(type: .hour) : StatisticsIntervalArgument(type: .day)
         
         let currentRequest = loadStatistics(auth: auth,
                                             type: type,
@@ -336,7 +337,7 @@ extension DataManager {
                                              auth: Auth,
                                              retailStore: StatisticsRerailStoreArgument? = nil
         ) -> Observable<MoneyStatisticsResult> {
-        let interval = StatisticsIntervalArgument(type: .day)
+        let interval = Calendar.current.isDate(moment.from, inSameDayAs: moment.to) ? StatisticsIntervalArgument(type: .hour) : StatisticsIntervalArgument(type: .day)
         
         let currentRequest = loadMoneyStatistics(auth: auth,
                                                  moment: moment,

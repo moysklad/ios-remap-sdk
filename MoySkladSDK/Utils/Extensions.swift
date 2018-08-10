@@ -189,6 +189,18 @@ public extension Date {
         return (lastBottom, lastTop)
     }
     
+    public func daysTo(date: Date) -> Int {
+        return Calendar.current.dateComponents([.day], from: self, to: date).day ?? 0
+    }
+    
+    public func isWithinWeekRange(with date: Date) -> Bool {
+        return daysTo(date: date) <= 6
+    }
+    
+    public func isInSameDay(as other: Date) -> Bool {
+        return Calendar.current.isDate(self, inSameDayAs: other)
+    }
+    
     public func isCurrentYear() -> Bool {
         return Calendar.current.component(.year, from: Date()) == Calendar.current.component(.year, from: self)
     }

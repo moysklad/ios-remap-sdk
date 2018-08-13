@@ -14,7 +14,7 @@ public enum StatisticsIntervalType: String {
     case month
 }
 
-public struct StatisticsMoment: UrlParameter {
+public struct StatisticsMoment: UrlParameter, Equatable {
     public let from: Date
     public let to: Date
     public var urlParameters: [String : String] {
@@ -24,6 +24,10 @@ public struct StatisticsMoment: UrlParameter {
     public init(from: Date, to: Date) {
         self.from = from
         self.to = to
+    }
+    
+    public static func == (lhs: StatisticsMoment, rhs: StatisticsMoment) -> Bool {
+        return lhs.from == rhs.from && lhs.to == rhs.to
     }
 }
 

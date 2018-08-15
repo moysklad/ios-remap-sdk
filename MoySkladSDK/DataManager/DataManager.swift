@@ -42,8 +42,8 @@ Container structure for loading methods' parameters
  - parameter filter: Filter for request
  - parameter search: Additional string for filtering by name
  - parameter orderBy: Order by instruction
+ - parameter urlParameters: Any other URL parameters
  */
-
 public struct UrlRequestParameters {
     public let auth: Auth
     public let offset: MSOffset?
@@ -51,14 +51,16 @@ public struct UrlRequestParameters {
     public let filter: Filter?
     public let search: Search?
     public let orderBy: Order?
+    public let urlParameters: [UrlParameter]
     
-    public init(auth: Auth, offset: MSOffset? = nil, expanders: [Expander], filter: Filter? = nil, search: Search? = nil, orderBy: Order? = nil) {
+    public init(auth: Auth, offset: MSOffset? = nil, expanders: [Expander] = [], filter: Filter? = nil, search: Search? = nil, orderBy: Order? = nil, urlParameters: [UrlParameter] = []) {
         self.auth = auth
         self.offset = offset
         self.expanders = expanders
         self.filter = filter
         self.search = search
         self.orderBy = orderBy
+        self.urlParameters = urlParameters
     }
 }
 

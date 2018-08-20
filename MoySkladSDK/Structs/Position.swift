@@ -25,6 +25,8 @@ public class MSPosition : Metable {
     public var correctionAmount: Double
     public var calculatedQuantity: Double
     public var correctionSum: Double
+    // себестоимость
+    public var cost: Money
     
     public init(meta : MSMeta,
     id : MSID,
@@ -40,7 +42,8 @@ public class MSPosition : Metable {
     inTransit: Double,
     correctionAmount: Double,
     calculatedQuantity: Double,
-    correctionSum: Double) {
+    correctionSum: Double,
+    cost: Money) {
         self.meta = meta
         self.id = id
         self.assortment = assortment
@@ -56,6 +59,7 @@ public class MSPosition : Metable {
         self.correctionAmount = correctionAmount
         self.calculatedQuantity = calculatedQuantity
         self.correctionSum = correctionSum
+        self.cost = cost
     }
     
     public func copy() -> MSPosition {
@@ -73,6 +77,7 @@ public class MSPosition : Metable {
                           inTransit: inTransit,
                           correctionAmount: correctionAmount,
                           calculatedQuantity: calculatedQuantity,
-                          correctionSum: correctionSum)
+                          correctionSum: correctionSum,
+                          cost: cost)
     }
 }

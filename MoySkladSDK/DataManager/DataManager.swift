@@ -42,8 +42,8 @@ Container structure for loading methods' parameters
  - parameter filter: Filter for request
  - parameter search: Additional string for filtering by name
  - parameter orderBy: Order by instruction
+ - parameter urlParameters: Any other URL parameters
  */
-
 public struct UrlRequestParameters {
     public let auth: Auth
     public let offset: MSOffset?
@@ -51,30 +51,37 @@ public struct UrlRequestParameters {
     public let filter: Filter?
     public let search: Search?
     public let orderBy: Order?
+    public let urlParameters: [UrlParameter]
     
-    public init(auth: Auth, offset: MSOffset? = nil, expanders: [Expander], filter: Filter? = nil, search: Search? = nil, orderBy: Order? = nil) {
+    public init(auth: Auth, offset: MSOffset? = nil, expanders: [Expander] = [], filter: Filter? = nil, search: Search? = nil, orderBy: Order? = nil, urlParameters: [UrlParameter] = []) {
         self.auth = auth
         self.offset = offset
         self.expanders = expanders
         self.filter = filter
         self.search = search
         self.orderBy = orderBy
+        self.urlParameters = urlParameters
     }
+    
+    var allParameters: [UrlParameter] {
+        return mergeUrlParameters(offset, search, CompositeExpander(expanders), filter, orderBy) + urlParameters
+    }
+}
+
+func mergeUrlParameters(_ params: UrlParameter?...) -> [UrlParameter] {
+    var result = [UrlParameter]()
+    params.forEach { p in
+        if let p = p {
+            result.append(p)
+        }
+    }
+    return result
 }
 
 public struct DataManager {
     /// Максимальное количество позиций для документа, при большем (при превышении возвращается ошибка)
     static let documentPositionsCountLimit = 100
     
-    static func mergeUrlParameters(_ params: UrlParameter?...) -> [UrlParameter] {
-        var result = [UrlParameter]()
-        params.forEach { p in
-            if let p = p {
-                result.append(p)
-            }
-        }
-        return result
-    }
     
     static func groupBy<T, K: Hashable>(data: [T], groupingKey: ((T) -> K),
                                         withPrevious previousData: [(groupKey: K, data: [T])]? = nil) -> [(groupKey: K, data: [T])] {
@@ -1042,9 +1049,7 @@ public struct DataManager {
                                          Order by instruction
      */
     public static func tasks(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSTask>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, CompositeExpander(parameters.expanders), parameters.filter, parameters.orderBy)
-        
-        return HttpClient.get(.task, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.task, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSTask>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectTasksResponse.value)) }
                 

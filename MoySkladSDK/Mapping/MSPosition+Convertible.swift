@@ -39,7 +39,8 @@ extension MSPosition : DictConvertable {
                                           inTransit: dict.value("inTransit") ?? 0,
                                           correctionAmount: dict.value("correctionAmount") ?? 0.0,
                                           calculatedQuantity: dict.value("calculatedQuantity") ?? 0.0,
-                                          correctionSum: dict.value("correctionSum") ?? 0.0))
+                                          correctionSum: dict.value("correctionSum") ?? 0.0,
+                                          cost: (dict.value("cost") ?? 0.0).toMoney()))
     }
 }
 

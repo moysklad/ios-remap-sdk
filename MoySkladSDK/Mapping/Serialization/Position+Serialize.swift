@@ -39,6 +39,10 @@ extension MSPosition {
             dict["gtd"] = ["name": gtd ?? ""]
         }
         
+        if assortment.objectMeta().type == .service {
+            dict["cost"] = cost.minorUnits
+        }
+        
         return dict
     }
 }

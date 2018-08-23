@@ -60,6 +60,47 @@ public enum EntityField: String {
     case archived
     case applicable
     case updated
+    case attributes
+    case companysettings
+    case organizationaccount = "organizationAccount"
+    case rate
+    case counterparty
+    case currency
+    case demands
+    case supplies
+    case invoicesout = "invoicesOut"
+    case invoicesin = "invoicesIn"
+    case accounts
+    case customerorder = "customerOrder"
+    case customerorders = "customerOrders"
+    case returns
+    case payments
+    case agentaccount = "agentAccount"
+    case purchaseorders = "purchaseOrders"
+    case purchaseorder = "purchaseOrder"
+    case internalorder = "internalOrder"
+    case salePrices
+    case buyPrice
+    case consignee
+    case carrier
+    case positions
+    case product
+    case assortment
+    case factureout = "factureOut"
+    case facturein = "factureIn"
+    case components
+    case notes
+    case contactpersons
+    case uom
+    case operations
+    case expenseitem = "expenseItem"
+    case country
+    case packs
+    case sourceStore
+    case targetStore
+    case losses
+    case enters
+    case demand
 }
 
 public enum FilterOperator : String {

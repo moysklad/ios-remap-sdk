@@ -8,63 +8,6 @@
 
 import Foundation
 
-public enum ExpandPath : String {
-    case attributes
-    case contract
-	case store
-	case companysettings
-	case organization
-	case organizationaccount = "organizationAccount"
-	case project
-	case state
-	case rate
-	case counterparty
-	case currency
-	case demands
-    case supplies
-	case owner
-	case invoicesout = "invoicesOut"
-    case invoicesin = "invoicesIn"
-	case group
-	case accounts
-	case customerorder = "customerOrder"
-    case customerorders = "customerOrders"
-	case returns
-	case payments
-	case agentaccount = "agentAccount"
-	case agent
-	case purchaseorders = "purchaseOrders"
-    case purchaseorder = "purchaseOrder"
-    case internalorder = "internalOrder"
-	case supplier
-	case salePrices
-    case buyPrice
-    case consignee
-    case carrier
-    case positions
-    case retailshift = "retailShift"
-    case productfolder = "productFolder"
-    case product
-    case assortment
-    case factureout = "factureOut"
-    case facturein = "factureIn"
-    case components
-    case notes
-    case contactpersons
-    case uom
-    case assignee
-    case author
-    case operations
-    case expenseitem = "expenseItem"
-    case country
-    case packs
-    case sourceStore
-    case targetStore
-	case losses
-	case enters
-    case demand
-}
-
 public protocol Expandable {
 	var expandString: String { get }
 }
@@ -96,19 +39,19 @@ struct CompositeExpander : UrlParameter {
 */
 public struct Expander {
     /// Property name that should be included into request
-	let type: ExpandPath
+	let type: EntityField
     /// Child expanders
 	let children: [Expander]
 }
 
 public extension Expander {
-	init(_ type: ExpandPath) {
+	init(_ type: EntityField) {
         
         
 		self.init(type: type, children: [])
 	}
 	
-	init(_ type: ExpandPath, children: [Expander]) {
+	init(_ type: EntityField, children: [Expander]) {
 		self.init(type: type, children: children)
 	}
 	
@@ -137,20 +80,20 @@ extension Expander : UrlParameter {
 }
 
 public extension Expander {
-	static func create(_ path: ExpandPath, children: ExpandPath...) -> Expander {
+	static func create(_ path: EntityField, children: EntityField...) -> Expander {
 		return create(path, children: children)
 	}
 	
-	static func create(_ path: ExpandPath, children: [ExpandPath]) -> Expander {
+	static func create(_ path: EntityField, children: [EntityField]) -> Expander {
 		return Expander(path, children: children.map { Expander($0) })
 	}
 	
-	static func create(_ path: ExpandPath, children: [Expander]) -> Expander {
+	static func create(_ path: EntityField, children: [Expander]) -> Expander {
 		return Expander(path, children: children)
 	}
 }
 
-public extension ExpandPath {
-	func toExpander(children: ExpandPath...) -> Expander { return Expander.create(self, children: children) }
+public extension EntityField {
+	func toExpander(children: EntityField...) -> Expander { return Expander.create(self, children: children) }
 	func toExpander(children: [Expander]) -> Expander { return Expander.create(self, children: children) }
 }

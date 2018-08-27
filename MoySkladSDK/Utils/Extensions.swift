@@ -358,7 +358,6 @@ public extension NSDecimalNumber {
     
     @nonobjc public static var msMoneyNumberFormatter: NumberFormatter = {
         let nf = NumberFormatter()
-        nf.decimalSeparator = ","
         nf.groupingSeparator = " "
         nf.numberStyle = .decimal
         nf.minimumFractionDigits = 2
@@ -369,7 +368,6 @@ public extension NSDecimalNumber {
     
     @nonobjc public static var msMoneyNumberFormatterWithPositiveSign: NumberFormatter = {
         let nf = NumberFormatter()
-        nf.decimalSeparator = ","
         nf.groupingSeparator = " "
         nf.numberStyle = .decimal
         nf.minimumFractionDigits = 2
@@ -398,7 +396,6 @@ public extension Double {
     
     @nonobjc public static var msDoubleFormatter: NumberFormatter = {
         let nf = NumberFormatter()
-        nf.decimalSeparator = ","
         nf.groupingSeparator = " "
         nf.numberStyle = .decimal
         nf.minimumFractionDigits = 0
@@ -408,7 +405,6 @@ public extension Double {
     
     @nonobjc public static var msDoubleFormatterWithPositiveSign: NumberFormatter = {
         let nf = NumberFormatter()
-        nf.decimalSeparator = ","
         nf.groupingSeparator = " "
         nf.numberStyle = .decimal
         nf.minimumFractionDigits = 0

@@ -16,15 +16,15 @@ extension DataManager {
      - parameter auth: Authentication information
      - parameter expanders: Additional objects to include into response
      */
-    public static func create<T>(entity: T, auth: Auth, expanders: [Expander] = []) -> Observable<T.Element> where T: MSRequestEntity, T: DictConvertable {
+    public static func create<T>(entity: T, parameters: UrlRequestParameters) -> Observable<T.Element> where T: MSRequestEntity, T: DictConvertable {
         guard let url = entity.requestUrl() else {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
         }
         
-        let urlParameters: [UrlParameter] = mergeUrlParameters(CompositeExpander(expanders))
+        let urlParameters: [UrlParameter] = mergeUrlParameters(CompositeExpander(parameters.expanders))
         
         return HttpClient.create(url,
-                                 auth: auth,
+                                 auth: parameters.auth,
                                  urlParameters: urlParameters,
                                  body: entity.dictionary(metaOnly: false).toJSONType())
             .flatMapLatest { result -> Observable<T.Element> in
@@ -44,8 +44,8 @@ extension DataManager {
      - parameter auth: Authentication information
      - parameter expanders: Additional objects to include into request
     */
-    public static func create(document: MSDocument, auth: Auth, expanders: [Expander] = []) -> Observable<MSDocument> {
-        return create(entity: document, auth: auth, expanders: expanders)
+    public static func create(document: MSDocument, parameters: UrlRequestParameters) -> Observable<MSDocument> {
+        return create(entity: document, parameters: parameters)
     }
     
     /**

@@ -116,10 +116,9 @@ extension DataManager {
      - parameter expanders: Additional objects to include into request
      */
     public static func loadById(forDocument documentType: MSDocumentType,
-                                auth: Auth,
-                                documentId: UUID,
-                                expanders: [Expander] = []) -> Observable<MSDocument>  {
-        return HttpClient.get(documentType.apiRequest, auth: auth, urlPathComponents: [documentId.uuidString], urlParameters: [CompositeExpander(expanders)])
+                                parameters: UrlRequestParameters) -> Observable<MSDocument>  {
+        guard let documentId = parameters.id else { return Observable.error(documentType.requestError) }
+        return HttpClient.get(documentType.apiRequest, auth: parameters.auth, urlPathComponents: [documentId.uuidString], urlParameters: [CompositeExpander(parameters.expanders)])
             .flatMapLatest { result -> Observable<MSDocument> in
                 guard let result = result?.toDictionary() else { return Observable.error(documentType.requestError) }
                 
@@ -138,8 +137,9 @@ extension DataManager {
      - parameter documentId: counterparty Id
      - parameter expanders: Additional objects to include into request
      */
-    public static func loadById(auth: Auth, counterpartyId: UUID, expanders: [Expander] = []) -> Observable<MSEntity<MSAgent>> {
-        return HttpClient.get(.counterparty, auth: auth, urlPathComponents: [counterpartyId.uuidString], urlParameters: [CompositeExpander(expanders)])
+    public static func loadCounterpartyById(parameters: UrlRequestParameters) -> Observable<MSEntity<MSAgent>> {
+        guard let counterpartyId = parameters.id else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
+        return HttpClient.get(.counterparty, auth: parameters.auth, urlPathComponents: [counterpartyId.uuidString], urlParameters: [CompositeExpander(parameters.expanders)])
             .flatMapLatest { result -> Observable<MSEntity<MSAgent>> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
                 
@@ -156,8 +156,9 @@ extension DataManager {
      - parameter auth: Authentication information
      - parameter counterpartyId: Id of counterparty
      */
-    public static func loadReportById(auth: Auth, counterpartyId: UUID) -> Observable<MSEntity<MSAgentReport>> {
-        return HttpClient.get(.counterpartyReport, auth: auth, urlPathComponents: [counterpartyId.uuidString])
+    public static func loadReportById(parameters: UrlRequestParameters) -> Observable<MSEntity<MSAgentReport>> {
+        guard let counterpartyId = parameters.id else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
+        return HttpClient.get(.counterpartyReport, auth: parameters.auth, urlPathComponents: [counterpartyId.uuidString])
             .flatMapLatest { result -> Observable<MSEntity<MSAgentReport>> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyReportResponse.value)) }
                 
@@ -174,12 +175,12 @@ extension DataManager {
      - parameter auth: Authentication information
      - parameter counterparties: Array of counterparties
     */
-    public static func loadReportsForCounterparties(auth: Auth, counterparties: [MSEntity<MSAgent>]) -> Observable<[MSEntity<MSAgentReport>]> {
+    public static func loadReportsForCounterparties(parameters: UrlRequestParameters, counterparties: [MSEntity<MSAgent>]) -> Observable<[MSEntity<MSAgentReport>]> {
         guard counterparties.count > 0 else { return .just([]) }
         
         let body: [String: Any] = ["counterparties": counterparties.map { ["counterparty": ["meta": $0.objectMeta().dictionary()]] }]
         
-        return HttpClient.create(.counterpartyReport, auth: auth, body: body.toJSONType(), contentType: .json)
+        return HttpClient.create(.counterpartyReport, auth: parameters.auth, body: body.toJSONType(), contentType: .json)
             .flatMapLatest { result -> Observable<[MSEntity<MSAgentReport>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyReportResponse.value)) }
                 
@@ -200,16 +201,11 @@ extension DataManager {
      - parameter withPrevious: Grouped data returned by previous invocation of groupedByMoment (useful for paged loading)
      */
     public static func loadDocumentsGroupedByMoment(forDocument documentType: MSDocumentType,
-                                                    auth: Auth,
-                                                    offset: MSOffset? = nil,
-                                                    expanders: [Expander] = [],
-                                                    filters: DocumentsFilter? = nil,
-                                                    orderBy: Order? = nil,
-                                                    urlParameters otherParameters: [UrlParameter] = [],
+                                                    parameters: UrlRequestParameters,
                                                     withPrevious: [(groupKey: Date, data: [MSDocument])]? = nil)
         -> Observable<[(groupKey: Date, data: [MSDocument])]> {
-            
-            return DataManager.loadDocuments(forDocument: documentType, auth: auth, offset: offset, expanders: expanders, filters: filters, urlParameters: otherParameters, orderBy: orderBy ?? Order(OrderArgument(field: .moment)))
+            let newParameters = parameters.orderBy == nil ? UrlRequestParameters(auth: parameters.auth, offset: parameters.offset, expanders: parameters.expanders, filter: parameters.filter, search: parameters.search, orderBy: Order(OrderArgument(field: .moment)), id: parameters.id, stringData: parameters.stringData, urlParameters: parameters.urlParameters ?? []) : parameters
+            return DataManager.loadDocuments(forDocument: documentType, parameters: newParameters)
                 .flatMapLatest { Observable.just(DataManager.groupBy(data: $0, groupingKey: { $0.moment.beginningOfDay() }, withPrevious: withPrevious)) }
     }
     
@@ -224,16 +220,12 @@ extension DataManager {
      - parameter orderBy: Order by instruction
      */
     public static func loadDocuments(forDocument documentType: MSDocumentType,
-                                     auth: Auth,
-                                     offset: MSOffset? = nil,
-                                     expanders: [Expander] = [],
-                                     filters: DocumentsFilter? = nil,
-                                     urlParameters otherParameters: [UrlParameter] = [],
-                                     orderBy: Order? = nil) -> Observable<[MSDocument]>  {
+                                     parameters: UrlRequestParameters,
+                                     filters: DocumentsFilter? = nil) -> Observable<[MSDocument]>  {
         
-        let urlParameters = mergeUrlParameters(filters?.search, filters?.filter, offset, orderBy, CompositeExpander(expanders), filters?.organization) + otherParameters
+        let urlParameters = mergeUrlParameters(parameters.offset, parameters.orderBy, CompositeExpander(parameters.expanders), filters?.filter, filters?.organization, filters?.search) + (parameters.urlParameters ?? [])
         
-        return HttpClient.get(documentType.apiRequest, auth: auth, urlParameters: urlParameters)
+        return HttpClient.get(documentType.apiRequest, auth: parameters.auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSDocument]> in
                 guard let result = result?.toDictionary() else { return Observable.error(documentType.requestError) }
                 
@@ -253,9 +245,7 @@ extension DataManager {
      - parameter expanders: Additional objects to include into request
      */
     public static func positions(in document: MSDocument,
-                                 auth: Auth,
-                                 offset: MSOffset? = nil,
-                                 expanders: [Expander] = []) -> Observable<[MSEntity<MSPosition>]> {
+                                 parameters: UrlRequestParameters) -> Observable<[MSEntity<MSPosition>]> {
         guard let url = document.requestUrl() else {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
         }
@@ -264,10 +254,10 @@ extension DataManager {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.emptyObjectId.value))
         }
         
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, CompositeExpander(expanders))
+        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, CompositeExpander(parameters.expanders))
         let pathComponents: [String] = [id, "positions"]
         
-        return HttpClient.get(url, auth: auth, urlPathComponents: pathComponents, urlParameters: urlParameters)
+        return HttpClient.get(url, auth: parameters.auth, urlPathComponents: pathComponents, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSPosition>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPositionsResponse.value)) }
                 let deserialized = result.msArray("rows").compactMap { MSPosition.from(dict: $0) }
@@ -283,9 +273,7 @@ extension DataManager {
      - parameter expanders: Additional objects to include into request
      */
     public static func positionsRecursive(in document: MSDocument,
-                                          auth: Auth,
-                                          limit: Int,
-                                          expanders: [Expander] = []) -> Observable<[MSEntity<MSPosition>]> {
+                                          parameters: UrlRequestParameters) -> Observable<[MSEntity<MSPosition>]> {
         guard let url = document.requestUrl() else {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
         }
@@ -296,9 +284,9 @@ extension DataManager {
         let pathComponents: [String] = [id, "positions"]
         
         return Observable.create { observer in
-            let subscription = DataManager.loadRecursive(loader: { HttpClient.get($0, auth: auth, urlPathComponents: pathComponents, urlParameters: mergeUrlParameters($1, CompositeExpander(expanders))) },
+            let subscription = DataManager.loadRecursive(loader: { HttpClient.get($0, auth: parameters.auth, urlPathComponents: pathComponents, urlParameters: mergeUrlParameters($1, CompositeExpander(parameters.expanders))) },
                                                          request: url,
-                                                         offset: MSOffset(size: 0, limit: limit, offset: 0),
+                                                         offset: parameters.offset ?? MSOffset(size: 0, limit: 10, offset: 0),
                                                          observer: observer,
                                                          deserializer: { $0.toDictionary()?.msArray("rows").compactMap { MSPosition.from(dict: $0) } ?? [] },
                                                          deserializationError: MSError.genericError(errorText: LocalizedStrings.incorrectPositionsResponse.value)).subscribe()

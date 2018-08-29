@@ -55,15 +55,15 @@ extension DataManager {
      - parameter toType: Type of new document
      - parameter expanders: Additional objects to include into request
     */
-    public static func createTemplate(auth: Auth, fromDocument: MSBaseDocumentType?, toType: MSObjectType, expanders: [Expander] = []) -> Observable<MSGeneralDocument> {
+    public static func createTemplate(parameters: UrlRequestParameters, fromDocument: MSBaseDocumentType?, toType: MSObjectType) -> Observable<MSGeneralDocument> {
         guard let url = newDocumentUrl(type: toType) else {
             return Observable.error(createdDocumentError(type: toType))
         }
         
-        let urlParameters: [UrlParameter] = mergeUrlParameters(CompositeExpander(expanders))
+        let urlParameters: [UrlParameter] = mergeUrlParameters(CompositeExpander(parameters.expanders))
         
         return HttpClient.update(url,
-                                 auth: auth,
+                                 auth: parameters.auth,
                                  urlParameters: urlParameters,
                                  body: fromDocument?.templateBody(forDocument: toType)?.toJSONType())
             .flatMapLatest { result -> Observable<MSGeneralDocument> in

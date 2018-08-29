@@ -72,7 +72,7 @@ public struct UrlRequestParameters {
     }
 }
 
-func mergeUrlParameters(_ params: UrlParameter?...) -> [UrlParameter] {
+public func mergeUrlParameters(_ params: UrlParameter?...) -> [UrlParameter] {
     var result = [UrlParameter]()
     params.forEach { p in
         if let p = p {
@@ -437,7 +437,7 @@ public struct DataManager {
                                             deserializer: { MSAgent.from(dict: $0) })
             }
                 .flatMapLatest { counterparties -> Observable<[MSEntity<MSAgent>]> in
-                    return loadReportsForCounterparties(auth: parameters.auth, counterparties: counterparties)
+                    return loadReportsForCounterparties(parameters: parameters, counterparties: counterparties)
                         .catchError { e in
                             guard MSError.isCrmAccessDenied(from: e) else { throw e }
                             

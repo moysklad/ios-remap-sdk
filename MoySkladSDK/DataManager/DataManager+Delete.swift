@@ -15,7 +15,7 @@ extension DataManager {
      - parameter document: Entity that should be deleted
      - parameter auth: Authentication information
      */
-    public static func delete<T>(entity: T, auth: Auth) -> Observable<Void> where T: MSRequestEntity, T: DictConvertable {
+    public static func delete<T>(entity: T, parameters: UrlRequestParameters) -> Observable<Void> where T: MSRequestEntity, T: DictConvertable {
         guard let url = entity.requestUrl() else {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
         }
@@ -24,7 +24,7 @@ extension DataManager {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.emptyObjectId.value))
         }
         
-        return HttpClient.delete(url, auth: auth, urlPathComponents: [id.uuidString]).flatMap { _ -> Observable<Void> in return .just(()) }
+        return HttpClient.delete(url, auth: parameters.auth, urlPathComponents: [id.uuidString]).flatMap { _ -> Observable<Void> in return .just(()) }
     }
     
     /**
@@ -32,11 +32,11 @@ extension DataManager {
      - parameter document: Document that should be deleted
      - parameter auth: Authentication information
     */
-    public static func delete(document: MSDocument, auth: Auth) -> Observable<Void> {
-        return delete(entity: document, auth: auth)
+    public static func delete(document: MSDocument, parameters: UrlRequestParameters) -> Observable<Void> {
+        return delete(entity: document, parameters: parameters)
     }
     
-    public static func delete(positions: [MSPosition], in document: MSDocument, auth: Auth) -> Observable<Void> {
+    public static func delete(positions: [MSPosition], in document: MSDocument, parameters: UrlRequestParameters) -> Observable<Void> {
         guard let url = document.requestUrl() else {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
         }
@@ -47,7 +47,7 @@ extension DataManager {
         
         let body = positions.map { ["meta": $0.meta.dictionary()] }.toJSONType()
         
-        return HttpClient.create(url, auth: auth, urlPathComponents: [id, "positions", "delete"], urlParameters: [], body: body)
+        return HttpClient.create(url, auth: parameters.auth, urlPathComponents: [id, "positions", "delete"], urlParameters: [], body: body)
             .flatMap { _ -> Observable<Void> in return .just(()) }
     }
 }

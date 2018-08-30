@@ -211,7 +211,7 @@ extension DataManager {
                                      parameters: UrlRequestParameters,
                                      filters: DocumentsFilter? = nil) -> Observable<[MSDocument]>  {
         
-        let urlParameters = mergeUrlParameters(parameters.offset, parameters.orderBy, CompositeExpander(parameters.expanders), filters?.filter, filters?.organization, filters?.search) + (parameters.urlParameters ?? [])
+        let urlParameters = parameters.allParametersCollection(filters?.filter, filters?.organization, filters?.search)
         
         return HttpClient.get(documentType.apiRequest, auth: parameters.auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSDocument]> in
@@ -240,10 +240,9 @@ extension DataManager {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.emptyObjectId.value))
         }
         
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, CompositeExpander(parameters.expanders))
         let pathComponents: [String] = [id, "positions"]
         
-        return HttpClient.get(url, auth: parameters.auth, urlPathComponents: pathComponents, urlParameters: urlParameters)
+        return HttpClient.get(url, auth: parameters.auth, urlPathComponents: pathComponents, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSPosition>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPositionsResponse.value)) }
                 let deserialized = result.msArray("rows").compactMap { MSPosition.from(dict: $0) }
@@ -269,7 +268,7 @@ extension DataManager {
         let pathComponents: [String] = [id, "positions"]
         
         return Observable.create { observer in
-            let subscription = DataManager.loadRecursive(loader: { HttpClient.get($0, auth: parameters.auth, urlPathComponents: pathComponents, urlParameters: mergeUrlParameters($1, CompositeExpander(parameters.expanders))) },
+            let subscription = DataManager.loadRecursive(loader: { HttpClient.get($0, auth: parameters.auth, urlPathComponents: pathComponents, urlParameters: parameters.allParametersCollection($1)) },
                                                          request: url,
                                                          offset: parameters.offset ?? MSOffset(size: 0, limit: 10, offset: 0),
                                                          observer: observer,

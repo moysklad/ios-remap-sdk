@@ -66,17 +66,23 @@ public struct UrlRequestParameters {
     var allParameters: [UrlParameter] {
         return mergeUrlParameters(offset, search, CompositeExpander(expanders), filter, orderBy) + (urlParameters ?? [])
     }
+    
+    func allParametersCollection(_ parameters: UrlParameter?...) -> [UrlParameter] {
+        return parameters.compactMap { $0 } + allParameters
+    }
+    
+    private func mergeUrlParameters(_ params: UrlParameter?...) -> [UrlParameter] {
+        var result = [UrlParameter]()
+        params.forEach { p in
+            if let p = p {
+                result.append(p)
+            }
+        }
+        return result
+    }
 }
 
-public func mergeUrlParameters(_ params: UrlParameter?...) -> [UrlParameter] {
-    var result = [UrlParameter]()
-    params.forEach { p in
-        if let p = p {
-            result.append(p)
-        }
-    }
-    return result
-}
+
 
 public struct DataManager {
     /// Максимальное количество позиций для документа, при большем (при превышении возвращается ошибка)
@@ -335,10 +341,7 @@ public struct DataManager {
                                   stockStore: StockStore? = nil, 
                                   scope: AssortmentScope? = nil)
         -> Observable<[MSEntity<MSAssortment>]> {
-            
-            let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, parameters.orderBy, stockStore, scope, CompositeExpander(parameters.expanders), StockMomentAssortment(value: Date())) + (parameters.urlParameters ?? [])
-            
-            return HttpClient.get(.assortment, auth: parameters.auth, urlParameters: urlParameters)
+            return HttpClient.get(.assortment, auth: parameters.auth, urlParameters: parameters.allParametersCollection(stockStore, scope,  StockMomentAssortment(value: Date())))
             .flatMapLatest { result -> Observable<[MSEntity<MSAssortment>]> in
                 guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectAssortmentResponse.value))
@@ -368,8 +371,7 @@ public struct DataManager {
     */
     public static func organizations(parameters: UrlRequestParameters)
         -> Observable<[MSEntity<MSAgent>]> {
-            let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders))
-            return HttpClient.get(.organization, auth: parameters.auth, urlParameters: urlParameters)
+            return HttpClient.get(.organization, auth: parameters.auth, urlParameters: parameters.allParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
                     guard let result = result?.toDictionary() else {
                         return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectOrganizationResponse.value))
@@ -398,9 +400,7 @@ public struct DataManager {
      */
     public static func counterparties(parameters: UrlRequestParameters)
         -> Observable<[MSEntity<MSAgent>]> {
-            let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, CompositeExpander(parameters.expanders), parameters.filter, parameters.orderBy)
-            
-            return HttpClient.get(.counterparty, auth: parameters.auth, urlParameters: urlParameters)
+            return HttpClient.get(.counterparty, auth: parameters.auth, urlParameters: parameters.allParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
                     guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
                     
@@ -422,9 +422,7 @@ public struct DataManager {
      */
     public static func counterpartiesWithReport(parameters: UrlRequestParameters)
         -> Observable<[MSEntity<MSAgent>]> {
-            let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, CompositeExpander(parameters.expanders), parameters.filter, parameters.orderBy) + (parameters.urlParameters ?? [])
-            
-            return HttpClient.get(.counterparty, auth: parameters.auth, urlParameters: urlParameters)
+            return HttpClient.get(.counterparty, auth: parameters.auth, urlParameters: parameters.allParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
                     guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
                     
@@ -614,9 +612,7 @@ public struct DataManager {
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
     */
     public static func productFolders(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSProductFolder>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders))
-        
-        return HttpClient.get(.productFolder, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.productFolder, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSProductFolder>]> in
                 
                 guard let result = result?.toDictionary() else {
@@ -640,9 +636,7 @@ public struct DataManager {
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
     */
     public static func stores(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSStore>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders))
-        
-        return HttpClient.get(.store, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.store, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSStore>]> in
                 
                 guard let result = result?.toDictionary() else {
@@ -671,9 +665,7 @@ public struct DataManager {
                                                      Order by instruction
     */
     public static func projects(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSProject>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, parameters.filter, parameters.orderBy, CompositeExpander(parameters.expanders))
-        
-        return HttpClient.get(.project, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.project, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSProject>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProjectResponse.value)) }
                 
@@ -695,9 +687,7 @@ public struct DataManager {
     */
     public static func groups(parameters: UrlRequestParameters)
         -> Observable<[MSEntity<MSGroup>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders))
-        
-        return HttpClient.get(.group, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.group, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSGroup>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectGroupResponse.value)) }
                 
@@ -718,9 +708,7 @@ public struct DataManager {
                                          Order by instruction
     */
     public static func currencies(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSCurrency>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders), parameters.filter)
-        
-        return HttpClient.get(.currency, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.currency, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSCurrency>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCurrencyResponse.value)) }
                 
@@ -741,9 +729,7 @@ public struct DataManager {
                                              Order by instruction
      */
     public static func contracts(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSContract>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders), parameters.filter)
-        
-        return HttpClient.get(.contract, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.contract, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSContract>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectContractResponse.value)) }
                 
@@ -764,9 +750,7 @@ public struct DataManager {
                                          Order by instruction
      */
     public static func employees(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSEmployee>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders), parameters.filter)
-        
-        return HttpClient.get(.employee, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.employee, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSEmployee>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value)) }
                 
@@ -789,9 +773,7 @@ public struct DataManager {
      Реализовано для возможности совмещать на одном экране контрагентов и сотрудников. Релизовано на экране выбора контрагента
      */
     public static func employeesForAgents(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSAgent>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, CompositeExpander(parameters.expanders), parameters.filter, parameters.orderBy)
-        
-        return HttpClient.get(.employee, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.employee, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value)) }
                 
@@ -815,7 +797,7 @@ public struct DataManager {
                          UUID id
      */
     public static func agentAccounts(agent: MSAgent, parameters: UrlRequestParameters) -> Observable<[MSEntity<MSAccount>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders), parameters.filter)
+        let urlParameters: [UrlParameter] = parameters.allParameters
         
         let pathComponents = [agent.id.msID?.uuidString ?? "", "accounts"]
         
@@ -898,9 +880,7 @@ public struct DataManager {
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
     */
     public static func customEntities(parameters: UrlRequestParameters, metadataId: String) -> Observable<[MSEntity<MSCustomEntity>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search)
-        
-        return HttpClient.get(.customEntity, auth: parameters.auth, urlPathComponents: [metadataId], urlParameters: urlParameters)
+        return HttpClient.get(.customEntity, auth: parameters.auth, urlPathComponents: [metadataId], urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSCustomEntity>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCustomEntityResponse.value)) }
                 
@@ -978,9 +958,7 @@ public struct DataManager {
         let momentFrom = GenericUrlParameter(name: "momentFrom", value: from.toCurrentLocaleLongDate())
         let momentTo = GenericUrlParameter(name: "momentTo", value: to.toCurrentLocaleLongDate())
         
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, momentFrom, momentTo)
-        
-        return HttpClient.get(.salesByProduct, auth: parameters.auth, urlParameters: urlParameters).flatMapLatest { result -> Observable<[MSSaleByProduct]> in
+        return HttpClient.get(.salesByProduct, auth: parameters.auth, urlParameters: parameters.allParametersCollection(momentFrom, momentTo)).flatMapLatest { result -> Observable<[MSSaleByProduct]> in
             
             guard let result = result?.toDictionary() else {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectSalesByProductResponse.value))
@@ -1080,9 +1058,7 @@ public struct DataManager {
      - id has to be added to parameters container
      */
     public static func loadById(parameters: UrlRequestParameters, taskId: UUID) -> Observable<MSEntity<MSTask>> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.search, CompositeExpander(parameters.expanders), parameters.filter)
-        
-        return HttpClient.get(.task, auth: parameters.auth, urlPathComponents: [taskId.uuidString], urlParameters: urlParameters)
+        return HttpClient.get(.task, auth: parameters.auth, urlPathComponents: [taskId.uuidString], urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<MSEntity<MSTask>> in
 
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectTasksResponse.value)) }
@@ -1096,8 +1072,7 @@ public struct DataManager {
     }
     
     public static func loadExpenseitems(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSExpenseItem>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders))
-        return HttpClient.get(.expenseitem, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.expenseitem, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSExpenseItem>]> in
     
             guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectExpenseItemResponse.value)) }
@@ -1109,7 +1084,7 @@ public struct DataManager {
     }
     
     public static func loadCountries(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSCountry>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, CompositeExpander(parameters.expanders))
+        let urlParameters: [UrlParameter] = parameters.allParameters
         return HttpClient.get(.country, auth: parameters.auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSCountry>]> in
                 
@@ -1122,8 +1097,7 @@ public struct DataManager {
     }
     
     public static func loadUom(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSUOM>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.orderBy, parameters.search, CompositeExpander(parameters.expanders))
-        return HttpClient.get(.uom, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.uom, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSUOM>]> in
                 
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectUomResponse.value)) }
@@ -1166,10 +1140,8 @@ public struct DataManager {
      */
     public static func variants(parameters: UrlRequestParameters)
         -> Observable<[MSEntity<MSAssortment>]> {
-            
-            let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, CompositeExpander(parameters.expanders))
-            
-            return HttpClient.get(.variant, auth: parameters.auth, urlParameters: urlParameters)
+                        
+            return HttpClient.get(.variant, auth: parameters.auth, urlParameters: parameters.allParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAssortment>]> in
                     guard let result = result?.toDictionary() else {
                         return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectVariantResponse.value))

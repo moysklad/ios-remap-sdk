@@ -15,9 +15,7 @@ extension DataManager {
      - parameter document: Entity that should be updated
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      */
-    public static func update<T>(entity: T, parameters: UrlRequestParameters) -> Observable<T.Element> where T: MSRequestEntity, T: DictConvertable {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(CompositeExpander(parameters.expanders))
-        
+    public static func update<T>(entity: T, parameters: UrlRequestParameters) -> Observable<T.Element> where T: MSRequestEntity, T: DictConvertable {        
         guard let url = entity.requestUrl() else {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
         }
@@ -29,7 +27,7 @@ extension DataManager {
         return HttpClient.update(url,
                                  auth: parameters.auth,
                                  urlPathComponents: [id.uuidString],
-                                 urlParameters: urlParameters,
+                                 urlParameters: parameters.allParameters,
                                  body: entity.dictionary(metaOnly: false).toJSONType())
             .flatMapLatest { result -> Observable<T.Element> in
                 guard let result = result?.toDictionary() else { return Observable.error(entity.deserializationError()) }
@@ -53,9 +51,7 @@ extension DataManager {
     }
     
     public static func updateOrCreate(positions: [MSPosition], in document: MSDocument, parameters: UrlRequestParameters)
-        -> Observable<[MSEntity<MSPosition>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(CompositeExpander(parameters.expanders))
-        
+        -> Observable<[MSEntity<MSPosition>]> {        
         guard let url = document.requestUrl() else {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
         }
@@ -66,7 +62,7 @@ extension DataManager {
         
         let body = positions.map { $0.dictionary(metaOnly: false) }.toJSONType()
         
-        return HttpClient.create(url, auth: parameters.auth, urlPathComponents: [id, "positions"], urlParameters: urlParameters, body: body)
+        return HttpClient.create(url, auth: parameters.auth, urlPathComponents: [id, "positions"], urlParameters: parameters.allParameters, body: body)
             .flatMapLatest { result -> Observable<[MSEntity<MSPosition>]> in
                 guard let result = result?.toArray() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPositionsResponse.value))

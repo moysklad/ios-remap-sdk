@@ -40,7 +40,7 @@ extension DataManager {
         retailStore: StatisticsRerailStoreArgument? = nil
     ) -> Observable<MSEntity<MSStatistics>> {
         
-        let urlParameters: [UrlParameter] = mergeUrlParameters(moment, interval, retailStore)
+        let urlParameters: [UrlParameter] = parameters.allParametersCollection(moment, interval, retailStore)
         
         return HttpClient.get(.plotseries, auth: parameters.auth, urlPathComponents: [type.rawValue], urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<MSEntity<MSStatistics>> in
@@ -69,7 +69,7 @@ extension DataManager {
         retailStore: StatisticsRerailStoreArgument? = nil
     ) -> Observable<MSEntity<MSMoneyStatistics>> {
         
-        let urlParameters: [UrlParameter] = mergeUrlParameters(moment, interval, retailStore)
+        let urlParameters: [UrlParameter] = parameters.allParametersCollection(moment, interval, retailStore)
         let type = MSStatisticsType.money
         
         return HttpClient.get(.plotseries, auth: parameters.auth, urlPathComponents: [type.rawValue], urlParameters: urlParameters)
@@ -95,7 +95,7 @@ extension DataManager {
     public static func loadMoneyBalance(
         parameters: UrlRequestParameters
     ) -> Observable<[MSMoneyBalance]> {
-        return HttpClient.get(.reportMoneyByAccount, auth: parameters.auth, urlParameters: mergeUrlParameters(parameters.offset))
+        return HttpClient.get(.reportMoneyByAccount, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSMoneyBalance]> in
                 
                 guard let result = result?.toDictionary() else {

@@ -19,12 +19,10 @@ extension DataManager {
         guard let url = entity.requestUrl() else {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
         }
-        
-        let urlParameters: [UrlParameter] = mergeUrlParameters(CompositeExpander(parameters.expanders))
-        
+                
         return HttpClient.create(url,
                                  auth: parameters.auth,
-                                 urlParameters: urlParameters,
+                                 urlParameters: parameters.allParameters,
                                  body: entity.dictionary(metaOnly: false).toJSONType())
             .flatMapLatest { result -> Observable<T.Element> in
                 guard let result = result?.toDictionary() else { return Observable.error(entity.deserializationError()) }
@@ -58,11 +56,9 @@ extension DataManager {
             return Observable.error(createdDocumentError(type: toType))
         }
         
-        let urlParameters: [UrlParameter] = mergeUrlParameters(CompositeExpander(parameters.expanders))
-        
         return HttpClient.update(url,
                                  auth: parameters.auth,
-                                 urlParameters: urlParameters,
+                                 urlParameters: parameters.allParameters,
                                  body: fromDocument?.templateBody(forDocument: toType)?.toJSONType())
             .flatMapLatest { result -> Observable<MSGeneralDocument> in
                 guard var result = result?.toDictionary() else { return Observable.error(createdDocumentError(type: toType)) }

@@ -584,8 +584,8 @@ public struct DataManager {
                              UUID id
      - parameter assortment: Assortment for whick stock data should be loaded
     */
-    public static func productCombinedStock(parameters: UrlRequestParameters, assortment: MSAssortment) -> Observable<(all: MSProductStockAll, store: [MSProductStockStore])?> {
-        return productStockAll(parameters: parameters, assortments: [MSEntity.entity(assortment)]).flatMapLatest { allStock -> Observable<(all: MSProductStockAll, store: [MSProductStockStore])?> in
+    public static func productCombinedStock(parameters: UrlRequestParameters, assortment: MSAssortment) -> Observable<MSProductStock?> {
+        return productStockAll(parameters: parameters, assortments: [MSEntity.entity(assortment)]).flatMapLatest { allStock -> Observable<MSProductStock?> in
             let prodStockAll: MSProductStockAll? = {
                 guard let allStock = allStock.first else {
                     // если остатки не пришли вообще, значит там пусто, возвращаем пустую структуру
@@ -600,14 +600,14 @@ public struct DataManager {
             }
             
             return productStockByStore(parameters: parameters, assortment: assortment)
-                .flatMapLatest { byStore -> Observable<(all: MSProductStockAll, store: [MSProductStockStore])?> in
+                .flatMapLatest { byStore -> Observable<MSProductStock?> in
                 let withoutNils = byStore.map { $0.value() }.removeNils()
                 
                 guard withoutNils.count == byStore.count else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectStockAllResponse.value))
                     }
                 
-                return Observable.just((all: all, store: withoutNils))
+                return Observable.just(MSProductStock(all: all, store: withoutNils))
             }
         }
     }

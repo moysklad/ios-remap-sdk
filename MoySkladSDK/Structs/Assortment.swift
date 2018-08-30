@@ -23,6 +23,16 @@ public struct MSAlcohol {
     }
 }
 
+public struct MSProductStock {
+    public var all: MSProductStockAll
+    public var store: [MSProductStockStore]
+    
+    public init(all: MSProductStockAll, store: [MSProductStockStore]){
+        self.all = all
+        self.store = store
+    }
+}
+
 /**
  Represents Assortment
  For more information, see [API reference.](https://online.moysklad.ru/api/remap/1.1/doc/index.html#ассортимент)
@@ -63,6 +73,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
 	public var reserve: Double?
 	public var inTransit: Double?
 	public var quantity: Double?
+    public var combinedStock: MSProductStock?
     // Variant fields
     public var product: MSEntity<MSAssortment>?
     public var packs: [MSPack]

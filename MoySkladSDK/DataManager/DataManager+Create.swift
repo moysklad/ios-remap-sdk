@@ -13,19 +13,16 @@ extension DataManager {
     /**
      Create new entity.
      - parameter document: Entity instance that should be created
-     - parameter auth: Authentication information
-     - parameter expanders: Additional objects to include into response
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      */
-    public static func create<T>(entity: T, auth: Auth, expanders: [Expander] = []) -> Observable<T.Element> where T: MSRequestEntity, T: DictConvertable {
+    public static func create<T>(entity: T, parameters: UrlRequestParameters) -> Observable<T.Element> where T: MSRequestEntity, T: DictConvertable {
         guard let url = entity.requestUrl() else {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
         }
-        
-        let urlParameters: [UrlParameter] = mergeUrlParameters(CompositeExpander(expanders))
-        
+                
         return HttpClient.create(url,
-                                 auth: auth,
-                                 urlParameters: urlParameters,
+                                 auth: parameters.auth,
+                                 urlParameters: parameters.allParameters,
                                  body: entity.dictionary(metaOnly: false).toJSONType())
             .flatMapLatest { result -> Observable<T.Element> in
                 guard let result = result?.toDictionary() else { return Observable.error(entity.deserializationError()) }
@@ -41,30 +38,27 @@ extension DataManager {
     /**
      Create new document.
      - parameter document: Document instance that should be created
-     - parameter auth: Authentication information
-     - parameter expanders: Additional objects to include into request
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
     */
-    public static func create(document: MSDocument, auth: Auth, expanders: [Expander] = []) -> Observable<MSDocument> {
-        return create(entity: document, auth: auth, expanders: expanders)
+    public static func create(document: MSDocument, parameters: UrlRequestParameters) -> Observable<MSDocument> {
+        return create(entity: document, parameters: parameters)
     }
     
     /**
      Load template for new document (this tempalte can be used to create new document with create<T> method)
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - parameter fromDocument: Base document for template (For example to create new Demand based on CustomerOrder)
      - parameter toType: Type of new document
      - parameter expanders: Additional objects to include into request
     */
-    public static func createTemplate(auth: Auth, fromDocument: MSBaseDocumentType?, toType: MSObjectType, expanders: [Expander] = []) -> Observable<MSGeneralDocument> {
+    public static func createTemplate(parameters: UrlRequestParameters, fromDocument: MSBaseDocumentType?, toType: MSObjectType) -> Observable<MSGeneralDocument> {
         guard let url = newDocumentUrl(type: toType) else {
             return Observable.error(createdDocumentError(type: toType))
         }
         
-        let urlParameters: [UrlParameter] = mergeUrlParameters(CompositeExpander(expanders))
-        
         return HttpClient.update(url,
-                                 auth: auth,
-                                 urlParameters: urlParameters,
+                                 auth: parameters.auth,
+                                 urlParameters: parameters.allParameters,
                                  body: fromDocument?.templateBody(forDocument: toType)?.toJSONType())
             .flatMapLatest { result -> Observable<MSGeneralDocument> in
                 guard var result = result?.toDictionary() else { return Observable.error(createdDocumentError(type: toType)) }

@@ -51,7 +51,7 @@ public struct UrlRequestParameters {
     public let filter: Filter?
     public let search: Search?
     public let orderBy: Order?
-    public let urlParameters: [UrlParameter]
+    public let urlParameters: [UrlParameter]?
     
     public init(auth: Auth, offset: MSOffset? = nil, expanders: [Expander] = [], filter: Filter? = nil, search: Search? = nil, orderBy: Order? = nil, urlParameters: [UrlParameter] = []) {
         self.auth = auth
@@ -64,19 +64,25 @@ public struct UrlRequestParameters {
     }
     
     var allParameters: [UrlParameter] {
-        return mergeUrlParameters(offset, search, CompositeExpander(expanders), filter, orderBy) + urlParameters
+        return mergeUrlParameters(offset, search, CompositeExpander(expanders), filter, orderBy) + (urlParameters ?? [])
+    }
+    
+    func allParametersCollection(_ parameters: UrlParameter?...) -> [UrlParameter] {
+        return parameters.compactMap { $0 } + allParameters
+    }
+    
+    private func mergeUrlParameters(_ params: UrlParameter?...) -> [UrlParameter] {
+        var result = [UrlParameter]()
+        params.forEach { p in
+            if let p = p {
+                result.append(p)
+            }
+        }
+        return result
     }
 }
 
-func mergeUrlParameters(_ params: UrlParameter?...) -> [UrlParameter] {
-    var result = [UrlParameter]()
-    params.forEach { p in
-        if let p = p {
-            result.append(p)
-        }
-    }
-    return result
-}
+
 
 public struct DataManager {
     /// Максимальное количество позиций для документа, при большем (при превышении возвращается ошибка)
@@ -145,13 +151,19 @@ public struct DataManager {
     
     /**
      Log in
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like:
+                         authentication information,
+                         desired data offset,
+                         filter for request,
+                         Additional objects to include into request,
+                         Order by instruction,
+                         UUID id
      - returns: Login information
     */
-    public static func logIn(auth: Auth) -> Observable<LogInInfo> {
+    public static func logIn(parameter: UrlRequestParameters) -> Observable<LogInInfo> {
         // запрос данных по пользователю и затем настроек компании и статусов документов
         
-        let employeeRequest = HttpClient.get(.contextEmployee, auth: auth)
+        let employeeRequest = HttpClient.get(.contextEmployee, auth: parameter.auth)
             .flatMapLatest { result -> Observable<MSEmployee> in
                 guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectLoginResponse.value))
@@ -163,7 +175,7 @@ public struct DataManager {
                 return Observable.just(employee)
         }
         
-        let settingsRequest = HttpClient.get(.companySettings, auth: auth, urlParameters: [Expander(.currency)])
+        let settingsRequest = HttpClient.get(.companySettings, auth: parameter.auth, urlParameters: [Expander(.currency)])
             .flatMapLatest { result -> Observable<MSCompanySettings> in
                 guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCompanySettingsResponse.value))
@@ -175,7 +187,7 @@ public struct DataManager {
                 return Observable.just(settings)
         }
         
-        let currenciesRequest = HttpClient.get(.currency, auth: auth, urlParameters: [MSOffset(size: 100, limit: 100, offset: 0)])
+        let currenciesRequest = HttpClient.get(.currency, auth: parameter.auth, urlParameters: [MSOffset(size: 100, limit: 100, offset: 0)])
             .flatMapLatest { result -> Observable<[MSCurrency]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCurrencyResponse.value)) }
                 
@@ -191,7 +203,7 @@ public struct DataManager {
                 }
         }
         
-        let groupsRequest = HttpClient.get(.group, auth: auth, urlParameters: [MSOffset(size: 100, limit: 100, offset: 0)])
+        let groupsRequest = HttpClient.get(.group, auth: parameter.auth, urlParameters: [MSOffset(size: 100, limit: 100, offset: 0)])
             .flatMapLatest { result -> Observable<[MSGroup]> in
                 guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectGroupResponse.value))
@@ -203,7 +215,7 @@ public struct DataManager {
         
         // комбинируем все ответы от запросов и возвращаем LogInInfo
         return employeeRequest.flatMapLatest { employee -> Observable<LogInInfo> in
-            return Observable.combineLatest(settingsRequest, currenciesRequest, loadMetadata(auth: auth), groupsRequest) { settings, currencies, metadata, groups -> LogInInfo in
+            return Observable.combineLatest(settingsRequest, currenciesRequest, loadMetadata(parameter: parameter), groupsRequest) { settings, currencies, metadata, groups -> LogInInfo in
                 let states = metadata.toDictionary(key: { $0.type }, element: { $0.states })
                 let attributes = metadata.toDictionary(key: { $0.type }, element: { $0.attributes })
                 let createShared = metadata.toDictionary(key: { $0.type }, element: { $0.createShared })
@@ -223,8 +235,8 @@ public struct DataManager {
         }
     }
     
-    static func loadMetadata(auth: Auth) -> Observable<[MetadataLoadResult]> {
-        return HttpClient.get(.entityMetadata, auth: auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
+    static func loadMetadata(parameter: UrlRequestParameters) -> Observable<[MetadataLoadResult]> {
+        return HttpClient.get(.entityMetadata, auth: parameter.auth, urlParameters: [MSOffset(size: 0, limit: 100, offset: 0)])
             .flatMapLatest { result -> Observable<[MetadataLoadResult]> in
                 guard let json = result?.toDictionary() else { return.just([]) }
                 let metadata: [MetadataLoadResult] = [deserializeObjectMetadata(objectType: .customerorder, from: json),
@@ -248,11 +260,17 @@ public struct DataManager {
     
     /**
      Load dashboard data for current day
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like:
+                             authentication information,
+                             desired data offset,
+                             filter for request,
+                             Additional objects to include into request,
+                             Order by instruction,
+                             UUID id
      - returns: Dashboard
     */
-    public static func dashboardDay(auth: Auth) -> Observable<MSDashboard> {
-        return HttpClient.get(.dashboardDay, auth: auth)
+    public static func dashboardDay(parameter: UrlRequestParameters) -> Observable<MSDashboard> {
+        return HttpClient.get(.dashboardDay, auth: parameter.auth)
             .flatMapLatest { result -> Observable<MSDashboard> in
                 guard let result = result?.toDictionary() else { return Observable.empty() }
                 guard let dash = MSDashboard.from(dict: result) else {
@@ -264,11 +282,17 @@ public struct DataManager {
     
     /**
      Load dashboard data for current week
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like:
+                                     authentication information,
+                                     desired data offset,
+                                     filter for request,
+                                     Additional objects to include into request,
+                                     Order by instruction,
+                                     UUID id
      - returns: Dashboard
      */
-    public static func dashboardWeek(auth: Auth) -> Observable<MSDashboard> {
-        return HttpClient.get(.dashboardWeek, auth: auth)
+    public static func dashboardWeek(parameter: UrlRequestParameters) -> Observable<MSDashboard> {
+        return HttpClient.get(.dashboardWeek, auth: parameter.auth)
             .flatMapLatest { result -> Observable<MSDashboard> in
                 guard let result = result?.toDictionary() else { return Observable.empty() }
                 guard let dash = MSDashboard.from(dict: result) else {
@@ -280,11 +304,17 @@ public struct DataManager {
     
     /**
      Load dashboard data for current month
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like:
+                             authentication information,
+                             desired data offset,
+                             filter for request,
+                             Additional objects to include into request,
+                             Order by instruction,
+                             UUID id
      - returns: Dashboard
      */
-    public static func dashboardMonth(auth: Auth) -> Observable<MSDashboard> {
-        return HttpClient.get(.dashboardMonth, auth: auth)
+    public static func dashboardMonth(parameter: UrlRequestParameters) -> Observable<MSDashboard> {
+        return HttpClient.get(.dashboardMonth, auth: parameter.auth)
             .flatMapLatest { result -> Observable<MSDashboard> in
                 guard let result = result?.toDictionary() else { return Observable.empty() }
                 guard let dash = MSDashboard.from(dict: result) else {
@@ -305,18 +335,13 @@ public struct DataManager {
                                          Order by instruction
      - parameter stockStore: Specifies specific Store for filtering
      - parameter scope: Filter data for scope. For example if product specified, query will not return variants for product
-     - parameter urlParameters: Any other URL parameters
      - returns: Collection of Assortment
     */
     public static func assortment(parameters: UrlRequestParameters,
                                   stockStore: StockStore? = nil, 
-                                  scope: AssortmentScope? = nil,
-                                  urlParameters otherParameters: [UrlParameter] = [])
+                                  scope: AssortmentScope? = nil)
         -> Observable<[MSEntity<MSAssortment>]> {
-            
-            let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, parameters.orderBy, stockStore, scope, CompositeExpander(parameters.expanders), StockMomentAssortment(value: Date())) + otherParameters
-            
-            return HttpClient.get(.assortment, auth: parameters.auth, urlParameters: urlParameters)
+            return HttpClient.get(.assortment, auth: parameters.auth, urlParameters: parameters.allParametersCollection(stockStore, scope,  StockMomentAssortment(value: Date())))
             .flatMapLatest { result -> Observable<[MSEntity<MSAssortment>]> in
                 guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectAssortmentResponse.value))
@@ -337,16 +362,16 @@ public struct DataManager {
      Load organizations.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#юрлицо)
      - parameter parameters: container for parameters like:
-                                     authentication information,
-                                     desired data offset,
-                                     filter for request,
-                                     Additional objects to include into request,
-                                     Order by instruction
+                                         authentication information,
+                                         desired data offset,
+                                         filter for request,
+                                         Additional objects to include into request,
+                                         Order by instruction,
+                                         UUID id
     */
     public static func organizations(parameters: UrlRequestParameters)
         -> Observable<[MSEntity<MSAgent>]> {
-            let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders))
-            return HttpClient.get(.organization, auth: parameters.auth, urlParameters: urlParameters)
+            return HttpClient.get(.organization, auth: parameters.auth, urlParameters: parameters.allParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
                     guard let result = result?.toDictionary() else {
                         return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectOrganizationResponse.value))
@@ -375,9 +400,7 @@ public struct DataManager {
      */
     public static func counterparties(parameters: UrlRequestParameters)
         -> Observable<[MSEntity<MSAgent>]> {
-            let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, CompositeExpander(parameters.expanders), parameters.filter, parameters.orderBy)
-            
-            return HttpClient.get(.counterparty, auth: parameters.auth, urlParameters: urlParameters)
+            return HttpClient.get(.counterparty, auth: parameters.auth, urlParameters: parameters.allParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
                     guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
                     
@@ -397,12 +420,9 @@ public struct DataManager {
                                          Additional objects to include into request,
                                          Order by instruction
      */
-    public static func counterpartiesWithReport(parameters: UrlRequestParameters,
-                                      urlParameters otherParameters: [UrlParameter] = [])
+    public static func counterpartiesWithReport(parameters: UrlRequestParameters)
         -> Observable<[MSEntity<MSAgent>]> {
-            let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, CompositeExpander(parameters.expanders), parameters.filter, parameters.orderBy) + otherParameters
-            
-            return HttpClient.get(.counterparty, auth: parameters.auth, urlParameters: urlParameters)
+            return HttpClient.get(.counterparty, auth: parameters.auth, urlParameters: parameters.allParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
                     guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
                     
@@ -411,7 +431,7 @@ public struct DataManager {
                                             deserializer: { MSAgent.from(dict: $0) })
             }
                 .flatMapLatest { counterparties -> Observable<[MSEntity<MSAgent>]> in
-                    return loadReportsForCounterparties(auth: parameters.auth, counterparties: counterparties)
+                    return loadReportsForCounterparties(parameters: parameters, counterparties: counterparties)
                         .catchError { e in
                             guard MSError.isCrmAccessDenied(from: e) else { throw e }
                             
@@ -438,7 +458,6 @@ public struct DataManager {
                                                  Order by instruction
      - parameter stockStore: Specifies specific Store for filtering
      - parameter scope: Filter data for scope. For example if product specified, query will not return variants for product
-     - parameter urlParameters: Any other URL parameters
      - parameter withPrevious: Grouped data returned by previous invocation of assortmentGroupedByProductFolder (useful for paged loading)
      - returns: Collection of grouped Assortment
      */
@@ -448,8 +467,8 @@ public struct DataManager {
                                                         urlParameters otherParameters: [UrlParameter] = [],
                                                         withPrevious: [(groupKey: String, data: [MSEntity<MSAssortment>])]? = nil)
         -> Observable<[(groupKey: String, data: [MSEntity<MSAssortment>])]> {
-            let parameters = UrlRequestParameters(auth: parameters.auth, offset: parameters.offset, expanders: parameters.expanders, filter: parameters.filter, search: parameters.search, orderBy: nil)
-            return assortment(parameters: parameters, stockStore: stockStore, scope: scope, urlParameters: otherParameters)
+            let parameters = UrlRequestParameters(auth: parameters.auth, offset: parameters.offset, expanders: parameters.expanders, filter: parameters.filter, search: parameters.search, urlParameters: otherParameters)
+            return assortment(parameters: parameters, stockStore: stockStore, scope: scope)
                 .flatMapLatest { result -> Observable<[(groupKey: String, data: [MSEntity<MSAssortment>])]> in
                     
                     let grouped = DataManager.groupBy(data: result, groupingKey: { $0.value()?.getFolderName() ?? "" }, withPrevious: withPrevious)
@@ -461,31 +480,37 @@ public struct DataManager {
     /**
      Load stock data.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-остатки-все-остатки-get)
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like:
+                         authentication information,
+                         desired data offset,
+                         filter for request,
+                         Additional objects to include into request,
+                         Order by instruction,
+                         UUID id
      - parameter assortments: Collection of assortments. If specified, stock data will be returned only for this assortment objects
      - parameter store: Stock data will be returned for specific Store, if specified
      - parameter stockMode: Mode for stock data
      - parameter moment: The time point for stock data
     */
-    public static func productStockAll(auth: Auth,
+    public static func productStockAll(parameters: UrlRequestParameters,
                                        assortments: [MSEntity<MSAssortment>], 
                                        store: MSStore? = nil, 
                                        stockMode: StockMode = .all,
                                        moment: Date? = nil) -> Observable<[MSEntity<MSProductStockAll>]> {
-        var parameters: [UrlParameter] = assortments.map { StockProductId(value: $0.objectMeta().objectId) }
+        var urlParameters: [UrlParameter] = assortments.map { StockProductId(value: $0.objectMeta().objectId) }
         
         if let storeId = store?.id.msID?.uuidString {
-            parameters.append(StockStoretId(value: storeId))
+            urlParameters.append(StockStoretId(value: storeId))
         }
         
         if let moment = moment {
-            parameters.append(StockMoment(value: moment))
+            urlParameters.append(StockMoment(value: moment))
         }
         
-        parameters.append(stockMode)
-        parameters.append(MSOffset(size: 100, limit: 100, offset: 0))
+        urlParameters.append(stockMode)
+        urlParameters.append(MSOffset(size: 100, limit: 100, offset: 0))
         
-        return HttpClient.get(.stockAll, auth: auth, urlParameters: parameters)
+        return HttpClient.get(.stockAll, auth: parameters.auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSProductStockAll>]> in
             guard let result = result?.toDictionary() else {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectStockAllResponse.value))
@@ -506,13 +531,19 @@ public struct DataManager {
     /**
      Load stock distributed by stores.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-остатки-все-остатки-get)
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like:
+                             authentication information,
+                             desired data offset,
+                             filter for request,
+                             Additional objects to include into request,
+                             Order by instruction,
+                             UUID id
      - parameter assortment: Assortment for whick stock data should be loaded
     */
-    public static func productStockByStore(auth: Auth, assortment: MSAssortment) -> Observable<[MSEntity<MSProductStockStore>]> {
-        let parameters: [UrlParameter] = [MSOffset(size: 100, limit: 100, offset: 0),
+    public static func productStockByStore(parameters: UrlRequestParameters, assortment: MSAssortment) -> Observable<[MSEntity<MSProductStockStore>]> {
+        let urlParameters: [UrlParameter] = [MSOffset(size: 100, limit: 100, offset: 0),
                                           StockProductId(value: assortment.id.msID?.uuidString ?? "")]
-        return HttpClient.get(.stockByStore, auth: auth, urlParameters: parameters)
+        return HttpClient.get(.stockByStore, auth: parameters.auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSProductStockStore>]> in
             guard let result = result?.toDictionary() else {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectStockByStoreResponse.value))
@@ -538,11 +569,17 @@ public struct DataManager {
     
     /**
      Returns combined data from productStockAll and productStockByStore requests
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like:
+                             authentication information,
+                             desired data offset,
+                             filter for request,
+                             Additional objects to include into request,
+                             Order by instruction,
+                             UUID id
      - parameter assortment: Assortment for whick stock data should be loaded
     */
-    public static func productCombinedStock(auth: Auth, assortment: MSAssortment) -> Observable<MSProductStock?> {
-        return productStockAll(auth: auth, assortments: [MSEntity.entity(assortment)]).flatMapLatest { allStock -> Observable<MSProductStock?> in
+    public static func productCombinedStock(parameters: UrlRequestParameters, assortment: MSAssortment) -> Observable<MSProductStock?> {
+        return productStockAll(parameters: parameters, assortments: [MSEntity.entity(assortment)]).flatMapLatest { allStock -> Observable<MSProductStock?> in
             let prodStockAll: MSProductStockAll? = {
                 guard let allStock = allStock.first else {
                     // если остатки не пришли вообще, значит там пусто, возвращаем пустую структуру
@@ -556,7 +593,7 @@ public struct DataManager {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectStockAllResponse.value))
             }
             
-            return productStockByStore(auth: auth, assortment: assortment)
+            return productStockByStore(parameters: parameters, assortment: assortment)
                 .flatMapLatest { byStore -> Observable<MSProductStock?> in
                 let withoutNils = byStore.map { $0.value() }.removeNils()
                 
@@ -572,12 +609,10 @@ public struct DataManager {
     /**
      Load Product folders.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#группа-товаров)
-     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
     */
     public static func productFolders(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSProductFolder>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders))
-        
-        return HttpClient.get(.productFolder, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.productFolder, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSProductFolder>]> in
                 
                 guard let result = result?.toDictionary() else {
@@ -598,12 +633,10 @@ public struct DataManager {
     /**
      Load stores.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#склад)
-     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
     */
     public static func stores(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSStore>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders))
-        
-        return HttpClient.get(.store, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.store, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSStore>]> in
                 
                 guard let result = result?.toDictionary() else {
@@ -632,9 +665,7 @@ public struct DataManager {
                                                      Order by instruction
     */
     public static func projects(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSProject>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, parameters.filter, parameters.orderBy, CompositeExpander(parameters.expanders))
-        
-        return HttpClient.get(.project, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.project, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSProject>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProjectResponse.value)) }
                 
@@ -656,9 +687,7 @@ public struct DataManager {
     */
     public static func groups(parameters: UrlRequestParameters)
         -> Observable<[MSEntity<MSGroup>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders))
-        
-        return HttpClient.get(.group, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.group, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSGroup>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectGroupResponse.value)) }
                 
@@ -679,9 +708,7 @@ public struct DataManager {
                                          Order by instruction
     */
     public static func currencies(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSCurrency>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders), parameters.filter)
-        
-        return HttpClient.get(.currency, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.currency, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSCurrency>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCurrencyResponse.value)) }
                 
@@ -702,9 +729,7 @@ public struct DataManager {
                                              Order by instruction
      */
     public static func contracts(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSContract>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders), parameters.filter)
-        
-        return HttpClient.get(.contract, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.contract, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSContract>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectContractResponse.value)) }
                 
@@ -725,9 +750,7 @@ public struct DataManager {
                                          Order by instruction
      */
     public static func employees(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSEmployee>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders), parameters.filter)
-        
-        return HttpClient.get(.employee, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.employee, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSEmployee>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value)) }
                 
@@ -750,9 +773,7 @@ public struct DataManager {
      Реализовано для возможности совмещать на одном экране контрагентов и сотрудников. Релизовано на экране выбора контрагента
      */
     public static func employeesForAgents(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSAgent>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, CompositeExpander(parameters.expanders), parameters.filter, parameters.orderBy)
-        
-        return HttpClient.get(.employee, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.employee, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSAgent>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value)) }
                 
@@ -767,15 +788,16 @@ public struct DataManager {
      Also see API reference for [ counterparty](https://online.moysklad.ru/api/remap/1.1/doc/index.html#контрагент-счета-контрагента-get)
      and [ organizaiton](https://online.moysklad.ru/api/remap/1.1/doc/index.html#юрлицо-счета-юрлица-get)
      - parameter agent: Agent for which accounts will be loaded
-     - parameter auth: Auth- parameter parameters: container for parameters like:
-                                                         authentication information,
-                                                         desired data offset,
-                                                         filter for request,
-                                                         Additional objects to include into request,
-                                                         Order by instruction by name
+     - parameter parameters: container for parameters like:
+                         authentication information,
+                         desired data offset,
+                         filter for request,
+                         Additional objects to include into request,
+                         Order by instruction,
+                         UUID id
      */
     public static func agentAccounts(agent: MSAgent, parameters: UrlRequestParameters) -> Observable<[MSEntity<MSAccount>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders), parameters.filter)
+        let urlParameters: [UrlParameter] = parameters.allParameters
         
         let pathComponents = [agent.id.msID?.uuidString ?? "", "accounts"]
         
@@ -801,14 +823,10 @@ public struct DataManager {
     /**
      Load product info by product id
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#товар-товар-get)
-     - parameter auth: Authentication information
-     - parameter id: Product id
-     - parameter expanders: Additional objects to include into request
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
     */
-    public static func productAssortmentById(auth: Auth,
-                                             id : UUID,
-                                             expanders: [Expander] = []) -> Observable<MSEntity<MSAssortment>> {
-        return HttpClient.get(.product, auth: auth, urlPathComponents: [id.uuidString], urlParameters: [CompositeExpander(expanders)])
+    public static func productAssortmentById(parameters: UrlRequestParameters, id : UUID) -> Observable<MSEntity<MSAssortment>> {
+        return HttpClient.get(.product, auth: parameters.auth, urlPathComponents: [id.uuidString], urlParameters: [CompositeExpander(parameters.expanders)])
             .flatMapLatest { result -> Observable<MSEntity<MSAssortment>> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProductResponse.value)) }
                 
@@ -823,12 +841,10 @@ public struct DataManager {
     /**
      Load product info by bundle id.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#комплект-комплект-get)
-     - parameter auth: Authentication information
-     - parameter id: Bundle id
-     - parameter expanders: Additional objects to include into request
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      */
-    public static func bundleAssortmentById(auth: Auth, id : UUID, expanders: [Expander] = []) -> Observable<MSEntity<MSAssortment>> {
-        return HttpClient.get(.bundle, auth: auth, urlPathComponents: [id.uuidString], urlParameters: [CompositeExpander(expanders)])
+    public static func bundleAssortmentById(parameters: UrlRequestParameters, id : UUID) -> Observable<MSEntity<MSAssortment>> {
+        return HttpClient.get(.bundle, auth: parameters.auth, urlPathComponents: [id.uuidString], urlParameters: [CompositeExpander(parameters.expanders)])
             .flatMapLatest { result -> Observable<MSEntity<MSAssortment>> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectBundleResponse.value)) }
                 
@@ -843,12 +859,10 @@ public struct DataManager {
     /**
      Load product info by variant id.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#модификация-модификация-get)
-     - parameter auth: Authentication information
-     - parameter id: Variant id
-     - parameter expanders: Additional objects to include into request
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      */
-    public static func variantAssortmentById(auth: Auth, id : UUID, expanders: [Expander] = []) -> Observable<MSEntity<MSAssortment>> {
-        return HttpClient.get(.variant, auth: auth, urlPathComponents: [id.uuidString], urlParameters: [CompositeExpander(expanders)])
+    public static func variantAssortmentById(parameters: UrlRequestParameters, id : UUID) -> Observable<MSEntity<MSAssortment>> {
+        return HttpClient.get(.variant, auth: parameters.auth, urlPathComponents: [id.uuidString], urlParameters: [CompositeExpander(parameters.expanders)])
             .flatMapLatest { result -> Observable<MSEntity<MSAssortment>> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectVariantResponse.value)) }
                 
@@ -863,19 +877,10 @@ public struct DataManager {
     /**
      Load custom entities
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#пользовательский-справочник)
-     - parameter parameters: container for parameters like:
-                         authentication information,
-                         desired data offset,
-                         filter for request,
-                         Additional objects to include into request,
-                         Order by instruction
-     - parameter metadataId: Id of custom entity
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
     */
-    public static func customEntities(parameters: UrlRequestParameters,
-                                      metadataId: String) -> Observable<[MSEntity<MSCustomEntity>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.search)
-        
-        return HttpClient.get(.customEntity, auth: parameters.auth, urlPathComponents: [metadataId], urlParameters: urlParameters)
+    public static func customEntities(parameters: UrlRequestParameters, metadataId: String) -> Observable<[MSEntity<MSCustomEntity>]> {
+        return HttpClient.get(.customEntity, auth: parameters.auth, urlPathComponents: [metadataId], urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSCustomEntity>]> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCustomEntityResponse.value)) }
                 
@@ -888,14 +893,10 @@ public struct DataManager {
     /**
      Load product info by service id.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#услуга-услуга-get)
-     - parameter auth: Authentication information
-     - parameter id: Service id
-     - parameter expanders: Additional objects to include into request
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      */
-    public static func serviceAssortmentById(auth: Auth, 
-                                             id : UUID, 
-                                             expanders: [Expander] = []) -> Observable<MSEntity<MSAssortment>> {
-        return HttpClient.get(.service, auth: auth, urlPathComponents: [id.uuidString], urlParameters: [CompositeExpander(expanders)])
+    public static func serviceAssortmentById(parameters: UrlRequestParameters, id : UUID) -> Observable<MSEntity<MSAssortment>> {
+        return HttpClient.get(.service, auth: parameters.auth, urlPathComponents: [id.uuidString], urlParameters: [CompositeExpander(parameters.expanders)])
             .flatMapLatest { result -> Observable<MSEntity<MSAssortment>> in
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectServiceResponse.value)) }
                 
@@ -910,62 +911,54 @@ public struct DataManager {
     /**
      Load SalesByProduct report for current day.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-товарам-get)
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-    */
-    public static func salesByProductDay(auth: Auth, offset: MSOffset? = nil) -> Observable<[MSSaleByProduct]> {
-        return salesByProduct(auth: auth, from: Date().beginningOfDay(), to: Date().endOfDay(), offset: offset)
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
+     */
+    public static func salesByProductDay(parameters: UrlRequestParameters) -> Observable<[MSSaleByProduct]> {
+        return salesByProduct(parameters: parameters, from: Date().beginningOfDay(), to: Date().endOfDay())
     }
     
     /**
      Load SalesByProduct report for current week.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-товарам-get)
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      */
-    public static func salesByProductWeek(auth: Auth, offset: MSOffset? = nil) -> Observable<[MSSaleByProduct]> {
-        return salesByProduct(auth: auth, from: Date().startOfWeek(), to: Date().endOfWeek(), offset: offset)
+    public static func salesByProductWeek(parameters: UrlRequestParameters) -> Observable<[MSSaleByProduct]> {
+        return salesByProduct(parameters: parameters, from: Date().startOfWeek(), to: Date().endOfWeek())
     }
     
     /**
      Load SalesByProduct report for current month.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-товарам-get)
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      */
-    public static func salesByProductMonth(auth: Auth, offset: MSOffset? = nil) -> Observable<[MSSaleByProduct]> {
-        return salesByProduct(auth: auth, from: Date().startOfMonth(), to: Date().endOfMonth(), offset: offset)
+    public static func salesByProductMonth(parameters: UrlRequestParameters) -> Observable<[MSSaleByProduct]> {
+        return salesByProduct(parameters: parameters, from: Date().startOfMonth(), to: Date().endOfMonth())
     }
     
     /**
      Load SalesByProduct report for period.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-товарам-get)
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - parameter period: Desired period
      */
-    public static func salesByProductPeriod(auth: Auth, offset: MSOffset? = nil, period: StatisticsMoment) -> Observable<[MSSaleByProduct]> {
-        return salesByProduct(auth: auth, from: period.from, to: period.to, offset: offset)
+    public static func salesByProductPeriod(parameters: UrlRequestParameters, period: StatisticsMoment) -> Observable<[MSSaleByProduct]> {
+        return salesByProduct(parameters: parameters, from: period.from, to: period.to)
     }
     
     /**
      Load SalesByProduct report.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-товарам-get)
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - parameter from: Start date for report
      - parameter to: End date for report
-     - parameter offset: Desired data offset
     */
-    public static func salesByProduct(auth: Auth,
+    public static func salesByProduct(parameters: UrlRequestParameters,
                                       from: Date, 
-                                      to: Date, 
-                                      offset: MSOffset? = nil) -> Observable<[MSSaleByProduct]> {
+                                      to: Date) -> Observable<[MSSaleByProduct]> {
         let momentFrom = GenericUrlParameter(name: "momentFrom", value: from.toCurrentLocaleLongDate())
         let momentTo = GenericUrlParameter(name: "momentTo", value: to.toCurrentLocaleLongDate())
         
-        let urlParameters: [UrlParameter] = mergeUrlParameters(offset, momentFrom, momentTo)
-        
-        return HttpClient.get(.salesByProduct, auth: auth, urlParameters: urlParameters).flatMapLatest { result -> Observable<[MSSaleByProduct]> in
+        return HttpClient.get(.salesByProduct, auth: parameters.auth, urlParameters: parameters.allParametersCollection(momentFrom, momentTo)).flatMapLatest { result -> Observable<[MSSaleByProduct]> in
             
             guard let result = result?.toDictionary() else {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectSalesByProductResponse.value))
@@ -986,13 +979,13 @@ public struct DataManager {
     /**
      Load counterparty contacts.
      Also see [ API refere`nce](https://online.moysklad.ru/api/remap/1.1/doc#контрагент-контактное-лицо-get)
-     - parameter auth: Authentication information
-     - parameter id: Id of counterparty
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
+     - id has to be added to parameters container as stringData
      - returns: Observable sequence with contacts
      */
-    public static func counterpartyContacts(auth: Auth, id: String) -> Observable<[MSEntity<MSContactPerson>]> {
+    public static func counterpartyContacts(parameters: UrlRequestParameters, id: String) -> Observable<[MSEntity<MSContactPerson>]> {
         let urlPathComponents: [String] = [id, "contactpersons"]
-        return HttpClient.get(.counterparty, auth: auth, urlPathComponents: urlPathComponents, urlParameters: [])
+        return HttpClient.get(.counterparty, auth: parameters.auth, urlPathComponents: urlPathComponents, urlParameters: [])
             .flatMapLatest { result -> Observable<[MSEntity<MSContactPerson>]> in
                 guard let results = result?.toDictionary()?.msArray("rows") else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecContactPersonsResponse.value))
@@ -1006,12 +999,12 @@ public struct DataManager {
     
     /**
      Searches counterparty data by INN.
-     - parameter auth: Authentication information
-     - parameter id: INN of counterparty
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
+     - inn has to be added to parameters container as stringData
      - returns: Observable sequence with counterparty info
      */
-    public static func searchCounterpartyByInn(auth: Auth, inn: String) -> Observable<[MSCounterpartySearchResult]> {
-        return HttpClient.get(.suggestCounterparty, auth: auth, urlParameters: [GenericUrlParameter(name: "search", value: inn)])
+    public static func searchCounterpartyByInn(parameters: UrlRequestParameters, inn: String) -> Observable<[MSCounterpartySearchResult]> {
+        return HttpClient.get(.suggestCounterparty, auth: parameters.auth, urlParameters: [GenericUrlParameter(name: "search", value: inn)])
             .flatMapLatest { result -> Observable<[MSCounterpartySearchResult]> in
                 guard let results = result?.toDictionary()?.msArray("rows") else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartySearchResponse.value))
@@ -1023,12 +1016,11 @@ public struct DataManager {
     
     /**
      Searches bank data by BIC.
-     - parameter auth: Authentication information
-     - parameter id: BIC
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - returns: Observable sequence with bank info
      */
-    public static func searchBankByBic(auth: Auth, bic: String) -> Observable<[MSBankSearchResult]> {
-        return HttpClient.get(.suggestBank, auth: auth, urlParameters: [GenericUrlParameter(name: "search", value: bic)])
+    public static func searchBankByBic(parameters: UrlRequestParameters, bic: String) -> Observable<[MSBankSearchResult]> {
+        return HttpClient.get(.suggestBank, auth: parameters.auth, urlParameters: [GenericUrlParameter(name: "search", value: bic)])
             .flatMapLatest { result -> Observable<[MSBankSearchResult]> in
                 guard let results = result?.toDictionary()?.msArray("rows") else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectBankSearchResponse.value))
@@ -1062,21 +1054,11 @@ public struct DataManager {
     /**
      Load task by id.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#задача)
-     - parameter parameters: container for parameters like:
-                                         authentication information,
-                                         desired data offset,
-                                         filter for request,
-                                         Additional objects to include into request,
-                                         Order by instruction
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
+     - id has to be added to parameters container
      */
-    public static func loadById(auth: Auth,
-                             taskId: UUID,
-                             expanders: [Expander] = [],
-                             filter: Filter? = nil,
-                             search: Search? = nil) -> Observable<MSEntity<MSTask>> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(search, CompositeExpander(expanders), filter)
-        
-        return HttpClient.get(.task, auth: auth, urlPathComponents: [taskId.uuidString], urlParameters: urlParameters)
+    public static func loadById(parameters: UrlRequestParameters, taskId: UUID) -> Observable<MSEntity<MSTask>> {
+        return HttpClient.get(.task, auth: parameters.auth, urlPathComponents: [taskId.uuidString], urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<MSEntity<MSTask>> in
 
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectTasksResponse.value)) }
@@ -1090,8 +1072,7 @@ public struct DataManager {
     }
     
     public static func loadExpenseitems(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSExpenseItem>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, parameters.orderBy, CompositeExpander(parameters.expanders))
-        return HttpClient.get(.expenseitem, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.expenseitem, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSExpenseItem>]> in
     
             guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectExpenseItemResponse.value)) }
@@ -1103,7 +1084,7 @@ public struct DataManager {
     }
     
     public static func loadCountries(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSCountry>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, CompositeExpander(parameters.expanders))
+        let urlParameters: [UrlParameter] = parameters.allParameters
         return HttpClient.get(.country, auth: parameters.auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSCountry>]> in
                 
@@ -1116,8 +1097,7 @@ public struct DataManager {
     }
     
     public static func loadUom(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSUOM>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.orderBy, parameters.search, CompositeExpander(parameters.expanders))
-        return HttpClient.get(.uom, auth: parameters.auth, urlParameters: urlParameters)
+        return HttpClient.get(.uom, auth: parameters.auth, urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<[MSEntity<MSUOM>]> in
                 
                 guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectUomResponse.value)) }
@@ -1160,10 +1140,8 @@ public struct DataManager {
      */
     public static func variants(parameters: UrlRequestParameters)
         -> Observable<[MSEntity<MSAssortment>]> {
-            
-            let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.offset, parameters.filter, parameters.search, CompositeExpander(parameters.expanders))
-            
-            return HttpClient.get(.variant, auth: parameters.auth, urlParameters: urlParameters)
+                        
+            return HttpClient.get(.variant, auth: parameters.auth, urlParameters: parameters.allParameters)
                 .flatMapLatest { result -> Observable<[MSEntity<MSAssortment>]> in
                     guard let result = result?.toDictionary() else {
                         return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectVariantResponse.value))

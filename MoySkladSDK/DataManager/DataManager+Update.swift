@@ -13,12 +13,9 @@ extension DataManager {
     /**
      Update entity
      - parameter document: Entity that should be updated
-     - parameter auth: Authentication information
-     - parameter expanders: Additional objects to include into response
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      */
-    public static func update<T>(entity: T, auth: Auth, expanders: [Expander] = []) -> Observable<T.Element> where T: MSRequestEntity, T: DictConvertable {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(CompositeExpander(expanders))
-        
+    public static func update<T>(entity: T, parameters: UrlRequestParameters) -> Observable<T.Element> where T: MSRequestEntity, T: DictConvertable {        
         guard let url = entity.requestUrl() else {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
         }
@@ -28,9 +25,9 @@ extension DataManager {
         }
         
         return HttpClient.update(url,
-                                 auth: auth,
+                                 auth: parameters.auth,
                                  urlPathComponents: [id.uuidString],
-                                 urlParameters: urlParameters,
+                                 urlParameters: parameters.allParameters,
                                  body: entity.dictionary(metaOnly: false).toJSONType())
             .flatMapLatest { result -> Observable<T.Element> in
                 guard let result = result?.toDictionary() else { return Observable.error(entity.deserializationError()) }
@@ -46,17 +43,15 @@ extension DataManager {
     /**
      Update document
      - parameter document: Document that should be updated
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - parameter expanders: Additional objects to include into response
     */
-    public static func update(document: MSDocument, auth: Auth, expanders: [Expander] = []) -> Observable<MSDocument> {
-        return update(entity: document, auth: auth, expanders: expanders)
+    public static func update(document: MSDocument, parameters: UrlRequestParameters) -> Observable<MSDocument> {
+        return update(entity: document, parameters: parameters)
     }
     
-    public static func updateOrCreate(positions: [MSPosition], in document: MSDocument, auth: Auth, expanders: [Expander] = [])
-        -> Observable<[MSEntity<MSPosition>]> {
-        let urlParameters: [UrlParameter] = mergeUrlParameters(CompositeExpander(expanders))
-        
+    public static func updateOrCreate(positions: [MSPosition], in document: MSDocument, parameters: UrlRequestParameters)
+        -> Observable<[MSEntity<MSPosition>]> {        
         guard let url = document.requestUrl() else {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.unknownObjectType.value))
         }
@@ -67,7 +62,7 @@ extension DataManager {
         
         let body = positions.map { $0.dictionary(metaOnly: false) }.toJSONType()
         
-        return HttpClient.create(url, auth: auth, urlPathComponents: [id, "positions"], urlParameters: urlParameters, body: body)
+        return HttpClient.create(url, auth: parameters.auth, urlPathComponents: [id, "positions"], urlParameters: parameters.allParameters, body: body)
             .flatMapLatest { result -> Observable<[MSEntity<MSPosition>]> in
                 guard let result = result?.toArray() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPositionsResponse.value))

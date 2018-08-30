@@ -208,10 +208,9 @@ extension DataManager {
      - parameter filters: Filters for request
      */
     public static func loadDocuments(forDocument documentType: MSDocumentType,
-                                     parameters: UrlRequestParameters,
-                                     filters: DocumentsFilter? = nil) -> Observable<[MSDocument]>  {
+                                     parameters: UrlRequestParameters) -> Observable<[MSDocument]>  {
         
-        let urlParameters = parameters.allParametersCollection(filters?.filter, filters?.organization, filters?.search)
+        let urlParameters = parameters.allParameters
         
         return HttpClient.get(documentType.apiRequest, auth: parameters.auth, urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<[MSDocument]> in

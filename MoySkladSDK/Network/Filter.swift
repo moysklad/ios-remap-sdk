@@ -298,19 +298,3 @@ public struct FilterArgument {
     
     public var asArgumentString: String { return "\(field.rawValue)\(filterOperator.rawValue)\(value.toFilterValue())" }
 }
-
-public struct DocumentsFilter {
-    public let search: Search?
-    public let filter: Filter?
-    public let organization: OrganizationIdParameter?
-    
-    public init(search: Search? = nil, filter: Filter? = nil, organization: OrganizationIdParameter? = nil) {
-        self.search = search
-        self.filter = filter
-        self.organization = organization
-    }
-    
-    public static func empty() -> DocumentsFilter {
-        return DocumentsFilter(search: nil, filter: nil, organization: nil)
-    }
-}

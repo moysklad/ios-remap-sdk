@@ -13,8 +13,7 @@ extension DataManager {
     /**
      Create new entity.
      - parameter document: Entity instance that should be created
-     - parameter auth: Authentication information
-     - parameter expanders: Additional objects to include into response
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
      */
     public static func create<T>(entity: T, parameters: UrlRequestParameters) -> Observable<T.Element> where T: MSRequestEntity, T: DictConvertable {
         guard let url = entity.requestUrl() else {
@@ -41,8 +40,7 @@ extension DataManager {
     /**
      Create new document.
      - parameter document: Document instance that should be created
-     - parameter auth: Authentication information
-     - parameter expanders: Additional objects to include into request
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
     */
     public static func create(document: MSDocument, parameters: UrlRequestParameters) -> Observable<MSDocument> {
         return create(entity: document, parameters: parameters)
@@ -50,7 +48,7 @@ extension DataManager {
     
     /**
      Load template for new document (this tempalte can be used to create new document with create<T> method)
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
      - parameter fromDocument: Base document for template (For example to create new Demand based on CustomerOrder)
      - parameter toType: Type of new document
      - parameter expanders: Additional objects to include into request

@@ -27,13 +27,13 @@ extension DataManager {
     
     /**
      Load statistics data
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
      - parameter moment: Date interval
      - parameter interval: type interval [hour, day, month]
      - retailStore: href for retailStore
      */
     public static func loadStatistics(
-        auth: Auth,
+        parameters: UrlRequestParameters,
         type: MSStatisticsType,
         moment: StatisticsMoment,
         interval: StatisticsIntervalArgument,
@@ -42,7 +42,7 @@ extension DataManager {
         
         let urlParameters: [UrlParameter] = mergeUrlParameters(moment, interval, retailStore)
         
-        return HttpClient.get(.plotseries, auth: auth, urlPathComponents: [type.rawValue], urlParameters: urlParameters)
+        return HttpClient.get(.plotseries, auth: parameters.auth, urlPathComponents: [type.rawValue], urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<MSEntity<MSStatistics>> in
                 
                 guard let result = result?.toDictionary() else { return Observable.error(getStatisticsError(for: type)) }
@@ -57,13 +57,13 @@ extension DataManager {
     
     /**
      Load money statistics data
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
      - parameter moment: Date interval
      - parameter interval: type interval [hour, day, month]
      - retailStore: href for retailStore
      */
     public static func loadMoneyStatistics(
-        auth: Auth,
+        parameters: UrlRequestParameters,
         moment: StatisticsMoment,
         interval: StatisticsIntervalArgument,
         retailStore: StatisticsRerailStoreArgument? = nil
@@ -72,7 +72,7 @@ extension DataManager {
         let urlParameters: [UrlParameter] = mergeUrlParameters(moment, interval, retailStore)
         let type = MSStatisticsType.money
         
-        return HttpClient.get(.plotseries, auth: auth, urlPathComponents: [type.rawValue], urlParameters: urlParameters)
+        return HttpClient.get(.plotseries, auth: parameters.auth, urlPathComponents: [type.rawValue], urlParameters: urlParameters)
             .flatMapLatest { result -> Observable<MSEntity<MSMoneyStatistics>> in
                 
                 guard let result = result?.toDictionary() else { return Observable.error(getStatisticsError(for: type)) }
@@ -87,16 +87,15 @@ extension DataManager {
     
     /**
      Load money statistics data
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
      - parameter moment: Date interval
      - parameter interval: type interval [hour, day, month]
      - retailStore: href for retailStore
      */
     public static func loadMoneyBalance(
-        auth: Auth,
-        offset: MSOffset? = nil
+        parameters: UrlRequestParameters
     ) -> Observable<[MSMoneyBalance]> {
-        return HttpClient.get(.reportMoneyByAccount, auth: auth, urlParameters: mergeUrlParameters(offset))
+        return HttpClient.get(.reportMoneyByAccount, auth: parameters.auth, urlParameters: mergeUrlParameters(parameters.offset))
             .flatMapLatest { result -> Observable<[MSMoneyBalance]> in
                 
                 guard let result = result?.toDictionary() else {
@@ -119,9 +118,9 @@ extension DataManager {
      - parameter auth: Authentication information
      */
     public static func loadRetailStoresReport(
-        auth: Auth
+        parameters: UrlRequestParameters
     ) -> Observable<[MSEntity<MSReportRetailStore>]> {
-        return HttpClient.get(.reportRetailstore, auth: auth)
+        return HttpClient.get(.reportRetailstore, auth: parameters.auth)
             .flatMapLatest { result -> Observable<[MSEntity<MSReportRetailStore>]> in
                 
                 guard let result = result?.toDictionary() else {
@@ -141,14 +140,13 @@ extension DataManager {
     
     /**
      Load retail store report data
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - id requaired to be added to parameters containter
      - parameter retailStoreId: UUID retail store
      */
-    public static func loadRetailStoreReport(
-        auth: Auth,
-        retailStoreId id: UUID
-    ) -> Observable<MSEntity<MSRetailStoreStatistics>> {
-        return HttpClient.get(.reportRetailstore, auth: auth, urlPathComponents: [id.uuidString, MSApiRequest.reportRetailstoreRetailshift.rawValue])
+    public static func loadRetailStoreReport(parameters: UrlRequestParameters) -> Observable<MSEntity<MSRetailStoreStatistics>> {
+        guard let id = parameters.id else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPlotseriesRetailStoreReportResponse.value)) }
+        return HttpClient.get(.reportRetailstore, auth: parameters.auth, urlPathComponents: [id.uuidString, MSApiRequest.reportRetailstoreRetailshift.rawValue])
             .catchErrorJustReturn(nil)
             .flatMapLatest { result -> Observable<MSEntity<MSRetailStoreStatistics>> in
                 guard let result = result?.toDictionary() else {
@@ -164,19 +162,19 @@ extension DataManager {
     }
     
     public static func loadStatisticsOfDay(
-        auth: Auth,
+        parameters: UrlRequestParameters,
         type: MSStatisticsType,
         retailStore: StatisticsRerailStoreArgument? = nil
     )-> Observable<StatisticsResult> {
         let interval = StatisticsIntervalArgument(type: .hour)
         
-        let currentRequest = loadStatistics(auth: auth,
+        let currentRequest = loadStatistics(parameters: parameters,
                                             type: type,
                                             moment: StatisticsMoment(from: Date().beginningOfDay(), to: Date().endOfDay()),
                                             interval: interval,
                                             retailStore: retailStore)
         
-        let lastRequest = loadStatistics(auth: auth,
+        let lastRequest = loadStatistics(parameters: parameters,
                                          type: type,
                                          moment: StatisticsMoment(from: Date().beginningOfLastDay(), to: Date().endOfLastDay()),
                                          interval: interval,
@@ -189,19 +187,19 @@ extension DataManager {
     }
     
     public static func loadStatisticsOfWeek(
-        auth: Auth,
+        parameters: UrlRequestParameters,
         type: MSStatisticsType,
         retailStore: StatisticsRerailStoreArgument? = nil
         )-> Observable<StatisticsResult> {
         let interval = StatisticsIntervalArgument(type: .day)
         
-        let currentRequest = loadStatistics(auth: auth,
+        let currentRequest = loadStatistics(parameters: parameters,
                                             type: type,
                                             moment: StatisticsMoment(from: Date().startOfWeek(), to: Date().endOfWeek()),
                                             interval: interval,
                                             retailStore: retailStore)
         
-        let lastRequest = loadStatistics(auth: auth,
+        let lastRequest = loadStatistics(parameters: parameters,
                                          type: type,
                                          moment: StatisticsMoment(from: Date().startOfLastWeek(), to: Date().endOfLastWeek()),
                                          interval: interval,
@@ -214,19 +212,19 @@ extension DataManager {
     }
     
     public static func loadStatisticsOfMonth(
-        auth: Auth,
+        parameters: UrlRequestParameters,
         type: MSStatisticsType,
         retailStore: StatisticsRerailStoreArgument? = nil
         )-> Observable<StatisticsResult> {
         let interval = StatisticsIntervalArgument(type: .day)
         
-        let currentRequest = loadStatistics(auth: auth,
+        let currentRequest = loadStatistics(parameters: parameters,
                                             type: type,
                                             moment: StatisticsMoment(from: Date().startOfMonth(), to: Date().endOfMonth()),
                                             interval: interval,
                                             retailStore: retailStore)
         
-        let lastRequest = loadStatistics(auth: auth,
+        let lastRequest = loadStatistics(parameters: parameters,
                                          type: type,
                                          moment: StatisticsMoment(from: Date().startOfLastMonth(), to: Date().endOfLastMonth()),
                                          interval: interval,
@@ -239,7 +237,7 @@ extension DataManager {
     }
     
     public static func loadStatisticsOfPeriod(
-        auth: Auth,
+        parameters: UrlRequestParameters,
         moment: StatisticsMoment,
         type: MSStatisticsType,
         retailStore: StatisticsRerailStoreArgument? = nil
@@ -247,7 +245,7 @@ extension DataManager {
         
         let interval = Calendar.current.isDate(moment.from, inSameDayAs: moment.to) ? StatisticsIntervalArgument(type: .hour) : StatisticsIntervalArgument(type: .day)
         
-        let currentRequest = loadStatistics(auth: auth,
+        let currentRequest = loadStatistics(parameters: parameters,
                                             type: type,
                                             moment: moment,
                                             interval: interval,
@@ -255,7 +253,7 @@ extension DataManager {
         
         let lastDate = Date.lastPeriodFrom(date1: moment.from, date2: moment.to)
         
-        let lastRequest = loadStatistics(auth: auth,
+        let lastRequest = loadStatistics(parameters: parameters,
                                          type: type,
                                          moment: StatisticsMoment.init(from: lastDate.bottom.beginningOfDay(), to: lastDate.top.endOfDay()),
                                          interval: interval,
@@ -268,17 +266,17 @@ extension DataManager {
     }
     
     public static func loadMoneyStatisticsOfDay(
-        auth: Auth,
+        parameters: UrlRequestParameters,
         retailStore: StatisticsRerailStoreArgument? = nil
         )-> Observable<MoneyStatisticsResult> {
         let interval = StatisticsIntervalArgument(type: .hour)
         
-        let currentRequest = loadMoneyStatistics(auth: auth,
+        let currentRequest = loadMoneyStatistics(parameters: parameters,
                                             moment: StatisticsMoment(from: Date().beginningOfDay(), to: Date().endOfDay()),
                                             interval: interval,
                                             retailStore: retailStore)
         
-        let lastRequest = loadMoneyStatistics(auth: auth,
+        let lastRequest = loadMoneyStatistics(parameters: parameters,
                                          moment: StatisticsMoment(from: Date().beginningOfLastDay(), to: Date().endOfLastDay()),
                                          interval: interval,
                                          retailStore: retailStore)
@@ -290,17 +288,17 @@ extension DataManager {
     }
     
     public static func loadMoneyStatisticsOfWeek(
-        auth: Auth,
+        parameters: UrlRequestParameters,
         retailStore: StatisticsRerailStoreArgument? = nil
         )-> Observable<MoneyStatisticsResult> {
         let interval = StatisticsIntervalArgument(type: .day)
         
-        let currentRequest = loadMoneyStatistics(auth: auth,
+        let currentRequest = loadMoneyStatistics(parameters: parameters,
                                             moment: StatisticsMoment(from: Date().startOfWeek(), to: Date().endOfWeek()),
                                             interval: interval,
                                             retailStore: retailStore)
         
-        let lastRequest = loadMoneyStatistics(auth: auth,
+        let lastRequest = loadMoneyStatistics(parameters: parameters,
                                          moment: StatisticsMoment(from: Date().startOfLastWeek(), to: Date().endOfLastWeek()),
                                          interval: interval,
                                          retailStore: retailStore)
@@ -312,17 +310,17 @@ extension DataManager {
     }
     
     public static func loadMoneyStatisticsOfMonth(
-        auth: Auth,
+        parameters: UrlRequestParameters,
         retailStore: StatisticsRerailStoreArgument? = nil
         )-> Observable<MoneyStatisticsResult> {
         let interval = StatisticsIntervalArgument(type: .day)
         
-        let currentRequest = loadMoneyStatistics(auth: auth,
+        let currentRequest = loadMoneyStatistics(parameters: parameters,
                                             moment: StatisticsMoment(from: Date().startOfMonth(), to: Date().endOfMonth()),
                                             interval: interval,
                                             retailStore: retailStore)
         
-        let lastRequest = loadMoneyStatistics(auth: auth,
+        let lastRequest = loadMoneyStatistics(parameters: parameters,
                                          moment: StatisticsMoment(from: Date().startOfLastMonth(), to: Date().endOfLastMonth()),
                                          interval: interval,
                                          retailStore: retailStore)
@@ -334,19 +332,19 @@ extension DataManager {
     }
     
     public static func loadMoneyStatisticsOf(moment: StatisticsMoment,
-                                             auth: Auth,
+                                             parameters: UrlRequestParameters,
                                              retailStore: StatisticsRerailStoreArgument? = nil
         ) -> Observable<MoneyStatisticsResult> {
         let interval = Calendar.current.isDate(moment.from, inSameDayAs: moment.to) ? StatisticsIntervalArgument(type: .hour) : StatisticsIntervalArgument(type: .day)
         
-        let currentRequest = loadMoneyStatistics(auth: auth,
+        let currentRequest = loadMoneyStatistics(parameters: parameters,
                                                  moment: moment,
                                                  interval: interval,
                                                  retailStore: retailStore)
         
         let lastDate = Date.lastPeriodFrom(date1: moment.from, date2: moment.to)
         
-        let lastRequest = loadMoneyStatistics(auth: auth,
+        let lastRequest = loadMoneyStatistics(parameters: parameters,
                                          moment: StatisticsMoment.init(from: lastDate.bottom.beginningOfDay(), to: lastDate.top.endOfDay()),
                                          interval: interval,
                                          retailStore: retailStore)

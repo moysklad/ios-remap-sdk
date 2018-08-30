@@ -845,13 +845,8 @@ public struct DataManager {
     /**
      Load product info by product id
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#товар-товар-get)
-     - parameter parameters: container for parameters like:
-                         authentication information,
-                         desired data offset,
-                         filter for request,
-                         Additional objects to include into request,
-                         Order by instruction,
-                         UUID id
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - id has to be added to parameters container
     */
     public static func productAssortmentById(parameters: UrlRequestParameters) -> Observable<MSEntity<MSAssortment>> {
         guard let idStr = parameters.id?.uuidString else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProductResponse.value)) }
@@ -870,13 +865,8 @@ public struct DataManager {
     /**
      Load product info by bundle id.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#комплект-комплект-get)
-     - parameter parameters: container for parameters like:
-                         authentication information,
-                         desired data offset,
-                         filter for request,
-                         Additional objects to include into request,
-                         Order by instruction,
-                         UUID id
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - id has to be added to parameters container
      */
     public static func bundleAssortmentById(parameters: UrlRequestParameters) -> Observable<MSEntity<MSAssortment>> {
         guard let idString = parameters.id?.uuidString else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProductResponse.value)) }
@@ -895,13 +885,8 @@ public struct DataManager {
     /**
      Load product info by variant id.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#модификация-модификация-get)
-     - parameter parameters: container for parameters like:
-                         authentication information,
-                         desired data offset,
-                         filter for request,
-                         Additional objects to include into request,
-                         Order by instruction,
-                         UUID id
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - id has to be added to parameters container
      */
     public static func variantAssortmentById(parameters: UrlRequestParameters) -> Observable<MSEntity<MSAssortment>> {
         guard let idString = parameters.id?.uuidString else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProductResponse.value)) }
@@ -920,14 +905,8 @@ public struct DataManager {
     /**
      Load custom entities
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#пользовательский-справочник)
-     - parameter parameters: container for parameters like:
-                         authentication information,
-                         desired data offset,
-                         filter for request,
-                         Additional objects to include into request,
-                         Order by instruction,
-                         UUID id
-     - parameter metadataId: Id of custom entity
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - parameter metadataId: Id of custom entity. Has to be added to parameters container as stringData
     */
     public static func customEntities(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSCustomEntity>]> {
         guard let metadataId = parameters.stringData else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCustomEntityResponse.value)) }
@@ -946,13 +925,8 @@ public struct DataManager {
     /**
      Load product info by service id.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#услуга-услуга-get)
-     - parameter parameters: container for parameters like:
-                         authentication information,
-                         desired data offset,
-                         filter for request,
-                         Additional objects to include into request,
-                         Order by instruction,
-                         UUID id
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - id has to be added to parameters container
      */
     public static func serviceAssortmentById(parameters: UrlRequestParameters) -> Observable<MSEntity<MSAssortment>> {
         guard let idString = parameters.id?.uuidString else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProductResponse.value)) }
@@ -1042,6 +1016,7 @@ public struct DataManager {
      Load counterparty contacts.
      Also see [ API refere`nce](https://online.moysklad.ru/api/remap/1.1/doc#контрагент-контактное-лицо-get)
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - id has to be added to parameters container as stringData
      - returns: Observable sequence with contacts
      */
     public static func counterpartyContacts(parameters: UrlRequestParameters) -> Observable<[MSEntity<MSContactPerson>]> {
@@ -1062,6 +1037,7 @@ public struct DataManager {
     /**
      Searches counterparty data by INN.
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - inn has to be added to parameters container as stringData
      - returns: Observable sequence with counterparty info
      */
     public static func searchCounterpartyByInn(parameters: UrlRequestParameters) -> Observable<[MSCounterpartySearchResult]> {
@@ -1079,6 +1055,7 @@ public struct DataManager {
     /**
      Searches bank data by BIC.
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - bic has to be added to parameters container as stringData
      - returns: Observable sequence with bank info
      */
     public static func searchBankByBic(parameters: UrlRequestParameters) -> Observable<[MSBankSearchResult]> {
@@ -1117,12 +1094,8 @@ public struct DataManager {
     /**
      Load task by id.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#задача)
-     - parameter parameters: container for parameters like:
-                                         authentication information,
-                                         desired data offset,
-                                         filter for request,
-                                         Additional objects to include into request,
-                                         Order by instruction
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - id has to be added to parameters container
      */
     public static func loadById(parameters: UrlRequestParameters) -> Observable<MSEntity<MSTask>> {
         let urlParameters: [UrlParameter] = mergeUrlParameters(parameters.search, CompositeExpander(parameters.expanders), parameters.filter)

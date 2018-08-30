@@ -111,9 +111,8 @@ extension DataManager {
     /**
      Load document by Id
      - parameter forDocument: Type of document request
-     - parameter auth: Authentication information
-     - parameter documentId: Document Id
-     - parameter expanders: Additional objects to include into request
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - id has to be added to parameters container
      */
     public static func loadById(forDocument documentType: MSDocumentType,
                                 parameters: UrlRequestParameters) -> Observable<MSDocument>  {
@@ -132,10 +131,8 @@ extension DataManager {
     
     /**
      Load counterparty by Id
-     - parameter Id: Id of counterparty to load
-     - parameter auth: Authentication information
-     - parameter documentId: counterparty Id
-     - parameter expanders: Additional objects to include into request
+    - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+    - id has to be added to parameters container
      */
     public static func loadCounterpartyById(parameters: UrlRequestParameters) -> Observable<MSEntity<MSAgent>> {
         guard let counterpartyId = parameters.id else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCounterpartyResponse.value)) }
@@ -153,7 +150,7 @@ extension DataManager {
     
     /**
      Load counterparty report by Id
-     - parameter auth: Authentication information
+     - parameter auth: Authentication information- parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
      - parameter counterpartyId: Id of counterparty
      */
     public static func loadReportById(parameters: UrlRequestParameters) -> Observable<MSEntity<MSAgentReport>> {
@@ -172,7 +169,7 @@ extension DataManager {
     
     /**
      Load reports for specified counterparties
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
      - parameter counterparties: Array of counterparties
     */
     public static func loadReportsForCounterparties(parameters: UrlRequestParameters, counterparties: [MSEntity<MSAgent>]) -> Observable<[MSEntity<MSAgentReport>]> {
@@ -193,11 +190,7 @@ extension DataManager {
     /**
      Load documents and group by document moment
      - parameter forDocument: Type of document request
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
-     - parameter filters: Filters for request
-     - parameter urlParameters: Any other URL parameters
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
      - parameter withPrevious: Grouped data returned by previous invocation of groupedByMoment (useful for paged loading)
      */
     public static func loadDocumentsGroupedByMoment(forDocument documentType: MSDocumentType,
@@ -212,12 +205,8 @@ extension DataManager {
     /**
      Load documents
      - parameter forDocument: Type of document request
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
      - parameter filters: Filters for request
-     - parameter urlParameters: Any other URL parameters
-     - parameter orderBy: Order by instruction
      */
     public static func loadDocuments(forDocument documentType: MSDocumentType,
                                      parameters: UrlRequestParameters,
@@ -240,9 +229,7 @@ extension DataManager {
     /**
      Load document positions
      - parameter in: Document
-     - parameter auth: Authentication information
-     - parameter offset: Desired data offset
-     - parameter expanders: Additional objects to include into request
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
      */
     public static func positions(in document: MSDocument,
                                  parameters: UrlRequestParameters) -> Observable<[MSEntity<MSPosition>]> {
@@ -268,9 +255,8 @@ extension DataManager {
     /**
      Load document positions recursively
      - parameter in: Document
-     - parameter auth: Authentication information
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
      - parameter limit: Return objects limit
-     - parameter expanders: Additional objects to include into request
      */
     public static func positionsRecursive(in document: MSDocument,
                                           parameters: UrlRequestParameters) -> Observable<[MSEntity<MSPosition>]> {

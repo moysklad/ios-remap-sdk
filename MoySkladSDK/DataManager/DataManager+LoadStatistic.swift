@@ -27,7 +27,7 @@ extension DataManager {
     
     /**
      Load statistics data
-     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, stringData, urlParameters
      - parameter moment: Date interval
      - parameter interval: type interval [hour, day, month]
      - retailStore: href for retailStore
@@ -57,7 +57,7 @@ extension DataManager {
     
     /**
      Load money statistics data
-     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - parameter moment: Date interval
      - parameter interval: type interval [hour, day, month]
      - retailStore: href for retailStore
@@ -87,7 +87,7 @@ extension DataManager {
     
     /**
      Load money statistics data
-     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, stringData, urlParameters
      - parameter moment: Date interval
      - parameter interval: type interval [hour, day, month]
      - retailStore: href for retailStore
@@ -140,12 +140,11 @@ extension DataManager {
     
     /**
      Load retail store report data
-     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
-     - id requaired to be added to parameters containter
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - parameter retailStoreId: UUID retail store
      */
-    public static func loadRetailStoreReport(parameters: UrlRequestParameters) -> Observable<MSEntity<MSRetailStoreStatistics>> {
-        guard let id = parameters.id else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectPlotseriesRetailStoreReportResponse.value)) }
+    public static func loadRetailStoreReport(parameters: UrlRequestParameters,
+                                             retailStoreId id: UUID) -> Observable<MSEntity<MSRetailStoreStatistics>> {
         return HttpClient.get(.reportRetailstore, auth: parameters.auth, urlPathComponents: [id.uuidString, MSApiRequest.reportRetailstoreRetailshift.rawValue])
             .catchErrorJustReturn(nil)
             .flatMapLatest { result -> Observable<MSEntity<MSRetailStoreStatistics>> in

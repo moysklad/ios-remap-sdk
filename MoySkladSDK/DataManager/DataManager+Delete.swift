@@ -13,7 +13,7 @@ extension DataManager {
     /**
      Delete entity
      - parameter document: Entity that should be deleted
-     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      */
     public static func delete<T>(entity: T, parameters: UrlRequestParameters) -> Observable<Void> where T: MSRequestEntity, T: DictConvertable {
         guard let url = entity.requestUrl() else {
@@ -30,7 +30,7 @@ extension DataManager {
     /**
      Delete document
      - parameter document: Document that should be deleted
-     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
     */
     public static func delete(document: MSDocument, parameters: UrlRequestParameters) -> Observable<Void> {
         return delete(entity: document, parameters: parameters)

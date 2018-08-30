@@ -13,7 +13,7 @@ extension DataManager {
     /**
      Update entity
      - parameter document: Entity that should be updated
-     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      */
     public static func update<T>(entity: T, parameters: UrlRequestParameters) -> Observable<T.Element> where T: MSRequestEntity, T: DictConvertable {
         let urlParameters: [UrlParameter] = mergeUrlParameters(CompositeExpander(parameters.expanders))
@@ -45,7 +45,7 @@ extension DataManager {
     /**
      Update document
      - parameter document: Document that should be updated
-     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - parameter expanders: Additional objects to include into response
     */
     public static func update(document: MSDocument, parameters: UrlRequestParameters) -> Observable<MSDocument> {

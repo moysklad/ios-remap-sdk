@@ -14,7 +14,7 @@ extension DataManager {
      Load print templates for document type.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#шаблон-печатной-формы)
      - parameter forDocument: Request metadata type for which templates should be loaded
-     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, stringData, urlParameters
      - parameter type: Type of Template that should be loaded
      */
     public static func templates(forDocument documentType: MSDocumentType, parameters: UrlRequestParameters, type: MSTemplateType) -> Observable<[MSEntity<MSTemplate>]> {
@@ -38,12 +38,11 @@ extension DataManager {
      Load link to created PDF for document from template.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#печать-документов)
      - parameter forDocument: Document type for which PDF should be loaded
-     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - parameter meta: Document template metadata
      - returns: Observable sequence with http link to PDF document
      */
-    public static func documentFromTemplate(forDocument documentType: MSDocumentType, parameters: UrlRequestParameters, meta: MSMeta) -> Observable<String> {
-        guard let id = parameters.stringData else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecDocumentFromTemplateResponse.value)) }
+    public static func documentFromTemplate(forDocument documentType: MSDocumentType, parameters: UrlRequestParameters,  id: String, meta: MSMeta) -> Observable<String> {
         let urlPathComponents: [String] = [id, "export"]
         var body = meta.dictionaryForTemplate()
         body["extension"] = "pdf"
@@ -63,12 +62,11 @@ extension DataManager {
      Load link to created publication for document from template.
      Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#публикация-документов)
      - parameter forDocument: Document type for which publication should be loaded
-     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, id, stringData, urlParameters
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - parameter meta: Document template metadata
      - returns: Observable sequence with http link to publication
      */
-    public static func publicationFromTemplate(forDocument documentType: MSDocumentType, parameters: UrlRequestParameters, meta: MSMeta) -> Observable<String> {
-        guard let id = parameters.stringData else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrecPublicationFromTemplateResponse.value)) }
+    public static func publicationFromTemplate(forDocument documentType: MSDocumentType, parameters: UrlRequestParameters, id: String, meta: MSMeta) -> Observable<String> {
         let urlPathComponents: [String] = [id, "publication"]
         let body = meta.dictionaryForTemplate()
         return HttpClient.create(documentType.apiRequest, auth: parameters.auth, urlPathComponents: urlPathComponents, body: body.toJSONType(), contentType: .json).flatMapLatest { result -> Observable<String> in

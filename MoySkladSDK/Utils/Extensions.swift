@@ -205,6 +205,13 @@ public extension Date {
         return Calendar.current.component(.year, from: Date()) == Calendar.current.component(.year, from: self)
     }
     
+    public func toLongDateName() -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .medium
+        return formatter.string(from: self)
+    }
+    
     public func toLongDate() -> String {
         return Date.msDateFormatter.string(from: self)
     }
@@ -219,15 +226,15 @@ public extension Date {
     
     public static var msShortDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "d MMMM"
-        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
         return formatter
     }()
     
     public static var msHourAndMinuteFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "H:mm"
-        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
         return formatter
     }()
     
@@ -248,8 +255,8 @@ public extension Date {
     
     static var msLongDateTimeFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "d MMMM yyyy H:mm"
-        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
         return formatter
     }()
     
@@ -264,9 +271,8 @@ public extension Date {
     
     static var msLongDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "d MMMM yyyy"
-        formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
-        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
         return formatter
     }()
     
@@ -336,9 +342,8 @@ public extension Date {
     
     static var msStatisticsFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "d MMMM, H:mm"
-        formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
-        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
         return formatter
     }()
     

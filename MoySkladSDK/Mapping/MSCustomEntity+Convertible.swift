@@ -14,25 +14,16 @@ extension MSCustomEntity : DictConvertable {
             return nil
         }
         
+        guard let parentId = meta.href.withoutParameters().components(separatedBy: "/").dropLast().last else {
+            return nil
+        }
+        
         return MSEntity.entity(MSCustomEntity(meta: meta,
-                              id: dict.value("id") ?? "",
+                              id: MSID(dict: dict),
                               name: dict.value("name") ?? "",
                               code: dict.value("code"),
-                              externalCode: dict.value("externalCode")))
-    }
-    
-    public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {
-        var dict = [String: Any]()
-        
-        dict["meta"] = meta.dictionary()
-        
-        guard !metaOnly else { return dict }
-        
-        dict["id"] = id
-        dict["name"] = name
-        dict["code"] = code ?? NSNull()
-        dict["externalCode"] = externalCode ?? NSNull()
-        
-        return dict
+                              externalCode: dict.value("externalCode"),
+                              description: dict.value("description"),
+                              parentId: parentId))
     }
 }

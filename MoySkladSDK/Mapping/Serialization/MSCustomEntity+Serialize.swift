@@ -21,8 +21,8 @@ extension MSCustomEntity {
         dict.merge(id.dictionary())
         
         dict["name"] = name
-        dict["code"] = code ?? NSNull()
-        dict["externalCode"] = externalCode ?? NSNull()
+        dict["code"] = code ?? ""
+        dict["externalCode"] = externalCode ?? ""
         dict["description"] = description ?? ""
         
         return dict

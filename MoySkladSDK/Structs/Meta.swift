@@ -43,6 +43,10 @@ public class MSMeta {
     public var objectId: String {
         return href.withoutParameters().components(separatedBy: "/").last ?? ""
     }
+    
+    public var customEntityParentId: String {
+        return href.withoutParameters().components(separatedBy: "/").dropLast().last ?? ""
+    }
 }
 
 /**

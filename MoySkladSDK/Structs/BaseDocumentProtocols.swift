@@ -48,6 +48,10 @@ public extension MSBaseDocumentType {
         return MSDocumentType.fromMSObjectType(meta.type)?.requestError ?? MSError.genericError(errorText: LocalizedStrings.genericDeserializationError.value)
     }
     
+    public func pathComponents() -> [String] {
+        return []
+    }
+    
     func templateBody(forDocument type: MSObjectType) -> [String: Any]? {
         guard let newDocType = MSDocumentType.fromMSObjectType(type) else { return nil }
         // если будет создаваться платежный документ, то для него связанные документы нужно класть в operations

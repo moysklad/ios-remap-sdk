@@ -94,6 +94,10 @@ extension MSAssortment {
     public func deserializationError() -> MSError {
         return MSError.genericError(errorText: LocalizedStrings.incorrectProductResponse.value)
     }
+    
+    public func pathComponents() -> [String] {
+        return []
+    }
 }
 
 func serializeCharacteristics(_ entities: [MSEntity<MSVariantAttribute>]?) -> [Dictionary<String, Any>]? {

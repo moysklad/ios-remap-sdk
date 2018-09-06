@@ -24,7 +24,7 @@ extension DataManager {
             return Observable.error(MSError.genericError(errorText: LocalizedStrings.emptyObjectId.value))
         }
         
-        return HttpClient.delete(url, auth: parameters.auth, urlPathComponents: [id.uuidString]).flatMap { _ -> Observable<Void> in return .just(()) }
+        return HttpClient.delete(url, auth: parameters.auth, urlPathComponents: entity.pathComponents() + [id.uuidString]).flatMap { _ -> Observable<Void> in return .just(()) }
     }
     
     /**

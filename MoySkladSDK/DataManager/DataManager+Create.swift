@@ -22,6 +22,7 @@ extension DataManager {
                 
         return HttpClient.create(url,
                                  auth: parameters.auth,
+                                 urlPathComponents: entity.pathComponents(),
                                  urlParameters: parameters.allParameters,
                                  body: entity.dictionary(metaOnly: false).toJSONType())
             .flatMapLatest { result -> Observable<T.Element> in

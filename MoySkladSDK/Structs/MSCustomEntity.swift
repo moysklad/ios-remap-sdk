@@ -14,16 +14,21 @@ import Foundation
 */
 public class MSCustomEntity : Metable {
     public let meta: MSMeta
-    public let id: String
-    public let name: String
-    public let code: String?
-    public let externalCode: String?
+    public let id: MSID
+    public var name: String
+    public var code: String?
+    public var externalCode: String?
+    public var description: String?
+    // идентификатор справочника, которому принадлежит объект
+    public var parentId: String
     
-    public init(meta: MSMeta, id: String, name: String, code: String?, externalCode: String?) {
+    public init(meta: MSMeta, id: MSID, name: String, code: String?, externalCode: String?, description: String?, parentId: String) {
         self.meta = meta
         self.id = id
         self.name = name
         self.code = code
         self.externalCode = externalCode
+        self.description = description
+        self.parentId = parentId
     }
 }

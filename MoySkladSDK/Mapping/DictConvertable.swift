@@ -24,6 +24,7 @@ extension Dictionary where Key : ExpressibleByStringLiteral, Value : Any {
 
 public protocol MSRequestEntity {
     func requestUrl() -> MSApiRequest?
+    func pathComponents() -> [String]
     func deserializationError() -> MSError
     var id: MSID { get }
 }

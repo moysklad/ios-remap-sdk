@@ -122,6 +122,10 @@ extension MSAgent: MSRequestEntity {
         default: return MSError.genericError(errorText: LocalizedStrings.genericDeserializationError.value)
         }
     }
+    
+    public func pathComponents() -> [String] {
+        return []
+    }
 }
 
 extension MSTask: MSRequestEntity {
@@ -131,6 +135,24 @@ extension MSTask: MSRequestEntity {
     
     public func deserializationError() -> MSError {
         return MSError.genericError(errorText: LocalizedStrings.incorrectTasksResponse.value)
+    }
+    
+    public func pathComponents() -> [String] {
+        return []
+    }
+}
+
+extension MSCustomEntity: MSRequestEntity {
+    public func requestUrl() -> MSApiRequest? {
+        return MSApiRequest.customEntity
+    }
+    
+    public func deserializationError() -> MSError {
+        return MSError.genericError(errorText: LocalizedStrings.incorrectCustomEntityResponse.value)
+    }
+    
+    public func pathComponents() -> [String] {
+        return [parentId]
     }
 }
 

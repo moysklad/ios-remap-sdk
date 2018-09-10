@@ -31,4 +31,8 @@ public class MSCustomEntity : Metable {
         self.description = description
         self.parentId = parentId
     }
+    
+    public func copy() -> MSCustomEntity {
+        return MSCustomEntity(meta: meta.copy(), id: id.copy(), name: name, code: code, externalCode: externalCode, description: description, parentId: parentId)
+    }
 }

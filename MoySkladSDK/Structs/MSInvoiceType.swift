@@ -39,6 +39,10 @@ public class MSID {
         self.msID = msID
         self.syncID = syncID
     }
+    
+    public func copy() -> MSID {
+        return MSID(msID: msID, syncID: syncID)
+    }
 }
 
 public struct MSInfo {

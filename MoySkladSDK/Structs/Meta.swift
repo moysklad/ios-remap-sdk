@@ -47,6 +47,10 @@ public class MSMeta {
     public var customEntityParentId: String {
         return href.withoutParameters().components(separatedBy: "/").dropLast().last ?? ""
     }
+    
+    public func copy() -> MSMeta {
+        return MSMeta(name: name, href: href, metadataHref: metadataHref, type: type, offset: offset, mediaType: mediaType)
+    }
 }
 
 /**

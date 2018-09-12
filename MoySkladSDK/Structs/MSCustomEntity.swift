@@ -35,4 +35,9 @@ public class MSCustomEntity : Metable {
     public func copy() -> MSCustomEntity {
         return MSCustomEntity(meta: meta.copy(), id: id.copy(), name: name, code: code, externalCode: externalCode, description: description, parentId: parentId)
     }
+    
+    public func hasChanges(comparedTo other: MSCustomEntity) -> Bool {
+        return (try? JSONSerialization.data(withJSONObject: dictionary(metaOnly: false), options: [])) ?? nil ==
+            (try? JSONSerialization.data(withJSONObject: other.dictionary(metaOnly: false), options: [])) ?? nil
+    }
 }

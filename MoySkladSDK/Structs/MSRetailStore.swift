@@ -56,13 +56,15 @@ public struct MSRetailStoreEnvironment {
         public let serial: String?
         public let fiscalDataVersion: String?
         public let driver: Driver?
+        public let firmware: String?
         public static func from(dict: [String: Any]) -> ChequePrinter? {
             guard let name: String = dict.value("name") else { return nil }
             return ChequePrinter(vendor: dict.value("vendor"),
                                  name: name,
                                  serial: dict.value("serial"),
                                  fiscalDataVersion: dict.value("fiscalDataVersion"),
-                                 driver: Driver.from(dict: dict.msValue("driver")))
+                                 driver: Driver.from(dict: dict.msValue("driver")),
+                                 firmware: dict.value("firmwareVersion"))
         }
     }
     

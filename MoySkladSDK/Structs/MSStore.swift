@@ -54,4 +54,13 @@ public struct MSStore : Metable {
         self.parent = parent
         self.pathName = pathName
     }
+    
+    public func hasChanges(comparedTo other: MSStore) -> Bool {
+        return (try? JSONSerialization.data(withJSONObject: dictionary(metaOnly: false), options: [])) ?? nil ==
+            (try? JSONSerialization.data(withJSONObject: other.dictionary(metaOnly: false), options: [])) ?? nil
+    }
+    
+    public func copy() -> MSStore {
+        return MSStore(meta: meta.copy(), id: id.copy(), info: info, accountId: accountId, owner: owner, shared: shared, group: group, code: code, externalCode: externalCode, archived: archived, address: address, parent: parent, pathName: pathName)
+    }
 }

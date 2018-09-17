@@ -168,6 +168,24 @@ extension DataManager {
     }
     
     /**
+     Load Store by Id
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
+     - parameter storeId: Store Id
+     */
+    public static func loadStoreById(parameters: UrlRequestParameters, storeId: String) -> Observable<MSEntity<MSStore>> {
+        return HttpClient.get(.store, auth: parameters.auth, urlPathComponents: [storeId], urlParameters: parameters.allParameters)
+            .flatMapLatest { result -> Observable<MSEntity<MSStore>> in
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectStoreResponse.value)) }
+                
+                guard let deserialized = MSStore.from(dict: result) else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectStoreResponse.value))
+                }
+                
+                return Observable.just(deserialized)
+        }
+    }
+    
+    /**
      Load counterparty report by Id
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - parameter counterpartyId: Id of counterparty

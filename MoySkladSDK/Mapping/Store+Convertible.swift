@@ -51,7 +51,7 @@ extension MSStore : DictConvertable {
 		                               code: dict.value("code"),
 		                               externalCode: dict.value("externalCode"),
 		                               archived: dict.value("archived") ?? false,
-		                               address: dict.value("adress"),
+		                               address: dict.value("address"),
 		                               parent: nil,
 		                               pathName: dict.value("pathName")))
 	}

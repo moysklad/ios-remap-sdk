@@ -149,6 +149,25 @@ extension DataManager {
     }
     
     /**
+     Load Custom entity by Id
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
+     - parameter parentId: Id of parent entity container
+     - parameter entityId: counterparty Id
+     */
+    public static func loadCustomEntityById(parameters: UrlRequestParameters, parentId: String, entityId: String) -> Observable<MSEntity<MSCustomEntity>> {
+        return HttpClient.get(.customEntity, auth: parameters.auth, urlPathComponents: [parentId, entityId], urlParameters: parameters.allParameters)
+            .flatMapLatest { result -> Observable<MSEntity<MSCustomEntity>> in
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCustomEntityResponse.value)) }
+                
+                guard let deserialized = MSCustomEntity.from(dict: result) else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectCustomEntityResponse.value))
+                }
+                
+                return Observable.just(deserialized)
+        }
+    }
+    
+    /**
      Load counterparty report by Id
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - parameter counterpartyId: Id of counterparty

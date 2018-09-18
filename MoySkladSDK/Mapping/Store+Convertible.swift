@@ -12,7 +12,9 @@ extension MSStore : DictConvertable {
     public func dictionary(metaOnly: Bool = true) -> Dictionary<String, Any> {
         var dict = [String: Any]()
         
-        dict["meta"] = meta.dictionary()
+        if meta.href.count > 0 {
+            dict["meta"] = meta.dictionary()
+        }
         
         guard !metaOnly else { return dict }
         

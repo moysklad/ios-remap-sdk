@@ -21,11 +21,11 @@ extension MSStore : DictConvertable {
         dict["owner"] = serialize(entity: owner, metaOnly: metaOnly)
         dict["shared"] = shared
         dict["group"] = serialize(entity: group, metaOnly: metaOnly)
-        dict["code"] = code ?? NSNull()
-        dict["externalCode"] = externalCode ?? NSNull()
+        dict["code"] = code ?? ""
+        dict["externalCode"] = externalCode ?? ""
         dict["archived"] = archived
-        dict["address"] = address ?? NSNull()
-        dict["pathName"] = pathName ?? NSNull()
+        dict["address"] = address ?? ""
+        dict["pathName"] = pathName ?? ""
         
         return dict
     }

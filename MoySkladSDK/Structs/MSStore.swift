@@ -24,7 +24,7 @@ public class MSStore : Metable {
 	public var externalCode: String?
 	public var archived: Bool
 	public var address: String?
-	public var parent: MSMeta?
+	public var parent: MSEntity<MSStore>?
 	public var pathName: String?
     
     public init(meta: MSMeta,
@@ -38,7 +38,7 @@ public class MSStore : Metable {
     externalCode: String?,
     archived: Bool,
     address: String?,
-    parent: MSMeta?,
+    parent: MSEntity<MSStore>?,
     pathName: String?) {
         self.meta = meta
         self.id = id

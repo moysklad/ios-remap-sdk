@@ -253,7 +253,8 @@ public struct DataManager {
                                                       deserializeObjectMetadata(objectType: .counterparty, from: json),
                                                       deserializeObjectMetadata(objectType: .move, from: json),
                                                       deserializeObjectMetadata(objectType: .inventory, from: json),
-                                                      deserializeObjectMetadata(objectType: .product, from: json)]
+                                                      deserializeObjectMetadata(objectType: .product, from: json),
+                                                      deserializeObjectMetadata(objectType: .store, from: json)]
                 return .just(metadata)
         }
     }

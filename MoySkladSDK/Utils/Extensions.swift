@@ -128,6 +128,20 @@ extension MSAgent: MSRequestEntity {
     }
 }
 
+extension MSStore: MSRequestEntity {
+    public func requestUrl() -> MSApiRequest? {
+        return .store
+    }
+    
+    public func deserializationError() -> MSError {
+        return MSError.genericError(errorText: LocalizedStrings.incorrectStoreResponse.value)
+    }
+    
+    public func pathComponents() -> [String] {
+        return []
+    }
+}
+
 extension MSTask: MSRequestEntity {
     public func requestUrl() -> MSApiRequest? {
         return MSApiRequest.task

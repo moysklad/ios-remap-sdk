@@ -12,7 +12,9 @@ extension MSStore : DictConvertable {
     public func dictionary(metaOnly: Bool = true) -> Dictionary<String, Any> {
         var dict = [String: Any]()
         
-        dict["meta"] = meta.dictionary()
+        if meta.href.count > 0 {
+            dict["meta"] = meta.dictionary()
+        }
         
         guard !metaOnly else { return dict }
         
@@ -21,11 +23,12 @@ extension MSStore : DictConvertable {
         dict["owner"] = serialize(entity: owner, metaOnly: metaOnly)
         dict["shared"] = shared
         dict["group"] = serialize(entity: group, metaOnly: metaOnly)
-        dict["code"] = code ?? NSNull()
-        dict["externalCode"] = externalCode ?? NSNull()
+        dict["code"] = code
+        dict["externalCode"] = externalCode ?? ""
         dict["archived"] = archived
-        dict["address"] = address ?? NSNull()
-        dict["pathName"] = pathName ?? NSNull()
+        dict["address"] = address ?? ""
+        dict["pathName"] = pathName ?? ""
+        dict["parent"] = serialize(entity: parent, metaOnly: true)
         
         return dict
     }
@@ -52,7 +55,7 @@ extension MSStore : DictConvertable {
 		                               externalCode: dict.value("externalCode"),
 		                               archived: dict.value("archived") ?? false,
 		                               address: dict.value("address"),
-		                               parent: nil,
+		                               parent: MSStore.from(dict: dict.msValue("parent")),
 		                               pathName: dict.value("pathName")))
 	}
 }

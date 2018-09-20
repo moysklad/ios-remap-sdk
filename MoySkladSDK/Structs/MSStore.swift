@@ -12,20 +12,20 @@ import Foundation
  Represents Store.
  Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#склад)
 */
-public struct MSStore : Metable {
-	public let meta: MSMeta
-	public let id : MSID
-	public let info : MSInfo
-	public let accountId: String
-	public let owner: MSEntity<MSEmployee>?
-	public let shared: Bool
-	public let group: MSEntity<MSGroup>
-	public let code: String?
-	public let externalCode: String?
-	public let archived: Bool
-	public let address: String?
-	public let parent: MSMeta?
-	public let pathName: String?
+public class MSStore : Metable {
+	public var meta: MSMeta
+	public var id : MSID
+	public var info : MSInfo
+	public var accountId: String
+	public var owner: MSEntity<MSEmployee>?
+	public var shared: Bool
+	public var group: MSEntity<MSGroup>
+	public var code: String?
+	public var externalCode: String?
+	public var archived: Bool
+	public var address: String?
+	public var parent: MSEntity<MSStore>?
+	public var pathName: String?
     
     public init(meta: MSMeta,
     id : MSID,
@@ -38,7 +38,7 @@ public struct MSStore : Metable {
     externalCode: String?,
     archived: Bool,
     address: String?,
-    parent: MSMeta?,
+    parent: MSEntity<MSStore>?,
     pathName: String?) {
         self.meta = meta
         self.id = id

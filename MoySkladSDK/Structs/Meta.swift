@@ -19,7 +19,7 @@ extension Href {
 }
 
 public class MSMeta {
-    public let name: String // имя объекта
+    public var name: String // имя объекта
 	public let href : Href // Ссылка на объект
 	public let metadataHref : Href // Ссылка на метаданные сущности (Другой вид метаданных. Присутствует не во всех сущностях)
 	public let type : MSObjectType

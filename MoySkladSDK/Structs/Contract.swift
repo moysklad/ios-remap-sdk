@@ -90,5 +90,14 @@ public class MSContract : Metable {
         self.rate = rate
     }
     
+    public func copy() -> MSContract {
+        return MSContract(meta: meta.copy(), id: id.copy(), info: info, accountId: accountId, owner: owner, shared: shared, group: group, code: code, externalCode: externalCode, archived: archived, moment: moment, sum: sum, contractType: contractType, rewardType: rewardType, rewardPercent: rewardPercent, ownAgent: ownAgent, agent: agent, state: state, organizationAccount: organizationAccount, agentAccount: agentAccount, rate: rate)
+    }
+    
+    public func hasChanges(comparedTo other: MSContract) -> Bool {
+        return (try? JSONSerialization.data(withJSONObject: dictionary(metaOnly: false), options: [])) ?? nil ==
+            (try? JSONSerialization.data(withJSONObject: other.dictionary(metaOnly: false), options: [])) ?? nil
+    }
+
 }
 

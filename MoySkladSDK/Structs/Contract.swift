@@ -10,8 +10,8 @@
 import Foundation
 
 public enum MSContractType : String {
-	case commission
-	case sales
+	case commission = "Comission"
+	case sales = "Sales"
 }
 
 public enum MSRewardType : String {
@@ -39,7 +39,7 @@ public class MSContract : Metable {
 	public let contractType: MSContractType?
 	public let rewardType: MSRewardType?
 	public let rewardPercent: Int?
-	public let ownAgent: MSEntity<MSAgent>
+	public let ownAgent: MSEntity<MSAgent>?
 	public let agent: MSEntity<MSAgent>?
 	public let state: MSEntity<MSState>?
 	public let organizationAccount: MSEntity<MSAccount>?
@@ -61,7 +61,7 @@ public class MSContract : Metable {
     contractType: MSContractType?,
     rewardType: MSRewardType?,
     rewardPercent: Int?,
-    ownAgent: MSEntity<MSAgent>,
+    ownAgent: MSEntity<MSAgent>?,
     agent: MSEntity<MSAgent>?,
     state: MSEntity<MSState>?,
     organizationAccount: MSEntity<MSAccount>?,

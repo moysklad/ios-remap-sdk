@@ -170,6 +170,20 @@ extension MSCustomEntity: MSRequestEntity {
     }
 }
 
+extension MSContract: MSRequestEntity {
+    public func requestUrl() -> MSApiRequest? {
+        return .contract
+    }
+    
+    public func deserializationError() -> MSError {
+        return MSError.genericError(errorText: LocalizedStrings.incorrectContractResponse.value)
+    }
+    
+    public func pathComponents() -> [String] {
+        return []
+    }
+}
+
 extension UserDefaults {
     var moySkladHost: String {
         get {

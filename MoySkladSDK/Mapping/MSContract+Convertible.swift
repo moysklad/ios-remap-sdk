@@ -31,9 +31,7 @@ extension MSContract : DictConvertable {
 			let group = MSGroup.from(dict: dict.msValue("group")) else {
 				return MSEntity.meta(meta)
 		}
-		
-        let agent = MSAgent.from(dict: dict)
-        
+		        
 		return MSEntity.entity(MSContract(meta: meta,
 		           id: MSID(dict: dict),
 		           info: MSInfo(dict: dict),
@@ -46,11 +44,11 @@ extension MSContract : DictConvertable {
 		           archived: dict.value("archived") ?? false,
 		           moment: Date.fromMSDate(dict.value("moment") ?? ""),
 		           sum: (dict.value("sum") ?? 0.0).toMoney(),
-		           contractType: MSContractType(rawValue: dict.value("") ?? "contractType"),
-		           rewardType: MSRewardType(rawValue: dict.value("") ?? "rewardType"),
+		           contractType: MSContractType(rawValue: dict.value("contractType") ?? ""),
+		           rewardType: MSRewardType(rawValue: dict.value("rewardType") ?? ""),
 		           rewardPercent: dict.value("rewardPercent"),
-		           ownAgent: MSEntity.meta(meta),
-		           agent: agent,
+		           ownAgent: MSAgent.from(dict: dict.msValue("ownAgent")),
+		           agent: MSAgent.from(dict: dict.msValue("agent")),
 		           state: MSState.from(dict: dict.msValue("state")),
 		           organizationAccount: MSAccount.from(dict: dict.msValue("organizationAccount")),
 		           agentAccount: MSAccount.from(dict: dict.msValue("agentAccount")),

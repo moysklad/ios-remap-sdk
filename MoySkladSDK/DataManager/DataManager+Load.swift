@@ -186,6 +186,24 @@ extension DataManager {
     }
     
     /**
+     Load Contract by Id
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
+     - parameter storeId: Contract Id
+     */
+    public static func loadContractById(parameters: UrlRequestParameters, contractId: String) -> Observable<MSEntity<MSContract>> {
+        return HttpClient.get(.contract, auth: parameters.auth, urlPathComponents: [contractId], urlParameters: parameters.allParameters)
+            .flatMapLatest { result -> Observable<MSEntity<MSContract>> in
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectContractResponse.value)) }
+                
+                guard let deserialized = MSContract.from(dict: result) else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectContractResponse.value))
+                }
+                
+                return Observable.just(deserialized)
+        }
+    }
+    
+    /**
      Load counterparty report by Id
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - parameter counterpartyId: Id of counterparty

@@ -224,6 +224,25 @@ extension DataManager {
     }
     
     /**
+     Load Employee by Id
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
+     - parameter employeeId: Employee Id
+     */
+    
+    public static func loadEmployeeById(parameters: UrlRequestParameters, employeeId: String) -> Observable<MSEntity<MSEmployee>> {
+        return HttpClient.get(.employee, auth: parameters.auth, urlPathComponents: [employeeId], urlParameters: parameters.allParameters)
+            .flatMapLatest { result -> Observable<MSEntity<MSEmployee>> in
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProjectResponse.value)) }
+                
+                guard let deserialized = MSEmployee.from(dict: result) else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value))
+                }
+                
+                return Observable.just(deserialized)
+        }
+    }
+    
+    /**
      Load counterparty report by Id
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - parameter counterpartyId: Id of counterparty

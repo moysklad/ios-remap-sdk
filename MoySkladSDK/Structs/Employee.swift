@@ -7,43 +7,49 @@
 //
 
 import Foundation
+import UIKit
 
 /**
  Represents Employee
  Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#сотрудник)
 */
-public struct MSEmployee : Metable {
-	public let meta: MSMeta
-	public let id : MSID
-	public let info : MSInfo
-    public let group: MSEntity<MSGroup>
-    public let shared: Bool
-	public let accountId: String
-	public let code: String?
-	public let externalCode: String?
-	public let archived: Bool
-	public let uid: String
-	public let email: String?
-	public let phone: String?
-	public let firstName: String?
-	public let middleName: String?
-	public let lastName: String
-	public let city: String?
-	public let postalAddress: String?
-	public let postalCode: String?
-	public let fax: String?
-	public let icqNumber: String?
-	public let skype: String?
-	public let fullName: String?
-	public let shortFio: String?
-	public let cashier: MSMeta?
-    public let permissions: MSUserPermissions
+public class MSEmployee : Metable {
+	public var meta: MSMeta
+	public var id : MSID
+	public var info : MSInfo
+    public var group: MSEntity<MSGroup>
+    public var shared: Bool
+    public var owner: MSEntity<MSEmployee>?
+	public var accountId: String
+	public var code: String?
+	public var externalCode: String?
+	public var archived: Bool
+	public var uid: String
+	public var email: String?
+	public var phone: String?
+	public var firstName: String?
+	public var middleName: String?
+	public var lastName: String
+    public var position: String
+	public var city: String?
+	public var postalAddress: String?
+	public var postalCode: String?
+	public var fax: String?
+	public var icqNumber: String?
+	public var skype: String?
+	public var fullName: String?
+	public var shortFio: String?
+	public var cashier: MSMeta?
+    public var permissions: MSUserPermissions
+    public var image: MSImage?
+    public var localImage: MSLocalImage?
     
     public init(meta: MSMeta,
     id : MSID,
     info : MSInfo,
     group: MSEntity<MSGroup>,
-    shared: Bool, 
+    shared: Bool,
+    owner: MSEntity<MSEmployee>?,
     accountId: String,
     code: String?,
     externalCode: String?,
@@ -54,6 +60,7 @@ public struct MSEmployee : Metable {
     firstName: String?,
     middleName: String?,
     lastName: String,
+    position: String,
     city: String?,
     postalAddress: String?,
     postalCode: String?,
@@ -63,12 +70,15 @@ public struct MSEmployee : Metable {
     fullName: String?,
     shortFio: String?,
     cashier: MSMeta?,
-    permissions: MSUserPermissions) {
+    permissions: MSUserPermissions,
+    image: MSImage?,
+    localImage: MSLocalImage?) {
         self.meta = meta
         self.id = id
         self.info = info
         self.group = group
         self.shared = shared
+        self.owner = owner
         self.accountId = accountId
         self.code = code
         self.externalCode = externalCode
@@ -79,6 +89,7 @@ public struct MSEmployee : Metable {
         self.firstName = firstName
         self.middleName = middleName
         self.lastName = lastName
+        self.position = position
         self.city = city
         self.postalAddress = postalAddress
         self.postalCode = postalCode
@@ -89,5 +100,16 @@ public struct MSEmployee : Metable {
         self.shortFio = shortFio
         self.cashier = cashier
         self.permissions = permissions
+        self.image = image
+        self.localImage = localImage
+    }
+    
+    public func copy() -> MSEmployee {
+        return MSEmployee(meta: meta.copy(), id: id.copy(), info: info, group: group, shared: shared, owner: owner, accountId: accountId, code: code, externalCode: externalCode, archived: archived, uid: uid, email: email, phone: phone, firstName: firstName, middleName: middleName, lastName: lastName, position: position, city: city, postalAddress: postalAddress, postalCode: postalCode, fax: fax, icqNumber: icqNumber, skype: skype, fullName: fullName, shortFio: shortFio, cashier: cashier?.copy(), permissions: permissions, image: image, localImage: localImage)
+    }
+    
+    public func hasChanges(comparedTo other: MSEmployee) -> Bool {
+        return (try? JSONSerialization.data(withJSONObject: dictionary(metaOnly: false), options: [])) ?? nil ==
+            (try? JSONSerialization.data(withJSONObject: other.dictionary(metaOnly: false), options: [])) ?? nil
     }
 }

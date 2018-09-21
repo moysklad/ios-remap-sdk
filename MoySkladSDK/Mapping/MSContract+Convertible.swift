@@ -9,19 +9,7 @@
 //import Money
 import Foundation
 
-extension MSContract : DictConvertable {
-    public func dictionary(metaOnly: Bool = true) -> Dictionary<String, Any> {
-        var dict = [String: Any]()
-        dict["meta"] = meta.dictionary()
-        
-        guard !metaOnly else { return dict }
-        
-        dict.merge(info.dictionary())
-        // тут должны быть остальные поля объекта, если они понадобятся
-        
-        return dict
-    }
-	
+extension MSContract : DictConvertable {	
 	public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSContract>? {
 		guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else {
 			return nil

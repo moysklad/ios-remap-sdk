@@ -25,6 +25,7 @@ public class MSEmployee : Metable {
 	public var externalCode: String?
 	public var archived: Bool
 	public var uid: String
+    public var inn: String?
 	public var email: String?
 	public var phone: String?
 	public var firstName: String?
@@ -55,6 +56,7 @@ public class MSEmployee : Metable {
     externalCode: String?,
     archived: Bool,
     uid: String,
+    inn: String?,
     email: String?,
     phone: String?,
     firstName: String?,
@@ -84,6 +86,7 @@ public class MSEmployee : Metable {
         self.externalCode = externalCode
         self.archived = archived
         self.uid = uid
+        self.inn = inn
         self.email = email
         self.phone = phone
         self.firstName = firstName
@@ -105,7 +108,7 @@ public class MSEmployee : Metable {
     }
     
     public func copy() -> MSEmployee {
-        return MSEmployee(meta: meta.copy(), id: id.copy(), info: info, group: group, shared: shared, owner: owner, accountId: accountId, code: code, externalCode: externalCode, archived: archived, uid: uid, email: email, phone: phone, firstName: firstName, middleName: middleName, lastName: lastName, position: position, city: city, postalAddress: postalAddress, postalCode: postalCode, fax: fax, icqNumber: icqNumber, skype: skype, fullName: fullName, shortFio: shortFio, cashier: cashier?.copy(), permissions: permissions, image: image, localImage: localImage)
+        return MSEmployee(meta: meta.copy(), id: id.copy(), info: info, group: group, shared: shared, owner: owner, accountId: accountId, code: code, externalCode: externalCode, archived: archived, uid: uid, inn: inn, email: email, phone: phone, firstName: firstName, middleName: middleName, lastName: lastName, position: position, city: city, postalAddress: postalAddress, postalCode: postalCode, fax: fax, icqNumber: icqNumber, skype: skype, fullName: fullName, shortFio: shortFio, cashier: cashier?.copy(), permissions: permissions, image: image, localImage: localImage)
     }
     
     public func hasChanges(comparedTo other: MSEmployee) -> Bool {

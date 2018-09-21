@@ -203,6 +203,26 @@ extension DataManager {
         }
     }
     
+    
+    
+    /**
+     Load Project by Id
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
+     - parameter projectId: Project Id
+     */
+    public static func loadProjectById(parameters: UrlRequestParameters, projectId: String) -> Observable<MSEntity<MSProject>> {
+        return HttpClient.get(.project, auth: parameters.auth, urlPathComponents: [projectId], urlParameters: parameters.allParameters)
+            .flatMapLatest { result -> Observable<MSEntity<MSProject>> in
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProjectResponse.value)) }
+                
+                guard let deserialized = MSProject.from(dict: result) else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProjectResponse.value))
+                }
+                
+                return Observable.just(deserialized)
+        }
+    }
+    
     /**
      Load counterparty report by Id
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters

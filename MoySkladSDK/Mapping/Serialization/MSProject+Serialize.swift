@@ -17,7 +17,15 @@ extension MSProject {
         guard !metaOnly else { return dict }
         
         dict.merge(info.dictionary())
-        // тут должны быть остальные поля объекта, если они понадобятся
+        
+        dict["owner"] = serialize(entity: owner, metaOnly: true)
+        dict["shared"] = shared
+        dict["group"] = serialize(entity: group, metaOnly: true)
+        dict["name"] = info.name
+        dict["description"] = info.description
+        dict["code"] = code
+        dict["externalCode"] = externalCode ?? ""
+        dict["archived"] = archived
         
         return dict
     }

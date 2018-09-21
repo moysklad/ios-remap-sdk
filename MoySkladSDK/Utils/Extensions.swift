@@ -184,6 +184,20 @@ extension MSContract: MSRequestEntity {
     }
 }
 
+extension MSProject: MSRequestEntity {
+    public func requestUrl() -> MSApiRequest? {
+         return .project
+    }
+    
+    public func deserializationError() -> MSError {
+        return MSError.genericError(errorText: LocalizedStrings.incorrectProjectResponse.value)
+    }
+    
+    public func pathComponents() -> [String] {
+        return []
+    }
+}
+
 extension UserDefaults {
     var moySkladHost: String {
         get {

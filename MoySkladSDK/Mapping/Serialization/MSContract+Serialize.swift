@@ -33,6 +33,7 @@ extension MSContract {
         dict["state"] = serialize(entity: state, metaOnly: true)
         dict["rate"] = rate?.dictionary(metaOnly: true) ?? NSNull()
         dict["moment"] = moment?.toLongDate()
+        dict["attributes"] = attributes?.compactMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
         
         dict["rewardPercent"] = rewardPercent
         dict["rewardType"] = rewardType?.rawValue

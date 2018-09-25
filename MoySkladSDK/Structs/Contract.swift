@@ -23,7 +23,7 @@ public enum MSRewardType : String {
  Represents Contract.
  Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#договор)
 */
-public class MSContract : Metable {
+public class MSContract: MSAttributedEntity, Metable {
 	public var meta: MSMeta
 	public var id : MSID
 	public var info : MSInfo
@@ -66,7 +66,8 @@ public class MSContract : Metable {
     state: MSEntity<MSState>?,
     organizationAccount: MSEntity<MSAccount>?,
     agentAccount: MSEntity<MSAccount>?,
-    rate: MSRate?) {
+    rate: MSRate?,
+    attributes: [MSEntity<MSAttribute>]?) {
         self.meta = meta
         self.id = id
         self.info = info
@@ -88,10 +89,11 @@ public class MSContract : Metable {
         self.organizationAccount = organizationAccount
         self.agentAccount = agentAccount
         self.rate = rate
+        super.init(attributes: attributes)
     }
     
     public func copy() -> MSContract {
-        return MSContract(meta: meta.copy(), id: id.copy(), info: info, accountId: accountId, owner: owner, shared: shared, group: group, code: code, externalCode: externalCode, archived: archived, moment: moment, sum: sum, contractType: contractType, rewardType: rewardType, rewardPercent: rewardPercent, ownAgent: ownAgent, agent: agent, state: state, organizationAccount: organizationAccount, agentAccount: agentAccount, rate: rate)
+        return MSContract(meta: meta.copy(), id: id.copy(), info: info, accountId: accountId, owner: owner, shared: shared, group: group, code: code, externalCode: externalCode, archived: archived, moment: moment, sum: sum, contractType: contractType, rewardType: rewardType, rewardPercent: rewardPercent, ownAgent: ownAgent, agent: agent, state: state, organizationAccount: organizationAccount, agentAccount: agentAccount, rate: rate, attributes: attributes)
     }
     
     public func hasChanges(comparedTo other: MSContract) -> Bool {

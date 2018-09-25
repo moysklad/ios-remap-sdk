@@ -23,7 +23,7 @@ extension MSEmployee : DictConvertable {
         dict["firstName"] = firstName
         dict["middleName"] = middleName
         dict["lastName"] = lastName
-        dict["inn"] = uid
+        dict["inn"] = inn ?? ""
         dict["position"] = position
         dict["phone"] = phone
         dict["description"] = info.description

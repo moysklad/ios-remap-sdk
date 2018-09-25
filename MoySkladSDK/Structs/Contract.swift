@@ -10,8 +10,8 @@
 import Foundation
 
 public enum MSContractType : String {
-	case commission
-	case sales
+	case commission = "Comission"
+	case sales = "Sales"
 }
 
 public enum MSRewardType : String {
@@ -24,27 +24,27 @@ public enum MSRewardType : String {
  Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#договор)
 */
 public class MSContract : Metable {
-	public let meta: MSMeta
-	public let id : MSID
-	public let info : MSInfo
-	public let accountId: String
-	public let owner: MSEntity<MSEmployee>?
-	public let shared: Bool
-	public let group: MSEntity<MSGroup>
-	public let code: String?
-	public let externalCode: String?
-	public let archived: Bool
-	public let moment: Date?
-	public let sum: Money
-	public let contractType: MSContractType?
-	public let rewardType: MSRewardType?
-	public let rewardPercent: Int?
-	public let ownAgent: MSEntity<MSAgent>
-	public let agent: MSEntity<MSAgent>?
-	public let state: MSEntity<MSState>?
-	public let organizationAccount: MSEntity<MSAccount>?
-	public let agentAccount: MSEntity<MSAccount>?
-	public let rate: MSRate?
+	public var meta: MSMeta
+	public var id : MSID
+	public var info : MSInfo
+	public var accountId: String
+	public var owner: MSEntity<MSEmployee>?
+	public var shared: Bool
+	public var group: MSEntity<MSGroup>
+	public var code: String?
+	public var externalCode: String?
+	public var archived: Bool
+	public var moment: Date?
+	public var sum: Money
+	public var contractType: MSContractType?
+	public var rewardType: MSRewardType?
+	public var rewardPercent: Int?
+	public var ownAgent: MSEntity<MSAgent>?
+	public var agent: MSEntity<MSAgent>?
+	public var state: MSEntity<MSState>?
+	public var organizationAccount: MSEntity<MSAccount>?
+	public var agentAccount: MSEntity<MSAccount>?
+	public var rate: MSRate?
     
     public init(meta: MSMeta,
     id : MSID,
@@ -61,7 +61,7 @@ public class MSContract : Metable {
     contractType: MSContractType?,
     rewardType: MSRewardType?,
     rewardPercent: Int?,
-    ownAgent: MSEntity<MSAgent>,
+    ownAgent: MSEntity<MSAgent>?,
     agent: MSEntity<MSAgent>?,
     state: MSEntity<MSState>?,
     organizationAccount: MSEntity<MSAccount>?,
@@ -90,5 +90,14 @@ public class MSContract : Metable {
         self.rate = rate
     }
     
+    public func copy() -> MSContract {
+        return MSContract(meta: meta.copy(), id: id.copy(), info: info, accountId: accountId, owner: owner, shared: shared, group: group, code: code, externalCode: externalCode, archived: archived, moment: moment, sum: sum, contractType: contractType, rewardType: rewardType, rewardPercent: rewardPercent, ownAgent: ownAgent, agent: agent, state: state, organizationAccount: organizationAccount, agentAccount: agentAccount, rate: rate)
+    }
+    
+    public func hasChanges(comparedTo other: MSContract) -> Bool {
+        return (try? JSONSerialization.data(withJSONObject: dictionary(metaOnly: false), options: [])) ?? nil ==
+            (try? JSONSerialization.data(withJSONObject: other.dictionary(metaOnly: false), options: [])) ?? nil
+    }
+
 }
 

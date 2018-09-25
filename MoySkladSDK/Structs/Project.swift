@@ -12,17 +12,17 @@ import Foundation
  Represents Project
  Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#проект)
 */
-public struct MSProject : Metable {
-	public let meta: MSMeta
-	public let id : MSID
-	public let info : MSInfo
-	public let accountId: String
-	public let owner: MSEntity<MSEmployee>?
-	public let shared: Bool
-	public let group: MSEntity<MSGroup>
-	public let code: String?
-	public let externalCode: String?
-	public let archived: Bool
+public class MSProject : Metable {
+	public var meta: MSMeta
+	public var id : MSID
+	public var info : MSInfo
+	public var accountId: String
+	public var owner: MSEntity<MSEmployee>?
+	public var shared: Bool
+	public var group: MSEntity<MSGroup>
+	public var code: String?
+	public var externalCode: String?
+	public var archived: Bool
     
     public init(meta: MSMeta,
     id : MSID,
@@ -44,5 +44,14 @@ public struct MSProject : Metable {
         self.code = code
         self.externalCode = externalCode
         self.archived = archived
+    }
+    
+    public func copy() -> MSProject {
+        return MSProject(meta: meta.copy(), id: id.copy(), info: info, accountId: accountId, owner: owner, shared: shared, group: group, code: code, externalCode: externalCode, archived: archived)
+    }
+    
+    public func hasChanges(comparedTo other: MSProject) -> Bool {
+        return (try? JSONSerialization.data(withJSONObject: dictionary(metaOnly: false), options: [])) ?? nil ==
+            (try? JSONSerialization.data(withJSONObject: other.dictionary(metaOnly: false), options: [])) ?? nil
     }
 }

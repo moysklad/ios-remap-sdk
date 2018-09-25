@@ -186,6 +186,44 @@ extension DataManager {
     }
     
     /**
+     Load Contract by Id
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
+     - parameter storeId: Contract Id
+     */
+    public static func loadContractById(parameters: UrlRequestParameters, contractId: String) -> Observable<MSEntity<MSContract>> {
+        return HttpClient.get(.contract, auth: parameters.auth, urlPathComponents: [contractId], urlParameters: parameters.allParameters)
+            .flatMapLatest { result -> Observable<MSEntity<MSContract>> in
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectContractResponse.value)) }
+                
+                guard let deserialized = MSContract.from(dict: result) else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectContractResponse.value))
+                }
+                
+                return Observable.just(deserialized)
+        }
+    }
+    
+    
+    
+    /**
+     Load Project by Id
+     - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
+     - parameter projectId: Project Id
+     */
+    public static func loadProjectById(parameters: UrlRequestParameters, projectId: String) -> Observable<MSEntity<MSProject>> {
+        return HttpClient.get(.project, auth: parameters.auth, urlPathComponents: [projectId], urlParameters: parameters.allParameters)
+            .flatMapLatest { result -> Observable<MSEntity<MSProject>> in
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProjectResponse.value)) }
+                
+                guard let deserialized = MSProject.from(dict: result) else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProjectResponse.value))
+                }
+                
+                return Observable.just(deserialized)
+        }
+    }
+    
+    /**
      Load counterparty report by Id
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - parameter counterpartyId: Id of counterparty

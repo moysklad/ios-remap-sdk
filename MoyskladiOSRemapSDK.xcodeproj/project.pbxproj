@@ -66,6 +66,9 @@
 		6E3C50FB1E4CA4090085E8A6 /* MSCustomEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3C50FA1E4CA4090085E8A6 /* MSCustomEntity.swift */; };
 		6E3C50FD1E4CA52A0085E8A6 /* MSCustomEntity+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3C50FC1E4CA52A0085E8A6 /* MSCustomEntity+Convertible.swift */; };
 		6E4344E01E3B239A005D0DDE /* Position+Serialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4344DB1E3B239A005D0DDE /* Position+Serialize.swift */; };
+		6E6BD6482154CB7400A9EE07 /* MSStore+Serialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6BD6472154CB7400A9EE07 /* MSStore+Serialize.swift */; };
+		6E6BD64A2154CB9400A9EE07 /* MSProject+Serialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6BD6492154CB9400A9EE07 /* MSProject+Serialize.swift */; };
+		6E6BD64C2154CBB500A9EE07 /* MSContract+Serialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6BD64B2154CBB500A9EE07 /* MSContract+Serialize.swift */; };
 		6E6D29432108B5860018BCD3 /* MSRetailType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6D29422108B5860018BCD3 /* MSRetailType.swift */; };
 		6E75A1D11EA89B9E00A05A83 /* MoyskladAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1CB1EA89B9E00A05A83 /* MoyskladAPI.swift */; };
 		6E75A1D21EA89B9E00A05A83 /* HttpClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1CC1EA89B9E00A05A83 /* HttpClient+Extensions.swift */; };
@@ -211,6 +214,9 @@
 		6E3C50FA1E4CA4090085E8A6 /* MSCustomEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSCustomEntity.swift; sourceTree = "<group>"; };
 		6E3C50FC1E4CA52A0085E8A6 /* MSCustomEntity+Convertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSCustomEntity+Convertible.swift"; sourceTree = "<group>"; };
 		6E4344DB1E3B239A005D0DDE /* Position+Serialize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Position+Serialize.swift"; sourceTree = "<group>"; };
+		6E6BD6472154CB7400A9EE07 /* MSStore+Serialize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MSStore+Serialize.swift"; sourceTree = "<group>"; };
+		6E6BD6492154CB9400A9EE07 /* MSProject+Serialize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MSProject+Serialize.swift"; sourceTree = "<group>"; };
+		6E6BD64B2154CBB500A9EE07 /* MSContract+Serialize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MSContract+Serialize.swift"; sourceTree = "<group>"; };
 		6E6D29422108B5860018BCD3 /* MSRetailType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSRetailType.swift; sourceTree = "<group>"; };
 		6E75A1CB1EA89B9E00A05A83 /* MoyskladAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoyskladAPI.swift; sourceTree = "<group>"; };
 		6E75A1CC1EA89B9E00A05A83 /* HttpClient+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HttpClient+Extensions.swift"; sourceTree = "<group>"; };
@@ -512,6 +518,9 @@
 				6EF37A351F540E4E0020BD78 /* MSDocument+Serialize.swift */,
 				C9D387EC1F94A559008CD04C /* Assortment+Serialize.swift */,
 				6E2768B6213FE20A0028B792 /* MSCustomEntity+Serialize.swift */,
+				6E6BD6472154CB7400A9EE07 /* MSStore+Serialize.swift */,
+				6E6BD6492154CB9400A9EE07 /* MSProject+Serialize.swift */,
+				6E6BD64B2154CBB500A9EE07 /* MSContract+Serialize.swift */,
 			);
 			path = Serialization;
 			sourceTree = "<group>";
@@ -696,6 +705,7 @@
 				C9BD0FC31E9BA70A00FD8613 /* MSTemplate+Convertible.swift in Sources */,
 				C94F63561F57F1C600EAE437 /* DataManager+LoadTemplates.swift in Sources */,
 				C9564DCE1F569FB80051E3BE /* MSPaymentType.swift in Sources */,
+				6E6BD6482154CB7400A9EE07 /* MSStore+Serialize.swift in Sources */,
 				55C05C681E028F9B008F4254 /* Currency.swift in Sources */,
 				6E02E7DC1F470F97000EC1F8 /* MSTask+Serialize.swift in Sources */,
 				9547EE9C1F2092CE00CC5FFC /* AgentReport.swift in Sources */,
@@ -734,6 +744,7 @@
 				C9F3CB501F1CB880005E1636 /* MSStatistics+Convertible.swift in Sources */,
 				55C05C5D1E028F9B008F4254 /* MSContract+Convertible.swift in Sources */,
 				55C05C451E028F9B008F4254 /* MSDemandType.swift in Sources */,
+				6E6BD64A2154CB9400A9EE07 /* MSProject+Serialize.swift in Sources */,
 				954897741F725298004ED60A /* MSCountry.swift in Sources */,
 				9547EE9E1F20950F00CC5FFC /* MSAgentReport+Convertible.swift in Sources */,
 				6EBBF3611F4EED7500FA64FE /* MSCashType.swift in Sources */,
@@ -759,6 +770,7 @@
 				55C05C691E028F9B008F4254 /* Decimal.swift in Sources */,
 				6EA80F052008C75200C7E938 /* MSInventoryType.swift in Sources */,
 				6E2266FA1E266F61003D2DC5 /* MSSaleByProduct+Convertible.swift in Sources */,
+				6E6BD64C2154CBB500A9EE07 /* MSContract+Serialize.swift in Sources */,
 				6E02E7DA1F470D93000EC1F8 /* MSTask+Convertable.swift in Sources */,
 				55C05C481E028F9B008F4254 /* MSInvoiceType.swift in Sources */,
 				55C05C4E1E028F9B008F4254 /* MSStock.swift in Sources */,

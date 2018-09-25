@@ -9,19 +9,7 @@
 //import Money
 import Foundation
 
-extension MSContract : DictConvertable {
-    public func dictionary(metaOnly: Bool = true) -> Dictionary<String, Any> {
-        var dict = [String: Any]()
-        dict["meta"] = meta.dictionary()
-        
-        guard !metaOnly else { return dict }
-        
-        dict.merge(info.dictionary())
-        // тут должны быть остальные поля объекта, если они понадобятся
-        
-        return dict
-    }
-	
+extension MSContract : DictConvertable {	
 	public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSContract>? {
 		guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else {
 			return nil
@@ -31,9 +19,7 @@ extension MSContract : DictConvertable {
 			let group = MSGroup.from(dict: dict.msValue("group")) else {
 				return MSEntity.meta(meta)
 		}
-		
-        let agent = MSAgent.from(dict: dict)
-        
+		        
 		return MSEntity.entity(MSContract(meta: meta,
 		           id: MSID(dict: dict),
 		           info: MSInfo(dict: dict),
@@ -46,11 +32,11 @@ extension MSContract : DictConvertable {
 		           archived: dict.value("archived") ?? false,
 		           moment: Date.fromMSDate(dict.value("moment") ?? ""),
 		           sum: (dict.value("sum") ?? 0.0).toMoney(),
-		           contractType: MSContractType(rawValue: dict.value("") ?? "contractType"),
-		           rewardType: MSRewardType(rawValue: dict.value("") ?? "rewardType"),
+		           contractType: MSContractType(rawValue: dict.value("contractType") ?? ""),
+		           rewardType: MSRewardType(rawValue: dict.value("rewardType") ?? ""),
 		           rewardPercent: dict.value("rewardPercent"),
-		           ownAgent: MSEntity.meta(meta),
-		           agent: agent,
+		           ownAgent: MSAgent.from(dict: dict.msValue("ownAgent")),
+		           agent: MSAgent.from(dict: dict.msValue("agent")),
 		           state: MSState.from(dict: dict.msValue("state")),
 		           organizationAccount: MSAccount.from(dict: dict.msValue("organizationAccount")),
 		           agentAccount: MSAccount.from(dict: dict.msValue("agentAccount")),

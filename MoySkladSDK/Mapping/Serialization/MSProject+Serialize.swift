@@ -26,6 +26,7 @@ extension MSProject {
         dict["code"] = code
         dict["externalCode"] = externalCode ?? ""
         dict["archived"] = archived
+        dict["attributes"] = attributes?.compactMap { $0.value()?.dictionary(metaOnly: false) }
         
         return dict
     }

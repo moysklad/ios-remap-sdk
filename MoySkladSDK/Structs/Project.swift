@@ -12,7 +12,7 @@ import Foundation
  Represents Project
  Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#проект)
 */
-public class MSProject : Metable {
+public class MSProject: MSAttributedEntity, Metable {
 	public var meta: MSMeta
 	public var id : MSID
 	public var info : MSInfo
@@ -33,7 +33,8 @@ public class MSProject : Metable {
     group: MSEntity<MSGroup>,
     code: String?,
     externalCode: String?,
-    archived: Bool) {
+    archived: Bool,
+    attributes: [MSEntity<MSAttribute>]?) {
         self.meta = meta
         self.id = id
         self.info = info
@@ -44,10 +45,11 @@ public class MSProject : Metable {
         self.code = code
         self.externalCode = externalCode
         self.archived = archived
+        super.init(attributes: attributes)
     }
     
     public func copy() -> MSProject {
-        return MSProject(meta: meta.copy(), id: id.copy(), info: info, accountId: accountId, owner: owner, shared: shared, group: group, code: code, externalCode: externalCode, archived: archived)
+        return MSProject(meta: meta.copy(), id: id.copy(), info: info, accountId: accountId, owner: owner, shared: shared, group: group, code: code, externalCode: externalCode, archived: archived, attributes: attributes)
     }
     
     public func hasChanges(comparedTo other: MSProject) -> Bool {

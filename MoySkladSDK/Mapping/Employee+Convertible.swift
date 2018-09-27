@@ -31,6 +31,7 @@ extension MSEmployee : DictConvertable {
         dict["owner"] = serialize(entity: owner, metaOnly: true)
         dict["shared"] = shared
         dict["group"] = serialize(entity: group, metaOnly: true)
+        dict["attributes"] = attributes?.compactMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
         
         if let image = localImage?.dictionary() {
             dict["image"] = image
@@ -79,7 +80,8 @@ extension MSEmployee : DictConvertable {
 		                                  cashier: nil,
                                           permissions: MSUserPermissions.from(dict: dict.msValue("permissions")),
                                           image: MSImage.from(dict: dict.msValue("image")),
-                                          localImage: nil))
+                                          localImage: nil,
+                                          attributes: dict.msArray("attributes").compactMap { MSAttribute.from(dict: $0) }))
 	}
 }
 

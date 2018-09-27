@@ -10,13 +10,13 @@
 import Foundation
 
 public enum MSContractType : String {
-	case commission = "Comission"
+	case commission = "Commission"
 	case sales = "Sales"
 }
 
 public enum MSRewardType : String {
-	case percentOfSales
-	case none
+	case percentOfSales = "PercentOfSales"
+	case none = "None"
 }
 
 /**

@@ -13,7 +13,7 @@ import UIKit
  Represents Employee
  Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#сотрудник)
 */
-public class MSEmployee : Metable {
+public class MSEmployee: MSAttributedEntity, Metable {
 	public var meta: MSMeta
 	public var id : MSID
 	public var info : MSInfo
@@ -74,7 +74,8 @@ public class MSEmployee : Metable {
     cashier: MSMeta?,
     permissions: MSUserPermissions,
     image: MSImage?,
-    localImage: MSLocalImage?) {
+    localImage: MSLocalImage?,
+    attributes: [MSEntity<MSAttribute>]?) {
         self.meta = meta
         self.id = id
         self.info = info
@@ -105,10 +106,11 @@ public class MSEmployee : Metable {
         self.permissions = permissions
         self.image = image
         self.localImage = localImage
+        super.init(attributes: attributes)
     }
     
     public func copy() -> MSEmployee {
-        return MSEmployee(meta: meta.copy(), id: id.copy(), info: info, group: group, shared: shared, owner: owner, accountId: accountId, code: code, externalCode: externalCode, archived: archived, uid: uid, inn: inn, email: email, phone: phone, firstName: firstName, middleName: middleName, lastName: lastName, position: position, city: city, postalAddress: postalAddress, postalCode: postalCode, fax: fax, icqNumber: icqNumber, skype: skype, fullName: fullName, shortFio: shortFio, cashier: cashier?.copy(), permissions: permissions, image: image, localImage: localImage)
+        return MSEmployee(meta: meta.copy(), id: id.copy(), info: info, group: group, shared: shared, owner: owner, accountId: accountId, code: code, externalCode: externalCode, archived: archived, uid: uid, inn: inn, email: email, phone: phone, firstName: firstName, middleName: middleName, lastName: lastName, position: position, city: city, postalAddress: postalAddress, postalCode: postalCode, fax: fax, icqNumber: icqNumber, skype: skype, fullName: fullName, shortFio: shortFio, cashier: cashier?.copy(), permissions: permissions, image: image, localImage: localImage, attributes: attributes)
     }
     
     public func hasChanges(comparedTo other: MSEmployee) -> Bool {

@@ -21,12 +21,12 @@ public struct MSDiscount: Metable {
 
 public class MSAgentInfo {
 	// Organization fields
-	public let isEgaisEnable: Bool?
-	public let fsrarId: String?
-	public let payerVat: Bool
-	public let utmUrl: String?
-	public let director: String?
-	public let chiefAccountant: String?
+	public var isEgaisEnable: Bool?
+	public var fsrarId: String?
+	public var payerVat: Bool
+	public var utmUrl: String?
+	public var director: String?
+	public var chiefAccountant: String?
 	
 	// Counterparty fields
     public var tags: [String]
@@ -211,5 +211,10 @@ public class MSAgent : MSAttributedEntity, Metable, NSCopying {
                        salesAmount: salesAmount,
                        attributes: attributes,
                        report: report)
+    }
+    
+    public func hasChanges(comparedTo other: MSAgent) -> Bool {
+        return (try? JSONSerialization.data(withJSONObject: dictionary(metaOnly: false), options: [])) ?? nil ==
+            (try? JSONSerialization.data(withJSONObject: other.dictionary(metaOnly: false), options: [])) ?? nil
     }
 }

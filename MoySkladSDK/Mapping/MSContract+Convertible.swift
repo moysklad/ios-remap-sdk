@@ -40,7 +40,8 @@ extension MSContract : DictConvertable {
 		           state: MSState.from(dict: dict.msValue("state")),
 		           organizationAccount: MSAccount.from(dict: dict.msValue("organizationAccount")),
 		           agentAccount: MSAccount.from(dict: dict.msValue("agentAccount")),
-		           rate: MSRate.from(dict: dict.msValue("rate"))))
+		           rate: MSRate.from(dict: dict.msValue("rate")),
+                   attributes: dict.msArray("attributes").map { MSAttribute.from(dict: $0) }.compactMap { $0 }))
 	}
 }
 

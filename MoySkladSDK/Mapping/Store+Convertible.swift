@@ -32,6 +32,7 @@ extension MSStore : DictConvertable {
 		                               archived: dict.value("archived") ?? false,
 		                               address: dict.value("address"),
 		                               parent: MSStore.from(dict: dict.msValue("parent")),
-		                               pathName: dict.value("pathName")))
+		                               pathName: dict.value("pathName"),
+                                       attributes: dict.msArray("attributes").compactMap { MSAttribute.from(dict: $0) }))
 	}
 }

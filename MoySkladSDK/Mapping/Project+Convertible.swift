@@ -29,6 +29,7 @@ extension MSProject : DictConvertable {
                                        group: group,
                                        code: dict.value("code"),
                                        externalCode: dict.value("externalCode"),
-                                       archived: dict.value("archived") ?? false))
+                                       archived: dict.value("archived") ?? false,
+                                       attributes: dict.msArray("attributes").compactMap { MSAttribute.from(dict: $0) }))
     }
 }

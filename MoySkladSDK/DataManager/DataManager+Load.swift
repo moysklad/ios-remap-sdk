@@ -251,7 +251,7 @@ extension DataManager {
     public static func loadOrganizationById(parameters: UrlRequestParameters, organizationId: String) -> Observable<MSEntity<MSAgent>> {
         return HttpClient.get(.organization, auth: parameters.auth, urlPathComponents: [organizationId], urlParameters: parameters.allParameters)
             .flatMapLatest { result -> Observable<MSEntity<MSAgent>> in
-                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectProjectResponse.value)) }
+                guard let result = result?.toDictionary() else { return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectOrganizationResponse.value)) }
                 
                 guard let deserialized = MSAgent.from(dict: result) else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectOrganizationResponse.value))

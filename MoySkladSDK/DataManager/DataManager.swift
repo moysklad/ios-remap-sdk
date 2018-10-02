@@ -257,7 +257,8 @@ public struct DataManager {
                                                       deserializeObjectMetadata(objectType: .store, from: json),
                                                       deserializeObjectMetadata(objectType: .project, from: json),
                                                       deserializeObjectMetadata(objectType: .contract, from: json),
-                                                      deserializeObjectMetadata(objectType: .employee, from: json)]
+                                                      deserializeObjectMetadata(objectType: .employee, from: json),
+                                                      deserializeObjectMetadata(objectType: .organization, from: json)]
                 return .just(metadata)
         }
     }

@@ -9,10 +9,10 @@
 import Foundation
 
 /**
- Represents SalesByProduct report result.
- Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-товарам-get)
+ Represents SalesByModification report result.
+ Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-модификациям-get)
 */
-public class MSSaleByProduct {
+public class MSSaleByModification {
     public let assortment: MSAssortment
     public let sellQuantity: Double
     public let sellPrice: Money

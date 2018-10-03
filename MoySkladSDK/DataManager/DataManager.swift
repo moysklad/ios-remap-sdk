@@ -914,62 +914,62 @@ public struct DataManager {
     }
     
     /**
-     Load SalesByProduct report for current day.
-     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-товарам-get)
+     Load SalesByModification report for current day.
+     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-модификациям-get)
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      */
-    public static func salesByProductDay(parameters: UrlRequestParameters) -> Observable<[MSSaleByProduct]> {
-        return salesByProduct(parameters: parameters, from: Date().beginningOfDay(), to: Date().endOfDay())
+    public static func salesByModificationDay(parameters: UrlRequestParameters) -> Observable<[MSSaleByModification]> {
+        return salesByModification(parameters: parameters, from: Date().beginningOfDay(), to: Date().endOfDay())
     }
     
     /**
-     Load SalesByProduct report for current week.
-     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-товарам-get)
+     Load SalesByModification report for current week.
+     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-модификациям-get)
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      */
-    public static func salesByProductWeek(parameters: UrlRequestParameters) -> Observable<[MSSaleByProduct]> {
-        return salesByProduct(parameters: parameters, from: Date().startOfWeek(), to: Date().endOfWeek())
+    public static func salesByModificationWeek(parameters: UrlRequestParameters) -> Observable<[MSSaleByModification]> {
+        return salesByModification(parameters: parameters, from: Date().startOfWeek(), to: Date().endOfWeek())
     }
     
     /**
-     Load SalesByProduct report for current month.
-     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-товарам-get)
+     Load SalesByModification report for current month.
+     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-модификациям-get)
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      */
-    public static func salesByProductMonth(parameters: UrlRequestParameters) -> Observable<[MSSaleByProduct]> {
-        return salesByProduct(parameters: parameters, from: Date().startOfMonth(), to: Date().endOfMonth())
+    public static func salesByModificationMonth(parameters: UrlRequestParameters) -> Observable<[MSSaleByModification]> {
+        return salesByModification(parameters: parameters, from: Date().startOfMonth(), to: Date().endOfMonth())
     }
     
     /**
-     Load SalesByProduct report for period.
-     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-товарам-get)
+     Load SalesByModification report for period.
+     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-модификациям-get)
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - parameter period: Desired period
      */
-    public static func salesByProductPeriod(parameters: UrlRequestParameters, period: StatisticsMoment) -> Observable<[MSSaleByProduct]> {
-        return salesByProduct(parameters: parameters, from: period.from, to: period.to)
+    public static func salesByModificationPeriod(parameters: UrlRequestParameters, period: StatisticsMoment) -> Observable<[MSSaleByModification]> {
+        return salesByModification(parameters: parameters, from: period.from, to: period.to)
     }
     
     /**
-     Load SalesByProduct report.
-     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-товарам-get)
+     Load SalesByModification report.
+     Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#отчёт-прибыльность-прибыльность-по-модификациям-get)
      - parameter parameters: container for parameters like auth, offset, search, expanders, filter, orderBy, urlParameters
      - parameter from: Start date for report
      - parameter to: End date for report
     */
-    public static func salesByProduct(parameters: UrlRequestParameters,
+    public static func salesByModification(parameters: UrlRequestParameters,
                                       from: Date, 
-                                      to: Date) -> Observable<[MSSaleByProduct]> {
+                                      to: Date) -> Observable<[MSSaleByModification]> {
         let momentFrom = GenericUrlParameter(name: "momentFrom", value: from.toCurrentLocaleLongDate())
         let momentTo = GenericUrlParameter(name: "momentTo", value: to.toCurrentLocaleLongDate())
         
-        return HttpClient.get(.salesByModification, auth: parameters.auth, urlParameters: parameters.allParametersCollection(momentFrom, momentTo)).flatMapLatest { result -> Observable<[MSSaleByProduct]> in
+        return HttpClient.get(.salesByModification, auth: parameters.auth, urlParameters: parameters.allParametersCollection(momentFrom, momentTo)).flatMapLatest { result -> Observable<[MSSaleByModification]> in
             
             guard let result = result?.toDictionary() else {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectSalesByProductResponse.value))
             }
             
-            let deserialized = result.msArray("rows").map { MSSaleByProduct.from(dict: $0) }
+            let deserialized = result.msArray("rows").map { MSSaleByModification.from(dict: $0) }
             let withoutNills = deserialized.removeNils()
             
             guard withoutNills.count == deserialized.count else {

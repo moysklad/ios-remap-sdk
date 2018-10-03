@@ -963,7 +963,7 @@ public struct DataManager {
         let momentFrom = GenericUrlParameter(name: "momentFrom", value: from.toCurrentLocaleLongDate())
         let momentTo = GenericUrlParameter(name: "momentTo", value: to.toCurrentLocaleLongDate())
         
-        return HttpClient.get(.salesByProduct, auth: parameters.auth, urlParameters: parameters.allParametersCollection(momentFrom, momentTo)).flatMapLatest { result -> Observable<[MSSaleByProduct]> in
+        return HttpClient.get(.salesByModification, auth: parameters.auth, urlParameters: parameters.allParametersCollection(momentFrom, momentTo)).flatMapLatest { result -> Observable<[MSSaleByProduct]> in
             
             guard let result = result?.toDictionary() else {
                 return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectSalesByProductResponse.value))

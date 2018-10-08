@@ -156,6 +156,20 @@ extension MSTask: MSRequestEntity {
     }
 }
 
+extension MSEmployee: MSRequestEntity {
+    public func requestUrl() -> MSApiRequest? {
+        return MSApiRequest.employee
+    }
+    
+    public func deserializationError() -> MSError {
+        return MSError.genericError(errorText: LocalizedStrings.incorrectEmployeeResponse.value)
+    }
+    
+    public func pathComponents() -> [String] {
+        return []
+    }
+}
+
 extension MSCustomEntity: MSRequestEntity {
     public func requestUrl() -> MSApiRequest? {
         return MSApiRequest.customEntity

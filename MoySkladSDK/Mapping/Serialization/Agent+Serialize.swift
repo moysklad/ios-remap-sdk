@@ -69,6 +69,7 @@ extension MSAgent {
         dict["discountCardNumber"] = agentInfo.discountCardNumber
         
         dict["priceType"] = agentInfo.priceType ?? NSNull()
+        dict["payerVat"] = agentInfo.payerVat
         dict["shared"] = shared
         
         return dict

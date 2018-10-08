@@ -17,7 +17,27 @@ extension MSEmployee : DictConvertable {
         guard !metaOnly else { return dict }
         
         dict.merge(info.dictionary())
-        // тут должны быть остальные поля объекта, если они понадобятся
+        
+        dict["archived"] = archived
+        
+        dict["firstName"] = firstName
+        dict["middleName"] = middleName
+        dict["lastName"] = lastName
+        dict["inn"] = inn ?? ""
+        dict["position"] = position
+        dict["phone"] = phone
+        dict["description"] = info.description
+        
+        dict["owner"] = serialize(entity: owner, metaOnly: true)
+        dict["shared"] = shared
+        dict["group"] = serialize(entity: group, metaOnly: true)
+        dict["attributes"] = attributes?.compactMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
+        
+        if let image = localImage?.dictionary() {
+            dict["image"] = image
+        }  else if image == nil {
+            dict["image"] = NSNull()
+        }
         
         return dict
 	}
@@ -27,7 +47,7 @@ extension MSEmployee : DictConvertable {
 			return nil
 		}
 		
-		guard let lastName: String = dict.value("lastName"), lastName.count > 0, let group = MSGroup.from(dict: dict.msValue("group")) else {
+		guard let lastName: String = dict.value("lastName"), lastName.count > 0, let group = MSGroup.from(dict: dict.msValue("group")), let owner = MSEmployee.from(dict: dict.msValue("owner")) else {
 			return MSEntity.meta(meta)
 		}
 		
@@ -35,17 +55,20 @@ extension MSEmployee : DictConvertable {
 		                                  id: MSID(dict: dict),
 		                                  info: MSInfo(dict: dict),
                                           group: group,
-		                                  shared: dict.value("shared") ?? false,
+                                          shared: dict.value("shared") ?? false,
+                                          owner: owner,
 		                                  accountId: dict.value("accountId") ?? "",
 		                                  code: dict.value("code"),
 		                                  externalCode: dict.value("externalCode"),
 		                                  archived: dict.value("archived") ?? false,
-		                                  uid: dict.value("uid") ?? "",
+                                          uid: dict.value("uid") ?? "",
+                                          inn: dict.value("inn"),
 		                                  email: dict.value("email"),
 		                                  phone: dict.value("phone"),
 		                                  firstName: dict.value("firstName"),
 		                                  middleName: dict.value("middleName"),
-		                                  lastName: lastName,
+                                          lastName: lastName,
+                                          position: dict.value("position") ?? "",
 		                                  city: dict.value("city"),
 		                                  postalAddress: dict.value("postalAdress"),
 		                                  postalCode: dict.value("postalCode"),
@@ -55,7 +78,10 @@ extension MSEmployee : DictConvertable {
 		                                  fullName: dict.value("fullName"),
 		                                  shortFio: dict.value("shortFio"),
 		                                  cashier: nil,
-		                                  permissions: MSUserPermissions.from(dict: dict.msValue("permissions"))))
+                                          permissions: MSUserPermissions.from(dict: dict.msValue("permissions")),
+                                          image: MSImage.from(dict: dict.msValue("image")),
+                                          localImage: nil,
+                                          attributes: dict.msArray("attributes").compactMap { MSAttribute.from(dict: $0) }))
 	}
 }
 

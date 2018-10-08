@@ -12,7 +12,7 @@ import Foundation
  Represents Store.
  Also see [ API reference](https://online.moysklad.ru/api/remap/1.1/doc/index.html#склад)
 */
-public class MSStore : Metable {
+public class MSStore: MSAttributedEntity, Metable {
 	public var meta: MSMeta
 	public var id : MSID
 	public var info : MSInfo
@@ -39,7 +39,8 @@ public class MSStore : Metable {
     archived: Bool,
     address: String?,
     parent: MSEntity<MSStore>?,
-    pathName: String?) {
+    pathName: String?,
+    attributes: [MSEntity<MSAttribute>]?) {
         self.meta = meta
         self.id = id
         self.info = info
@@ -53,6 +54,7 @@ public class MSStore : Metable {
         self.address = address
         self.parent = parent
         self.pathName = pathName
+        super.init(attributes: attributes)
     }
     
     public func hasChanges(comparedTo other: MSStore) -> Bool {
@@ -61,6 +63,6 @@ public class MSStore : Metable {
     }
     
     public func copy() -> MSStore {
-        return MSStore(meta: meta.copy(), id: id.copy(), info: info, accountId: accountId, owner: owner, shared: shared, group: group, code: code, externalCode: externalCode, archived: archived, address: address, parent: parent, pathName: pathName)
+        return MSStore(meta: meta.copy(), id: id.copy(), info: info, accountId: accountId, owner: owner, shared: shared, group: group, code: code, externalCode: externalCode, archived: archived, address: address, parent: parent, pathName: pathName, attributes: attributes)
     }
 }

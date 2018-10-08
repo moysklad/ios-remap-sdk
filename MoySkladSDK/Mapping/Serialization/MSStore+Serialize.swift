@@ -29,6 +29,7 @@ extension MSStore {
         dict["address"] = address ?? ""
         dict["pathName"] = pathName ?? ""
         dict["parent"] = serialize(entity: parent, metaOnly: true)
+        dict["attributes"] = attributes?.compactMap { $0.value()?.dictionary(metaOnly: false) }
         
         return dict
     }

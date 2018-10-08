@@ -8,13 +8,13 @@
 
 import Foundation
 
-extension MSSaleByProduct {
-    public static func from(dict: Dictionary<String, Any>) -> MSSaleByProduct? {
+extension MSSaleByModification {
+    public static func from(dict: Dictionary<String, Any>) -> MSSaleByModification? {
         guard let assortment = MSAssortment.from(dict: dict.msValue("assortment"))?.value() else {
             return nil
         }
         
-        return MSSaleByProduct(assortment: assortment,
+        return MSSaleByModification(assortment: assortment,
                                sellQuantity: dict.value("sellQuantity") ?? 0,
                                sellPrice: (dict.value("sellPrice") ?? 0.0).toMoney(),
                                sellCost: (dict.value("sellCost") ?? 0.0).toMoney(),

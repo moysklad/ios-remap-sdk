@@ -130,7 +130,8 @@ public enum MSApiRequest : String {
     case stockAll = "report/stock/all"
     case stockByStore = "report/stock/bystore"
     case stockByOperation = "report/stock/byoperation"
-    case salesByProduct = "report/sales/byproduct"
+    case salesByModification = "report/sales/byvariant"
+    
     case productFolder = "/entity/productfolder"
     case product = "/entity/product"
     case bundle = "/entity/bundle"

@@ -145,7 +145,7 @@ extension DataManager {
      */
     public static func loadRetailStoreReport(parameters: UrlRequestParameters,
                                              retailStoreId id: UUID) -> Observable<MSEntity<MSRetailStoreStatistics>> {
-        return HttpClient.get(.reportRetailstore, auth: parameters.auth, urlPathComponents: [id.uuidString, MSApiRequest.reportRetailstoreRetailshift.rawValue])
+        return HttpClient.get(.reportRetailstore, auth: parameters.auth, urlPathComponents: [id.uuidString, MSApiRequest.reportRetailstoreRetailshifts.rawValue], urlParameters: parameters.allParameters)
             .catchErrorJustReturn(nil)
             .flatMapLatest { result -> Observable<MSEntity<MSRetailStoreStatistics>> in
                 guard let result = result?.toDictionary() else {

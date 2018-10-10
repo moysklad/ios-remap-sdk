@@ -66,6 +66,7 @@ public enum MSObjectType : String {
     case ordersplotseries
     case moneyplotseries
     case retailstoreshift
+    case retailstoreshifts
     case task
     case expenseitem
     case facturein

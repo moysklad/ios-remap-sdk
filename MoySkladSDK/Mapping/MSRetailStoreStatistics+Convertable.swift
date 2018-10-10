@@ -13,7 +13,7 @@ extension MSRetailStoreStatistics: DictConvertable {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else { return nil }
         
         return MSEntity.entity(MSRetailStoreStatistics(meta: meta,
-                                                       series: dict.msArray("series").map { MSRetailStoreStatisticsData.from(dict: $0) }.removeNils()))
+                                                       series: dict.msArray("rows").map { MSRetailStoreStatisticsData.from(dict: $0) }.removeNils()))
     }
     
     public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {

@@ -1168,4 +1168,8 @@ public struct DataManager {
         request.addValue(auth.header.values.first!, forHTTPHeaderField: auth.header.keys.first!)
         return HttpClient.resultCreateForDownloadFile(request)
     }
+    
+    public static func send(auth: Auth, fcmToken: String, deviceId: String) -> Observable<String?> {
+        return HttpClient.send(auth: auth, fcmToken: fcmToken, deviceId: deviceId)
+    }
 }

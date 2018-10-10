@@ -188,6 +188,7 @@ public enum MSApiRequest : String {
     case retaildrawercashinmetadata = "entity/retaildrawercashin/metadata"
     case retaildrawercashout = "entity/retaildrawercashout"
     case retaildrawercashoutmetadata = "entity/retaildrawercashout/metadata"
+    case token = "notification/token/ios"
 }
 
 extension MSApiRequest {
@@ -372,6 +373,28 @@ final class HttpClient {
                 
                 observer.onNext(convertHeaders)
                 observer.onCompleted()
+            }
+            
+            return Disposables.create {
+                request.cancel()
+            }
+        }
+    }
+    
+    static func resultTokenCreate(_ router : HttpRouter) -> Observable<String?> {
+        return Observable.create { observer -> Disposable in
+            
+            #if DEBUG
+            let request = manager.request(router).debugLog()
+            #else
+            let request = manager.request(router)
+            #endif
+            request.responseData { dataResponse in
+                if dataResponse.response?.statusCode == 201 {
+                    // если данные не вернулись и код ответа 201, то всё ок
+                    observer.onNext(nil); observer.onCompleted()
+                    return
+                }
             }
             
             return Disposables.create {

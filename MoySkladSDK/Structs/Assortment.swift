@@ -272,7 +272,7 @@ extension MSAssortment {
     
     public func getImage() -> MSImage? {
         if meta.type == .variant {
-            return product?.value()?.image
+            return product?.value()?.image ?? image
         }
         return image
     }

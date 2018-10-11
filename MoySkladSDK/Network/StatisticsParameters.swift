@@ -54,17 +54,3 @@ public struct StatisticsRerailStoreArgument: UrlParameter {
         return ["retailStore": value.href]
     }
 }
-
-public struct StatisticsFilterArgument: UrlParameter {
-    public let value: MSMeta
-    public let key: String
-    
-    public init(value: MSMeta, key: String) {
-        self.value = value
-        self.key = key
-    }
-    
-    public var urlParameters: [String : String] {
-        return [key: value.href]
-    }
-}

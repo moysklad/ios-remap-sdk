@@ -46,8 +46,8 @@ extension MSEmployee : DictConvertable {
 		guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else {
 			return nil
 		}
-		
-		guard let lastName: String = dict.value("lastName"), lastName.count > 0, let group = MSGroup.from(dict: dict.msValue("group")), let owner = MSEmployee.from(dict: dict.msValue("owner")) else {
+		let owner = MSEmployee.from(dict: dict.msValue("owner"))
+		guard let lastName: String = dict.value("lastName"), lastName.count > 0, let group = MSGroup.from(dict: dict.msValue("group")) else {
 			return MSEntity.meta(meta)
 		}
 		

@@ -1169,7 +1169,11 @@ public struct DataManager {
         return HttpClient.resultCreateForDownloadFile(request)
     }
     
-    public static func send(auth: Auth, fcmToken: String, deviceId: String) -> Observable<String?> {
-        return HttpClient.send(auth: auth, fcmToken: fcmToken, deviceId: deviceId)
+    public static func sendToken(auth: Auth, fcmToken: String, deviceId: String) -> Observable<Void> {
+
+        let body = ["deviceId": deviceId, "token": fcmToken].toJSONType()
+        
+        return HttpClient.create(.token, auth: auth, urlPathComponents: [], urlParameters: [], body: body)
+            .flatMap { _ -> Observable<Void> in return .just(()) }
     }
 }

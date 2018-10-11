@@ -105,15 +105,4 @@ extension HttpClient {
 		                               headers: headers)
 		return resultCreate(router)
 	}
-    
-    static func send(auth: Auth, fcmToken: String, deviceId: String) -> Observable<String?> {
-        var headers = auth.header
-        headers["Content-Type"] = "application/json"
-        let router = HttpRouter.create(apiRequest: .token,
-                                       method: .post,
-                                       contentType: .json,
-                                       httpBody: ["deviceId": deviceId, "token": fcmToken].toJSONType(),
-                                       headers: headers)
-        return resultTokenCreate(router)
-    }
 }

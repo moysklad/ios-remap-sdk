@@ -47,6 +47,11 @@ public struct GenericUrlParameter : UrlParameter {
     public let name: String
     public let value: String
     public var urlParameters: [String : String] { return [name: value] }
+    
+    public init(name: String, value: String) {
+        self.name = name
+        self.value = value
+    }
 }
 
 /**

@@ -626,6 +626,7 @@
 					55C05BEB1E028F24008F4254 = {
 						CreatedOnToolsVersion = 8.2;
 						DevelopmentTeam = 62H9AQJX2F;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 					};
 					55C05BF41E028F24008F4254 = {
@@ -959,7 +960,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lognex.mobile.ios.mistructs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -983,7 +984,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lognex.mobile.ios.mistructs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};

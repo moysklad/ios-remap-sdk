@@ -28,12 +28,18 @@ extension MSContract {
         dict["archived"] = archived
         dict["ownAgent"] = serialize(entity: ownAgent, metaOnly: true)
         dict["agent"] = serialize(entity: agent, metaOnly: true)
-        dict["agentAccount"] = serialize(entity: agentAccount, metaOnly: true)
-        dict["organizationAccount"] = serialize(entity: organizationAccount, metaOnly: true)
+
         dict["state"] = serialize(entity: state, metaOnly: true)
         dict["rate"] = rate?.dictionary(metaOnly: true) ?? NSNull()
         dict["moment"] = moment?.toLongDate()
         dict["attributes"] = attributes?.compactMap { $0.value()?.dictionary(metaOnly: false) }
+        
+        if let agentAccount = agentAccount {
+            dict["agentAccount"] = serialize(entity: agentAccount, metaOnly: true)
+        }
+        if let organizationAccount = organizationAccount {
+            dict["organizationAccount"] = serialize(entity: organizationAccount, metaOnly: true)
+        }
         
         dict["rewardPercent"] = rewardPercent
         dict["rewardType"] = rewardType?.rawValue

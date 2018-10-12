@@ -386,28 +386,6 @@ final class HttpClient {
         }
     }
     
-    static func resultTokenCreate(_ router : HttpRouter) -> Observable<String?> {
-        return Observable.create { observer -> Disposable in
-            
-            #if DEBUG
-            let request = manager.request(router).debugLog()
-            #else
-            let request = manager.request(router)
-            #endif
-            request.responseData { dataResponse in
-                if dataResponse.response?.statusCode == 201 {
-                    // если данные не вернулись и код ответа 201, то всё ок
-                    observer.onNext(nil); observer.onCompleted()
-                    return
-                }
-            }
-            
-            return Disposables.create {
-                request.cancel()
-            }
-        }
-    }
-    
     static func resultCreate(_ router : HttpRouter) -> Observable<JSONType?> {
         return Observable.create { observer -> Disposable in
             #if DEBUG

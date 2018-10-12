@@ -58,7 +58,7 @@ extension MSAssortment {
         dict["minimumBalance"] = minimumBalance ?? 0
         dict["isSerialTrackable"] = isSerialTrackable
         dict["salePrices"] = salePrices.map { $0.dictionary() }
-        dict["barcodes"] = barcodes
+        dict["barcodes"] = barcodes.compactMap { return $0.value }
         dict["attributes"] = attributes?.compactMap { $0.value() }.map { $0.dictionary(metaOnly: false) }
         
         dict["packs"] = packs.map { $0.dictionary() }

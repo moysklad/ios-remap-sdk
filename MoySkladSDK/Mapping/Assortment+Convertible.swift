@@ -14,8 +14,8 @@ extension MSAssortment {
 		guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else {
 			return nil
 		}
-
-		return MSEntity.entity(MSAssortment(meta: meta,
+		
+        return MSEntity.entity(MSAssortment(meta: meta,
 		             id: MSID(dict: dict),
 		             accountId: dict.value("accountId") ?? "",
 		             owner: MSEmployee.from(dict: dict.msValue("owner")),
@@ -40,7 +40,7 @@ extension MSAssortment {
 		             weighed: dict.value("weighed") ?? false,
 		             weight: dict.value("weight") ?? 0,
 		             volume: dict.value("volume") ?? 0,
-		             barcodes: dict.value("barcodes") ?? [],
+                     barcodes: stringsToBarcodes(values: (dict.value("barcodes") ?? [])),
 		             alcohol: MSAlcohol.from(dict: dict.msValue("alcoholic")),
 		             modificationsCount: dict.value("modificationsCount"),
 		             minimumBalance: dict.value("minimumBalance"),
@@ -58,6 +58,10 @@ extension MSAssortment {
                      overhead: MSBundleOverhead.from(dict: dict.msValue("overhead")),
                      assortment: MSAssortment.from(dict: dict.msValue("assortment"))))
 	}
+    
+    public static func stringsToBarcodes(values: [String]) -> [MSBarcode] {
+        return values.map({ return MSBarcode(value: $0, id: $0) })
+    }
 }
 
 extension MSAlcohol {

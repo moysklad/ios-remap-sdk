@@ -33,6 +33,16 @@ public struct MSProductStock {
     }
 }
 
+public struct MSBarcode {
+    public var value: String
+    public var id: String
+    
+    public init(value: String, id: String) {
+        self.value = value
+        self.id = id
+    }
+}
+
 /**
  Represents Assortment
  For more information, see [API reference.](https://online.moysklad.ru/api/remap/1.1/doc/index.html#ассортимент)
@@ -64,7 +74,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
 	public var weighed: Bool
 	public var weight: Double
 	public var volume: Double
-	public var barcodes: [String]
+	public var barcodes: [MSBarcode]
 	public var alcohol: MSAlcohol?
 	public var modificationsCount: Int?
 	public var minimumBalance: Double?
@@ -110,7 +120,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     weighed: Bool,
     weight: Double,
     volume: Double,
-    barcodes: [String],
+    barcodes: [MSBarcode],
     alcohol: MSAlcohol?,
     modificationsCount: Int?,
     minimumBalance: Double?,

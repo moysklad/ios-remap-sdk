@@ -60,7 +60,7 @@ extension MSAssortment {
 	}
     
     public static func stringsToBarcodes(values: [String]) -> [MSBarcode] {
-        return values.map({ return MSBarcode(value: $0, id: $0) })
+        return values.map({ return MSBarcode(value: $0, id: UUID().uuidString) })
     }
 }
 

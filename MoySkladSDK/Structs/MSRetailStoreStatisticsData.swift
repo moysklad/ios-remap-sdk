@@ -20,7 +20,6 @@ public class MSRetailStoreStatisticsData {
     public let retaildrawercashinSum: Money
     public let retaildrawercashoutQuantity: Double
     public let retaildrawercashoutSum: Money
-    public let balance: Money
     public let proceed: Money
     public let profit: Money
     
@@ -35,7 +34,6 @@ public class MSRetailStoreStatisticsData {
          retaildrawercashinSum: Money,
          retaildrawercashoutQuantity: Double,
          retaildrawercashoutSum: Money,
-         balance: Money,
          proceed: Money,
          profit: Money
     ) {
@@ -50,7 +48,6 @@ public class MSRetailStoreStatisticsData {
         self.retaildrawercashinSum = retaildrawercashinSum
         self.retaildrawercashoutQuantity = retaildrawercashoutQuantity
         self.retaildrawercashoutSum = retaildrawercashoutSum
-        self.balance = balance
         self.proceed = proceed
         self.profit = profit
     }

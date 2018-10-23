@@ -37,7 +37,6 @@ extension MSRetailStoreStatisticsData {
             retaildrawercashinSum: (dict.value("retaildrawercashinSum") ?? 0.0).toMoney(),
             retaildrawercashoutQuantity: dict.value("retaildrawercashoutQuantity") ?? 0,
             retaildrawercashoutSum: (dict.value("retaildrawercashoutSum") ?? 0.0).toMoney(),
-            balance: (dict.value("balance") ?? 0.0).toMoney(),
             proceed: (dict.value("proceed") ?? 0.0).toMoney(),
             profit: (dict.value("profit") ?? 0.0).toMoney())
     }

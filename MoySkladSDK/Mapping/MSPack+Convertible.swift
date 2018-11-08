@@ -18,6 +18,7 @@ extension MSPack {
     public func dictionary() -> Dictionary<String, Any> {
         var dict = [String:Any]()
         
+        dict["id"] = id.msID?.uuidString
         dict["uom"] = uom?.value()?.dictionary(metaOnly: true)
         dict["quantity"] = quantity
         

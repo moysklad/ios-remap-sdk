@@ -85,6 +85,8 @@ public enum MSObjectType : String {
     case inventoryposition
     case country
     case personaldiscount
+    case retailshiftsales
+    case retailshiftreturns
 }
 
 /// Subset of MSObjectType's for representing documents

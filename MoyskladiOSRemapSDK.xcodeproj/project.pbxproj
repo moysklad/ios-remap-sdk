@@ -70,6 +70,8 @@
 		6E6BD64A2154CB9400A9EE07 /* MSProject+Serialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6BD6492154CB9400A9EE07 /* MSProject+Serialize.swift */; };
 		6E6BD64C2154CBB500A9EE07 /* MSContract+Serialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6BD64B2154CBB500A9EE07 /* MSContract+Serialize.swift */; };
 		6E6D29432108B5860018BCD3 /* MSRetailType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6D29422108B5860018BCD3 /* MSRetailType.swift */; };
+		6E713AB5219428A4000B56E1 /* MSRetailShiftReportAssortment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E713AB4219428A4000B56E1 /* MSRetailShiftReportAssortment.swift */; };
+		6E713AB721942B11000B56E1 /* MSRetailShiftReportAssortment+Convertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E713AB621942B11000B56E1 /* MSRetailShiftReportAssortment+Convertable.swift */; };
 		6E75A1D11EA89B9E00A05A83 /* MoyskladAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1CB1EA89B9E00A05A83 /* MoyskladAPI.swift */; };
 		6E75A1D21EA89B9E00A05A83 /* HttpClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1CC1EA89B9E00A05A83 /* HttpClient+Extensions.swift */; };
 		6E75A1D31EA89B9E00A05A83 /* Expander.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1CD1EA89B9E00A05A83 /* Expander.swift */; };
@@ -218,6 +220,8 @@
 		6E6BD6492154CB9400A9EE07 /* MSProject+Serialize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MSProject+Serialize.swift"; sourceTree = "<group>"; };
 		6E6BD64B2154CBB500A9EE07 /* MSContract+Serialize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MSContract+Serialize.swift"; sourceTree = "<group>"; };
 		6E6D29422108B5860018BCD3 /* MSRetailType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSRetailType.swift; sourceTree = "<group>"; };
+		6E713AB4219428A4000B56E1 /* MSRetailShiftReportAssortment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSRetailShiftReportAssortment.swift; sourceTree = "<group>"; };
+		6E713AB621942B11000B56E1 /* MSRetailShiftReportAssortment+Convertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MSRetailShiftReportAssortment+Convertable.swift"; sourceTree = "<group>"; };
 		6E75A1CB1EA89B9E00A05A83 /* MoyskladAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoyskladAPI.swift; sourceTree = "<group>"; };
 		6E75A1CC1EA89B9E00A05A83 /* HttpClient+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HttpClient+Extensions.swift"; sourceTree = "<group>"; };
 		6E75A1CD1EA89B9E00A05A83 /* Expander.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expander.swift; sourceTree = "<group>"; };
@@ -421,6 +425,7 @@
 				951039201F79173C00AE52E0 /* MSRetailShiftType.swift */,
 				C9FB5F991F978E12004C2DEE /* MSPack.swift */,
 				C9FB5FB11F98FC67004C2DEE /* MSLocalImage.swift */,
+				6E713AB4219428A4000B56E1 /* MSRetailShiftReportAssortment.swift */,
 			);
 			path = Structs;
 			sourceTree = "<group>";
@@ -462,6 +467,7 @@
 				C94F635D1F58292100EAE437 /* MSOverhead+Convertible.swift */,
 				954897751F725938004ED60A /* MSCountry+Convertible.swift */,
 				C9FB5F9B1F978F9A004C2DEE /* MSPack+Convertible.swift */,
+				6E713AB621942B11000B56E1 /* MSRetailShiftReportAssortment+Convertable.swift */,
 			);
 			path = Mapping;
 			sourceTree = "<group>";
@@ -779,6 +785,7 @@
 				55C05C421E028F9B008F4254 /* Assortment.swift in Sources */,
 				C9D387ED1F94A559008CD04C /* Assortment+Serialize.swift in Sources */,
 				95461FED1F31F3F700071E3D /* MSRetailStoreStatisticsData.swift in Sources */,
+				6E713AB721942B11000B56E1 /* MSRetailShiftReportAssortment+Convertable.swift in Sources */,
 				8B3B57491E1257B50023B75B /* MSAttribute+Convertible.swift in Sources */,
 				C9FB5FB21F98FC67004C2DEE /* MSLocalImage.swift in Sources */,
 				55C05C5A1E028F9B008F4254 /* DictConvertable.swift in Sources */,
@@ -790,6 +797,7 @@
 				6E75A1D51EA89B9E00A05A83 /* HttpRouter.swift in Sources */,
 				6E75A1E61EA8A3D200A05A83 /* DataManager+Load.swift in Sources */,
 				55C05C511E028F9B008F4254 /* Position.swift in Sources */,
+				6E713AB5219428A4000B56E1 /* MSRetailShiftReportAssortment.swift in Sources */,
 				55C05C5F1E028F9B008F4254 /* MSInvoice+Convertible.swift in Sources */,
 				55C05C601E028F9B008F4254 /* MSPosition+Convertible.swift in Sources */,
 				6EA06D311F3B4E17001E2B66 /* MSUOM.swift in Sources */,

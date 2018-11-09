@@ -228,6 +228,19 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
 }
 
 extension MSAssortment {
+    public var assortmentCode: String? {
+        guard meta.type == .variant else { return code }
+        
+        return code ?? product?.value()?.code
+    }
+    
+    public var assortmentArticle: String? {
+        if meta.type == .variant {
+            return product?.value()?.article
+        }
+        return article
+    }
+    
     public func getFolderName() -> String? {
         return {
             if self.meta.type == .variant {
@@ -240,30 +253,27 @@ extension MSAssortment {
     }
     
     public func getCodeAndArticle() -> String? {
-        let objCode: String? = {
-            guard meta.type == .variant else { return code }
-            
-            return code ?? product?.value()?.code
-        }()
-        
-        let objArticle: String? = {
-            if meta.type == .variant {
-                return product?.value()?.article
-            }
-            return article
-        }()
-        
-        let codeAndArticle = [objCode, objArticle].removeNils().joined(separator: "/")
+        return MSAssortment.assortmentCodeAndArticle(code: assortmentCode, article: assortmentArticle)
+    }
+    
+    public static func assortmentCodeAndArticle(code: String?, article: String?) -> String? {
+//        let codeAndArticle = [code, article].removeNils().joined(separator: "/")
+        let codeAndArticle = [code, article].compactMap { $0?.isEmpty == true ? nil : $0 }.joined(separator: "/")
         
         guard codeAndArticle.count > 0 else { return nil }
         
         return codeAndArticle
     }
     
+    public static func assortmentDisplayName(code: String?, article: String?, name: String) -> String {
+        guard let codeAndArticle = assortmentCodeAndArticle(code: code, article: article) else {
+            return name
+        }
+        return "\(codeAndArticle) ∙ \(name)"
+    }
+    
     public func getDisplayName() -> String {
-        guard let codeAndArticle = getCodeAndArticle() else { return info.name }
-        
-        return "\(codeAndArticle) ∙ \(info.name )"
+        return MSAssortment.assortmentDisplayName(code: assortmentCode, article: assortmentArticle, name: info.name)
     }
     
     public func getDescription() -> String? {

@@ -20,4 +20,8 @@ public struct MSRetailShiftReportAssortment {
     public let discountSum: Money
     public let total: Money
     public let image: MSImage?
+
+    public func changed(name: String, code: String, article: String) -> MSRetailShiftReportAssortment {
+        return MSRetailShiftReportAssortment(assortment: self.assortment, name: name, archived: self.archived, code: code, article: article, quantity: self.quantity, uom: self.uom, meanPrice: self.meanPrice, discountSum: self.discountSum, total: self.discountSum, image: self.image)
+    }
 }

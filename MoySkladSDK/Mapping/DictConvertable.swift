@@ -52,6 +52,10 @@ extension MSID {
         }
         return dict
     }
+    
+    static func ==(left: MSID, right: MSID) -> Bool {
+        return left.msID == right.msID && left.syncID == right.syncID
+    }
 }
 
 extension MSInfo {

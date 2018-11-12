@@ -36,7 +36,7 @@ public protocol DictConvertable {
     func dictionary(metaOnly: Bool) -> Dictionary<String,Any>
 }
 
-extension MSID {
+extension MSID: Equatable {
     public convenience init(dict: Dictionary<String, Any>) {
         self.init(msID: UUID(uuidString: dict.value("id") ?? ""),
                   syncID: UUID(uuidString: dict.value("syncId") ?? ""))
@@ -53,7 +53,7 @@ extension MSID {
         return dict
     }
     
-    static func ==(left: MSID, right: MSID) -> Bool {
+    public static func ==(left: MSID, right: MSID) -> Bool {
         return left.msID == right.msID && left.syncID == right.syncID
     }
 }

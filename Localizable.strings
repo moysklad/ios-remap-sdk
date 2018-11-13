@@ -102,3 +102,4 @@
 "incorrectRetailDrawerCashInMetadataResponse" = "Неизвестный ответ на запрос метаданных для внесений денег";
 "incorrectRetailDrawerCashOutResponse" = "Неизвестный ответ на запрос выплат денег";
 "incorrectRetailDrawerCashOutMetadataResponse" = "Неизвестный ответ на запрос метаданных для выплат денег";
+"incorrectRetailShiftAssortmentReportResponse" = "Неизвестный ответ при запросе отчета по товарам в точке продаж";

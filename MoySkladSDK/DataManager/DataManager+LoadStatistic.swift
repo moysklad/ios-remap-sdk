@@ -351,5 +351,43 @@ extension DataManager {
                                         resultSelector: { current, last in
                                             return MoneyStatisticsResult(current: current, last: last)
         })
+        
+    }
+    
+    private static func loadRetailShiftAssortmentReport(parameters: UrlRequestParameters,
+                                                retailStoreId storeId: UUID,
+                                                retailShiftId shiftid: UUID,
+                                                reportType: MSApiRequest) -> Observable<[MSRetailShiftReportAssortment]> {
+        let pathComponents = [storeId.uuidString,
+                              MSApiRequest.reportRetailstoreRetailshifts.rawValue,
+                              shiftid.uuidString,
+                              reportType.rawValue]
+        return HttpClient.get(.reportRetailstore, auth: parameters.auth, urlPathComponents: pathComponents, urlParameters: parameters.allParameters)
+            .flatMapLatest { result -> Observable<[MSRetailShiftReportAssortment]> in
+                guard let result = result?.toDictionary() else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectRetailShiftAssortmentReportResponse.value))
+                }
+                
+                let deserialized = result.msArray("rows").map { MSRetailShiftReportAssortment.from(dict: $0) }
+                let withoutNills = deserialized.removeNils()
+                
+                guard withoutNills.count == deserialized.count else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectRetailShiftAssortmentReportResponse.value))
+                }
+                
+                return Observable.just(withoutNills)
+        }
+    }
+    
+    public static func loadRetailShiftAssortmentReportSales(parameters: UrlRequestParameters,
+                                                retailStoreId storeId: UUID,
+                                                retailShiftId shiftid: UUID) -> Observable<[MSRetailShiftReportAssortment]> {
+        return loadRetailShiftAssortmentReport(parameters: parameters, retailStoreId: storeId, retailShiftId: shiftid, reportType: .reportRetailstoreRetailshiftsSales)
+    }
+    
+    public static func loadRetailShiftAssortmentReportReturns(parameters: UrlRequestParameters,
+                                                     retailStoreId storeId: UUID,
+                                                     retailShiftId shiftid: UUID) -> Observable<[MSRetailShiftReportAssortment]> {
+        return loadRetailShiftAssortmentReport(parameters: parameters, retailStoreId: storeId, retailShiftId: shiftid, reportType: .reportRetailstoreRetailshiftsReturns)
     }
 }

@@ -198,7 +198,8 @@ extension MSPermission {
                      update: dict.value("update") ?? false,
                      delete: dict.value("delete") ?? false,
                      approve: dict.value("approve") ?? false,
-                     print: dict.value("print") ?? false)
+                     print: dict.value("print") ?? false,
+                     done: dict.value("done") ?? false)
     }
 }
 
@@ -251,6 +252,7 @@ extension MSUserPermissions {
                                  tariffCrm: MSPermission.from(dict: dict.msValue("tariff_crm")),
                                  auditDashboard: MSPermission.from(dict: dict.msValue("audit_dashboard")),
                                  admin: MSPermission.from(dict: dict.msValue("admin")),
+                                 task: MSPermission.from(dict: dict.msValue("task")),
                                  viewAllTasks: MSPermission.from(dict: dict.msValue("viewAllTasks")),
                                  updateAllTasks: MSPermission.from(dict: dict.msValue("updateAllTasks")),
                                  commissionreportin: MSPermission.from(dict: dict.msValue("commissionreportin")),

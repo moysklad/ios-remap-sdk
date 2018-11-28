@@ -58,6 +58,7 @@ public struct MSUserPermissions {
     public let tariffCrm: MSPermission
     public let auditDashboard: MSPermission
     public let admin: MSPermission
+    public let task: MSPermission
     public let viewAllTasks: MSPermission
     public let updateAllTasks: MSPermission
     public let commissionreportin: MSPermission
@@ -118,6 +119,7 @@ public struct MSUserPermissions {
     tariffCrm: MSPermission,
     auditDashboard: MSPermission,
     admin: MSPermission,
+    task: MSPermission,
     viewAllTasks: MSPermission,
     updateAllTasks: MSPermission,
     commissionreportin: MSPermission,
@@ -177,6 +179,7 @@ public struct MSUserPermissions {
         self.tariffCrm = tariffCrm
         self.auditDashboard = auditDashboard
         self.admin = admin
+        self.task = task
         self.viewAllTasks = viewAllTasks
         self.updateAllTasks = updateAllTasks
         self.commissionreportin = commissionreportin
@@ -205,26 +208,28 @@ public struct MSPermission {
 	public let delete : Bool
     public let approve: Bool
     public let print: Bool
+    public let done: Bool
     
     public init(view : Bool,
     create : Bool,
     update : Bool,
     delete : Bool,
     approve: Bool,
-    print: Bool){
+    print: Bool,
+    done: Bool){
         self.view = view
         self.create = create
         self.update = update
         self.delete = delete
         self.approve = approve
         self.print = print
-    
+        self.done = done
     }
-	
+
 	public static func noPermissions() -> MSPermission {
-        return MSPermission(view: false, create: false ,update: false ,delete: false, approve: false, print: false)
+        return MSPermission(view: false, create: false ,update: false ,delete: false, approve: false, print: false, done: false)
 	}
 	public static func fullPermissions() -> MSPermission {
-        return MSPermission(view: true, create: true, update: true, delete: true, approve: true, print: true)
+        return MSPermission(view: true, create: true, update: true, delete: true, approve: true, print: true, done: true)
 	}
 }

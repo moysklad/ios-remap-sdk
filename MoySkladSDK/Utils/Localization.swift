@@ -43,6 +43,7 @@ enum LocalizedStrings : String {
     case incorrectServiceResponse
     case incorrectProjectResponse
     case incorrectGroupResponse
+    case incorrectNotificationResponse
     case incorrectCurrencyResponse
     case incorrectEmployeeResponse
     case incorrectCounterpartyResponse

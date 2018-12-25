@@ -14,6 +14,7 @@
 "incorrectStoreResponse" = "Неизвестный ответ на запрос складов";
 "incorrectProjectResponse" = "Неизвестный ответ на запрос проектов";
 "incorrectGroupResponse" = "Неизвестный ответ на запрос отделов";
+"incorrectNotificationResponse" = "Неизвестный ответ на запрос ленты новостей";
 "incorrectCurrencyResponse" = "Неизвестный ответ на запрос валют";
 "incorrectContractResponse" = "Неизвестный ответ на запрос договоров";
 "incorrectCustomEntityResponse" = "Неизвестный ответ на запрос пользовательского справочника";

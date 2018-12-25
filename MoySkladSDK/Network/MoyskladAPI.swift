@@ -198,6 +198,7 @@ public enum MSApiRequest : String {
     case token = "notification/token/ios"
     case notifications = "/entity/notifications"
     case notificationList = "/entity/notification"
+    case notificationsReadAll = "/notification/readall"
 }
 
 extension MSApiRequest {

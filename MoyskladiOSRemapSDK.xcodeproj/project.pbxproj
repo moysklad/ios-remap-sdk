@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		350C0EBB21CCF9B700377463 /* MSNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350C0EBA21CCF9B700377463 /* MSNotification.swift */; };
+		350C0EBD21CCFAA300377463 /* MSNotification+Convertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350C0EBC21CCFAA300377463 /* MSNotification+Convertable.swift */; };
 		55C05BF61E028F24008F4254 /* MoyskladiOSRemapSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C05BEC1E028F24008F4254 /* MoyskladiOSRemapSDK.framework */; };
 		55C05BFD1E028F24008F4254 /* MoyskaldStructs.h in Headers */ = {isa = PBXBuildFile; fileRef = 55C05BEF1E028F24008F4254 /* MoyskaldStructs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55C05C3F1E028F9B008F4254 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C071E028F9B008F4254 /* Extensions.swift */; };
@@ -154,6 +156,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		350C0EBA21CCF9B700377463 /* MSNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSNotification.swift; sourceTree = "<group>"; };
+		350C0EBC21CCFAA300377463 /* MSNotification+Convertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MSNotification+Convertable.swift"; sourceTree = "<group>"; };
 		55C05BEC1E028F24008F4254 /* MoyskladiOSRemapSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoyskladiOSRemapSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		55C05BEF1E028F24008F4254 /* MoyskaldStructs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoyskaldStructs.h; sourceTree = "<group>"; };
 		55C05BF01E028F24008F4254 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -426,6 +430,7 @@
 				C9FB5F991F978E12004C2DEE /* MSPack.swift */,
 				C9FB5FB11F98FC67004C2DEE /* MSLocalImage.swift */,
 				6E713AB4219428A4000B56E1 /* MSRetailShiftReportAssortment.swift */,
+				350C0EBA21CCF9B700377463 /* MSNotification.swift */,
 			);
 			path = Structs;
 			sourceTree = "<group>";
@@ -468,6 +473,7 @@
 				954897751F725938004ED60A /* MSCountry+Convertible.swift */,
 				C9FB5F9B1F978F9A004C2DEE /* MSPack+Convertible.swift */,
 				6E713AB621942B11000B56E1 /* MSRetailShiftReportAssortment+Convertable.swift */,
+				350C0EBC21CCFAA300377463 /* MSNotification+Convertable.swift */,
 			);
 			path = Mapping;
 			sourceTree = "<group>";
@@ -702,6 +708,7 @@
 				C9F3CB451F1CABB6005E1636 /* MSStatistics.swift in Sources */,
 				6E3C50FD1E4CA52A0085E8A6 /* MSCustomEntity+Convertible.swift in Sources */,
 				55C05C411E028F9B008F4254 /* Agent.swift in Sources */,
+				350C0EBD21CCFAA300377463 /* MSNotification+Convertable.swift in Sources */,
 				55C05C501E028F9B008F4254 /* Permissions.swift in Sources */,
 				55C05C6C1E028F9B008F4254 /* NSDecimalNumberExtensions.swift in Sources */,
 				951039211F79173C00AE52E0 /* MSRetailShiftType.swift in Sources */,
@@ -721,6 +728,7 @@
 				55C05C461E028F9B008F4254 /* Employee.swift in Sources */,
 				8B3B57471E124BBC0023B75B /* Attribute.swift in Sources */,
 				6E75A1EC1EA8A88C00A05A83 /* Localization.swift in Sources */,
+				350C0EBB21CCF9B700377463 /* MSNotification.swift in Sources */,
 				954B482C1F31B69700DD1842 /* MSMoneyBalance+Convertable.swift in Sources */,
 				6E75A1E51EA8A3D200A05A83 /* DataManager+Create.swift in Sources */,
 				55C05C701E028F9B008F4254 /* ValueCoding.swift in Sources */,

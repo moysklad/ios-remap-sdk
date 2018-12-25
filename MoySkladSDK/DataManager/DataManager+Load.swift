@@ -390,4 +390,16 @@ extension DataManager {
             return Disposables.create { subscription.dispose() }
             }.reduce([], accumulator: { $0 + $1 })
     }
+    
+    public static func loadNotificationList(parameters: UrlRequestParameters) -> Observable<[MSNotification]> {
+        return HttpClient.get(.notificationList, auth: parameters.auth, urlParameters: parameters.allParameters)
+            .flatMapLatest { result -> Observable<[MSNotification]> in
+                guard let result = result?.toDictionary() else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectNotificationResponse.value))
+                }
+                let deserialized = result.msArray("rows").map { MSNotification.from(dict: $0)?.value() }.removeNils()
+                
+                return Observable.just(deserialized)
+        }
+    }
 }

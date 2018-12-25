@@ -196,6 +196,9 @@ public enum MSApiRequest : String {
     case retaildrawercashout = "entity/retaildrawercashout"
     case retaildrawercashoutmetadata = "entity/retaildrawercashout/metadata"
     case token = "notification/token/ios"
+    case notifications = "/entity/notifications"
+    case notificationList = "/entity/notification"
+    case notificationsReadAll = "/notification/readall"
 }
 
 extension MSApiRequest {

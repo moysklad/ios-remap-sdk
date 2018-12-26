@@ -153,3 +153,14 @@ public enum MSDocumentType: String {
     }
 }
 
+//конвертер типов с пуша в наш MSObjectType (purpose == task)
+public enum MSPushObjectType: String {
+    
+    case purpose
+    
+    public var objectType: MSObjectType? {
+        switch self {
+        case .purpose: return .task
+        }
+    }
+}

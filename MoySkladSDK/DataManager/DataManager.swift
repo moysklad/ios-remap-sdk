@@ -1177,6 +1177,12 @@ public struct DataManager {
             .flatMap { _ -> Observable<Void> in return .just(()) }
     }
     
+    public static func readNotification(auth: Auth, parameters: UrlRequestParameters) -> Observable<Void> {
+        let urlParameters: [UrlParameter] = parameters.allParameters
+        return HttpClient.create(.notificationRead, auth: auth, urlPathComponents: [], urlParameters: urlParameters, body: [:].toJSONType())
+            .flatMap { _ -> Observable<Void> in return .just(()) }
+    }
+    
     public static func readAllNotifications(auth: Auth) -> Observable<Void> {
         return HttpClient.create(.notificationsReadAll, auth: auth, urlPathComponents: [], urlParameters: [], body: [:].toJSONType())
             .flatMap { _ -> Observable<Void> in return .just(()) }

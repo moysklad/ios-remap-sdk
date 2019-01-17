@@ -32,10 +32,15 @@ extension MSReportRetailShift: DictConvertable {
     public static func from(dict: Dictionary<String, Any>) -> MSEntity<MSReportRetailShift>? {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict), let created = Date.fromMSDate(dict.value("created") ?? ""), let state = MSRetailShiftStateType(rawValue: dict.value("state") ?? "") else { return nil }
         
+        let ownerName = dict.msValue("owner")["shortFio"] as? String
+        let image = MSImage.from(dict: dict.msValue("owner").msValue("image"))
+        
         return MSEntity.entity(MSReportRetailShift(meta: meta,
                                              created: created,
                                              closeDate: Date.fromMSDate(dict.value("closeDate") ?? ""),
-                                             state: state))
+                                             state: state,
+                                             ownerFio: ownerName ?? "",
+                                             ownerImage: image))
     }
     
     public func dictionary(metaOnly: Bool) -> Dictionary<String, Any> {

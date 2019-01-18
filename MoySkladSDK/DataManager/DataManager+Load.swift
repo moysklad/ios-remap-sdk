@@ -402,4 +402,9 @@ extension DataManager {
                 return Observable.just(deserialized)
         }
     }
+    
+    public static func removeNotification(notificationId: String, parameters: UrlRequestParameters) -> Observable<Void> {
+        return HttpClient.delete(.notificationList, auth: parameters.auth, urlPathComponents: [notificationId], body: [:].toJSONType())
+            .flatMap { _ -> Observable<Void> in return .just(()) }
+    }
 }

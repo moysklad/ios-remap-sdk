@@ -95,14 +95,12 @@ extension HttpClient {
 	                   urlPathComponents: [String] = [],
                        body: JSONType? = nil) -> Observable<JSONType?> {
         
-        var headers = auth.header
-        headers["Content-Type"] = "application/json"
 		let router = HttpRouter.create(apiRequest: request,
 		                               method: .delete,
 		                               contentType: .json,
 		                               urlPathComponents: urlPathComponents,
                                        httpBody: body,
-		                               headers: headers)
+		                               headers: auth.header)
 		return resultCreate(router)
 	}
 }

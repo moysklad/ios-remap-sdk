@@ -104,3 +104,17 @@
 "incorrectRetailDrawerCashOutResponse" = "Неизвестный ответ на запрос выплат денег";
 "incorrectRetailDrawerCashOutMetadataResponse" = "Неизвестный ответ на запрос метаданных для выплат денег";
 "incorrectRetailShiftAssortmentReportResponse" = "Неизвестный ответ при запросе отчета по товарам в точке продаж";
+
+"assignedTask" = "%@ назначил вам задачу\n%@";
+"changedTask" = "%@ изменил задачу\n%@\n";
+"changedTaskContragent" = "Контрагент: %@ %@";
+"changedTaskDescription" = "Описание: %@ %@";
+"changedTaskDeadline" = "Срок: %@ %@";
+"removedTask" = "%@ удалил задачу\n%@";
+"unassignedTask" = "%@ снял с вас задачу\n%@";
+"completedTask" = "%@ выполнил задачу\n%@";
+"reopenedTask" = "%@ открыл задачу\n%@";
+"addedCommentTask" = "%@ добавил комментарий\n%@";
+"changedCommentTask" = "%@ изменил комментарий\n%@ %@";
+"removedCommentTask" = "%@ удалил комментарий\n%@";
+

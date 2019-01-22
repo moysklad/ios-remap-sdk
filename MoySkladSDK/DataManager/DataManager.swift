@@ -1193,7 +1193,7 @@ public struct DataManager {
                 guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectNotificationResponse.value))
                 }
-                let deserialized = result.msArray("rows").map { MSNotificationSettings.from(dict: $0) }.removeNils()
+                let deserialized = result.msArray("groups").map { MSNotificationSettings.from(dict: $0) }
                 
                 return Observable.just(deserialized)
             }

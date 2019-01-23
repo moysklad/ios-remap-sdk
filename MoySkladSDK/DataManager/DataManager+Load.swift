@@ -30,6 +30,7 @@ extension MSDocumentType {
         case .retailsalesreturn: return .retailsalesreturn
         case .retaildrawercashin: return .retaildrawercashin
         case .retaildrawercashout: return .retaildrawercashout
+        case .salesreturn: return .salesreturn
         }
     }
     
@@ -53,6 +54,7 @@ extension MSDocumentType {
         case .retailsalesreturn: return .retailsalesreturnmetadata
         case .retaildrawercashout: return .retaildrawercashoutmetadata
         case .retaildrawercashin: return .retaildrawercashinmetadata
+        case .salesreturn: return .salesreturnmetadata
         }
     }
     
@@ -76,6 +78,7 @@ extension MSDocumentType {
         case .retaildrawercashin: return MSError.genericError(errorText: LocalizedStrings.incorrectRetailDrawerCashInResponse.value)
         case .retaildrawercashout: return MSError.genericError(errorText: LocalizedStrings.incorrectRetailDrawerCashOutResponse.value)
         case .purchasereturn: return MSError.genericError(errorText: LocalizedStrings.incorrectPurchaseOrderResponse.value)
+        case .salesreturn: return MSError.genericError(errorText: LocalizedStrings.incorrectRetailSalesReturnResponse.value)
         }
     }
 }

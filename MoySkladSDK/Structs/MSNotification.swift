@@ -191,51 +191,78 @@ public struct MSNotificationContent {
     }
 }
 
-//{ “groups” : { “customer_order” : { “enabled” : true, “channels” : [ “email”, “push” ] }, “invoice” : { “enabled” : true, “channels” : [ “email”, “push” ] }, “call” : { “enabled” : true, “channels” : [ “email”, “push” ] }, “stock” : { “enabled” : true, “channels” : [ “email”, “push” ] }, “retail” : { “enabled” : true, “channels” : [ “email”, “push” ] }, “task” : { “enabled” : true, “channels” : [ “email”, “push” ] }, “data_exchange” : { “enabled” : true, “channels” : [ “email”, “push” ] } } }
-//public struct MSNotificationGroupSettings {
-//    public let groups : MSNotificationSettings?
-//    public static func from(dict: [String: Any]) -> MSNotificationGroupSettings? {
-//        return MSNotificationGroupSettings(groups: dict.value("groups"))
-//    }
-//}
-
-public struct MSNotificationSettings {
-    public let customerOrder : MSEnabledChannels?
-    public let invoice : MSEnabledChannels?
-    public let call : MSEnabledChannels?
-    public let stock : MSEnabledChannels?
-    public let retail: MSEnabledChannels?
-    public let task: MSEnabledChannels?
-    public let dataExchange: MSEnabledChannels?
+public struct MSEnabledChannels {
+    public var enabled: Bool?
+    public var channels: Array<String?>?
     
-    public init(customerOrder : MSEnabledChannels?,
-                invoice : MSEnabledChannels?,
-                call : MSEnabledChannels?,
-                stock : MSEnabledChannels?,
-                retail: MSEnabledChannels?,
-                task: MSEnabledChannels?,
-                dataExchange: MSEnabledChannels?){
-        self.customerOrder = customerOrder
-        self.invoice = invoice
-        self.call = call
-        self.stock = stock
-        self.retail = retail
-        self.task = task
-        self.dataExchange = dataExchange
-    }
-    
-    public static func from(dict: Dictionary<String, Any>) -> MSNotificationSettings {
-        return MSNotificationSettings(customerOrder: dict.value("customer_order"),
-                            invoice: dict.value("invoice"),
-                            call: dict.value("call"),
-                            stock: dict.value("stock"),
-                            retail: dict.value("retail"),
-                            task: dict.value("task"),
-                            dataExchange: dict.value("data_exchange"))
+    public static func from(dict: [String: Any]?) -> MSEnabledChannels? {
+        return MSEnabledChannels(enabled: dict?.value("enabled"), channels: dict?.value("channels"))
     }
 }
 
-public struct MSEnabledChannels {
-    public let enabled : Bool
-    public let channels : Bool
+public struct MSNotificationSettings {
+    public let key: String?
+    public var settings: MSEnabledChannels?
+    
+    public lazy var title: String = {
+        switch key {
+        case "billing":
+            return LocalizedStrings.billing.value
+        case "customer_order":
+            return LocalizedStrings.settingsOrders.value
+        case "invoice":
+            return LocalizedStrings.settingsCounts.value
+        case "call":
+            return LocalizedStrings.settingsCalls.value
+        case "stock":
+            return LocalizedStrings.settingsRemainder.value
+        case "retail":
+            return LocalizedStrings.settingsRetail.value
+        case "task":
+            return LocalizedStrings.settingsTasks.value
+        case "data_exchange":
+            return LocalizedStrings.settingsData.value
+        default:
+            break
+        }
+        return key ?? ""
+    }()
+    
+    public lazy var type: String = {
+        var string = ""
+        if settings?.enabled == true {
+            string = LocalizedStrings.settingsTable.value
+        }
+
+        for channel in settings?.channels ?? [] {
+            var localString = ""
+            switch channel {
+            case "push":
+                localString = LocalizedStrings.settingsPush.value
+            case "email":
+                localString = LocalizedStrings.settingsEmail.value
+            default:
+                break
+            }
+            if string.count == 0 {
+                string.append(localString)
+            }
+            else {
+                if !localString.isEmpty {
+                    string.append(", " + localString)
+                }
+            }
+        }
+
+        if string.count == 0 && settings?.enabled == false {
+            string = LocalizedStrings.settingsOff.value
+        }
+
+        return string
+    }()
+    
+    public init(key: String?, settings: MSEnabledChannels?) {
+        self.key = key
+        self.settings = settings
+    }
 }

@@ -1183,17 +1183,18 @@ public struct DataManager {
     }
    
     public static func readAllNotifications(auth: Auth, settings: [String: Any]) -> Observable<Void> {
-        return HttpClient.update(.notificationsReadAll, auth: auth, urlPathComponents: [], urlParameters: [], body: settings.toJSONType())
+        return HttpClient.update(.notificationSubscription, auth: auth, urlPathComponents: [], urlParameters: [], body: settings.toJSONType())
             .flatMap { _ -> Observable<Void> in return .just(()) }
     }
     
     public static func getAllNotifications(auth: Auth) -> Observable<[MSNotificationSettings]> {
-        return HttpClient.get(.notificationsReadAll, auth: auth)
+        return HttpClient.get(.notificationSubscription, auth: auth)
             .flatMapLatest { result -> Observable<[MSNotificationSettings]> in
                 guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectNotificationResponse.value))
                 }
-                let deserialized = result.msArray("groups").map { MSNotificationSettings.from(dict: $0) }
+                
+                let deserialized = result.msValue("groups").map { MSNotificationSettings(key: $0.key, settings: MSEnabledChannels.from(dict: $0.value as? [String : Any])) }
                 
                 return Observable.just(deserialized)
             }

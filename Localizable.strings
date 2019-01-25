@@ -118,3 +118,15 @@
 "changedCommentTask" = "%@ изменил комментарий\n%@ %@";
 "removedCommentTask" = "%@ удалил комментарий\n%@";
 
+"billing" = "Биллинг";
+"settingsOrders" = "Заказы покупателей";
+"settingsCounts" = "Счета покупателей";
+"settingsCalls" = "Звонки";
+"settingsRemainder" = "Остатки";
+"settingsRetail" = "Розничная торговля";
+"settingsTasks" = "Задачи";
+"settingsData" = "Обмен данными";
+"settingsTable" = "Лента";
+"settingsPush" = "Push";
+"settingsEmail" = "Email";
+"settingsOff" = "Отключены";

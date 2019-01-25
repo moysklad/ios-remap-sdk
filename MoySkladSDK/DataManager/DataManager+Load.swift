@@ -23,12 +23,14 @@ extension MSDocumentType {
         case .supply: return .supply
         case .invoicein: return .invoiceIn
         case .purchaseorder: return .purchaseOrder
+        case .purchasereturn: return .purchaseReturn
         case .move: return .move
         case .inventory: return .inventory
         case .retaildemand: return .retaildemand
         case .retailsalesreturn: return .retailsalesreturn
         case .retaildrawercashin: return .retaildrawercashin
         case .retaildrawercashout: return .retaildrawercashout
+        case .salesreturn: return .salesreturn
         }
     }
     
@@ -45,12 +47,14 @@ extension MSDocumentType {
         case .supply: return .supplyMetadata
         case .invoicein: return .invoiceInMetadata
         case .purchaseorder: return .purchaseOrderMetadata
+        case .purchasereturn: return .purcahseReturnMetadata
         case .move: return .movemetadata
         case .inventory: return .inventorymetadata
         case .retaildemand: return .retaildemandmetadata
         case .retailsalesreturn: return .retailsalesreturnmetadata
         case .retaildrawercashout: return .retaildrawercashoutmetadata
         case .retaildrawercashin: return .retaildrawercashinmetadata
+        case .salesreturn: return .salesreturnmetadata
         }
     }
     
@@ -73,6 +77,8 @@ extension MSDocumentType {
         case .retailsalesreturn: return MSError.genericError(errorText: LocalizedStrings.incorrectRetailSalesReturnResponse.value)
         case .retaildrawercashin: return MSError.genericError(errorText: LocalizedStrings.incorrectRetailDrawerCashInResponse.value)
         case .retaildrawercashout: return MSError.genericError(errorText: LocalizedStrings.incorrectRetailDrawerCashOutResponse.value)
+        case .purchasereturn: return MSError.genericError(errorText: LocalizedStrings.incorrectPurchaseOrderResponse.value)
+        case .salesreturn: return MSError.genericError(errorText: LocalizedStrings.incorrectRetailSalesReturnResponse.value)
         }
     }
 }

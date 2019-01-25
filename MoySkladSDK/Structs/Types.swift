@@ -94,6 +94,7 @@ public enum MSObjectType : String {
 public enum MSDocumentType: String {
     case customerorder
     case demand
+    case salesreturn
     case invoiceout
     case paymentin
     case paymentout
@@ -103,6 +104,7 @@ public enum MSDocumentType: String {
     case supply
     case invoicein
     case purchaseorder
+    case purchasereturn
     case move
     case inventory
     case retaildemand
@@ -142,7 +144,7 @@ public enum MSDocumentType: String {
         case .invoiceout: return .invoiceposition
         case .supply: return .supplyposition
         case .inventory: return .inventoryposition
-        case .paymentin, .paymentout, .cashin, .cashout, .operation, .invoicein, .purchaseorder, .move, .retaildrawercashin, .retaildrawercashout: return nil
+        case .paymentin, .paymentout, .cashin, .cashout, .operation, .invoicein, .purchaseorder, .purchasereturn, .move, .retaildrawercashin, .retaildrawercashout, .salesreturn: return nil
         case .retaildemand: return .demandposition
         case .retailsalesreturn: return .salesreturnposition
         }

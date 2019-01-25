@@ -60,7 +60,7 @@ public extension MSBaseDocumentType {
         case .cashout: fallthrough
         case .paymentin: fallthrough
         case .paymentout: return ["operations": [dictionary(metaOnly: true)]]
-        case .customerorder, .demand, .invoiceout, .operation, .supply, .invoicein, .purchaseorder, .move, .inventory: break
+        case .customerorder, .demand, .invoiceout, .operation, .supply, .invoicein, .purchaseorder, .move, .inventory, .purchasereturn, .salesreturn: break
         case .retaildemand, .retailsalesreturn, .retaildrawercashout, .retaildrawercashin: break
         }
         
@@ -73,7 +73,7 @@ public extension MSBaseDocumentType {
         case .invoicein: return type == .supply ? ["invoicesIn": [dictionary(metaOnly: true)]] : ["invoiceIn": dictionary(metaOnly: true)]
         case .supply: return ["supplies": [dictionary(metaOnly: true)]]
         case .paymentin, .paymentout, .cashin, .cashout, .operation, .move, .inventory: return nil
-        case .retaildemand, .retailsalesreturn, .retaildrawercashout, .retaildrawercashin: return nil
+        case .retaildemand, .retailsalesreturn, .retaildrawercashout, .purchasereturn, .retaildrawercashin, .salesreturn: return nil
         }
     }
 }

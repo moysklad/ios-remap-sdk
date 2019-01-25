@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 public enum MSRetailShiftStateType: String {
     case close
@@ -18,12 +19,16 @@ public class MSReportRetailShift: Metable {
     public let created: Date
     public let closeDate: Date?
     public let state: MSRetailShiftStateType
+    public let ownerFio: String
+    public let ownerImage: MSImage?
     
-    init(meta: MSMeta, created: Date, closeDate: Date?, state: MSRetailShiftStateType) {
+    init(meta: MSMeta, created: Date, closeDate: Date?, state: MSRetailShiftStateType, ownerFio: String, ownerImage: MSImage?) {
         self.meta = meta
         self.created = created
         self.closeDate = closeDate
         self.state = state
+        self.ownerFio = ownerFio
+        self.ownerImage = ownerImage
     }
 }
 

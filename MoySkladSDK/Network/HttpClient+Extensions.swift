@@ -38,17 +38,17 @@ extension HttpClient {
                        urlPathComponents: [String] = [],
                        urlParameters: [UrlParameter] = [],
                        body: JSONType?) -> Observable<JSONType?> {
-        var headers = auth.header
-        if body == nil {
-            headers["Content-Type"] = "application/json"
-        }
-        
+//        var headers = auth.header
+//        if body == nil {
+//            headers["Content-Type"] = "application/json"
+//        }
+//
 		let router = HttpRouter.create(apiRequest: request,
 		                               method: .put,
 		                               contentType: .json,
 		                               urlPathComponents: urlPathComponents,
 		                               httpBody: body,
-		                               headers: headers,
+		                               headers: auth.header,
 		                               urlParameters: urlParameters)
 		return resultCreate(router)
 	}

@@ -1182,12 +1182,17 @@ public struct DataManager {
             .flatMap { _ -> Observable<Void> in return .just(()) }
     }
    
-    public static func readAllNotifications(auth: Auth, settings: [String: Any]) -> Observable<Void> {
+    public static func readAllNotifications(auth: Auth) -> Observable<Void> {
+        return HttpClient.update(.notificationSubscription, auth: auth, urlPathComponents: [], urlParameters: [], body: [:].toJSONType())
+            .flatMap { _ -> Observable<Void> in return .just(()) }
+    }
+    
+    public static func sendNotificationsSettings(auth: Auth, settings: [String: Any]) -> Observable<Void> {
         return HttpClient.update(.notificationSubscription, auth: auth, urlPathComponents: [], urlParameters: [], body: settings.toJSONType())
             .flatMap { _ -> Observable<Void> in return .just(()) }
     }
     
-    public static func getAllNotifications(auth: Auth) -> Observable<[MSNotificationSettings]> {
+    public static func getAllNotificationsSettings(auth: Auth) -> Observable<[MSNotificationSettings]> {
         return HttpClient.get(.notificationSubscription, auth: auth)
             .flatMapLatest { result -> Observable<[MSNotificationSettings]> in
                 guard let result = result?.toDictionary() else {

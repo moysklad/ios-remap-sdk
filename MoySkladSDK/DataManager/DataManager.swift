@@ -1183,7 +1183,7 @@ public struct DataManager {
     }
    
     public static func readAllNotifications(auth: Auth) -> Observable<Void> {
-        return HttpClient.update(.notificationSubscription, auth: auth, urlPathComponents: [], urlParameters: [], body: [:].toJSONType())
+        return HttpClient.update(.notificationsReadAll, auth: auth, urlPathComponents: [], urlParameters: [], body: [:].toJSONType())
             .flatMap { _ -> Observable<Void> in return .just(()) }
     }
     

@@ -38,17 +38,17 @@ extension HttpClient {
                        urlPathComponents: [String] = [],
                        urlParameters: [UrlParameter] = [],
                        body: JSONType?) -> Observable<JSONType?> {
-//        var headers = auth.header
-//        if body == nil {
-//            headers["Content-Type"] = "application/json"
-//        }
-//
+        var headers = auth.header
+        if body == nil {
+            headers["Content-Type"] = "application/json"
+        }
+
 		let router = HttpRouter.create(apiRequest: request,
 		                               method: .put,
 		                               contentType: .json,
 		                               urlPathComponents: urlPathComponents,
 		                               httpBody: body,
-		                               headers: auth.header,
+		                               headers: headers,
 		                               urlParameters: urlParameters)
 		return resultCreate(router)
 	}
@@ -95,12 +95,16 @@ extension HttpClient {
 	                   urlPathComponents: [String] = [],
                        body: JSONType? = nil) -> Observable<JSONType?> {
         
+        var headers = auth.header
+        if body == nil {
+            headers["Content-Type"] = "application/json"
+        }
 		let router = HttpRouter.create(apiRequest: request,
 		                               method: .delete,
 		                               contentType: .json,
 		                               urlPathComponents: urlPathComponents,
                                        httpBody: body,
-		                               headers: auth.header)
+		                               headers: headers)
 		return resultCreate(router)
 	}
 }

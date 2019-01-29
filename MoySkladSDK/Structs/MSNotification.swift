@@ -13,7 +13,7 @@ public struct MSNotification : Metable {
     public let meta: MSMeta
     public let accountId: String?
     public let readed: Bool?
-    public let moment: String?
+    public let updated: String?
     public let notificationType: String?
     public let notification: MSNotificationContent?
     
@@ -81,21 +81,21 @@ public struct MSNotification : Metable {
                 meta: MSMeta,
                 accountId: String?,
                 readed: Bool?,
-                moment: String?,
+                updated: String?,
                 notificationType: String?,
                 notification: MSNotificationContent?) {
         self.id = id
         self.meta = meta
         self.accountId = accountId
         self.readed = readed
-        self.moment = moment
+        self.updated = updated
         self.notificationType = notificationType
         self.notification = notification
     }
     
     public var dateString: String? {
         get {
-            let date = Date.fromMSDate(self.moment ?? "") ?? Date()
+            let date = Date.fromMSDate(self.updated ?? "") ?? Date()
             let dateString = date.toShortTimeLetters(true)
             return dateString
         }
@@ -178,6 +178,7 @@ public struct MSNotificationContent {
     }
     
     public let performedBy: MSPerformed?
+    public let type: String?
     public let purpose: MSPurpose?
     public let descriptionChange: MSDescriptionChange?
     public let agentLinkChange: MSAgentLinkChange?
@@ -187,7 +188,7 @@ public struct MSNotificationContent {
     public let newContent: String?
 
     public static func from(dict: [String: Any]) -> MSNotificationContent? {
-        return MSNotificationContent(performedBy: MSPerformed.from(dict: dict.msValue("performedBy")), purpose: MSPurpose.from(dict: dict.msValue("purpose")), descriptionChange: MSDescriptionChange.from(dict: dict.msValue("descriptionChange")), agentLinkChange: MSAgentLinkChange.from(dict: dict.msValue("agentLinkChange")), deadlineChange: MSDeadlineChange.from(dict: dict.msValue("deadlineChange")), noteContent: dict.value("noteContent"), oldContent: dict.value("oldContent"), newContent: dict.value("newContent"))
+        return MSNotificationContent(performedBy: MSPerformed.from(dict: dict.msValue("performedBy")), type: dict["purpose"] != nil ? "task" : "nothing", purpose: MSPurpose.from(dict: dict.msValue("purpose")), descriptionChange: MSDescriptionChange.from(dict: dict.msValue("descriptionChange")), agentLinkChange: MSAgentLinkChange.from(dict: dict.msValue("agentLinkChange")), deadlineChange: MSDeadlineChange.from(dict: dict.msValue("deadlineChange")), noteContent: dict.value("noteContent"), oldContent: dict.value("oldContent"), newContent: dict.value("newContent"))
     }
 }
 

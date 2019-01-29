@@ -1181,9 +1181,27 @@ public struct DataManager {
         return HttpClient.create(.notificationRead, auth: parameters.auth, urlPathComponents: [notificationId.uuidString], urlParameters: parameters.allParameters, body: [:].toJSONType())
             .flatMap { _ -> Observable<Void> in return .just(()) }
     }
-    
+   
     public static func readAllNotifications(auth: Auth) -> Observable<Void> {
-        return HttpClient.create(.notificationsReadAll, auth: auth, urlPathComponents: [], urlParameters: [], body: [:].toJSONType())
+        return HttpClient.update(.notificationsReadAll, auth: auth, urlPathComponents: [], urlParameters: [], body: [:].toJSONType())
             .flatMap { _ -> Observable<Void> in return .just(()) }
+    }
+    
+    public static func sendNotificationsSettings(auth: Auth, settings: [String: Any]) -> Observable<Void> {
+        return HttpClient.update(.notificationSubscription, auth: auth, urlPathComponents: [], urlParameters: [], body: settings.toJSONType())
+            .flatMap { _ -> Observable<Void> in return .just(()) }
+    }
+    
+    public static func getAllNotificationsSettings(auth: Auth) -> Observable<[MSNotificationSettings]> {
+        return HttpClient.get(.notificationSubscription, auth: auth)
+            .flatMapLatest { result -> Observable<[MSNotificationSettings]> in
+                guard let result = result?.toDictionary() else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectNotificationResponse.value))
+                }
+                
+                let deserialized = result.msValue("groups").map { MSNotificationSettings(key: $0.key, settings: MSEnabledChannels.from(dict: $0.value as? [String : Any])) }
+                
+                return Observable.just(deserialized)
+            }
     }
 }

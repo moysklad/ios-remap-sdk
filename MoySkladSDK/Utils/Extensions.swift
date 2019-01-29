@@ -302,6 +302,14 @@ public extension Date {
         return Date.msHourAndMinuteFormatter.string(from: self)
     }
     
+    public func toShortTimeLetters(_ doesRelative: Bool) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        formatter.doesRelativeDateFormatting = doesRelative
+        return formatter.string(from: self)
+    }
+    
     public static var msShortDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long

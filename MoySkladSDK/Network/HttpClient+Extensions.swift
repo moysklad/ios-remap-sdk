@@ -42,7 +42,7 @@ extension HttpClient {
         if body == nil {
             headers["Content-Type"] = "application/json"
         }
-        
+
 		let router = HttpRouter.create(apiRequest: request,
 		                               method: .put,
 		                               contentType: .json,
@@ -96,7 +96,9 @@ extension HttpClient {
                        body: JSONType? = nil) -> Observable<JSONType?> {
         
         var headers = auth.header
-        headers["Content-Type"] = "application/json"
+        if body == nil {
+            headers["Content-Type"] = "application/json"
+        }
 		let router = HttpRouter.create(apiRequest: request,
 		                               method: .delete,
 		                               contentType: .json,

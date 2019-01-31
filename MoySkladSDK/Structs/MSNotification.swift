@@ -13,7 +13,7 @@ public struct MSNotification : Metable {
     public let meta: MSMeta
     public let accountId: String?
     public let readed: Bool?
-    public let moment: String?
+    public let updated: String?
     public let notificationType: String?
     public let notification: MSNotificationContent?
     
@@ -95,21 +95,21 @@ public struct MSNotification : Metable {
                 meta: MSMeta,
                 accountId: String?,
                 readed: Bool?,
-                moment: String?,
+                updated: String?,
                 notificationType: String?,
                 notification: MSNotificationContent?) {
         self.id = id
         self.meta = meta
         self.accountId = accountId
         self.readed = readed
-        self.moment = moment
+        self.updated = updated
         self.notificationType = notificationType
         self.notification = notification
     }
     
     public var dateString: String? {
         get {
-            let date = Date.fromMSDate(self.moment ?? "") ?? Date()
+            let date = Date.fromMSDate(self.updated ?? "") ?? Date()
             let dateString = date.toShortTimeLetters(true)
             return dateString
         }

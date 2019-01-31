@@ -34,7 +34,7 @@ public struct MSNotification : Metable {
                 str.append(attributeString)
                 return str
             }
-            else if (notification?.descriptionChange?.newValue?.orNull?.count != 0 || notification?.descriptionChange?.oldValue?.orNull?.count != 0) && (notification?.descriptionChange?.newValue != nil || notification?.descriptionChange?.oldValue != nil){
+            else if (notification?.descriptionChange?.newValue?.orNull != nil || notification?.descriptionChange?.oldValue?.orNull != nil){
                 
                 let strNext = String(format: LocalizedStrings.changedTaskDescription.value, notification?.descriptionChange?.oldValue?.orNull ?? "", notification?.descriptionChange?.newValue?.orNull ?? "")
                 let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)

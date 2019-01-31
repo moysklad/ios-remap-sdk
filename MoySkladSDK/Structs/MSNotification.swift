@@ -80,7 +80,16 @@ public struct MSNotification : Metable {
     public lazy var key: String? = {
         let newstr = self.notificationType
         let types = newstr?.components(separatedBy: "_")
-        guard let typeString = types?.first else { return "" }
+        guard var typeString = types?.first?.lowercased() else { return "" }
+        
+        switch typeString {
+        case "purpose":
+            typeString = "task"
+            break
+        default:
+            break
+        }
+        
         return typeString
     }()
     

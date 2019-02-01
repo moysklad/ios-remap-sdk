@@ -26,8 +26,9 @@ public struct MSNotification : Metable {
             
             if (notification?.agentLinkChange?.newValue?.name?.count != 0 || notification?.agentLinkChange?.oldValue?.name?.count != 0) && (notification?.agentLinkChange?.newValue?.name != nil || notification?.agentLinkChange?.oldValue?.name != nil) {
                 
-                let strNext = String(format: LocalizedStrings.changedTaskContragent.value, notification?.agentLinkChange?.oldValue?.name ?? "", notification?.agentLinkChange?.newValue?.name ?? "")
-                
+                let stringOut = String(format: LocalizedStrings.changedTaskContragent.value, notification?.agentLinkChange?.oldValue?.name ?? "", notification?.agentLinkChange?.newValue?.name ?? "")
+                let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
+
                 let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)
                 let somePartStringRange = (strNext as NSString).range(of: notification?.agentLinkChange?.oldValue?.name ?? "")
                 attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
@@ -36,7 +37,9 @@ public struct MSNotification : Metable {
             }
             else if (notification?.descriptionChange?.newValue?.orNull != nil || notification?.descriptionChange?.oldValue?.orNull != nil){
                 
-                let strNext = String(format: LocalizedStrings.changedTaskDescription.value, notification?.descriptionChange?.oldValue?.orNull ?? "", notification?.descriptionChange?.newValue?.orNull ?? "")
+                let stringOut = String(format: LocalizedStrings.changedTaskDescription.value, notification?.descriptionChange?.oldValue?.orNull ?? "", notification?.descriptionChange?.newValue?.orNull ?? "")
+                let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
+
                 let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)
                 let somePartStringRange = (strNext as NSString).range(of: notification?.descriptionChange?.oldValue?.orNull ?? "")
                 attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
@@ -45,7 +48,9 @@ public struct MSNotification : Metable {
             }
             else if (notification?.deadlineChange?.newValueLocal?.count != 0 || notification?.deadlineChange?.oldValueLocal?.count != 0) && (notification?.deadlineChange?.newValueLocal != nil || notification?.deadlineChange?.oldValueLocal != nil) {
                 
-                let strNext = String(format: LocalizedStrings.changedTaskDeadline.value, notification?.deadlineChange?.oldValueLocal ?? "", notification?.deadlineChange?.newValueLocal ?? "")
+                let stringOut = String(format: LocalizedStrings.changedTaskDeadline.value, notification?.deadlineChange?.oldValueLocal ?? "", notification?.deadlineChange?.newValueLocal ?? "")
+                let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
+
                 let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)
                 let somePartStringRange = (strNext as NSString).range(of: notification?.deadlineChange?.oldValueLocal ?? "")
                 attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
@@ -65,7 +70,9 @@ public struct MSNotification : Metable {
             return NSAttributedString(string: String(format: LocalizedStrings.addedCommentTask.value, notification?.performedBy?.name ?? "", notification?.noteContent ?? ""), attributes: [:])
         case "PURPOSE_COMMENT_CHANGED":
             
-            let str = String(format: LocalizedStrings.changedCommentTask.value, notification?.performedBy?.name ?? "", notification?.oldContent ?? "", notification?.newContent ?? "")
+            let stringOut = String(format: LocalizedStrings.changedCommentTask.value, notification?.performedBy?.name ?? "", notification?.oldContent ?? "", notification?.newContent ?? "")
+            let str = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
+
             let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: str)
             let somePartStringRange = (str as NSString).range(of: notification?.oldContent ?? "")
             attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)

@@ -24,13 +24,13 @@ public struct MSNotification : Metable {
         case "PURPOSE_CHANGED":
             var str = NSMutableAttributedString(string: String(format: LocalizedStrings.changedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""))
             
-            if (notification?.agentLinkChange?.newValue?.name?.count != 0 || notification?.agentLinkChange?.oldValue?.name?.count != 0) && (notification?.agentLinkChange?.newValue?.name != nil || notification?.agentLinkChange?.oldValue?.name != nil) {
+            if (notification?.agentLinkChange?.newValue?.orNull != nil || notification?.agentLinkChange?.oldValue?.orNull != nil) {
                 
-                let stringOut = String(format: LocalizedStrings.changedTaskContragent.value, notification?.agentLinkChange?.oldValue?.name ?? "", notification?.agentLinkChange?.newValue?.name ?? "")
+                let stringOut = String(format: LocalizedStrings.changedTaskContragent.value, notification?.agentLinkChange?.oldValue?.orNull ?? "", notification?.agentLinkChange?.newValue?.orNull ?? "")
                 let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
-
+                
                 let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)
-                let somePartStringRange = (strNext as NSString).range(of: notification?.agentLinkChange?.oldValue?.name ?? "")
+                let somePartStringRange = (strNext as NSString).range(of: notification?.agentLinkChange?.oldValue?.orNull ?? "")
                 attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
                 str.append(attributeString)
                 return str
@@ -39,7 +39,7 @@ public struct MSNotification : Metable {
                 
                 let stringOut = String(format: LocalizedStrings.changedTaskDescription.value, notification?.descriptionChange?.oldValue?.orNull ?? "", notification?.descriptionChange?.newValue?.orNull ?? "")
                 let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
-
+                
                 let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)
                 let somePartStringRange = (strNext as NSString).range(of: notification?.descriptionChange?.oldValue?.orNull ?? "")
                 attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
@@ -50,7 +50,7 @@ public struct MSNotification : Metable {
                 
                 let stringOut = String(format: LocalizedStrings.changedTaskDeadline.value, notification?.deadlineChange?.oldValueLocal ?? "", notification?.deadlineChange?.newValueLocal ?? "")
                 let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
-
+                
                 let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)
                 let somePartStringRange = (strNext as NSString).range(of: notification?.deadlineChange?.oldValueLocal ?? "")
                 attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
@@ -72,7 +72,7 @@ public struct MSNotification : Metable {
             
             let stringOut = String(format: LocalizedStrings.changedCommentTask.value, notification?.performedBy?.name ?? "", notification?.oldContent ?? "", notification?.newContent ?? "")
             let str = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
-
+            
             let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: str)
             let somePartStringRange = (str as NSString).range(of: notification?.oldContent ?? "")
             attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
@@ -162,46 +162,32 @@ public struct MSNotificationContent {
     }
     
     public struct MSAgentLinkChange {
-        public let newValue: MSAgentLink?
-        public let oldValue: MSAgentLink?
+        public let newValue: MSDescriptionValue?
+        public let oldValue: MSDescriptionValue?
         
         public static func from(dict: [String: Any]) -> MSAgentLinkChange? {
-            return MSAgentLinkChange(newValue: MSAgentLink.from(dict: dict.msValue("newValue")), oldValue: MSAgentLink.from(dict: dict.msValue("oldValue")))
-        }
-    }
-    
-    public struct MSAgentLink {
-        public let id: String?
-        public let name: String?
-        public let type: String?
-        
-        public static func from(dict: [String: Any]) -> MSAgentLink? {
-            return MSAgentLink(id: dict.value("id"), name: dict.value("name"), type: dict.value("type"))
+            return MSAgentLinkChange(newValue: MSDescriptionValue.from(dict: dict.msValue("newValue")), oldValue: MSDescriptionValue.from(dict: dict.msValue("oldValue")))
         }
     }
     
     public struct MSDeadlineChange {
         public var newValueLocal: String? {
             get {
-//                guard let milisecond = self.newValue else { return "" }
-//                let dateVar = Date.init(timeIntervalSince1970: TimeInterval(milisecond)/1000)
-                let date = Date.fromMSString(self.newValue?.orNull ?? "") ?? Date()
-                let dateString = date.toShortTimeLetters(false)
-                return dateString
-            }
-        }
-
-        public var oldValueLocal: String? {
-            get {
-//                guard let milisecond = self.oldValue else { return "" }
-//                let dateVar = Date.init(timeIntervalSince1970: TimeInterval(milisecond)/1000)
-                let date = Date.fromMSString(self.oldValue?.orNull ?? "") ?? Date()
+                guard let date = Date.fromMSString(self.newValue?.orNull ?? "") else { return "" }
                 let dateString = date.toShortTimeLetters(false)
                 return dateString
             }
         }
         
-        public let newValue: MSDescriptionValue? //Int64?
+        public var oldValueLocal: String? {
+            get {
+                guard let date = Date.fromMSString(self.oldValue?.orNull ?? "") else { return "" }
+                let dateString = date.toShortTimeLetters(false)
+                return dateString
+            }
+        }
+        
+        public let newValue: MSDescriptionValue?
         public let oldValue: MSDescriptionValue?
         
         public static func from(dict: [String: Any]) -> MSDeadlineChange? {
@@ -275,7 +261,7 @@ public struct MSNotificationSettings {
         if settings?.enabled == true {
             string = LocalizedStrings.settingsTable.value
         }
-
+        
         for channel in settings?.channels ?? [] {
             var localString = ""
             switch channel {
@@ -295,11 +281,11 @@ public struct MSNotificationSettings {
                 }
             }
         }
-
+        
         if string.count == 0 && settings?.enabled == false {
             string = LocalizedStrings.settingsOff.value
         }
-
+        
         return string
     }()
     

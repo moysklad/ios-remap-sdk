@@ -324,13 +324,30 @@ public extension Date {
         return formatter
     }()
     
+    public static var msStringToDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.timeZone = TimeZone(identifier: "UTC")
+//        formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
+        return formatter
+    }()
+    
     public static var msDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         formatter.locale = Locale(identifier: "ru_RU")
-        formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
+        formatter.timeZone = TimeZone(identifier: "UTC")
+//        formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
         return formatter
     }()
+    
+    public static func fromMSString(_ value: String) -> Date? {
+        guard value.count > 0 else {
+            return nil
+        }
+        return Date.msStringToDateFormatter.date(from: value)
+    }
     
     public static func fromMSDate(_ value: String) -> Date? {
         guard value.count > 0 else {

@@ -178,7 +178,7 @@ public struct MSNotificationContent {
             get {
 //                guard let milisecond = self.newValue else { return "" }
 //                let dateVar = Date.init(timeIntervalSince1970: TimeInterval(milisecond)/1000)
-                let date = Date.fromMSDate(self.newValue?.orNull ?? "") ?? Date()
+                let date = Date.fromMSString(self.newValue?.orNull ?? "") ?? Date()
                 let dateString = date.toShortTimeLetters(false)
                 return dateString
             }
@@ -188,7 +188,7 @@ public struct MSNotificationContent {
             get {
 //                guard let milisecond = self.oldValue else { return "" }
 //                let dateVar = Date.init(timeIntervalSince1970: TimeInterval(milisecond)/1000)
-                let date = Date.fromMSDate(self.oldValue?.orNull ?? "") ?? Date()
+                let date = Date.fromMSString(self.oldValue?.orNull ?? "") ?? Date()
                 let dateString = date.toShortTimeLetters(false)
                 return dateString
             }

@@ -26,11 +26,11 @@ public struct MSNotification : Metable {
             
             if (notification?.agentLinkChange?.newValue?.orNull != nil || notification?.agentLinkChange?.oldValue?.orNull != nil) {
                 
-                let stringOut = String(format: LocalizedStrings.changedTaskContragent.value, notification?.agentLinkChange?.oldValue?.orNull ?? "", notification?.agentLinkChange?.newValue?.orNull ?? "")
+                let stringOut = String(format: LocalizedStrings.changedTaskContragent.value, notification?.agentLinkChange?.oldValue?.orNull?.name ?? "", notification?.agentLinkChange?.newValue?.orNull?.name ?? "")
                 let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
                 
                 let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)
-                let somePartStringRange = (strNext as NSString).range(of: notification?.agentLinkChange?.oldValue?.orNull ?? "")
+                let somePartStringRange = (strNext as NSString).range(of: notification?.agentLinkChange?.oldValue?.orNull?.name ?? "")
                 attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
                 str.append(attributeString)
                 return str
@@ -162,11 +162,11 @@ public struct MSNotificationContent {
     }
     
     public struct MSAgentLinkChange {
-        public let newValue: MSDescriptionValue?
-        public let oldValue: MSDescriptionValue?
+        public let newValue: MSAgentLinkValue?
+        public let oldValue: MSAgentLinkValue?
         
         public static func from(dict: [String: Any]) -> MSAgentLinkChange? {
-            return MSAgentLinkChange(newValue: MSDescriptionValue.from(dict: dict.msValue("newValue")), oldValue: MSDescriptionValue.from(dict: dict.msValue("oldValue")))
+            return MSAgentLinkChange(newValue: MSAgentLinkValue.from(dict: dict.msValue("newValue")), oldValue: MSAgentLinkValue.from(dict: dict.msValue("oldValue")))
         }
     }
     
@@ -192,6 +192,28 @@ public struct MSNotificationContent {
         
         public static func from(dict: [String: Any]) -> MSDeadlineChange? {
             return MSDeadlineChange(newValue: MSDescriptionValue.from(dict: dict.msValue("newValue")), oldValue: MSDescriptionValue.from(dict: dict.msValue("oldValue")))
+        }
+    }
+    
+
+
+    public struct MSAgentLinkValue {
+        public let empty: Bool?
+        public let orNull: MSAgentLink?
+        public let defined: String?
+        
+        public static func from(dict: [String: Any]) -> MSAgentLinkValue? {
+            return MSAgentLinkValue(empty: dict.value("empty"), orNull: MSAgentLink.from(dict: dict.value("orNull") ?? [:]), defined: dict.value("defined"))
+        }
+    }
+    
+    public struct MSAgentLink {
+        public let id: String?
+        public let name: String?
+        public let type: String?
+        
+        public static func from(dict: [String: Any]) -> MSAgentLink? {
+            return MSAgentLink(id: dict.value("id"), name: dict.value("name"), type: dict.value("type"))
         }
     }
     

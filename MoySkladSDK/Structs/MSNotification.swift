@@ -24,7 +24,7 @@ public struct MSNotification : Metable {
         case "PURPOSE_CHANGED":
             var str = NSMutableAttributedString(string: String(format: LocalizedStrings.changedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""))
             
-            if (notification?.agentLinkChange?.newValue?.orNull != nil || notification?.agentLinkChange?.oldValue?.orNull != nil) {
+            if (notification?.agentLinkChange?.newValue?.orNull?.name != nil || notification?.agentLinkChange?.oldValue?.orNull?.name != nil) {
                 
                 let stringOut = String(format: LocalizedStrings.changedTaskContragent.value, notification?.agentLinkChange?.oldValue?.orNull?.name ?? "", notification?.agentLinkChange?.newValue?.orNull?.name ?? "")
                 let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
@@ -195,8 +195,8 @@ public struct MSNotificationContent {
         }
     }
     
-
-
+    
+    
     public struct MSAgentLinkValue {
         public let empty: Bool?
         public let orNull: MSAgentLink?

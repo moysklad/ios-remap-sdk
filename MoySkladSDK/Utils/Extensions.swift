@@ -200,7 +200,7 @@ extension MSContract: MSRequestEntity {
 
 extension MSProject: MSRequestEntity {
     public func requestUrl() -> MSApiRequest? {
-         return .project
+        return .project
     }
     
     public func deserializationError() -> MSError {
@@ -324,6 +324,13 @@ public extension Date {
         return formatter
     }()
     
+    public static var msStringToDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        formatter.locale = Locale(identifier: "ru_RU")
+        return formatter
+    }()
+    
     public static var msDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -331,6 +338,13 @@ public extension Date {
         formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
         return formatter
     }()
+    
+    public static func fromMSString(_ value: String) -> Date? {
+        guard value.count > 0 else {
+            return nil
+        }
+        return Date.msStringToDateFormatter.date(from: value)
+    }
     
     public static func fromMSDate(_ value: String) -> Date? {
         guard value.count > 0 else {
@@ -443,7 +457,7 @@ public extension NSDecimalNumber {
         guard showPositiveSign, !self.isEqual(to: 0) else {
             return NSDecimalNumber.msMoneyNumberFormatter.string(from: self) ?? "0"
         }
-
+        
         return NSDecimalNumber.msMoneyNumberFormatterWithPositiveSign.string(from: self) ?? "0"
     }
     
@@ -467,7 +481,7 @@ public extension NSDecimalNumber {
         nf.negativePrefix = "- "
         return nf
     }()
-
+    
 }
 
 public extension Double {

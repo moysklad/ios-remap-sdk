@@ -103,4 +103,12 @@ extension MSError {
         // пропускаем ошибки 1043 (бесплатный тариф) и 1016 (доступ запрещен) и просто считаем, что отчетов нет
         return error.code == MSErrorCode.accessDeniedToCRM || error.code == MSErrorCode.accessDenied
     }
+    
+    public static func objectNotFoundError() -> MSError {
+        return MSError.errors([MSErrorStruct.init(error: LocalizedStrings.objectNotFound.value,
+                                                  message: nil,
+                                                  parameter: nil,
+                                                  code: nil,
+                                                  httpStatusCode: 404)])
+    }
 }

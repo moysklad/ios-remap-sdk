@@ -112,6 +112,7 @@ enum LocalizedStrings : String {
     case incorrectRetailDrawerCashInMetadataResponse
     case incorrectRetailDrawerCashOutResponse
     case incorrectRetailDrawerCashOutMetadataResponse
+    case objectNotFound
     
     case assignedTask
     case changedTask

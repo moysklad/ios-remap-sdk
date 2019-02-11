@@ -130,3 +130,5 @@
 "settingsPush" = "Push";
 "settingsEmail" = "Email";
 "settingsOff" = "Отключены";
+
+"objectNotFound" = "Объект не найден";

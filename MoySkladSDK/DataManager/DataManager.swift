@@ -1199,9 +1199,18 @@ public struct DataManager {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectNotificationResponse.value))
                 }
                 
-                let deserialized = result.msValue("groups").map { MSNotificationSettings(key: $0.key, settings: MSEnabledChannels.from(dict: $0.value as? [String : Any])) }
+                //заменить на это, когда появятся все типы нотификаций
                 
-                return Observable.just(deserialized)
+                //                let deserialized = result.msValue("groups").map { MSNotificationSettings(key: $0.key, settings: MSEnabledChannels.from(dict: $0.value as? [String : Any])) }
+                //
+                //                return Observable.just(deserialized)
+                
+
+                let deserialized = result.msValue("groups").map { MSNotificationSettings(key: $0.key, settings: MSEnabledChannels.from(dict: $0.value as? [String : Any]))}
+                guard let d = deserialized.first(where: {$0.key == "task"}) else {
+                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectNotificationResponse.value))
+                }
+                return Observable.just([d])
             }
     }
 }

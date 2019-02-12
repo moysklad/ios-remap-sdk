@@ -282,6 +282,9 @@ public struct MSNotificationSettings {
         var string = ""
         if settings?.enabled == true {
             string = LocalizedStrings.settingsTable.value
+        } else {
+            string = LocalizedStrings.settingsOff.value
+            return string
         }
         
         for channel in settings?.channels ?? [] {
@@ -302,10 +305,6 @@ public struct MSNotificationSettings {
                     string.append(", " + localString)
                 }
             }
-        }
-        
-        if string.count == 0 && settings?.enabled == false {
-            string = LocalizedStrings.settingsOff.value
         }
         
         return string

@@ -1206,11 +1206,9 @@ public struct DataManager {
                 //                return Observable.just(deserialized)
                 
 
-                let deserialized = result.msValue("groups").map { MSNotificationSettings(key: $0.key, settings: MSEnabledChannels.from(dict: $0.value as? [String : Any]))}
-                guard let d = deserialized.first(where: {$0.key == "task"}) else {
-                    return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectNotificationResponse.value))
-                }
-                return Observable.just([d])
+                var deserialized = result.msValue("groups").map { MSNotificationSettings(key: $0.key, settings: MSEnabledChannels.from(dict: $0.value as? [String : Any]))}
+                deserialized = deserialized.filter { $0.key == "task" || $0.key == "customer_order" || $0.key == "retail" }
+                return Observable.just(deserialized)
             }
     }
 }

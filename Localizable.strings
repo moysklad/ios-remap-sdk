@@ -117,8 +117,10 @@
 "addedCommentTask" = "%@ добавил комментарий\n%@";
 "changedCommentTask" = "%@ изменил комментарий\n%@ %@";
 "removedCommentTask" = "%@ удалил комментарий\n%@";
+"newOrder" = "Новый заказ №%@\nСумма: %@.\nПокупатель: %@";
+"retailShiftOpen" = "Открыта смена в %@\nКассир: %@";
+"retailShiftClose" = "Закрыта смена в %@\nКассир: %@.\nДлительность: %@\nПродаж: %@. Возвратов: %@.\nВыручка: %@";
 
-"billing" = "Биллинг";
 "settingsOrders" = "Заказы покупателей";
 "settingsCounts" = "Счета покупателей";
 "settingsCalls" = "Звонки";
@@ -132,3 +134,13 @@
 "settingsOff" = "Отключены";
 
 "objectNotFound" = "Объект не найден";
+
+"formatedDay1" = "день";
+"formatedDay2" = "дня";
+"formatedDay3" = "дней";
+"formatedHour1" = "час";
+"formatedHour2" = "часа";
+"formatedHour3" = "часов";
+"minutePlu" = "минут";
+"minuteNom" = "минута";
+"minuteGen" = "минуты";

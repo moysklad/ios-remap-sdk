@@ -126,8 +126,10 @@ enum LocalizedStrings : String {
     case addedCommentTask
     case changedCommentTask
     case removedCommentTask
-    
-    case billing
+    case newOrder
+    case retailShiftOpen
+    case retailShiftClose
+
     case settingsOrders
     case settingsCounts
     case settingsCalls
@@ -139,6 +141,16 @@ enum LocalizedStrings : String {
     case settingsPush
     case settingsEmail
     case settingsOff
+    
+    case formatedDay1
+    case formatedDay2
+    case formatedDay3
+    case formatedHour1
+    case formatedHour2
+    case formatedHour3
+    case minutePlu
+    case minuteNom
+    case minuteGen
     
     var value: String {
         return NSLocalizedString(rawValue, tableName: nil, bundle: Bundle(for: MSAssortment.self), value: "", comment: "")

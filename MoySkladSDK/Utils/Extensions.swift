@@ -450,6 +450,25 @@ public extension Date {
     func toDayAndTime() -> String {
         return Date.msStatisticsFormatter.string(from: self)
     }
+    
+    public func shiftOpenedInterval(closedDate closed: Date) -> String {
+        
+        let difference = Calendar.current.dateComponents([.day, .hour, .minute], from: self, to: closed)
+        
+        guard let hours = difference.hour, let days = difference.day, let minutes = difference.minute else { return "0 \(LocalizedStrings.minutePlu.value)" }
+        
+        let declinedDay = declineNoun(count: days, nounVariants: (nom: LocalizedStrings.formatedDay1.value, gen: LocalizedStrings.formatedDay2.value, plu: LocalizedStrings.formatedDay3.value))
+        let declinedHour = declineNoun(count: hours, nounVariants: (nom: LocalizedStrings.formatedHour1.value, gen: LocalizedStrings.formatedHour2.value, plu: LocalizedStrings.formatedHour3.value))
+        let declinedMinute = declineNoun(count: minutes, nounVariants: (nom: LocalizedStrings.minuteNom.value, gen: LocalizedStrings.minuteGen.value, plu: LocalizedStrings.minutePlu.value))
+        
+        if days > 0 {
+            return "\(days) \(declinedDay) \(hours) \(declinedHour)"
+        } else if hours > 0 {
+            return "\(hours) \(declinedHour) \(minutes) \(declinedMinute)"
+        } else {
+            return "\(minutes) \(declinedMinute)"
+        }
+    }
 }
 
 public extension NSDecimalNumber {

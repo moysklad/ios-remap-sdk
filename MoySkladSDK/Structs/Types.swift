@@ -185,10 +185,14 @@ public enum MSDocumentType: String {
 public enum MSPushObjectType: String {
     
     case purpose
+    case retailshift
+    case order
     
     public var objectType: MSObjectType? {
         switch self {
         case .purpose: return .task
+        case .retailshift: return .retailshift
+        case .order: return .customerorder
         }
     }
 }

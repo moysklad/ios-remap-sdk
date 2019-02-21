@@ -17,6 +17,7 @@ public struct MSNotification : Metable {
     public let notificationType: String?
     public let notification: MSNotificationContent?
     
+    @available(iOS 10.0, *)
     public lazy var title: NSAttributedString = {
         switch self.notificationType {
         case "PURPOSE_ASSIGNED":
@@ -84,7 +85,8 @@ public struct MSNotification : Metable {
         case "RETAILSHIFT_OPENED":
             return NSAttributedString(string: String(format: LocalizedStrings.retailShiftOpen.value, notification?.retailStore?.name ?? "", notification?.user?.name ?? ""), attributes: [:])
         case "RETAILSHIFT_CLOSED":
-            return NSAttributedString(string: String(format: LocalizedStrings.retailShiftClose.value, notification?.retailStore?.name ?? "", notification?.user?.name ?? "", notification?.retailShift?.open?.shiftOpenedInterval(closedDate: notification?.retailShift?.close ?? Date()) ?? "0", notification?.sales ?? "0", notification?.returns ?? "0", notification?.proceed ?? "0"), attributes: [:])
+            let proceed = (notification?.proceed ?? 0.0)/100
+            return NSAttributedString(string: String(format: LocalizedStrings.retailShiftClose.value, notification?.retailStore?.name ?? "", notification?.user?.name ?? "", notification?.retailShift?.open?.shiftOpenedInterval(closedDate: notification?.retailShift?.close ?? Date()) ?? "0", String(notification?.sales ?? 0), String(notification?.returns ?? 0), proceed.toMSDoubleString()), attributes: [:])
         default:
             return NSAttributedString(string: "", attributes: [:])
         }
@@ -260,7 +262,7 @@ public struct MSNotificationContent {
         public let name: String?
         public let open: Date?
         public let close: Date?
-        public let proceed: String?
+        public let proceed: Double?
         
         public static func from(dict: [String: Any]) -> MSRetailShift? {
             return MSRetailShift(id: dict.value("id"), name: dict.value("name"), open: Date.fromMSString(dict.value("open") ?? ""), close: Date.fromMSString(dict.value("close") ?? ""), proceed: dict.value("proceed"))
@@ -282,10 +284,10 @@ public struct MSNotificationContent {
     public let user: MSUserRetailShift?
     public let retailStore: MSRetailStore?
     public let retailShift: MSRetailShift?
-    public let sales: String?
-    public let returns: String?
-    public let proceed: String?
-    public let duration: String?
+    public let sales: Int?
+    public let returns: Int?
+    public let proceed: Double?
+    public let duration: Double?
     
     public static func from(dict: [String: Any]) -> MSNotificationContent? {
         return MSNotificationContent(performedBy: MSPerformed.from(dict: dict.msValue("performedBy")),  purpose: MSPurpose.from(dict: dict.msValue("purpose")), descriptionChange: MSDescriptionChange.from(dict: dict.msValue("descriptionChange")), agentLinkChange: MSAgentLinkChange.from(dict: dict.msValue("agentLinkChange")), deadlineChange: MSDeadlineChange.from(dict: dict.msValue("deadlineChange")), noteContent: dict.value("noteContent"), oldContent: dict.value("oldContent"), newContent: dict.value("newContent"), orderSum: dict.value("orderSum"), orderName: dict.value("orderName"), orderId: dict.value("orderId"), agentName: dict.value("agentName"), user: MSUserRetailShift.from(dict: dict.msValue("user")), retailStore: MSRetailStore.from(dict: dict.msValue("retailStore")), retailShift: MSRetailShift.from(dict: dict.msValue("retailShift")), sales: dict.value("sales"), returns: dict.value("returns"), proceed: dict.value("proceed"), duration: dict.value("duration"))

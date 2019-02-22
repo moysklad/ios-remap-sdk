@@ -187,12 +187,13 @@ public enum MSPushObjectType: String {
     case purpose
     case retailshift
     case order
+    case customerorder
     
     public var objectType: MSObjectType? {
         switch self {
         case .purpose: return .task
         case .retailshift: return .retailshift
-        case .order: return .customerorder
+        case .order, .customerorder: return .customerorder
         }
     }
 }

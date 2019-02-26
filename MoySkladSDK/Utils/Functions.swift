@@ -8,7 +8,7 @@
 
 import Foundation
 
-func declineNoun(count: Int, nounVariants cases: (nom: String, gen: String, plu: String)) -> String {
+public func declineNoun(count: Int, nounVariants cases: (nom: String, gen: String, plu: String)) -> String {
     let num = count % 100
     if (num >= 11 && num <= 19) {
         return cases.plu

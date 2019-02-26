@@ -147,6 +147,30 @@ public struct MSNotification : Metable {
 }
 
 public struct MSNotificationContent {
+    public let performedBy: MSPerformed?
+    public let purpose: MSPurpose?
+    public let descriptionChange: MSDescriptionChange?
+    public let agentLinkChange: MSAgentLinkChange?
+    public let deadlineChange: MSDeadlineChange?
+    public let noteContent: String?
+    public let oldContent: String?
+    public let newContent: String?
+    public let orderSum: String?
+    public let orderName: String?
+    public let orderId: String?
+    public let agentName: String?
+    public let user: MSUserRetailShift?
+    public let retailStore: MSRetailStore?
+    public let retailShift: MSRetailShift?
+    public let sales: Int?
+    public let returns: Int?
+    public let proceed: Double?
+    public let duration: Double?
+    
+    public static func from(dict: [String: Any]) -> MSNotificationContent? {
+        return MSNotificationContent(performedBy: MSPerformed.from(dict: dict.msValue("performedBy")),  purpose: MSPurpose.from(dict: dict.msValue("purpose")), descriptionChange: MSDescriptionChange.from(dict: dict.msValue("descriptionChange")), agentLinkChange: MSAgentLinkChange.from(dict: dict.msValue("agentLinkChange")), deadlineChange: MSDeadlineChange.from(dict: dict.msValue("deadlineChange")), noteContent: dict.value("noteContent"), oldContent: dict.value("oldContent"), newContent: dict.value("newContent"), orderSum: dict.value("orderSum"), orderName: dict.value("orderName"), orderId: dict.value("orderId"), agentName: dict.value("agentName"), user: MSUserRetailShift.from(dict: dict.msValue("user")), retailStore: MSRetailStore.from(dict: dict.msValue("retailStore")), retailShift: MSRetailShift.from(dict: dict.msValue("retailShift")), sales: dict.value("sales"), returns: dict.value("returns"), proceed: dict.value("proceed"), duration: dict.value("duration"))
+    }
+    
     public struct MSPerformed {
         public let id: String?
         public let name: String?
@@ -267,30 +291,6 @@ public struct MSNotificationContent {
         public static func from(dict: [String: Any]) -> MSRetailShift? {
             return MSRetailShift(id: dict.value("id"), name: dict.value("name"), open: Date.fromMSString(dict.value("open") ?? ""), close: Date.fromMSString(dict.value("close") ?? ""), proceed: dict.value("proceed"))
         }
-    }
-    
-    public let performedBy: MSPerformed?
-    public let purpose: MSPurpose?
-    public let descriptionChange: MSDescriptionChange?
-    public let agentLinkChange: MSAgentLinkChange?
-    public let deadlineChange: MSDeadlineChange?
-    public let noteContent: String?
-    public let oldContent: String?
-    public let newContent: String?
-    public let orderSum: String?
-    public let orderName: String?
-    public let orderId: String?
-    public let agentName: String?
-    public let user: MSUserRetailShift?
-    public let retailStore: MSRetailStore?
-    public let retailShift: MSRetailShift?
-    public let sales: Int?
-    public let returns: Int?
-    public let proceed: Double?
-    public let duration: Double?
-    
-    public static func from(dict: [String: Any]) -> MSNotificationContent? {
-        return MSNotificationContent(performedBy: MSPerformed.from(dict: dict.msValue("performedBy")),  purpose: MSPurpose.from(dict: dict.msValue("purpose")), descriptionChange: MSDescriptionChange.from(dict: dict.msValue("descriptionChange")), agentLinkChange: MSAgentLinkChange.from(dict: dict.msValue("agentLinkChange")), deadlineChange: MSDeadlineChange.from(dict: dict.msValue("deadlineChange")), noteContent: dict.value("noteContent"), oldContent: dict.value("oldContent"), newContent: dict.value("newContent"), orderSum: dict.value("orderSum"), orderName: dict.value("orderName"), orderId: dict.value("orderId"), agentName: dict.value("agentName"), user: MSUserRetailShift.from(dict: dict.msValue("user")), retailStore: MSRetailStore.from(dict: dict.msValue("retailStore")), retailShift: MSRetailShift.from(dict: dict.msValue("retailShift")), sales: dict.value("sales"), returns: dict.value("returns"), proceed: dict.value("proceed"), duration: dict.value("duration"))
     }
 }
 

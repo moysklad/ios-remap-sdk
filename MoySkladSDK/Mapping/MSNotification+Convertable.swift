@@ -19,7 +19,7 @@ extension MSNotification : DictConvertable {
         dict["accountId"] = accountId
         dict["readed"] = readed
         dict["updated"] = updated
-        dict["notificationType"] = notificationType
+        dict["notificationType"] = notificationTypeString
         dict["notification"] = notification
         
         return dict
@@ -29,6 +29,6 @@ extension MSNotification : DictConvertable {
         guard let meta = MSMeta.from(dict: dict.msValue("meta"), parent: dict) else { return nil }
         let data = (dict["notification"] as! String).data(using: .utf8) ?? Data()
         let json = JSONType.fromRaw(data)
-        return MSEntity.entity(MSNotification(id: dict.value("id"), meta: meta, accountId: dict.value("accountId"), readed: dict.value("readed"), updated: dict.value("updated"), notificationType: dict.value("notificationType"), notification: MSNotificationContent.from(dict: json?.toDictionary() ?? [:])))
+        return MSEntity.entity(MSNotification(id: dict.value("id"), meta: meta, accountId: dict.value("accountId"), readed: dict.value("readed"), updated: dict.value("updated"), notificationTypeString: dict.value("notificationType"), notification: MSNotificationContent.from(dict: json?.toDictionary() ?? [:])))
     }
 }

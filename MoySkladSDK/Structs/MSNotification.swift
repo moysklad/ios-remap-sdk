@@ -14,119 +14,119 @@ public struct MSNotification : Metable {
     public let accountId: String?
     public let readed: Bool?
     public let updated: String?
-    public let notificationType: NotificationType?
+    public let notificationTypeString: String?
+    public var notificationType: NotificationType? { return NotificationType(rawValue: notificationTypeString ?? "") }
     public let notification: MSNotificationContent?
     
     /**
      * Справочник - список уведомлений
      */
     public enum NotificationType: String {
-        
         /**
          * Уведомление о приходе нового заказа покупателя
          */
-        case ORDER_NEW = "ORDER_NEW"
+        case ORDER_NEW,
         /**
          * Уведомление о просроченном заказе
          */
-        case ORDER_OVERDUE = "ORDER_OVERDUE"
+        ORDER_OVERDUE,
         /**
          * Уведомление о просроченном счёте, который не оплатил или не полностью оплатил покупатель
          */
-        case INVOICE_OUT_OVERDUE = "INVOICE_OUT_OVERDUE"
+        INVOICE_OUT_OVERDUE,
         /**
          * Уведомление о просроченном счёте от поставщика, который не оплачен или оплачен не полностью
          */
-        case INVOICE_IN_OVERDUE = "INVOICE_IN_OVERDUE"
+        INVOICE_IN_OVERDUE,
         /**
          * Уведомление о пропущенном звонке
          */
-        case CALL_MISSED = "CALL_MISSED"
+        CALL_MISSED,
         /**
          * Уведомлении о снижении количества товара до не снижаемого остатка
          */
-        case GOOD_COUNT_TOO_LOW = "GOOD_COUNT_TOO_LOW"
+        GOOD_COUNT_TOO_LOW,
         /**
          * Уведомление о том, что торговая точка открыта
          */
-        case RETAILSHIFT_OPENED = "RETAILSHIFT_OPENED"
+        RETAILSHIFT_OPENED,
         /**
          * Уведомление о том, что торговая точка закрыта
          */
-        case RETAILSHIFT_CLOSED = "RETAILSHIFT_CLOSED"
+        RETAILSHIFT_CLOSED,
         /**
          * Уведомление о назначении задачи
          */
-        case PURPOSE_ASSIGNED = "PURPOSE_ASSIGNED"
+        PURPOSE_ASSIGNED,
         /**
          * Уведомление о том, что задача сменил назначенного
          */
-        case PURPOSE_UNASSIGNED = "PURPOSE_UNASSIGNED"
+        PURPOSE_UNASSIGNED,
         /**
          * Уведомление о том, что задача просрочена
          */
-        case PURPOSE_OVERDUE = "PURPOSE_OVERDUE"
+        PURPOSE_OVERDUE,
         /**
          * Уведомление о том, что задача выполнена
          */
-        case PURPOSE_COMPLETED = "PURPOSE_COMPLETED"
+        PURPOSE_COMPLETED,
         /**
          * Уведомление о том, что задача переоткрыта
          */
-        case PURPOSE_REOPENED = "PURPOSE_REOPENED"
+        PURPOSE_REOPENED,
         /**
          * Уведомление о том, что у задачи появился новый комментарий
          */
-        case PURPOSE_NEW_COMMENT = "PURPOSE_NEW_COMMENT"
+        PURPOSE_NEW_COMMENT,
         /**
          * Уведомление о том, что задача поменялась
          */
-        case PURPOSE_CHANGED = "PURPOSE_CHANGED"
+        PURPOSE_CHANGED,
         /**
          * Уведомление о том, что задача удалена
          */
-        case PURPOSE_DELETED = "PURPOSE_DELETED"
+        PURPOSE_DELETED,
         /**
          * Уведомление о том, что комментарий у задачи был удален
          */
-        case PURPOSE_COMMENT_DELETED = "PURPOSE_COMMENT_DELETED"
+        PURPOSE_COMMENT_DELETED,
         /**
          * Уведомление о том, что комментарий у задачи был изменен
          */
-        case PURPOSE_COMMENT_CHANGED = "PURPOSE_COMMENT_CHANGED"
+        PURPOSE_COMMENT_CHANGED,
         /**
          * Уведомление о том, что подписка истекает
          */
-        case SUBSCRIBE_EXPIRES = "SUBSCRIBE_EXPIRES"
+        SUBSCRIBE_EXPIRES,
         /**
          * Уведомление о том, что условия подписки истекают
          */
-        case SUBSCRIBE_TERMS_EXPIRES = "SUBSCRIBE_TERMS_EXPIRES"
+        SUBSCRIBE_TERMS_EXPIRES,
         /**
          * Уведомление о том, что импорт выполнен
          */
-        case IMPORT_COMPLETED = "IMPORT_COMPLETED"
+        IMPORT_COMPLETED,
         /**
          * Уведомление о том, что экспорт выполнен
          */
-        case EXPORT_COMPLETED = "EXPORT_COMPLETED"
+        EXPORT_COMPLETED,
         /**
          * Техническое уведомление о прочтении уведомления на каком-нибудь устройстве
          */
-        case READ_COMPLETED = "READ_COMPLETED"
+        READ_COMPLETED,
         /**
          * Техническое уведомление о непрочитанных новостях
          */
-        case UNREAD_NEWS_AVAILABLE = "UNREAD_NEWS_AVAILABLE"
+        UNREAD_NEWS_AVAILABLE,
         /**
          * Техническое уведомление о специальных предложениях
          */
-        case UNREAD_SPECIAL_OFFER_AVAILABLE = "UNREAD_SPECIAL_OFFER_AVAILABLE"
+        UNREAD_SPECIAL_OFFER_AVAILABLE
     }
     
     @available(iOS 10.0, *)
     public lazy var title: NSAttributedString = {
-        switch self.notificationType {
+        switch notificationType {
         case .PURPOSE_ASSIGNED?:
             return NSAttributedString(string: String(format: LocalizedStrings.assignedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""))
         case .PURPOSE_CHANGED?:
@@ -200,7 +200,7 @@ public struct MSNotification : Metable {
     }()
     
     public lazy var key: String? = {
-        guard let newstr = self.notificationType?.rawValue else { return "" }
+        guard let newstr = self.notificationTypeString else { return "" }
         let types = newstr.components(separatedBy: "_")
         guard var typeString = types.first?.lowercased() else { return "" }
         
@@ -222,7 +222,7 @@ public struct MSNotification : Metable {
     }()
     
     public lazy var type: MSObjectType? = {
-        guard let newstr = self.notificationType?.rawValue else { return MSPushObjectType.none.objectType }
+        guard let newstr = self.notificationTypeString else { return MSPushObjectType.none.objectType }
         let types = newstr.components(separatedBy: "_")
         guard let typeString = types.first, let type = MSPushObjectType.init(rawValue: typeString.lowercased())?.objectType else { return MSPushObjectType.none.objectType }
         return type
@@ -233,14 +233,14 @@ public struct MSNotification : Metable {
                 accountId: String?,
                 readed: Bool?,
                 updated: String?,
-                notificationType: NotificationType?,
+                notificationTypeString: String?,
                 notification: MSNotificationContent?) {
         self.id = id
         self.meta = meta
         self.accountId = accountId
         self.readed = readed
         self.updated = updated
-        self.notificationType = notificationType
+        self.notificationTypeString = notificationTypeString
         self.notification = notification
     }
     

@@ -102,10 +102,10 @@ public struct MSNotification : Metable {
             typeString = "task"
             break
         case "order":
-            typeString = "order"
+            typeString = "customer_order"
             break
         case "retailshift":
-            typeString = "retailshift"
+            typeString = "retail"
             break
         default:
             break

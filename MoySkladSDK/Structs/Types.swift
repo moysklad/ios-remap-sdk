@@ -155,32 +155,6 @@ public enum MSDocumentType: String {
     }
 }
 
-//конвертер типов нотификаций в наш MSObjectType (purpose == task)
-//public enum MSNotifObjectType: String {
-//    
-//    case billing
-//    case customer_order
-//    case invoice
-//    case call
-//    case stock
-//    case retail
-//    case task
-//    case data_exchange
-//    
-//    public var objectType: MSObjectType? {
-//        switch self {
-//        case .billing: return .billing
-//        case customer_order: return .customer_order
-//        case invoice: return .invoice
-//        case call
-//        case stock
-//        case retail
-//        case task
-//        case data_exchange
-//        }
-//    }
-//}
-
 //конвертер типов с пуша в наш MSObjectType (purpose == task)
 public enum MSPushObjectType: String {
     
@@ -188,12 +162,14 @@ public enum MSPushObjectType: String {
     case retailshift
     case order
     case customerorder
+    case none
     
     public var objectType: MSObjectType? {
         switch self {
         case .purpose: return .task
         case .retailshift: return .retailshift
         case .order, .customerorder: return .customerorder
+        case .none : return .none
         }
     }
 }

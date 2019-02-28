@@ -59,7 +59,9 @@ extension HttpRouter {
 	                   urlPathComponents: [String] = [], httpBody: JSONType? = nil,
 	                   headers: [String: String] = [:], urlParameters: [UrlParameter] = []) -> HttpRouter {
         var newHeaders = headers
-        newHeaders["user-agent"] = "MoySklad_iOS_app_v"
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"]
+        let bundle = Bundle.main.infoDictionary?["CFBundleVersion"]
+        newHeaders["user-agent"] = "MoySklad_iOS_app_v\(version ?? "")#\(bundle ?? "")"
         newHeaders["X-Lognex-Accept-Timezone"] = Date().toRfc5322()
         newHeaders["X-Lognex-Precision"] = "true"
 		return HttpRouter(apiRequest: apiRequest, method: method, contentType: contentType, urlPathComponents: urlPathComponents, httpBody: httpBody, headers: newHeaders, urlParameters: urlParameters)

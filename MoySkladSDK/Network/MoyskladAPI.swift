@@ -233,6 +233,8 @@ final class HttpClient {
         
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = Alamofire.SessionManager.defaultHTTPHeaders
+        configuration.requestCachePolicy = .reloadIgnoringCacheData
+        configuration.urlCache = nil
         
         let result = Alamofire.SessionManager(
             configuration: configuration,

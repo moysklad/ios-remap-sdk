@@ -218,10 +218,9 @@ public extension DecimalNumberType where DecimalStorageType == NSDecimalNumber {
     var description: String {
         return "\(storage.description)"
     }
-
-    /// Hash value
-    var hashValue: Int {
-        return storage.hashValue
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(storage.hashValue)
     }
 
     /// Initialize a new decimal with an `Int`.

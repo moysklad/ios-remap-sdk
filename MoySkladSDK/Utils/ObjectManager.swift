@@ -50,13 +50,13 @@ public class ObjectManager<Element> {
     @discardableResult
     public func update(_ value: Element) -> (Bool, count: Int)  {
         // если нет в списке - выходим
-        guard let currentIndex = index(where: { isEqual($0, value) }) else { return (false, current.count) }
+        guard let currentIndex = firstIndex(where: { isEqual($0, value) }) else { return (false, current.count) }
         
-        if let addedIndex = added.index(where:{ isEqual($0, value) }) {
+        if let addedIndex = added.firstIndex(where:{ isEqual($0, value) }) {
             // если есть в списке добавленных, то обновляем там
             added[addedIndex] = value
         } else {
-            if let updatedIndex = updated.index(where:{ isEqual($0, value) }) {
+            if let updatedIndex = updated.firstIndex(where:{ isEqual($0, value) }) {
                 updated[updatedIndex] = value
             } else {
                 updated.append(value)
@@ -70,15 +70,15 @@ public class ObjectManager<Element> {
     
     @discardableResult
     public func remove(_ value: Element) -> (Bool, count: Int) {
-        guard let index = current.index(where: { isEqual($0, value) }) else { return (false, current.count) }
+        guard let index = current.firstIndex(where: { isEqual($0, value) }) else { return (false, current.count) }
         current.remove(at: index)
         
         // если объект был добавлен, то удаляем его из списка добавленных
-        if let addedIndex = added.index(where: { isEqual($0, value) }) {
+        if let addedIndex = added.firstIndex(where: { isEqual($0, value) }) {
             added.remove(at: addedIndex)
         } else {
             // если объект был изменен, то удаляем его из списка измененных
-            if let updatedIndex = updated.index(where: { isEqual($0, value) }) {
+            if let updatedIndex = updated.firstIndex(where: { isEqual($0, value) }) {
                 updated.remove(at: updatedIndex)
             }
             
@@ -103,11 +103,11 @@ public class ObjectManager<Element> {
     
     public func refreshUpdated(with data: [Element]) {
         data.forEach { updatedElement in
-            if let currentIndex = current.index(where: { isEqual($0, updatedElement) }) {
+            if let currentIndex = current.firstIndex(where: { isEqual($0, updatedElement) }) {
                 current[currentIndex] = updatedElement
             }
             
-            if let updatedIndex = updated.index(where: { isEqual($0, updatedElement) }) {
+            if let updatedIndex = updated.firstIndex(where: { isEqual($0, updatedElement) }) {
                 updated.remove(at: updatedIndex)
             }
         }
@@ -115,11 +115,11 @@ public class ObjectManager<Element> {
     
     public func refreshAdded(with data: [Element]) {
         data.forEach { updatedElement in
-            if let currentIndex = current.index(where: { isEqual($0, updatedElement) }) {
+            if let currentIndex = current.firstIndex(where: { isEqual($0, updatedElement) }) {
                 current[currentIndex] = updatedElement
             }
             
-            if let addedIndex = added.index(where: { isEqual($0, updatedElement) }) {
+            if let addedIndex = added.firstIndex(where: { isEqual($0, updatedElement) }) {
                 added.remove(at: addedIndex)
             }
         }

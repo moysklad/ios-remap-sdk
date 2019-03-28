@@ -38,17 +38,17 @@ public protocol MSBaseDocumentType : class, Metable, MSRequestEntity, NSCopying 
 }
 
 public extension MSBaseDocumentType {
-    public var documentType: MSDocumentType? { return MSDocumentType(rawValue: meta.type.rawValue) }
+    var documentType: MSDocumentType? { return MSDocumentType(rawValue: meta.type.rawValue) }
     
-    public func requestUrl() -> MSApiRequest? {
+    func requestUrl() -> MSApiRequest? {
         return MSDocumentType.fromMSObjectType(meta.type)?.apiRequest
     }
     
-    public func deserializationError() -> MSError {
+    func deserializationError() -> MSError {
         return MSDocumentType.fromMSObjectType(meta.type)?.requestError ?? MSError.genericError(errorText: LocalizedStrings.genericDeserializationError.value)
     }
     
-    public func pathComponents() -> [String] {
+    func pathComponents() -> [String] {
         return []
     }
     

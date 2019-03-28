@@ -232,7 +232,7 @@ public protocol OptionalType {
 extension Optional: OptionalType {}
 
 public extension Sequence where Iterator.Element: OptionalType {
-    public func removeNils() -> [Iterator.Element.Wrapped] {
+    func removeNils() -> [Iterator.Element.Wrapped] {
         var result: [Iterator.Element.Wrapped] = []
         for element in self {
             if let element = element.map({ $0 }) {
@@ -244,14 +244,14 @@ public extension Sequence where Iterator.Element: OptionalType {
 }
 
 public extension Dictionary {
-    public mutating func merge<S>(_ other: S)
+    mutating func merge<S>(_ other: S)
         where S: Sequence, S.Iterator.Element == (key: Key, value: Value) {
             for (k, v) in other {
                 self[k] = v
             }
     }
     
-    public func merged<S>(_ other: S) -> Dictionary<Key, Value>
+    func merged<S>(_ other: S) -> Dictionary<Key, Value>
         where S: Sequence, S.Iterator.Element == (key: Key, value: Value) {
             var new = self
             new.merge(other)
@@ -260,49 +260,49 @@ public extension Dictionary {
 }
 
 public extension Date {
-    public static func lastPeriodFrom(date1: Date, date2: Date) -> (bottom: Date, top: Date) {
+    static func lastPeriodFrom(date1: Date, date2: Date) -> (bottom: Date, top: Date) {
         let daysInterval = Calendar.current.dateComponents([.day], from: date1, to: date2).day ?? 0
         let lastTop = Calendar.current.date(byAdding: .day, value: -1, to: date1) ?? Date()
         let lastBottom = Calendar.current.date(byAdding: .day, value: -daysInterval, to: lastTop) ?? Date()
         return (lastBottom, lastTop)
     }
     
-    public func daysTo(date: Date) -> Int {
+    func daysTo(date: Date) -> Int {
         return Calendar.current.dateComponents([.day], from: self, to: date).day ?? 0
     }
     
-    public func isWithinWeekRange(with date: Date) -> Bool {
+    func isWithinWeekRange(with date: Date) -> Bool {
         return daysTo(date: date) <= 6
     }
     
-    public func isInSameDay(as other: Date) -> Bool {
+    func isInSameDay(as other: Date) -> Bool {
         return Calendar.current.isDate(self, inSameDayAs: other)
     }
     
-    public func isCurrentYear() -> Bool {
+    func isCurrentYear() -> Bool {
         return Calendar.current.component(.year, from: Date()) == Calendar.current.component(.year, from: self)
     }
     
-    public func toLongDateName() -> String {
+    func toLongDateName() -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .medium
         return formatter.string(from: self)
     }
     
-    public func toLongDate() -> String {
+    func toLongDate() -> String {
         return Date.msDateFormatter.string(from: self)
     }
     
-    public func toShortDate() -> String {
+    func toShortDate() -> String {
         return Date.msShortDateFormatter.string(from: self)
     }
     
-    public func toShortTime() -> String {
+    func toShortTime() -> String {
         return Date.msHourAndMinuteFormatter.string(from: self)
     }
     
-    public func toShortTimeLetters(_ doesRelative: Bool) -> String {
+    func toShortTimeLetters(_ doesRelative: Bool) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         formatter.timeStyle = .short
@@ -310,28 +310,28 @@ public extension Date {
         return formatter.string(from: self)
     }
     
-    public static var msShortDateFormatter: DateFormatter = {
+    static var msShortDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .none
         return formatter
     }()
     
-    public static var msHourAndMinuteFormatter: DateFormatter = {
+    static var msHourAndMinuteFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .none
         formatter.timeStyle = .short
         return formatter
     }()
     
-    public static var msStringToDateFormatter: DateFormatter = {
+    static var msStringToDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
     
-    public static var msDateFormatter: DateFormatter = {
+    static var msDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         formatter.locale = Locale(identifier: "ru_RU")
@@ -339,14 +339,14 @@ public extension Date {
         return formatter
     }()
     
-    public static func fromMSString(_ value: String) -> Date? {
+    static func fromMSString(_ value: String) -> Date? {
         guard value.count > 0 else {
             return nil
         }
         return Date.msStringToDateFormatter.date(from: value)
     }
     
-    public static func fromMSDate(_ value: String) -> Date? {
+    static func fromMSDate(_ value: String) -> Date? {
         guard value.count > 0 else {
             return nil
         }
@@ -424,7 +424,7 @@ public extension Date {
         return Date.msCalendar.date(byAdding: comps2, to: startOfMonth())!
     }
     
-    public func beginningOfDay() -> Date {
+    func beginningOfDay() -> Date {
         return Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: self)!
     }
     
@@ -432,7 +432,7 @@ public extension Date {
         return Date.msCalendar.date(bySettingHour: 23, minute: 59, second: 59, of: self)!
     }
     
-    public func beginningOfLastDay() -> Date {
+    func beginningOfLastDay() -> Date {
         return Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: self.addingTimeInterval(-(24*60*60)))!
     }
     
@@ -451,7 +451,7 @@ public extension Date {
         return Date.msStatisticsFormatter.string(from: self)
     }
     
-    public func shiftOpenedInterval(closedDate closed: Date) -> String {
+    func shiftOpenedInterval(closedDate closed: Date) -> String {
         
         let difference = Calendar.current.dateComponents([.day, .hour, .minute], from: self, to: closed)
         
@@ -472,7 +472,7 @@ public extension Date {
 }
 
 public extension NSDecimalNumber {
-    public func toMoneyString(showPositiveSign: Bool = false) -> String {
+    func toMoneyString(showPositiveSign: Bool = false) -> String {
         guard showPositiveSign, !self.isEqual(to: 0) else {
             return NSDecimalNumber.msMoneyNumberFormatter.string(from: self) ?? "0"
         }
@@ -480,7 +480,7 @@ public extension NSDecimalNumber {
         return NSDecimalNumber.msMoneyNumberFormatterWithPositiveSign.string(from: self) ?? "0"
     }
     
-    @nonobjc public static var msMoneyNumberFormatter: NumberFormatter = {
+    @nonobjc static var msMoneyNumberFormatter: NumberFormatter = {
         let nf = NumberFormatter()
         nf.groupingSeparator = " "
         nf.numberStyle = .decimal
@@ -490,7 +490,7 @@ public extension NSDecimalNumber {
         return nf
     }()
     
-    @nonobjc public static var msMoneyNumberFormatterWithPositiveSign: NumberFormatter = {
+    @nonobjc static var msMoneyNumberFormatterWithPositiveSign: NumberFormatter = {
         let nf = NumberFormatter()
         nf.groupingSeparator = " "
         nf.numberStyle = .decimal
@@ -504,13 +504,13 @@ public extension NSDecimalNumber {
 }
 
 public extension Double {
-    public func toMoney() -> Money {
+    func toMoney() -> Money {
         let rounding = NSDecimalNumberHandler(roundingMode: .down, scale: 0, raiseOnExactness: false, raiseOnOverflow: false, raiseOnUnderflow: false, raiseOnDivideByZero: false)
         let decimal = NSDecimalNumber(value: self).rounding(accordingToBehavior: rounding)
         return Money(minorUnits: decimal.intValue)
     }
     
-    public func toMSDoubleString(showPositiveSign: Bool = false) -> String {
+    func toMSDoubleString(showPositiveSign: Bool = false) -> String {
         guard showPositiveSign, self != 0 else {
             return Double.msDoubleFormatter.string(from: NSNumber(floatLiteral: self)) ?? "0"
         }
@@ -518,7 +518,7 @@ public extension Double {
         return Double.msDoubleFormatterWithPositiveSign.string(from: NSNumber(floatLiteral: self)) ?? "0"
     }
     
-    @nonobjc public static var msDoubleFormatter: NumberFormatter = {
+    @nonobjc static var msDoubleFormatter: NumberFormatter = {
         let nf = NumberFormatter()
         nf.groupingSeparator = " "
         nf.numberStyle = .decimal
@@ -527,7 +527,7 @@ public extension Double {
         return nf
     }()
     
-    @nonobjc public static var msDoubleFormatterWithPositiveSign: NumberFormatter = {
+    @nonobjc static var msDoubleFormatterWithPositiveSign: NumberFormatter = {
         let nf = NumberFormatter()
         nf.groupingSeparator = " "
         nf.numberStyle = .decimal
@@ -541,25 +541,25 @@ public extension Double {
 // MARK: current TimeZone Extension
 public extension Date {
     
-    public static var msRfc5322Formatter: DateFormatter = {
+    static var msRfc5322Formatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
         formatter.locale = Locale(identifier: "en_US")
         return formatter
     }()
     
-    public static var msCurrentLocaleDateFormatter: DateFormatter = {
+    static var msCurrentLocaleDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
     
-    public func toRfc5322() -> String {
+    func toRfc5322() -> String {
         return Date.msRfc5322Formatter.string(from: self)
     }
     
-    public func toCurrentLocaleLongDate() -> String {
+    func toCurrentLocaleLongDate() -> String {
         return Date.msCurrentLocaleDateFormatter.string(from: self)
     }
 }

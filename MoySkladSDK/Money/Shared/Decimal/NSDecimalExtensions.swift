@@ -65,7 +65,7 @@ internal extension Decimal {
         return self < Decimal.zero
     }
 
-    internal init() {
+    init() {
         self = Decimal.zero
     }
 

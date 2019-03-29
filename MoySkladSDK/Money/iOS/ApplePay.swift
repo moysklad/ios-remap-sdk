@@ -80,9 +80,9 @@ public struct PaymentSummaryItem<Cost: MoneyType>: Hashable, ValueCoding where C
     internal var amount: Cost.DecimalStorageType {
         return cost.amount
     }
-
-    public var hashValue: Int {
-        return cost.hashValue ^ (label.hashValue ^ type.hashValue)
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(cost.hashValue ^ (label.hashValue ^ type.hashValue))
     }
 
     /**

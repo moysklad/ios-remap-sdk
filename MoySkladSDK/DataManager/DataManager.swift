@@ -1208,7 +1208,9 @@ public struct DataManager {
 
                 var deserialized = result.msValue("groups").map { MSNotificationSettings(key: $0.key, settings: MSEnabledChannels.from(dict: $0.value as? [String : Any]))}
                 deserialized = deserialized.filter { $0.key == "task" || $0.key == "customer_order" || $0.key == "retail" }
-                return Observable.just(deserialized)
+                // FIXME: it would be much better not to use dictionary in the middle of deserialization
+                return Observable.just(deserialized.sorted(by: { $0.key! > $1.key! }))
+
             }
     }
 }

@@ -414,8 +414,8 @@ public struct MSNotificationSettings {
     public let key: String?
     public var settings: MSEnabledChannels?
     
-    public lazy var title: String = {
-        switch key {
+    public var title: String {
+        switch self.key {
         case "customer_order":
             return LocalizedStrings.settingsOrders.value
         case "invoice":
@@ -431,10 +431,30 @@ public struct MSNotificationSettings {
         case "data_exchange":
             return LocalizedStrings.settingsData.value
         default:
-            break
+            return ""
         }
-        return key ?? ""
-    }()
+    }
+    
+    public var keyOrder: Int {
+        switch self.key {
+        case "customer_order":
+            return 0
+        case "invoice":
+            return 1
+        case "call":
+            return 3
+        case "stock":
+            return 4
+        case "retail":
+            return 5
+        case "task":
+            return 6
+        case "data_exchange":
+            return 7
+        default:
+            return -1
+        }
+    }
     
     public lazy var type: String = {
         var string = ""

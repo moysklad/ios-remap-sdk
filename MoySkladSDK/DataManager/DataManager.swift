@@ -1198,18 +1198,11 @@ public struct DataManager {
                 guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectNotificationResponse.value))
                 }
-                
-                //заменить на это, когда появятся все типы нотификаций
-                
-                //                let deserialized = result.msValue("groups").map { MSNotificationSettings(key: $0.key, settings: MSEnabledChannels.from(dict: $0.value as? [String : Any])) }
-                //
-                //                return Observable.just(deserialized)
-                
 
                 var deserialized = result.msValue("groups").map { MSNotificationSettings(key: $0.key, settings: MSEnabledChannels.from(dict: $0.value as? [String : Any]))}
-                deserialized = deserialized.filter { $0.key == "task" || $0.key == "customer_order" || $0.key == "retail" }
-                // FIXME: it would be much better not to use dictionary in the middle of deserialization
-                return Observable.just(deserialized.sorted(by: { $0.key! > $1.key! }))
+                deserialized = deserialized.filter { $0.key == "task" || $0.key == "customer_order" || $0.key == "retail" || $0.key == "stock" || $0.key == "data_exchange" || $0.key == "invoice" }
+                
+                return Observable.just(deserialized.sorted(by: { $0.keyOrder < $1.keyOrder }))
 
             }
     }

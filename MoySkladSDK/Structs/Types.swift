@@ -88,6 +88,7 @@ public enum MSObjectType : String {
     case retailshiftsales
     case retailshiftreturns
     case notification
+    case invoice
 }
 
 /// Subset of MSObjectType's for representing documents
@@ -162,14 +163,24 @@ public enum MSPushObjectType: String {
     case retailshift
     case order
     case customerorder
-    case none
+    case product
+    case bundle
+    case variant
+    case service
+    case imports = "import"
+    case export
+    case invoice
+    case good
+    case defaultNotification
     
-    public var objectType: MSObjectType? {
+    public var objectType: MSObjectType {
         switch self {
         case .purpose: return .task
         case .retailshift: return .retailshift
         case .order, .customerorder: return .customerorder
-        case .none : return .none
+        case .product, .bundle, .variant, .service, .good: return .product
+        case .imports, .export, .invoice: return .invoice
+        default: return .notification
         }
     }
 }

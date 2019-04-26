@@ -194,8 +194,16 @@ public struct MSNotification : Metable {
         case .RETAILSHIFT_CLOSED?:
             let proceed = (notification?.proceed ?? 0.0)/100
             return NSAttributedString(string: String(format: LocalizedStrings.retailShiftClose.value, notification?.retailStore?.name ?? "", notification?.user?.name ?? "", notification?.retailShift?.open?.shiftOpenedInterval(closedDate: notification?.retailShift?.close ?? Date()) ?? "0", String(notification?.sales ?? 0), String(notification?.returns ?? 0), proceed.toMSDoubleString()), attributes: [:])
+        case .GOOD_COUNT_TOO_LOW?:
+            return NSAttributedString(string: String(format: "Снижение количества товара: %@", notification?.goodName ?? ""), attributes: [:])
+        case .INVOICE_OUT_OVERDUE?:
+            return NSAttributedString(string: String(format: "Просроченный счёт: %@", notification?.customerName ?? ""), attributes: [:])
+        case .EXPORT_COMPLETED?:
+            return NSAttributedString(string: String(format: "Экспорт выполнен: %@", notification?.taskType ?? ""), attributes: [:])
+        case .IMPORT_COMPLETED?:
+            return NSAttributedString(string: String(format: "Импорт выполнен: %@", notification?.taskType ?? ""), attributes: [:])
         default:
-            return NSAttributedString(string: "", attributes: [:])
+            return NSAttributedString(string: String(format: "Дефолтное описание нотификации"), attributes: [:])
         }
     }()
     
@@ -206,25 +214,28 @@ public struct MSNotification : Metable {
         
         switch typeString {
         case "purpose":
-            typeString = "task"
-            break
+            return "task"
         case "order":
-            typeString = "customer_order"
-            break
+            return "customer_order"
         case "retailshift":
-            typeString = "retail"
-            break
+            return "retail"
+        case "invoice":
+            return "invoice"
+        case "call":
+            return "call"
+        case "good":
+            return "stock"
+        case "import", "export":
+            return "data_exchange"
         default:
-            break
+            return ""
         }
-        
-        return typeString
     }()
     
-    public lazy var type: MSObjectType? = {
-        guard let newstr = self.notificationTypeString else { return MSPushObjectType.none.objectType }
+    public lazy var type: MSObjectType = {
+        guard let newstr = self.notificationTypeString else { return MSPushObjectType.defaultNotification.objectType }
         let types = newstr.components(separatedBy: "_")
-        guard let typeString = types.first, let type = MSPushObjectType.init(rawValue: typeString.lowercased())?.objectType else { return MSPushObjectType.none.objectType }
+        guard let typeString = types.first, let type = MSPushObjectType.init(rawValue: typeString.lowercased())?.objectType else { return MSPushObjectType.defaultNotification.objectType }
         return type
     }()
     
@@ -273,9 +284,13 @@ public struct MSNotificationContent {
     public let returns: Int?
     public let proceed: Double?
     public let duration: Double?
+    public let goodName: String?
+    public let goodUUID: String?
+    public let customerName: String?
+    public let taskType: String?
     
     public static func from(dict: [String: Any]) -> MSNotificationContent? {
-        return MSNotificationContent(performedBy: MSPerformed.from(dict: dict.msValue("performedBy")),  purpose: MSPurpose.from(dict: dict.msValue("purpose")), descriptionChange: MSDescriptionChange.from(dict: dict.msValue("descriptionChange")), agentLinkChange: MSAgentLinkChange.from(dict: dict.msValue("agentLinkChange")), deadlineChange: MSDeadlineChange.from(dict: dict.msValue("deadlineChange")), noteContent: dict.value("noteContent"), oldContent: dict.value("oldContent"), newContent: dict.value("newContent"), orderSum: dict.value("orderSum"), orderName: dict.value("orderName"), orderId: dict.value("orderId"), agentName: dict.value("agentName"), user: MSUserRetailShift.from(dict: dict.msValue("user")), retailStore: MSRetailStore.from(dict: dict.msValue("retailStore")), retailShift: MSRetailShift.from(dict: dict.msValue("retailShift")), sales: dict.value("sales"), returns: dict.value("returns"), proceed: dict.value("proceed"), duration: dict.value("duration"))
+        return MSNotificationContent(performedBy: MSPerformed.from(dict: dict.msValue("performedBy")),  purpose: MSPurpose.from(dict: dict.msValue("purpose")), descriptionChange: MSDescriptionChange.from(dict: dict.msValue("descriptionChange")), agentLinkChange: MSAgentLinkChange.from(dict: dict.msValue("agentLinkChange")), deadlineChange: MSDeadlineChange.from(dict: dict.msValue("deadlineChange")), noteContent: dict.value("noteContent"), oldContent: dict.value("oldContent"), newContent: dict.value("newContent"), orderSum: dict.value("orderSum"), orderName: dict.value("orderName"), orderId: dict.value("orderId"), agentName: dict.value("agentName"), user: MSUserRetailShift.from(dict: dict.msValue("user")), retailStore: MSRetailStore.from(dict: dict.msValue("retailStore")), retailShift: MSRetailShift.from(dict: dict.msValue("retailShift")), sales: dict.value("sales"), returns: dict.value("returns"), proceed: dict.value("proceed"), duration: dict.value("duration"), goodName: dict.value("goodName"), goodUUID: dict.value("goodUUID"), customerName: dict.value("customerName"), taskType: dict.value("taskType"))
     }
     
     public struct MSPerformed {

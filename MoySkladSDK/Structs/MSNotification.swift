@@ -124,88 +124,88 @@ public struct MSNotification : Metable {
         UNREAD_SPECIAL_OFFER_AVAILABLE
     }
     
-    @available(iOS 10.0, *)
-    public lazy var title: NSAttributedString = {
-        switch notificationType {
-        case .PURPOSE_ASSIGNED?:
-            return NSAttributedString(string: String(format: LocalizedStrings.assignedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""))
-        case .PURPOSE_CHANGED?:
-            var str = NSMutableAttributedString(string: String(format: LocalizedStrings.changedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""))
-            
-            if (notification?.agentLinkChange?.newValue?.orNull?.name != nil || notification?.agentLinkChange?.oldValue?.orNull?.name != nil) {
-                
-                let stringOut = String(format: LocalizedStrings.changedTaskContragent.value, notification?.agentLinkChange?.oldValue?.orNull?.name ?? "", notification?.agentLinkChange?.newValue?.orNull?.name ?? "")
-                let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
-                
-                let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)
-                let somePartStringRange = (strNext as NSString).range(of: notification?.agentLinkChange?.oldValue?.orNull?.name ?? "")
-                attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
-                str.append(attributeString)
-                return str
-            }
-            else if (notification?.descriptionChange?.newValue?.orNull != nil || notification?.descriptionChange?.oldValue?.orNull != nil){
-                
-                let stringOut = String(format: LocalizedStrings.changedTaskDescription.value, notification?.descriptionChange?.oldValue?.orNull ?? "", notification?.descriptionChange?.newValue?.orNull ?? "")
-                let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
-                
-                let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)
-                let somePartStringRange = (strNext as NSString).range(of: notification?.descriptionChange?.oldValue?.orNull ?? "")
-                attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
-                str.append(attributeString)
-                return str
-            }
-            else if (notification?.deadlineChange?.newValueLocal?.count != 0 || notification?.deadlineChange?.oldValueLocal?.count != 0) && (notification?.deadlineChange?.newValueLocal != nil || notification?.deadlineChange?.oldValueLocal != nil) {
-                
-                let stringOut = String(format: LocalizedStrings.changedTaskDeadline.value, notification?.deadlineChange?.oldValueLocal ?? "", notification?.deadlineChange?.newValueLocal ?? "")
-                let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
-                
-                let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)
-                let somePartStringRange = (strNext as NSString).range(of: notification?.deadlineChange?.oldValueLocal ?? "")
-                attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
-                str.append(attributeString)
-                return str
-            }
-            return NSAttributedString(string: "", attributes: [:])
-        case .PURPOSE_DELETED?:
-            return NSAttributedString(string: String(format: LocalizedStrings.removedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""), attributes: [:])
-        case .PURPOSE_UNASSIGNED?:
-            return NSAttributedString(string: String(format: LocalizedStrings.unassignedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""), attributes: [:])
-        case .PURPOSE_COMPLETED?:
-            return NSAttributedString(string: String(format: LocalizedStrings.completedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""), attributes: [:])
-        case .PURPOSE_REOPENED?:
-            return NSAttributedString(string: String(format: LocalizedStrings.reopenedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""), attributes: [:])
-        case .PURPOSE_NEW_COMMENT?:
-            return NSAttributedString(string: String(format: LocalizedStrings.addedCommentTask.value, notification?.performedBy?.name ?? "", notification?.noteContent ?? ""), attributes: [:])
-        case .PURPOSE_COMMENT_CHANGED?:
-            
-            let stringOut = String(format: LocalizedStrings.changedCommentTask.value, notification?.performedBy?.name ?? "", notification?.oldContent ?? "", notification?.newContent ?? "")
-            let str = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
-            
-            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: str)
-            let somePartStringRange = (str as NSString).range(of: notification?.oldContent ?? "")
-            attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
-            return attributeString
-        case .PURPOSE_COMMENT_DELETED?:
-            return NSAttributedString(string: String(format: LocalizedStrings.removedCommentTask.value, notification?.performedBy?.name ?? "", notification?.noteContent ?? ""), attributes: [:])
-        case .ORDER_NEW?:
-            return NSAttributedString(string: String(format: LocalizedStrings.newOrder.value, notification?.orderName ?? "", notification?.orderSum ?? "", notification?.agentName ?? ""), attributes: [:])
-        case .RETAILSHIFT_OPENED?:
-            return NSAttributedString(string: String(format: LocalizedStrings.retailShiftOpen.value, notification?.retailStore?.name ?? "", notification?.user?.name ?? ""), attributes: [:])
-        case .RETAILSHIFT_CLOSED?:
-            let proceed = (notification?.proceed ?? 0.0)/100
-            return NSAttributedString(string: String(format: LocalizedStrings.retailShiftClose.value, notification?.retailStore?.name ?? "", notification?.user?.name ?? "", notification?.retailShift?.open?.shiftOpenedInterval(closedDate: notification?.retailShift?.close ?? Date()) ?? "0", String(notification?.sales ?? 0), String(notification?.returns ?? 0), proceed.toMSDoubleString()), attributes: [:])
-        case .GOOD_COUNT_TOO_LOW?:
-            return NSAttributedString(string: String(format: "Снижение количества товара: %@", notification?.goodName ?? ""), attributes: [:])
-        case .INVOICE_OUT_OVERDUE?:
-            return NSAttributedString(string: String(format: "Просроченный счёт: %@", notification?.customerName ?? ""), attributes: [:])
-        case .EXPORT_COMPLETED?:
-            return NSAttributedString(string: String(format: "Экспорт выполнен: %@", notification?.taskType ?? ""), attributes: [:])
-        case .IMPORT_COMPLETED?:
-            return NSAttributedString(string: String(format: "Импорт выполнен: %@", notification?.taskType ?? ""), attributes: [:])
-        default:
-            return NSAttributedString(string: String(format: "Дефолтное описание нотификации"), attributes: [:])
-        }
-    }()
+//    @available(iOS 10.0, *)
+//    public lazy var title: NSAttributedString = {
+//        switch notificationType {
+//        case .PURPOSE_ASSIGNED?:
+//            return NSAttributedString(string: String(format: LocalizedStrings.assignedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""))
+//        case .PURPOSE_CHANGED?:
+//            var str = NSMutableAttributedString(string: String(format: LocalizedStrings.changedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""))
+//
+//            if (notification?.agentLinkChange?.newValue?.orNull?.name != nil || notification?.agentLinkChange?.oldValue?.orNull?.name != nil) {
+//
+//                let stringOut = String(format: LocalizedStrings.changedTaskContragent.value, notification?.agentLinkChange?.oldValue?.orNull?.name ?? "", notification?.agentLinkChange?.newValue?.orNull?.name ?? "")
+//                let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
+//
+//                let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)
+//                let somePartStringRange = (strNext as NSString).range(of: notification?.agentLinkChange?.oldValue?.orNull?.name ?? "")
+//                attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
+//                str.append(attributeString)
+//                return str
+//            }
+//            else if (notification?.descriptionChange?.newValue?.orNull != nil || notification?.descriptionChange?.oldValue?.orNull != nil){
+//
+//                let stringOut = String(format: LocalizedStrings.changedTaskDescription.value, notification?.descriptionChange?.oldValue?.orNull ?? "", notification?.descriptionChange?.newValue?.orNull ?? "")
+//                let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
+//
+//                let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)
+//                let somePartStringRange = (strNext as NSString).range(of: notification?.descriptionChange?.oldValue?.orNull ?? "")
+//                attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
+//                str.append(attributeString)
+//                return str
+//            }
+//            else if (notification?.deadlineChange?.newValueLocal?.count != 0 || notification?.deadlineChange?.oldValueLocal?.count != 0) && (notification?.deadlineChange?.newValueLocal != nil || notification?.deadlineChange?.oldValueLocal != nil) {
+//
+//                let stringOut = String(format: LocalizedStrings.changedTaskDeadline.value, notification?.deadlineChange?.oldValueLocal ?? "", notification?.deadlineChange?.newValueLocal ?? "")
+//                let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
+//
+//                let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)
+//                let somePartStringRange = (strNext as NSString).range(of: notification?.deadlineChange?.oldValueLocal ?? "")
+//                attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
+//                str.append(attributeString)
+//                return str
+//            }
+//            return NSAttributedString(string: "", attributes: [:])
+//        case .PURPOSE_DELETED?:
+//            return NSAttributedString(string: String(format: LocalizedStrings.removedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""), attributes: [:])
+//        case .PURPOSE_UNASSIGNED?:
+//            return NSAttributedString(string: String(format: LocalizedStrings.unassignedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""), attributes: [:])
+//        case .PURPOSE_COMPLETED?:
+//            return NSAttributedString(string: String(format: LocalizedStrings.completedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""), attributes: [:])
+//        case .PURPOSE_REOPENED?:
+//            return NSAttributedString(string: String(format: LocalizedStrings.reopenedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""), attributes: [:])
+//        case .PURPOSE_NEW_COMMENT?:
+//            return NSAttributedString(string: String(format: LocalizedStrings.addedCommentTask.value, notification?.performedBy?.name ?? "", notification?.noteContent ?? ""), attributes: [:])
+//        case .PURPOSE_COMMENT_CHANGED?:
+//
+//            let stringOut = String(format: LocalizedStrings.changedCommentTask.value, notification?.performedBy?.name ?? "", notification?.oldContent ?? "", notification?.newContent ?? "")
+//            let str = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
+//
+//            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: str)
+//            let somePartStringRange = (str as NSString).range(of: notification?.oldContent ?? "")
+//            attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
+//            return attributeString
+//        case .PURPOSE_COMMENT_DELETED?:
+//            return NSAttributedString(string: String(format: LocalizedStrings.removedCommentTask.value, notification?.performedBy?.name ?? "", notification?.noteContent ?? ""), attributes: [:])
+//        case .ORDER_NEW?:
+//            return NSAttributedString(string: String(format: LocalizedStrings.newOrder.value, notification?.orderName ?? "", notification?.orderSum ?? "", notification?.agentName ?? ""), attributes: [:])
+//        case .RETAILSHIFT_OPENED?:
+//            return NSAttributedString(string: String(format: LocalizedStrings.retailShiftOpen.value, notification?.retailStore?.name ?? "", notification?.user?.name ?? ""), attributes: [:])
+//        case .RETAILSHIFT_CLOSED?:
+//            let proceed = (notification?.proceed ?? 0.0)/100
+//            return NSAttributedString(string: String(format: LocalizedStrings.retailShiftClose.value, notification?.retailStore?.name ?? "", notification?.user?.name ?? "", notification?.retailShift?.open?.shiftOpenedInterval(closedDate: notification?.retailShift?.close ?? Date()) ?? "0", String(notification?.sales ?? 0), String(notification?.returns ?? 0), proceed.toMSDoubleString()), attributes: [:])
+//        case .GOOD_COUNT_TOO_LOW?:
+//            return NSAttributedString(string: String(format: "Снижение количества товара: %@", notification?.goodName ?? ""), attributes: [:])
+//        case .INVOICE_OUT_OVERDUE?:
+//            return NSAttributedString(string: String(format: "Просроченный счёт: %@", notification?.customerName ?? ""), attributes: [:])
+//        case .EXPORT_COMPLETED?:
+//            return NSAttributedString(string: String(format: "Экспорт выполнен: %@", notification?.taskType ?? ""), attributes: [:])
+//        case .IMPORT_COMPLETED?:
+//            return NSAttributedString(string: String(format: "Импорт выполнен: %@", notification?.taskType ?? ""), attributes: [:])
+//        default:
+//            return NSAttributedString(string: String(format: "Дефолтное описание нотификации"), attributes: [:])
+//        }
+//    }()
     
     public lazy var key: String? = {
         guard let newstr = self.notificationTypeString else { return "" }

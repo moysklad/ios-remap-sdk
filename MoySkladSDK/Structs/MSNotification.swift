@@ -219,10 +219,8 @@ public struct MSNotification : Metable {
             return "customer_order"
         case "retailshift":
             return "retail"
-        case "invoice_in":
-            return "invoicein"
-        case "invoice_out":
-            return "invoiceout"
+        case "invoice":
+            return "invoice"
         case "call":
             return "call"
         case "good":

@@ -87,6 +87,7 @@ public enum MSObjectType : String {
     case personaldiscount
     case retailshiftsales
     case retailshiftreturns
+    case dataexchange
     case notification
 }
 
@@ -162,14 +163,27 @@ public enum MSPushObjectType: String {
     case retailshift
     case order
     case customerorder
-    case none
+    case product
+    case bundle
+    case variant
+    case service
+    case imports = "import"
+    case export
+    case invoicein = "invoice_in"
+    case invoiceout = "invoice_out"
+    case good
+    case defaultNotification
     
-    public var objectType: MSObjectType? {
+    public var objectType: MSObjectType {
         switch self {
         case .purpose: return .task
         case .retailshift: return .retailshift
         case .order, .customerorder: return .customerorder
-        case .none : return .none
+        case .product, .bundle, .variant, .service, .good: return .product
+        case .imports, .export: return .dataexchange
+        case .invoicein: return .invoicein
+        case .invoiceout: return .invoiceout
+        default: return .notification
         }
     }
 }

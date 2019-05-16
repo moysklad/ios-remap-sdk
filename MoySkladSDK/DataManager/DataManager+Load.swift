@@ -397,15 +397,19 @@ extension DataManager {
             }.reduce([], accumulator: { $0 + $1 })
     }
     
-    public static func loadNotificationList(parameters: UrlRequestParameters) -> Observable<[MSNotification]> {
+    public static func loadNotificationList(parameters: UrlRequestParameters) -> Observable<[BaseNotification]> {
         return HttpClient.get(.notificationList, auth: parameters.auth, urlParameters: parameters.allParameters)
-            .flatMapLatest { result -> Observable<[MSNotification]> in
-                guard let result = result?.toDictionary() else {
+            .flatMapLatest { result -> Observable<[BaseNotification]> in
+                
+                guard let result = result?.toDictionary(),
+                    let data = try? JSONSerialization.data(withJSONObject: result.msArray("rows"), options: []) else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectNotificationResponse.value))
                 }
-                let deserialized = result.msArray("rows").map { MSNotification.from(dict: $0)?.value() }.removeNils()
                 
-                return Observable.just(deserialized)
+                let jsonDecoder = JSONDecoder()
+                let notifications = try jsonDecoder.decode(MSNotification.self, from: data)
+                
+                return Observable.just(notifications.notifications)
         }
     }
     

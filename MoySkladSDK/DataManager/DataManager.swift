@@ -1174,22 +1174,30 @@ public struct DataManager {
         let body = ["deviceId": deviceId, "token": fcmToken].toJSONType()
         
         return HttpClient.create(.token, auth: auth, urlPathComponents: [], urlParameters: [], body: body)
-            .flatMap { _ -> Observable<Void> in return .just(()) }
+            .flatMap { _ -> Observable<Void> in return .empty() }
     }
     
     public static func readNotificationById(auth: Auth, parameters: UrlRequestParameters, notificationId: String) -> Observable<Void> {
-        return HttpClient.update(.notificationRead, auth: parameters.auth, urlPathComponents: [notificationId], urlParameters: parameters.allParameters, body: [:].toJSONType())
-            .flatMap { _ -> Observable<Void> in return .just(()) }
+        return HttpClient.update(.notificationRead,
+                                 auth: parameters.auth,
+                                 urlPathComponents: [notificationId],
+                                 urlParameters: parameters.allParameters)
+            .flatMap { _ -> Observable<Void> in
+                return .empty()
+        }
     }
    
     public static func readAllNotifications(auth: Auth) -> Observable<Void> {
-        return HttpClient.update(.notificationsReadAll, auth: auth, urlPathComponents: [], urlParameters: [], body: [:].toJSONType())
-            .flatMap { _ -> Observable<Void> in return .just(()) }
+        return HttpClient.update(.notificationsReadAll, auth: auth)
+            .flatMap { _ -> Observable<Void> in
+                return .empty() }
     }
     
     public static func sendNotificationsSettings(auth: Auth, settings: [String: Any]) -> Observable<Void> {
-        return HttpClient.update(.notificationSubscription, auth: auth, urlPathComponents: [], urlParameters: [], body: settings.toJSONType())
-            .flatMap { _ -> Observable<Void> in return .just(()) }
+        return HttpClient.update(.notificationSubscription, auth: auth, body: settings.toJSONType())
+            .flatMap { _ -> Observable<Void> in
+                return .empty()
+        }
     }
     
     public static func getAllNotificationsSettings(auth: Auth) -> Observable<[MSNotificationSettings]> {

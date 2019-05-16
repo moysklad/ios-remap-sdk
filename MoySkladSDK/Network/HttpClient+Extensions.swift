@@ -37,21 +37,21 @@ extension HttpClient {
                        auth: Auth,
                        urlPathComponents: [String] = [],
                        urlParameters: [UrlParameter] = [],
-                       body: JSONType?) -> Observable<JSONType?> {
+                       body: JSONType? = nil) -> Observable<JSONType?> {
         var headers = auth.header
         if body == nil {
             headers["Content-Type"] = "application/json"
         }
-
-		let router = HttpRouter.create(apiRequest: request,
-		                               method: .put,
-		                               contentType: .json,
-		                               urlPathComponents: urlPathComponents,
-		                               httpBody: body,
-		                               headers: headers,
-		                               urlParameters: urlParameters)
-		return resultCreate(router)
-	}
+        
+        let router = HttpRouter.create(apiRequest: request,
+                                       method: .put,
+                                       contentType: .json,
+                                       urlPathComponents: urlPathComponents,
+                                       httpBody: body,
+                                       headers: headers,
+                                       urlParameters: urlParameters)
+        return resultCreate(router)
+    }
     
     static func updateWithHeadersResult(_ request: MSApiRequest,
                                         auth: Auth,

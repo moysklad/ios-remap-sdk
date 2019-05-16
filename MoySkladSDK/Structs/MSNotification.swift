@@ -8,414 +8,557 @@
 
 import Foundation
 
-public struct MSNotification : Metable {
-    public let id: String?
-    public let meta: MSMeta
-    public let accountId: String?
-    public let readed: Bool?
-    public let updated: String?
-    public let notificationTypeString: String?
-    public var notificationType: NotificationType? { return NotificationType(rawValue: notificationTypeString ?? "") }
-    public let notification: MSNotificationContent?
+public protocol MSNotificationable {
+    /// ID Уведомления в формате UUID
+    var id: String { get }
+    /// ID учетной записи Только для чтения
+    var accountId: String { get }
+    /// Признак того, было ли Уведомление прочитано
+    var isRead: Bool { get }
+    /// Дата и время формирования Уведомления
+    var created: String { get }
+    /// Краткий текст уведомления
+    var title: String { get }
+    /// Описание уведомления
+    var description: String { get }
+    /// Мета
+    var meta: NotificationMeta { get }
+}
+
+public struct NotificationMeta: Decodable {
+    public let type: NotificationTypes
+}
+
+public class BaseNotification: MSNotificationable, Decodable {
+    public let id: String
+    public let accountId: String
+    public let isRead: Bool
+    public let created: String
+    public let title: String
+    public let description: String
+    public let meta: NotificationMeta
     
-    /**
-     * Справочник - список уведомлений
-     */
-    public enum NotificationType: String {
-        /**
-         * Уведомление о приходе нового заказа покупателя
-         */
-        case ORDER_NEW,
-        /**
-         * Уведомление о просроченном заказе
-         */
-        ORDER_OVERDUE,
-        /**
-         * Уведомление о просроченном счёте, который не оплатил или не полностью оплатил покупатель
-         */
-        INVOICE_OUT_OVERDUE,
-        /**
-         * Уведомление о просроченном счёте от поставщика, который не оплачен или оплачен не полностью
-         */
-        INVOICE_IN_OVERDUE,
-        /**
-         * Уведомление о пропущенном звонке
-         */
-        CALL_MISSED,
-        /**
-         * Уведомлении о снижении количества товара до не снижаемого остатка
-         */
-        GOOD_COUNT_TOO_LOW,
-        /**
-         * Уведомление о том, что торговая точка открыта
-         */
-        RETAILSHIFT_OPENED,
-        /**
-         * Уведомление о том, что торговая точка закрыта
-         */
-        RETAILSHIFT_CLOSED,
-        /**
-         * Уведомление о назначении задачи
-         */
-        PURPOSE_ASSIGNED,
-        /**
-         * Уведомление о том, что задача сменил назначенного
-         */
-        PURPOSE_UNASSIGNED,
-        /**
-         * Уведомление о том, что задача просрочена
-         */
-        PURPOSE_OVERDUE,
-        /**
-         * Уведомление о том, что задача выполнена
-         */
-        PURPOSE_COMPLETED,
-        /**
-         * Уведомление о том, что задача переоткрыта
-         */
-        PURPOSE_REOPENED,
-        /**
-         * Уведомление о том, что у задачи появился новый комментарий
-         */
-        PURPOSE_NEW_COMMENT,
-        /**
-         * Уведомление о том, что задача поменялась
-         */
-        PURPOSE_CHANGED,
-        /**
-         * Уведомление о том, что задача удалена
-         */
-        PURPOSE_DELETED,
-        /**
-         * Уведомление о том, что комментарий у задачи был удален
-         */
-        PURPOSE_COMMENT_DELETED,
-        /**
-         * Уведомление о том, что комментарий у задачи был изменен
-         */
-        PURPOSE_COMMENT_CHANGED,
-        /**
-         * Уведомление о том, что подписка истекает
-         */
-        SUBSCRIBE_EXPIRES,
-        /**
-         * Уведомление о том, что условия подписки истекают
-         */
-        SUBSCRIBE_TERMS_EXPIRES,
-        /**
-         * Уведомление о том, что импорт выполнен
-         */
-        IMPORT_COMPLETED,
-        /**
-         * Уведомление о том, что экспорт выполнен
-         */
-        EXPORT_COMPLETED,
-        /**
-         * Техническое уведомление о прочтении уведомления на каком-нибудь устройстве
-         */
-        READ_COMPLETED,
-        /**
-         * Техническое уведомление о непрочитанных новостях
-         */
-        UNREAD_NEWS_AVAILABLE,
-        /**
-         * Техническое уведомление о специальных предложениях
-         */
-        UNREAD_SPECIAL_OFFER_AVAILABLE
+    private enum CodingKeys: String, CodingKey {
+        case id, accountId, created, title, description, meta
+        case isRead = "read"
     }
     
-//    @available(iOS 10.0, *)
-//    public lazy var title: NSAttributedString = {
-//        switch notificationType {
-//        case .PURPOSE_ASSIGNED?:
-//            return NSAttributedString(string: String(format: LocalizedStrings.assignedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""))
-//        case .PURPOSE_CHANGED?:
-//            var str = NSMutableAttributedString(string: String(format: LocalizedStrings.changedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""))
-//
-//            if (notification?.agentLinkChange?.newValue?.orNull?.name != nil || notification?.agentLinkChange?.oldValue?.orNull?.name != nil) {
-//
-//                let stringOut = String(format: LocalizedStrings.changedTaskContragent.value, notification?.agentLinkChange?.oldValue?.orNull?.name ?? "", notification?.agentLinkChange?.newValue?.orNull?.name ?? "")
-//                let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
-//
-//                let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)
-//                let somePartStringRange = (strNext as NSString).range(of: notification?.agentLinkChange?.oldValue?.orNull?.name ?? "")
-//                attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
-//                str.append(attributeString)
-//                return str
-//            }
-//            else if (notification?.descriptionChange?.newValue?.orNull != nil || notification?.descriptionChange?.oldValue?.orNull != nil){
-//
-//                let stringOut = String(format: LocalizedStrings.changedTaskDescription.value, notification?.descriptionChange?.oldValue?.orNull ?? "", notification?.descriptionChange?.newValue?.orNull ?? "")
-//                let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
-//
-//                let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)
-//                let somePartStringRange = (strNext as NSString).range(of: notification?.descriptionChange?.oldValue?.orNull ?? "")
-//                attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
-//                str.append(attributeString)
-//                return str
-//            }
-//            else if (notification?.deadlineChange?.newValueLocal?.count != 0 || notification?.deadlineChange?.oldValueLocal?.count != 0) && (notification?.deadlineChange?.newValueLocal != nil || notification?.deadlineChange?.oldValueLocal != nil) {
-//
-//                let stringOut = String(format: LocalizedStrings.changedTaskDeadline.value, notification?.deadlineChange?.oldValueLocal ?? "", notification?.deadlineChange?.newValueLocal ?? "")
-//                let strNext = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
-//
-//                let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: strNext)
-//                let somePartStringRange = (strNext as NSString).range(of: notification?.deadlineChange?.oldValueLocal ?? "")
-//                attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
-//                str.append(attributeString)
-//                return str
-//            }
-//            return NSAttributedString(string: "", attributes: [:])
-//        case .PURPOSE_DELETED?:
-//            return NSAttributedString(string: String(format: LocalizedStrings.removedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""), attributes: [:])
-//        case .PURPOSE_UNASSIGNED?:
-//            return NSAttributedString(string: String(format: LocalizedStrings.unassignedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""), attributes: [:])
-//        case .PURPOSE_COMPLETED?:
-//            return NSAttributedString(string: String(format: LocalizedStrings.completedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""), attributes: [:])
-//        case .PURPOSE_REOPENED?:
-//            return NSAttributedString(string: String(format: LocalizedStrings.reopenedTask.value, notification?.performedBy?.name ?? "", notification?.purpose?.name ?? ""), attributes: [:])
-//        case .PURPOSE_NEW_COMMENT?:
-//            return NSAttributedString(string: String(format: LocalizedStrings.addedCommentTask.value, notification?.performedBy?.name ?? "", notification?.noteContent ?? ""), attributes: [:])
-//        case .PURPOSE_COMMENT_CHANGED?:
-//
-//            let stringOut = String(format: LocalizedStrings.changedCommentTask.value, notification?.performedBy?.name ?? "", notification?.oldContent ?? "", notification?.newContent ?? "")
-//            let str = stringOut.replacingOccurrences(of: " +", with: " ", options: String.CompareOptions.regularExpression, range: nil)
-//
-//            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: str)
-//            let somePartStringRange = (str as NSString).range(of: notification?.oldContent ?? "")
-//            attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: somePartStringRange)
-//            return attributeString
-//        case .PURPOSE_COMMENT_DELETED?:
-//            return NSAttributedString(string: String(format: LocalizedStrings.removedCommentTask.value, notification?.performedBy?.name ?? "", notification?.noteContent ?? ""), attributes: [:])
-//        case .ORDER_NEW?:
-//            return NSAttributedString(string: String(format: LocalizedStrings.newOrder.value, notification?.orderName ?? "", notification?.orderSum ?? "", notification?.agentName ?? ""), attributes: [:])
-//        case .RETAILSHIFT_OPENED?:
-//            return NSAttributedString(string: String(format: LocalizedStrings.retailShiftOpen.value, notification?.retailStore?.name ?? "", notification?.user?.name ?? ""), attributes: [:])
-//        case .RETAILSHIFT_CLOSED?:
-//            let proceed = (notification?.proceed ?? 0.0)/100
-//            return NSAttributedString(string: String(format: LocalizedStrings.retailShiftClose.value, notification?.retailStore?.name ?? "", notification?.user?.name ?? "", notification?.retailShift?.open?.shiftOpenedInterval(closedDate: notification?.retailShift?.close ?? Date()) ?? "0", String(notification?.sales ?? 0), String(notification?.returns ?? 0), proceed.toMSDoubleString()), attributes: [:])
-//        case .GOOD_COUNT_TOO_LOW?:
-//            return NSAttributedString(string: String(format: "Снижение количества товара: %@", notification?.goodName ?? ""), attributes: [:])
-//        case .INVOICE_OUT_OVERDUE?:
-//            return NSAttributedString(string: String(format: "Просроченный счёт: %@", notification?.customerName ?? ""), attributes: [:])
-//        case .EXPORT_COMPLETED?:
-//            return NSAttributedString(string: String(format: "Экспорт выполнен: %@", notification?.taskType ?? ""), attributes: [:])
-//        case .IMPORT_COMPLETED?:
-//            return NSAttributedString(string: String(format: "Импорт выполнен: %@", notification?.taskType ?? ""), attributes: [:])
-//        default:
-//            return NSAttributedString(string: String(format: "Дефолтное описание нотификации"), attributes: [:])
-//        }
-//    }()
+    enum metaCodingKeys: String, CodingKey {
+        case type
+    }
     
-    public lazy var key: String? = {
-        guard let newstr = self.notificationTypeString else { return "" }
-        let types = newstr.components(separatedBy: "_")
-        guard var typeString = types.first?.lowercased() else { return "" }
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.meta = try container.decode(NotificationMeta.self, forKey: .meta)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.accountId = try container.decode(String.self, forKey: .accountId)
+        self.isRead = try container.decode(Bool.self, forKey: .isRead)
+        self.created = try container.decode(String.self, forKey: .created)
+        self.title = try container.decode(String.self, forKey: .title)
+        self.description = try container.decode(String.self, forKey: .description)
+    }
+}
+
+public struct MSNotificationTask: Decodable {
+    public let name: String
+    public let id: String? // id нет, когда задачу удаляют
+    public let deadline: String?
+}
+
+public struct MSNotificationUser: Decodable {
+    public let id: String
+    public let name: String
+}
+
+public struct MSNotificationOrder: Decodable {
+    public let id: String
+    public let deliveryPlannedMoment: String?
+    public let sum: String
+    public let agentName: String
+    public let name: String
+    let typeString: String
+    
+    enum MetaTypeCodingKey: String, CodingKey {
+        case type
+    }
+    
+    enum OrderCodingKeys: String, CodingKey {
+        case id, name, deliveryPlannedMoment, sum, agentName, meta
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: OrderCodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.deliveryPlannedMoment = try? container.decode(String.self, forKey: .deliveryPlannedMoment)
+        self.sum = try container.decode(String.self, forKey: .sum)
+        self.agentName = try container.decode(String.self, forKey: .agentName)
+        let metaContainer = try container.nestedContainer(keyedBy: MetaTypeCodingKey.self, forKey: .meta)
+        self.typeString = try metaContainer.decode(String.self, forKey: .type)
+    }
+}
+
+public extension MSNotificationOrder {
+    var type: MSObjectType {
+        return MSObjectType(rawValue: self.typeString)!
+    }
+}
+
+public struct MSNotificationInvoice: Decodable {
+    public let id: String
+    public let name: String
+    public let paymentPlannedMoment: String
+    public let sum: String
+    public let agentName: String
+    let typeString: String
+
+    enum MetaTypeCodingKey: String, CodingKey {
+        case type
+    }
+    
+    enum InvoiceCodingKeys: String, CodingKey {
+        case id, name, paymentPlannedMoment, sum, agentName, meta
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: InvoiceCodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.paymentPlannedMoment = try container.decode(String.self, forKey: .paymentPlannedMoment)
+        self.sum = try container.decode(String.self, forKey: .sum)
+        self.agentName = try container.decode(String.self, forKey: .agentName)
+        let metaContainer = try container.nestedContainer(keyedBy: MetaTypeCodingKey.self, forKey: .meta)
+        self.typeString = try metaContainer.decode(String.self, forKey: .type)
+    }
+}
+
+public extension MSNotificationInvoice {
+    var type: MSObjectType {
+        return MSObjectType(rawValue: self.typeString)!
+    }
+}
+
+
+public enum TaskType: String, Decodable {
+    case importer_csv //IMPORTER_CSV(0, "xls", "Товары и остатки (Excel, старый)", true),
+    case importer_yml //IMPORTER_YML(1, "xml", "Импорт товаров (Яндекс.Маркет)", true),
+    case importer_csv_agent //IMPORTER_CSV_AGENT(3, "xls", "Импорт контрагентов (Excel)", true),
+    case importer_csv_customerorder //IMPORTER_CSV_CUSTOMERORDER(5, "xls", "Импорт заказов покупателей (Excel)", true),               // not used
+    // to be continued
+    
+}
+
+public enum TaskState: String, Decodable {
+    case suspended // SUSPENDED=Задача ожидает запуска
+    case running // RUNNING=Задача выполняется
+    case wait_cancel // WAIT_CANCEL=Задача ожидает отмены
+    case interrupted // INTERRUPTED=Задача отменена из-за ошибки
+    case interrupted_by_user // INTERRUPTED_BY_USER=Задача отменена пользователем
+    case completed // COMPLETED=Задача завершена
+    case interrupted_by_timeout // INTERRUPTED_BY_TIMEOUT=Задача отменена по таймауту
+    case interrupted_by_system // INTERRUPTED_BY_SYSTEM=Задача отменена сервисом
+}
+
+public struct MSNotificationRetailShift: Decodable {
+    public let id: String
+    public let name: String
+    public let open: String
+    public let close: String?
+    public let proceed: String
+}
+
+public struct MSNotificationGoods: Decodable {
+    public let id: String
+    public let name: String
+    let typeString: String
+    public let href: Href
+    
+    enum MetaTypeCodingKey: String, CodingKey {
+        case type, href
+    }
+    
+    enum GoodsCodingKeys: String, CodingKey {
+        case id, name, meta
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: GoodsCodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.name = try container.decode(String.self, forKey: .name)
+        let metaContainer = try container.nestedContainer(keyedBy: MetaTypeCodingKey.self, forKey: .meta)
+        self.typeString = try metaContainer.decode(String.self, forKey: .type)
+        self.href = try metaContainer.decode(String.self, forKey: .href)
+    }
+}
+
+public extension MSNotificationGoods {
+    var type: MSObjectType {
+        return MSObjectType(rawValue: self.typeString)!
+    }
+}
+
+public class TaskNotification: BaseNotification {
+    public let performedBy: MSNotificationUser?
+    public let task: MSNotificationTask
+    
+    enum TaskCodingKeys: String, CodingKey {
+        case performedBy, task
+    }
+    enum NoteContentCodingKey: String, CodingKey {
+        case noteContent
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: TaskCodingKeys.self)
+        self.performedBy = try container.decode(MSNotificationUser.self, forKey: .performedBy)
+        self.task = try container.decode(MSNotificationTask.self, forKey: .task)
+        try super.init(from: decoder)
+    }
+}
+
+public class NotificationTaskAssigned: TaskNotification { }
+
+public class NotificationTaskUnassigned: TaskNotification { }
+
+public class NotificationTaskOverdue: TaskNotification { }
+
+public class NotificationTaskCompleted: TaskNotification { }
+
+public class NotificationTaskReopened: TaskNotification { }
+
+public class NotificationTaskNewComment: TaskNotification {
+    public let noteContent: String
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: NoteContentCodingKey.self)
+        self.noteContent = try container.decode(String.self, forKey: .noteContent)
+        try super.init(from: decoder)
+    }
+}
+
+public class NotificationTaskChanged: TaskNotification { }
+
+public class NotificationTaskDeleted: TaskNotification { }
+
+public class NotificationTaskCommentChanged: TaskNotification {
+}
+
+public class NotificationTaskCommentDeleted: TaskNotification {
+    public let noteContent: String
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: NoteContentCodingKey.self)
+        self.noteContent = try container.decode(String.self, forKey: .noteContent)
+        try super.init(from: decoder)
+    }
+}
+
+public class NotificationCustomerOrder: BaseNotification {
+    public let order: MSNotificationOrder
+    
+    enum OrderCodingKey: String, CodingKey {
+        case order
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: OrderCodingKey.self)
+        self.order = try container.decode(MSNotificationOrder.self, forKey: .order)
+        try super.init(from: decoder)
+    }
+}
+
+public class NotificationOrderNew: NotificationCustomerOrder { }
+
+public class NotificationOrderOverdue: NotificationCustomerOrder { }
+
+public class NotificationInvoiceOutOverdue: BaseNotification {
+    public let invoice: MSNotificationInvoice
+    
+    enum InvoiceCodingKey: String, CodingKey {
+        case invoice
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: InvoiceCodingKey.self)
+        self.invoice = try container.decode(MSNotificationInvoice.self, forKey: .invoice)
+        try super.init(from: decoder)
+    }
+}
+
+public class NotificationDataExchange: BaseNotification {
+    public let message: String
+    public let errorMessage: String?
+    public let createdDocumentName: String
+    /// Тип экспорта
+    public let taskType: TaskType
+    /// Статус завершения
+    public let taskState: TaskState
+    
+    enum ExportCompletedCodingKeys: String, CodingKey {
+        case message,
+        errorMessage,
+        createdDocumentName,
+        taskType,
+        taskState
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: ExportCompletedCodingKeys.self)
+        self.message = try container.decode(String.self, forKey: .message)
+        self.errorMessage = try? container.decode(String.self, forKey: .errorMessage)
+        self.createdDocumentName = try container.decode(String.self, forKey: .createdDocumentName)
+        self.taskType = try container.decode(TaskType.self, forKey: .taskType)
+        self.taskState = try container.decode(TaskState.self, forKey: .taskState)
+        try super.init(from: decoder)
+    }
+}
+
+public class NotificationExportCompleted: NotificationDataExchange { }
+
+public class NotificationImportCompleted: NotificationDataExchange { }
+
+public class NotificationGoodCountTooLow: BaseNotification {
+    public let actualBalance: Double
+    /// Неснижаемый остаток товара
+    public let minimumBalance: Double
+    /// Ссылка на товар в формате Метаданных
+    public let goods: MSNotificationGoods
+
+    enum GoodCountTooLowCodingKeys: String, CodingKey {
+        case actualBalance, minimumBalance
+        case goods = "good"
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: GoodCountTooLowCodingKeys.self)
+        self.actualBalance = try container.decode(Double.self, forKey: .actualBalance)
+        self.minimumBalance = try container.decode(Double.self, forKey: .minimumBalance)
+        self.goods = try container.decode(MSNotificationGoods.self, forKey: .goods)
+        try super.init(from: decoder)
+    }
+}
+
+public class NotificationCall: BaseNotification { }
+
+public class NotificationSubscribeExpired: NotificationCall { }
+
+public class NotificationSubscribeTermsExpired: NotificationCall { }
+
+public class NotificationRetail: BaseNotification {
+    public let user: MSNotificationUser
+    public let retailStore: MSNotificationUser
+    public let retailShift: MSNotificationRetailShift
+    
+    enum RetailCodingKeys: String, CodingKey {
+        case user,
+        retailStore,
+        retailShift
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: RetailCodingKeys.self)
+        self.user = try container.decode(MSNotificationUser.self, forKey: .user)
+        self.retailStore = try container.decode(MSNotificationUser.self, forKey: .retailStore)
+        self.retailShift = try container.decode(MSNotificationRetailShift.self, forKey: .retailShift)
+        try super.init(from: decoder)
+    }
+}
+
+public class NotificationRetailShiftOpened: NotificationRetail { }
+
+public class NotificationRetailShiftClosed: NotificationRetail {
+    public let sales: Int
+    public let refunds: Int
+    
+    enum RetailShiftClosedCodingKeys: String, CodingKey {
+        case sales
+        case refunds = "returns"
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: RetailShiftClosedCodingKeys.self)
+        self.sales = try container.decode(Int.self, forKey: .sales)
+        self.refunds = try container.decode(Int.self, forKey: .refunds)
+        try super.init(from: decoder)
+    }
+}
+
+public struct MSNotification: Decodable {
+    public let notifications: [BaseNotification]
+
+//    enum CodingKeys: String, CodingKey {
+//        case meta, rows
+//    }
+    
+    enum NotificationsMetaKey: String, CodingKey {
+        case meta
+    }
+    
+    enum NotificationTypeKey: String, CodingKey {
+        case type
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.unkeyedContainer()
+        var notificationsArrayForType = container
+        var notifications = [BaseNotification]()
         
-        switch typeString {
-        case "purpose":
-            return "task"
-        case "order":
-            return "customer_order"
-        case "retailshift":
-            return "retail"
-        case "invoice":
-            return "invoice"
-        case "call":
-            return "call"
-        case "good":
-            return "stock"
-        case "import", "export":
-            return "data_exchange"
-        default:
-            return ""
+        var notificationsArray = notificationsArrayForType
+        while !notificationsArrayForType.isAtEnd {
+            let notification = try notificationsArrayForType.nestedContainer(keyedBy: NotificationsMetaKey.self)
+            let meta = try notification.nestedContainer(keyedBy: NotificationTypeKey.self, forKey: .meta)
+            
+            let type = try meta.decode(NotificationTypes.self, forKey: .type)
+            print(type.rawValue)
+            switch type {
+            case .NotificationExportCompleted:
+                notifications.append(try notificationsArray.decode(NotificationExportCompleted.self))
+            case .NotificationImportCompleted:
+                notifications.append(try notificationsArray.decode(NotificationImportCompleted.self))
+            case .NotificationGoodCountTooLow:
+                notifications.append(try notificationsArray.decode(NotificationGoodCountTooLow.self))
+            case .NotificationInvoiceOutOverdue:
+                notifications.append(try notificationsArray.decode(NotificationInvoiceOutOverdue.self))
+            case .NotificationSubscribeExpired:
+                notifications.append(try notificationsArray.decode(NotificationSubscribeExpired.self))
+            case .NotificationSubscribeTermsExpired:
+                notifications.append(try notificationsArray.decode(NotificationSubscribeTermsExpired.self))
+            case .NotificationTaskAssigned:
+                notifications.append(try notificationsArray.decode(NotificationTaskAssigned.self))
+            case .NotificationTaskUnassigned:
+                notifications.append(try notificationsArray.decode(NotificationTaskUnassigned.self))
+            case .NotificationTaskOverdue:
+                notifications.append(try notificationsArray.decode(NotificationTaskOverdue.self))
+            case .NotificationTaskCompleted:
+                notifications.append(try notificationsArray.decode(NotificationTaskCompleted.self))
+            case .NotificationTaskReopened:
+                notifications.append(try notificationsArray.decode(NotificationTaskReopened.self))
+            case .NotificationTaskNewComment:
+                notifications.append(try notificationsArray.decode(NotificationTaskNewComment.self))
+            case .NotificationTaskChanged:
+                notifications.append(try notificationsArray.decode(NotificationTaskChanged.self))
+            case .NotificationTaskDeleted:
+                notifications.append(try notificationsArray.decode(NotificationTaskDeleted.self))
+            case .NotificationTaskCommentDeleted:
+                notifications.append(try notificationsArray.decode(NotificationTaskCommentDeleted.self))
+            case .NotificationTaskCommentChanged:
+                notifications.append(try notificationsArray.decode(NotificationTaskCommentChanged.self))
+            case .NotificationRetailShiftOpened:
+                notifications.append(try notificationsArray.decode(NotificationRetailShiftOpened.self))
+            case .NotificationRetailShiftClosed:
+                notifications.append(try notificationsArray.decode(NotificationRetailShiftClosed.self))
+            case .NotificationOrderNew:
+                notifications.append(try notificationsArray.decode(NotificationOrderNew.self))
+            case .NotificationOrderOverdue:
+                notifications.append(try notificationsArray.decode(NotificationOrderOverdue.self))
+                
+                // todo добавить обработку нового, неизвестного типа уведомлений
+            }
         }
-    }()
-    
-    public lazy var type: MSObjectType = {
-        guard let newstr = self.notificationTypeString else { return MSPushObjectType.defaultNotification.objectType }
-        let types = newstr.components(separatedBy: "_")
-        guard let typeString = types.first == "INVOICE" ? (types[0] + "_" + types[1]) : types.first else { return MSPushObjectType.defaultNotification.objectType }
-        guard let type = MSPushObjectType.init(rawValue: typeString.lowercased())?.objectType else { return MSPushObjectType.defaultNotification.objectType }
-        
-        return type
-    }()
-    
-    public init(id: String?,
-                meta: MSMeta,
-                accountId: String?,
-                readed: Bool?,
-                updated: String?,
-                notificationTypeString: String?,
-                notification: MSNotificationContent?) {
-        self.id = id
-        self.meta = meta
-        self.accountId = accountId
-        self.readed = readed
-        self.updated = updated
-        self.notificationTypeString = notificationTypeString
-        self.notification = notification
+        self.notifications = notifications
     }
-    
-    public var dateString: String? {
-        get {
-            let date = Date.fromMSDate(self.updated ?? "") ?? Date()
-            let dateString = date.toShortTimeLetters(true)
-            return dateString
+}
+
+/**
+ * Справочник - список уведомлений
+ */
+public enum NotificationGroup: String {
+    /// Заказ покупателя
+    case customer_order
+    /// Задача
+    case task
+    /// Счёт
+    case invoice
+    /// Розничная торговля
+    case retail
+    /// Обмен данными
+    case data_exchange
+    /// Биллинг
+    case call
+    /// Остатки
+    case stock
+}
+
+public enum NotificationTypes: String, Decodable {
+    /// Новый заказа покупателя
+    case NotificationOrderNew
+    /// Просрочен заказ
+    case NotificationOrderOverdue
+    /// Просрочен счёт, который не оплатил или не полностью оплатил покупатель
+    case NotificationInvoiceOutOverdue
+    /// Снижение количества товара до неснижаемого остатка
+    case NotificationGoodCountTooLow
+    /// Задача назначена
+    case NotificationTaskAssigned
+    /// Задача снята
+    case NotificationTaskUnassigned
+    /// Задача просрочена
+    case NotificationTaskOverdue
+    /// Задача выполнена
+    case NotificationTaskCompleted
+    /// Задача переоткрыта
+    case NotificationTaskReopened
+    /// У задачи появился новый комментарий
+    case NotificationTaskNewComment
+    /// Задача поменялась
+    case NotificationTaskChanged
+    /// Задача удалена
+    case NotificationTaskDeleted
+    /// Комментарий у задачи был удален
+    case NotificationTaskCommentDeleted
+    /// Комментарий у задачи был изменен
+    case NotificationTaskCommentChanged
+    /// Импорт выполнен
+    case NotificationImportCompleted
+    /// Экспорт выполнен
+    case NotificationExportCompleted
+    /// Истекает подписка
+    case NotificationSubscribeExpired
+    /// Истекают условия подписки
+    case NotificationSubscribeTermsExpired
+    /// Открыта смена
+    case NotificationRetailShiftOpened
+    /// Закрыта смена
+    case NotificationRetailShiftClosed
+}
+
+public extension NotificationTypes {
+    var group: NotificationGroup {
+        switch self {
+        case .NotificationImportCompleted,
+             .NotificationExportCompleted:
+            return .data_exchange
+        case .NotificationGoodCountTooLow:
+            return .stock
+        case .NotificationOrderNew,
+             .NotificationOrderOverdue:
+            return .customer_order
+        case .NotificationInvoiceOutOverdue:
+            return .invoice
+        case .NotificationSubscribeExpired,
+             .NotificationSubscribeTermsExpired:
+            return .call
+        case .NotificationTaskAssigned,
+             .NotificationTaskUnassigned,
+             .NotificationTaskOverdue,
+             .NotificationTaskCompleted,
+             .NotificationTaskReopened,
+             .NotificationTaskNewComment,
+             .NotificationTaskChanged,
+             .NotificationTaskDeleted,
+             .NotificationTaskCommentChanged,
+             .NotificationTaskCommentDeleted:
+            return .task
+        case .NotificationRetailShiftOpened,
+             .NotificationRetailShiftClosed:
+            return .retail
         }
     }
 }
 
-public struct MSNotificationContent {
-    public let performedBy: MSPerformed?
-    public let purpose: MSPurpose?
-    public let descriptionChange: MSDescriptionChange?
-    public let agentLinkChange: MSAgentLinkChange?
-    public let deadlineChange: MSDeadlineChange?
-    public let noteContent: String?
-    public let oldContent: String?
-    public let newContent: String?
-    public let orderSum: String?
-    public let orderName: String?
-    public let orderId: String?
-    public let invoiceId: String?
-    public let agentName: String?
-    public let user: MSUserRetailShift?
-    public let retailStore: MSRetailStore?
-    public let retailShift: MSRetailShift?
-    public let sales: Int?
-    public let returns: Int?
-    public let proceed: Double?
-    public let duration: Double?
-    public let goodName: String?
-    public let goodUUID: String?
-    public let customerName: String?
-    public let taskType: String?
-    
-    public static func from(dict: [String: Any]) -> MSNotificationContent? {
-        return MSNotificationContent(performedBy: MSPerformed.from(dict: dict.msValue("performedBy")),  purpose: MSPurpose.from(dict: dict.msValue("purpose")), descriptionChange: MSDescriptionChange.from(dict: dict.msValue("descriptionChange")), agentLinkChange: MSAgentLinkChange.from(dict: dict.msValue("agentLinkChange")), deadlineChange: MSDeadlineChange.from(dict: dict.msValue("deadlineChange")), noteContent: dict.value("noteContent"), oldContent: dict.value("oldContent"), newContent: dict.value("newContent"), orderSum: dict.value("orderSum"), orderName: dict.value("orderName"), orderId: dict.value("orderId"), invoiceId: dict.value("invoiceId"), agentName: dict.value("agentName"), user: MSUserRetailShift.from(dict: dict.msValue("user")), retailStore: MSRetailStore.from(dict: dict.msValue("retailStore")), retailShift: MSRetailShift.from(dict: dict.msValue("retailShift")), sales: dict.value("sales"), returns: dict.value("returns"), proceed: dict.value("proceed"), duration: dict.value("duration"), goodName: dict.value("goodName"), goodUUID: dict.value("goodUUID"), customerName: dict.value("customerName"), taskType: dict.value("taskType"))
-    }
-    
-    public struct MSPerformed {
-        public let id: String?
-        public let name: String?
-        
-        public static func from(dict: [String: Any]) -> MSPerformed? {
-            return MSPerformed(id: dict.value("id"), name: dict.value("name"))
-        }
-    }
-    
-    public struct MSPurpose {
-        public let id: String?
-        public let date: String?
-        public let name: String?
-        
-        public static func from(dict: [String: Any]) -> MSPurpose? {
-            return MSPurpose(id: dict.value("id"), date: dict.value("date"), name: dict.value("name"))
-        }
-    }
-    
-    public struct MSDescriptionChange {
-        public let newValue: MSDescriptionValue?
-        public let oldValue: MSDescriptionValue?
-        
-        public static func from(dict: [String: Any]) -> MSDescriptionChange? {
-            return MSDescriptionChange(newValue: MSDescriptionValue.from(dict: dict.msValue("newValue")), oldValue: MSDescriptionValue.from(dict: dict.msValue("oldValue")))
-        }
-    }
-    
-    public struct MSAgentLinkChange {
-        public let newValue: MSAgentLinkValue?
-        public let oldValue: MSAgentLinkValue?
-        
-        public static func from(dict: [String: Any]) -> MSAgentLinkChange? {
-            return MSAgentLinkChange(newValue: MSAgentLinkValue.from(dict: dict.msValue("newValue")), oldValue: MSAgentLinkValue.from(dict: dict.msValue("oldValue")))
-        }
-    }
-    
-    public struct MSDeadlineChange {
-        public var newValueLocal: String? {
-            get {
-                guard let date = Date.fromMSString(self.newValue?.orNull ?? "") else { return "" }
-                let dateString = date.toShortTimeLetters(false)
-                return dateString
-            }
-        }
-        
-        public var oldValueLocal: String? {
-            get {
-                guard let date = Date.fromMSString(self.oldValue?.orNull ?? "") else { return "" }
-                let dateString = date.toShortTimeLetters(false)
-                return dateString
-            }
-        }
-        
-        public let newValue: MSDescriptionValue?
-        public let oldValue: MSDescriptionValue?
-        
-        public static func from(dict: [String: Any]) -> MSDeadlineChange? {
-            return MSDeadlineChange(newValue: MSDescriptionValue.from(dict: dict.msValue("newValue")), oldValue: MSDescriptionValue.from(dict: dict.msValue("oldValue")))
-        }
-    }
-    
-    public struct MSAgentLinkValue {
-        public let empty: Bool?
-        public let orNull: MSAgentLink?
-        public let defined: String?
-        
-        public static func from(dict: [String: Any]) -> MSAgentLinkValue? {
-            return MSAgentLinkValue(empty: dict.value("empty"), orNull: MSAgentLink.from(dict: dict.value("orNull") ?? [:]), defined: dict.value("defined"))
-        }
-    }
-    
-    public struct MSAgentLink {
-        public let id: String?
-        public let name: String?
-        public let type: String?
-        
-        public static func from(dict: [String: Any]) -> MSAgentLink? {
-            return MSAgentLink(id: dict.value("id"), name: dict.value("name"), type: dict.value("type"))
-        }
-    }
-    
-    public struct MSDescriptionValue {
-        public let empty: Bool?
-        public let orNull: String?
-        public let defined: String?
-        
-        public static func from(dict: [String: Any]) -> MSDescriptionValue? {
-            return MSDescriptionValue(empty: dict.value("empty"), orNull: dict.value("orNull"), defined: dict.value("defined"))
-        }
-    }
-    
-    public struct MSUserRetailShift {
-        public let id: String?
-        public let name: String?
-        
-        public static func from(dict: [String: Any]) -> MSUserRetailShift? {
-            return MSUserRetailShift(id: dict.value("id"), name: dict.value("name"))
-        }
-    }
-    
-    public struct MSRetailStore {
-        public let id: String?
-        public let name: String?
-        
-        public static func from(dict: [String: Any]) -> MSRetailStore? {
-            return MSRetailStore(id: dict.value("id"), name: dict.value("name"))
-        }
-    }
-    
-    public struct MSRetailShift {
-        public let id: String?
-        public let name: String?
-        public let open: Date?
-        public let close: Date?
-        public let proceed: Double?
-        
-        public static func from(dict: [String: Any]) -> MSRetailShift? {
-            return MSRetailShift(id: dict.value("id"), name: dict.value("name"), open: Date.fromMSString(dict.value("open") ?? ""), close: Date.fromMSString(dict.value("close") ?? ""), proceed: dict.value("proceed"))
-        }
+extension BaseNotification {
+    public var key: String  {
+        return self.meta.type.group.rawValue
     }
 }
 
@@ -429,7 +572,7 @@ public struct MSEnabledChannels {
 }
 
 public struct MSNotificationSettings {
-    public let key: String?
+    public let key: String? // todo заменить на notificationGroup
     public var settings: MSEnabledChannels?
     
     public var title: String {

@@ -200,10 +200,10 @@ public enum MSApiRequest : String {
     case salesreturn = "/salesreturn"
     case retaildrawercashoutmetadata = "entity/retaildrawercashout/metadata"
     case token = "notification/token/ios"
-    case notifications = "/entity/notifications"
-    case notificationList = "/entity/notification"
-    case notificationsReadAll = "/notification/readall"
-    case notificationRead = "/notification/read"
+//    case notifications = "/entity/notifications"
+    case notificationList = "/notification"
+    case notificationsReadAll = "/notification/markasreadall"
+    case notificationRead = "/notification/{id}/markasread"
     case notificationSubscription = "/notification/subscription"
 }
 

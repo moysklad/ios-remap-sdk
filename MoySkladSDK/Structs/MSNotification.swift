@@ -59,7 +59,6 @@ public class BaseNotification: MSNotificationable, Decodable {
     }
 }
 
-
 public struct MSNotificationTask: Decodable {
     public let name: String
     public let id: String? // id нет, когда задачу удаляют
@@ -597,7 +596,6 @@ public struct MSNotificationSettings {
         }
     }
     
-    //todo заменить строки на NotificationGroup
     public var keyOrder: Int {
         switch self.key {
         case "customer_order":

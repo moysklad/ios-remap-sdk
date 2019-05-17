@@ -1170,18 +1170,9 @@ public struct DataManager {
     }
     
     public static func sendToken(auth: Auth, fcmToken: String, deviceId: String) -> Observable<Void> {
-
         let body = ["deviceId": deviceId, "token": fcmToken].toJSONType()
         
         return HttpClient.create(.token, auth: auth, urlPathComponents: [], urlParameters: [], body: body)
-            .flatMap { _ -> Observable<Void> in return .empty() }
-    }
-    
-    public static func readNotificationById(auth: Auth, parameters: UrlRequestParameters, notificationId: String) -> Observable<Void> {
-        return HttpClient.update(.notificationRead,
-                                 auth: parameters.auth,
-                                 urlPathComponents: [notificationId],
-                                 urlParameters: parameters.allParameters)
             .flatMap { _ -> Observable<Void> in
                 return .empty()
         }
@@ -1190,7 +1181,8 @@ public struct DataManager {
     public static func readAllNotifications(auth: Auth) -> Observable<Void> {
         return HttpClient.update(.notificationsReadAll, auth: auth)
             .flatMap { _ -> Observable<Void> in
-                return .empty() }
+                return .empty()
+        }
     }
     
     public static func sendNotificationsSettings(auth: Auth, settings: [String: Any]) -> Observable<Void> {

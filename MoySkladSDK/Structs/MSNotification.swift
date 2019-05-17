@@ -26,7 +26,13 @@ public protocol MSNotificationable {
 }
 
 public struct NotificationMeta: Decodable {
-    public let type: NotificationTypes
+    public let type: String
+}
+
+public extension NotificationMeta {
+    var notificationType: NotificationTypes {
+        return NotificationTypes(rawValue: self.type) ?? NotificationTypes.NotificationUnknown
+    }
 }
 
 public class BaseNotification: MSNotificationable, Decodable {
@@ -144,8 +150,43 @@ public enum TaskType: String, Decodable {
     case importer_yml //IMPORTER_YML(1, "xml", "Импорт товаров (Яндекс.Маркет)", true),
     case importer_csv_agent //IMPORTER_CSV_AGENT(3, "xls", "Импорт контрагентов (Excel)", true),
     case importer_csv_customerorder //IMPORTER_CSV_CUSTOMERORDER(5, "xls", "Импорт заказов покупателей (Excel)", true),               // not used
-    // to be continued
-    
+    case importer_csv_purchaseorder //IMPORTER_CSV_PURCHASEORDER(6, "xls", "Импорт заказов поставщикам (Excel)", true),               // not used
+    case importer_csv_pricelist //IMPORTER_CSV_PRICELIST(7, "xls", "Импорт прайс-листов (Excel)", true),
+    case importer_ms_xml //IMPORTER_MS_XML(8, "xml", "Импорт данных МойСклад XML (XML)", true),                            // not used
+    case export_csv_good //EXPORT_CSV_GOOD(9, "xlsx", "Экспорт товаров (Excel, старый)", false),
+    case export_csv_agent //EXPORT_CSV_AGENT(10, "xlsx", "Экспорт контрагентов (Excel)", false),
+    case export_ms_xml //EXPORT_MS_XML(11, "xml", "Экспорт данных в МойСклад (XML)", false),                             // not used
+    case export_1c_v2_xml //EXPORT_1C_V2_XML(12, "xml", "Экспорт данных в 1С:Бухгалтерия 2.0 (XML)", false),
+    case export_unisender //EXPORT_UNISENDER(14, "", "Экспорт в UniSender", false),
+    case export_1c_v3_xml //EXPORT_1C_V3_XML(15, "xml", "Экспорт данных в 1С:Бухгалтерия 3.0 (XML)", false),
+    case importer_1c_client_bank //IMPORTER_1C_CLIENT_BANK(16, "txt", "Импорт банковской выписки (1С)", true),
+    case export_subscribepro //EXPORT_SUBSCRIBEPRO(17, "", "Экспорт в Sendsay", false),
+    case export_1c_client_bank //EXPORT_1C_CLIENT_BANK(18, "txt", "Экспорт платежных поручений (1С)", false),
+    case export_alfa_payments //EXPORT_ALFA_PAYMENTS(19, "xml", "Экспорт платежных поручений в Альфа-Банк", false),
+    case import_alfa_payments //IMPORT_ALFA_PAYMENTS(20, "xml", "Выберите платежи для импорта выписки из Альфа-Банка", true),   // not used
+    case import_alfa_payments_request //IMPORT_ALFA_PAYMENTS_REQUEST(21, "xml", "Запрос выписки из Альфа-Банка", true),
+    case import_alfa_payments_save //IMPORT_ALFA_PAYMENTS_SAVE(22, "xml", "Сохранение импортированной выписки", true),
+    case export_tochka_payments //EXPORT_TOCHKA_PAYMENTS(23, "xml", "Экспорт платежей в Точку", false),
+    case import_tochka_payments //IMPORT_TOCHKA_PAYMENTS(24, "xml", "Импорт выписки из Точки", true),
+    case export_modulbank_payments //EXPORT_MODULBANK_PAYMENTS(26, "xml", "Экспорт платежных поручений в Модульбанк", false),
+    case import_modulbank_payments //IMPORT_MODULBANK_PAYMENTS(27, "xml", "Запрос выписки из Модульбанка", true),
+    case export_1c_enterprise_data //EXPORT_1C_ENTERPRISE_DATA(28, "xml", "Экспорт данных в 1С:Бухгалтерия (EnterpriseData)", false),
+    case import_tochka_payments_save //IMPORT_TOCHKA_PAYMENTS_SAVE(29, "xml", "Сохранение импортированной выписки", true),
+    case import_modulbank_payments_save //IMPORT_MODULBANK_PAYMENTS_SAVE(30, "xml", "Сохранение импортированной выписки", true),
+    case export_tinkoff_payments //EXPORT_TINKOFF_PAYMENTS(31, "xml", "Экспорт платежей в Тинькофф Бизнес", false),
+    case import_tinkoff_payments //IMPORT_TINKOFF_PAYMENTS(32, "xml", "Импорт выписки из Тинькофф Бизнес", true),
+    case import_tinkoff_payments_save //IMPORT_TINKOFF_PAYMENTS_SAVE(33, "xml", "Сохранение импортированной выписки", true),
+    case importer_good //IMPORTER_GOOD(34, "xls", "Товары и остатки (Excel)", true),
+    case export_good //EXPORT_GOOD(35, "xlsx", "Экспорт товаров (Excel)", false),
+    case importer_good_in_doc //IMPORTER_GOOD_IN_DOC(36, "xls", "Импорт товаров и услуг (Excel)", true),
+    case import_edo_supply //IMPORT_EDO_SUPPLY(37, "xml", "Импорт приемки (ЭДО)", true),
+    case import_union_company //IMPORT_UNION_COMPANY(38, "", "Объединение контрагентов", true),
+    case import_sberbank_payments_request //IMPORT_SBERBANK_PAYMENTS_REQUEST(39, "xml", "Запрос выписки из Сбербанк Бизнес Онлайн", true),
+    case import_sberbank_payments_save //IMPORT_SBERBANK_PAYMENTS_SAVE(40, "xml", "Сохранение импортированной выписки", true),
+    case import_update_vat_to_20_percents //IMPORT_UPDATE_VAT_TO_20_PERCENTS(41, "", "Переход на НДС 20%", true),
+    case import_custom_entity //IMPORT_CUSTOM_ENTITY(42, "xlsx", "Импорт справочников пользователя (Excel)", true),
+    case export_custom_entity //EXPORT_CUSTOM_ENTITY(43, "xlsx", "Экспорт справочников пользователя (Excel)", false);
+    case unknownTaskType
 }
 
 public enum TaskState: String, Decodable {
@@ -210,7 +251,7 @@ public class TaskNotification: BaseNotification {
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: TaskCodingKeys.self)
-        self.performedBy = try container.decode(MSNotificationUser.self, forKey: .performedBy)
+        self.performedBy = try? container.decode(MSNotificationUser.self, forKey: .performedBy)
         self.task = try container.decode(MSNotificationTask.self, forKey: .task)
         try super.init(from: decoder)
     }
@@ -267,6 +308,8 @@ public class NotificationCustomerOrder: BaseNotification {
     }
 }
 
+public class NotificationUnknown: BaseNotification { }
+
 public class NotificationOrderNew: NotificationCustomerOrder { }
 
 public class NotificationOrderOverdue: NotificationCustomerOrder { }
@@ -288,7 +331,7 @@ public class NotificationInvoiceOutOverdue: BaseNotification {
 public class NotificationDataExchange: BaseNotification {
     public let message: String
     public let errorMessage: String?
-    public let createdDocumentName: String
+    public let createdDocumentName: String?
     /// Тип экспорта
     public let taskType: TaskType
     /// Статус завершения
@@ -306,8 +349,8 @@ public class NotificationDataExchange: BaseNotification {
         let container = try decoder.container(keyedBy: ExportCompletedCodingKeys.self)
         self.message = try container.decode(String.self, forKey: .message)
         self.errorMessage = try? container.decode(String.self, forKey: .errorMessage)
-        self.createdDocumentName = try container.decode(String.self, forKey: .createdDocumentName)
-        self.taskType = try container.decode(TaskType.self, forKey: .taskType)
+        self.createdDocumentName = try? container.decode(String.self, forKey: .createdDocumentName)
+        self.taskType = (try? container.decode(TaskType.self, forKey: .taskType)) ?? TaskType.unknownTaskType
         self.taskState = try container.decode(TaskState.self, forKey: .taskState)
         try super.init(from: decoder)
     }
@@ -408,8 +451,8 @@ public struct MSNotification: Decodable {
             let notification = try notificationsArrayForType.nestedContainer(keyedBy: NotificationsMetaKey.self)
             let meta = try notification.nestedContainer(keyedBy: NotificationTypeKey.self, forKey: .meta)
             
-            let type = try meta.decode(NotificationTypes.self, forKey: .type)
-            print(type.rawValue)
+            let type = (try? meta.decode(NotificationTypes.self, forKey: .type)) ?? NotificationTypes.NotificationUnknown
+            
             switch type {
             case .NotificationExportCompleted:
                 notifications.append(try notificationsArray.decode(NotificationExportCompleted.self))
@@ -451,8 +494,8 @@ public struct MSNotification: Decodable {
                 notifications.append(try notificationsArray.decode(NotificationOrderNew.self))
             case .NotificationOrderOverdue:
                 notifications.append(try notificationsArray.decode(NotificationOrderOverdue.self))
-                
-                // todo добавить обработку нового, неизвестного типа уведомлений
+            case .NotificationUnknown:
+                notifications.append(try notificationsArray.decode(BaseNotification.self))
             }
         }
         self.notifications = notifications
@@ -477,6 +520,7 @@ public enum NotificationGroup: String {
     case call
     /// Остатки
     case stock
+    case noGroup
 }
 
 public enum NotificationTypes: String, Decodable {
@@ -520,6 +564,8 @@ public enum NotificationTypes: String, Decodable {
     case NotificationRetailShiftOpened
     /// Закрыта смена
     case NotificationRetailShiftClosed
+    /// На случай, если от сервера пришёл неизвестный тип
+    case NotificationUnknown
 }
 
 public extension NotificationTypes {
@@ -552,13 +598,15 @@ public extension NotificationTypes {
         case .NotificationRetailShiftOpened,
              .NotificationRetailShiftClosed:
             return .retail
+        case .NotificationUnknown:
+            return .noGroup
         }
     }
 }
 
 extension BaseNotification {
     public var key: String  {
-        return self.meta.type.group.rawValue
+        return self.meta.notificationType.group.rawValue
     }
 }
 
@@ -596,6 +644,7 @@ public struct MSNotificationSettings {
         }
     }
     
+    //todo заменить строки на NotificationGroup
     public var keyOrder: Int {
         switch self.key {
         case "customer_order":

@@ -308,8 +308,6 @@ public class NotificationCustomerOrder: BaseNotification {
     }
 }
 
-public class NotificationUnknown: BaseNotification { }
-
 public class NotificationOrderNew: NotificationCustomerOrder { }
 
 public class NotificationOrderOverdue: NotificationCustomerOrder { }

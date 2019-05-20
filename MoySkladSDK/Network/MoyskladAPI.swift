@@ -238,7 +238,16 @@ final class HttpClient {
             configuration: configuration,
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: serverTrustPolicies)
         )
-        
+        result.delegate.taskWillPerformHTTPRedirection = { session, task, response, request -> URLRequest? in
+            var redirectedRequest = request
+            if let originalRequest = task.originalRequest,
+                let headers = originalRequest.allHTTPHeaderFields,
+                let authorizationHeaderValue = headers["Authorization"]
+            {
+                redirectedRequest.setValue(authorizationHeaderValue, forHTTPHeaderField: "Authorization")
+            }
+            return redirectedRequest
+        }
         result.delegate.sessionDidReceiveChallenge = { session, challenge in
             var disposition: URLSession.AuthChallengeDisposition = .performDefaultHandling
             var credential: URLCredential?
@@ -347,9 +356,6 @@ final class HttpClient {
     
     static func resultCreateFromHeader(_ router: HttpRouter) -> Observable<Dictionary<String,String>?> {
         return Observable.create { observer -> Disposable in
-            manager.delegate.taskWillPerformHTTPRedirection = { (URLSession, URLSessionTask, HTTPURLResponse, URLRequest) -> URLRequest? in
-                return nil
-            }
             #if DEBUG
                 let request = manager.request(router).debugLog()
             #else

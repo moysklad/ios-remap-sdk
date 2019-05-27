@@ -198,6 +198,7 @@ public enum TaskState: String, Decodable {
     case completed // COMPLETED=Задача завершена
     case interrupted_by_timeout // INTERRUPTED_BY_TIMEOUT=Задача отменена по таймауту
     case interrupted_by_system // INTERRUPTED_BY_SYSTEM=Задача отменена сервисом
+    case unknownState
 }
 
 public struct MSNotificationRetailShift: Decodable {
@@ -327,7 +328,7 @@ public class NotificationInvoiceOutOverdue: BaseNotification {
 }
 
 public class NotificationDataExchange: BaseNotification {
-    public let message: String
+    public let message: String? 
     public let errorMessage: String?
     public let createdDocumentName: String?
     /// Тип экспорта
@@ -345,11 +346,11 @@ public class NotificationDataExchange: BaseNotification {
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: ExportCompletedCodingKeys.self)
-        self.message = try container.decode(String.self, forKey: .message)
+        self.message = try? container.decode(String.self, forKey: .message)
         self.errorMessage = try? container.decode(String.self, forKey: .errorMessage)
         self.createdDocumentName = try? container.decode(String.self, forKey: .createdDocumentName)
         self.taskType = (try? container.decode(TaskType.self, forKey: .taskType)) ?? TaskType.unknownTaskType
-        self.taskState = try container.decode(TaskState.self, forKey: .taskState)
+        self.taskState = (try? container.decode(TaskState.self, forKey: .taskState)) ?? TaskState.unknownState
         try super.init(from: decoder)
     }
 }

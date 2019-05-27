@@ -463,50 +463,56 @@ public struct MSNotification: Decodable {
             let meta = try notification.nestedContainer(keyedBy: NotificationTypeKey.self, forKey: .meta)
             
             let type = (try? meta.decode(NotificationTypes.self, forKey: .type)) ?? NotificationTypes.NotificationUnknown
-            
-            switch type {
-            case .NotificationExportCompleted:
-                notifications.append(try notificationsArray.decode(NotificationExportCompleted.self))
-            case .NotificationImportCompleted:
-                notifications.append(try notificationsArray.decode(NotificationImportCompleted.self))
-            case .NotificationGoodCountTooLow:
-                notifications.append(try notificationsArray.decode(NotificationGoodCountTooLow.self))
-            case .NotificationInvoiceOutOverdue:
-                notifications.append(try notificationsArray.decode(NotificationInvoiceOutOverdue.self))
-            case .NotificationSubscribeExpired:
-                notifications.append(try notificationsArray.decode(NotificationSubscribeExpired.self))
-            case .NotificationSubscribeTermsExpired:
-                notifications.append(try notificationsArray.decode(NotificationSubscribeTermsExpired.self))
-            case .NotificationTaskAssigned:
-                notifications.append(try notificationsArray.decode(NotificationTaskAssigned.self))
-            case .NotificationTaskUnassigned:
-                notifications.append(try notificationsArray.decode(NotificationTaskUnassigned.self))
-            case .NotificationTaskOverdue:
-                notifications.append(try notificationsArray.decode(NotificationTaskOverdue.self))
-            case .NotificationTaskCompleted:
-                notifications.append(try notificationsArray.decode(NotificationTaskCompleted.self))
-            case .NotificationTaskReopened:
-                notifications.append(try notificationsArray.decode(NotificationTaskReopened.self))
-            case .NotificationTaskNewComment:
-                notifications.append(try notificationsArray.decode(NotificationTaskNewComment.self))
-            case .NotificationTaskChanged:
-                notifications.append(try notificationsArray.decode(NotificationTaskChanged.self))
-            case .NotificationTaskDeleted:
-                notifications.append(try notificationsArray.decode(NotificationTaskDeleted.self))
-            case .NotificationTaskCommentDeleted:
-                notifications.append(try notificationsArray.decode(NotificationTaskCommentDeleted.self))
-            case .NotificationTaskCommentChanged:
-                notifications.append(try notificationsArray.decode(NotificationTaskCommentChanged.self))
-            case .NotificationRetailShiftOpened:
-                notifications.append(try notificationsArray.decode(NotificationRetailShiftOpened.self))
-            case .NotificationRetailShiftClosed:
-                notifications.append(try notificationsArray.decode(NotificationRetailShiftClosed.self))
-            case .NotificationOrderNew:
-                notifications.append(try notificationsArray.decode(NotificationOrderNew.self))
-            case .NotificationOrderOverdue:
-                notifications.append(try notificationsArray.decode(NotificationOrderOverdue.self))
-            case .NotificationUnknown:
-                notifications.append(try notificationsArray.decode(BaseNotification.self))
+            do {
+                switch type {
+                case .NotificationExportCompleted:
+                    notifications.append(try notificationsArray.decode(NotificationExportCompleted.self))
+                case .NotificationImportCompleted:
+                    notifications.append(try notificationsArray.decode(NotificationImportCompleted.self))
+                case .NotificationGoodCountTooLow:
+                    notifications.append(try notificationsArray.decode(NotificationGoodCountTooLow.self))
+                case .NotificationInvoiceOutOverdue:
+                    notifications.append(try notificationsArray.decode(NotificationInvoiceOutOverdue.self))
+                case .NotificationSubscribeExpired:
+                    notifications.append(try notificationsArray.decode(NotificationSubscribeExpired.self))
+                case .NotificationSubscribeTermsExpired:
+                    notifications.append(try notificationsArray.decode(NotificationSubscribeTermsExpired.self))
+                case .NotificationTaskAssigned:
+                    notifications.append(try notificationsArray.decode(NotificationTaskAssigned.self))
+                case .NotificationTaskUnassigned:
+                    notifications.append(try notificationsArray.decode(NotificationTaskUnassigned.self))
+                case .NotificationTaskOverdue:
+                    notifications.append(try notificationsArray.decode(NotificationTaskOverdue.self))
+                case .NotificationTaskCompleted:
+                    notifications.append(try notificationsArray.decode(NotificationTaskCompleted.self))
+                case .NotificationTaskReopened:
+                    notifications.append(try notificationsArray.decode(NotificationTaskReopened.self))
+                case .NotificationTaskNewComment:
+                    notifications.append(try notificationsArray.decode(NotificationTaskNewComment.self))
+                case .NotificationTaskChanged:
+                    notifications.append(try notificationsArray.decode(NotificationTaskChanged.self))
+                case .NotificationTaskDeleted:
+                    notifications.append(try notificationsArray.decode(NotificationTaskDeleted.self))
+                case .NotificationTaskCommentDeleted:
+                    notifications.append(try notificationsArray.decode(NotificationTaskCommentDeleted.self))
+                case .NotificationTaskCommentChanged:
+                    notifications.append(try notificationsArray.decode(NotificationTaskCommentChanged.self))
+                case .NotificationRetailShiftOpened:
+                    notifications.append(try notificationsArray.decode(NotificationRetailShiftOpened.self))
+                case .NotificationRetailShiftClosed:
+                    notifications.append(try notificationsArray.decode(NotificationRetailShiftClosed.self))
+                case .NotificationOrderNew:
+                    notifications.append(try notificationsArray.decode(NotificationOrderNew.self))
+                case .NotificationOrderOverdue:
+                    notifications.append(try notificationsArray.decode(NotificationOrderOverdue.self))
+                case .NotificationUnknown:
+                    notifications.append(try notificationsArray.decode(BaseNotification.self))
+                }
+            } catch {
+                // just skip the notification if we could not parse it
+                _ = try notificationsArray.decode(BaseNotification.self)
+                
+                // todo add request to crashlytics with type of incorrect notification
             }
         }
         self.notifications = notifications

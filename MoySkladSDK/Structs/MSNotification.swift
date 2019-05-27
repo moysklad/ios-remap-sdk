@@ -384,7 +384,19 @@ public class NotificationCall: BaseNotification { }
 
 public class NotificationSubscribeExpired: NotificationCall { }
 
-public class NotificationSubscribeTermsExpired: NotificationCall { }
+public class NotificationSubscribeTermsExpired: NotificationCall {
+    public let daysLeft: Int
+    
+    enum SubscribeTermsCodingKeys: String, CodingKey {
+        case daysLeft
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: SubscribeTermsCodingKeys.self)
+        self.daysLeft = try container.decode(Int.self, forKey: .daysLeft)
+        try super.init(from: decoder)
+    }
+}
 
 public class NotificationRetail: BaseNotification {
     public let user: MSNotificationUser

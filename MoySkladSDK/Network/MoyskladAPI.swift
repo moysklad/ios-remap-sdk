@@ -239,6 +239,14 @@ final class HttpClient {
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: serverTrustPolicies)
         )
         result.delegate.taskWillPerformHTTPRedirection = { session, task, response, request -> URLRequest? in
+            /**
+                for printing documents we should turn redirect off
+                but for notifications we should conform redirects with Authorization header
+                printing uses statusCode 303 for redirect.
+                notifications use statusCode 308 for redirect.
+                so we just turn it off for code 303
+            */
+            guard response.statusCode != 303 else { return nil }
             var redirectedRequest = request
             if let originalRequest = task.originalRequest,
                 let headers = originalRequest.allHTTPHeaderFields,

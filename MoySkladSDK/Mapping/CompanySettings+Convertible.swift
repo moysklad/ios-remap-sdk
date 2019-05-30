@@ -60,14 +60,12 @@ extension MSCurrency : DictConvertable {
         
         let rate: Double = {
             // если валюта с обратным курсом, то конвертируем в "обычный"
+            guard let rate: Double = dict.value("rate"), rate > 0 else { return 0 }
+            guard let multiplicity: Double = dict.value("multiplicity") else { return 0 }
             if dict.value("indirect") == true {
-                guard let rate: Double = dict.value("rate"), rate > 0 else { return 0 }
-                
-                guard let multiplicity: Double = dict.value("multiplicity") else { return 0 }
-                
                 return NSDecimalNumber.one.dividing(by: NSDecimalNumber(value: rate)).multiplying(by: NSDecimalNumber(value: multiplicity)).doubleValue
             } else {
-                return dict.value("rate") ?? 0
+                return NSDecimalNumber(value: rate).dividing(by: NSDecimalNumber(value: multiplicity)).doubleValue
             }
         }()
         

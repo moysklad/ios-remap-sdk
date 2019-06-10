@@ -10,11 +10,11 @@ import Foundation
 import RxSwift
 
 extension HttpClient {
-    static func register(email: String) -> Observable<JSONType?> {
+    static func register(email: String, phone: String) -> Observable<JSONType?> {
         let router = HttpRouter.create(apiRequest: .register,
                                        method: .post,
                                        contentType: .formUrlencoded,
-                                       httpBody: ["email": email, "source": "msappstore"].toJSONType())
+                                       httpBody: ["email": email, "phone": phone, "source": "msappstore"].toJSONType())
         return resultCreate(router)
     }
     

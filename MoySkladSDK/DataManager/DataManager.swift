@@ -137,7 +137,7 @@ public struct DataManager {
      - parameter email: Email for new account
      - returns: Registration information
      */
-    public static func register(email: String, phone: String) -> Observable<MSRegistrationResult> {
+    public static func register(email: String, phone: String?) -> Observable<MSRegistrationResult> {
         return HttpClient.register(email: email, phone: phone).flatMapLatest { result -> Observable<MSRegistrationResult> in
             guard let result = result?.toDictionary() else {
                 return  Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectRegistrationResponse.value))

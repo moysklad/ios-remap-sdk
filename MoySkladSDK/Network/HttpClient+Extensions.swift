@@ -12,7 +12,7 @@ import RxSwift
 extension HttpClient {
     static func register(email: String, phone: String?) -> Observable<JSONType?> {
         var dictionary: Dictionary<String, Any> = ["email": email, "source": "msappstore"]
-        if let phoneParam = phone, phoneParam != "" {
+        if let phoneParam = phone, !phoneParam.isEmpty {
             dictionary["phone"] = phoneParam
         }
         let router = HttpRouter.create(apiRequest: .register,

@@ -79,7 +79,8 @@ public struct MSNotificationUser: Decodable {
 public struct MSNotificationOrder: Decodable {
     public let id: String
     public let deliveryPlannedMoment: String?
-    public let sum: String
+//    commented because of task https://lognex.atlassian.net/browse/MI-2145
+//    public let sum: String
     public let agentName: String
     public let name: String
     let typeString: String
@@ -89,7 +90,8 @@ public struct MSNotificationOrder: Decodable {
     }
     
     enum OrderCodingKeys: String, CodingKey {
-        case id, name, deliveryPlannedMoment, sum, agentName, meta
+//        case id, name, deliveryPlannedMoment, sum, agentName, meta
+        case id, name, deliveryPlannedMoment, agentName, meta
     }
     
     public init(from decoder: Decoder) throws {
@@ -97,7 +99,7 @@ public struct MSNotificationOrder: Decodable {
         self.id = try container.decode(String.self, forKey: .id)
         self.name = try container.decode(String.self, forKey: .name)
         self.deliveryPlannedMoment = try? container.decode(String.self, forKey: .deliveryPlannedMoment)
-        self.sum = try container.decode(String.self, forKey: .sum)
+//        self.sum = try container.decode(String.self, forKey: .sum)
         self.agentName = try container.decode(String.self, forKey: .agentName)
         let metaContainer = try container.nestedContainer(keyedBy: MetaTypeCodingKey.self, forKey: .meta)
         self.typeString = try metaContainer.decode(String.self, forKey: .type)
@@ -114,7 +116,8 @@ public struct MSNotificationInvoice: Decodable {
     public let id: String
     public let name: String
     public let paymentPlannedMoment: String
-    public let sum: String
+//    commented because of task https://lognex.atlassian.net/browse/MI-2145
+//    public let sum: String
     public let agentName: String
     let typeString: String
 
@@ -123,7 +126,8 @@ public struct MSNotificationInvoice: Decodable {
     }
     
     enum InvoiceCodingKeys: String, CodingKey {
-        case id, name, paymentPlannedMoment, sum, agentName, meta
+//        case id, name, paymentPlannedMoment, sum, agentName, meta
+        case id, name, paymentPlannedMoment, agentName, meta
     }
     
     public init(from decoder: Decoder) throws {
@@ -131,7 +135,7 @@ public struct MSNotificationInvoice: Decodable {
         self.id = try container.decode(String.self, forKey: .id)
         self.name = try container.decode(String.self, forKey: .name)
         self.paymentPlannedMoment = try container.decode(String.self, forKey: .paymentPlannedMoment)
-        self.sum = try container.decode(String.self, forKey: .sum)
+//        self.sum = try container.decode(String.self, forKey: .sum)
         self.agentName = try container.decode(String.self, forKey: .agentName)
         let metaContainer = try container.nestedContainer(keyedBy: MetaTypeCodingKey.self, forKey: .meta)
         self.typeString = try metaContainer.decode(String.self, forKey: .type)
@@ -206,7 +210,8 @@ public struct MSNotificationRetailShift: Decodable {
     public let name: String
     public let open: String
     public let close: String?
-    public let proceed: String
+//    commented because of task https://lognex.atlassian.net/browse/MI-2145
+//    public let proceed: String
 }
 
 public struct MSNotificationGoods: Decodable {
@@ -510,9 +515,8 @@ public struct MSNotification: Decodable {
                 }
             } catch {
                 // just skip the notification if we could not parse it
-                _ = try notificationsArray.decode(BaseNotification.self)
-                
-                // todo add request to crashlytics with type of incorrect notification
+                let badNotification = try notificationsArray.decode(BaseNotification.self)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "didReceiveBadNotification"), object: badNotification)
             }
         }
         self.notifications = notifications

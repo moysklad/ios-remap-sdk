@@ -104,6 +104,7 @@
 "incorrectRetailDrawerCashOutResponse" = "Неизвестный ответ на запрос выплат денег";
 "incorrectRetailDrawerCashOutMetadataResponse" = "Неизвестный ответ на запрос метаданных для выплат денег";
 "incorrectRetailShiftAssortmentReportResponse" = "Неизвестный ответ при запросе отчета по товарам в точке продаж";
+"incorrecNotificationParsingResult" = "Некорректный парсинг нотификации";
 
 "assignedTask" = "%@ назначил вам задачу\n%@";
 "changedTask" = "%@ изменил задачу\n%@\n";

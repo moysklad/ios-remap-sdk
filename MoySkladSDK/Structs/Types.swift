@@ -169,8 +169,8 @@ public enum MSPushObjectType: String {
     case service
     case imports = "import"
     case export
-    case invoicein = "invoice_in"
-    case invoiceout = "invoice_out"
+    case invoicein
+    case invoiceout
     case good
     case defaultNotification
     

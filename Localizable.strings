@@ -145,3 +145,6 @@
 "minutePlu" = "минут";
 "minuteNom" = "минута";
 "minuteGen" = "минуты";
+
+"buyPrice" = "Цена закупки";
+"rub" = "Руб";

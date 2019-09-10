@@ -27,8 +27,8 @@ extension MSCompanySettings : DictConvertable {
         
         let currency: MSCurrency = {
             guard let cur = MSCurrency.from(dict: dict.msValue("currency"))?.value() else {
-                return MSCurrency(meta: MSMeta(name: "Руб", href: "", type: .currency),
-                                  name: "Руб",
+                return MSCurrency(meta: MSMeta(name: LocalizedStrings.rub.value, href: "", type: .currency),
+                                  name: LocalizedStrings.rub.value,
                                   rate: 0,
                                   code: nil,
                                   isoCode: nil,

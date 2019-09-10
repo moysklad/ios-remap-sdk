@@ -32,7 +32,7 @@ extension MSAssortment {
 		             uom: MSUOM.from(dict: dict.msValue("uom")),
 		             image: MSImage.from(dict: dict.msValue("image")),
 		             minPrice: (dict.value("minPrice") ?? 0.0).toMoney(),
-		             buyPrice: MSPrice.from(dict: dict.msValue("buyPrice"), priceTypeOverride: "Цена закупки"), //LocalizedStrings.buyPrice.value),
+		             buyPrice: MSPrice.from(dict: dict.msValue("buyPrice"), priceTypeOverride: LocalizedStrings.buyPrice.value),
 		             salePrices: (dict["salePrices"] as? [Any] ?? []).map { MSPrice.from(dict: $0 as? Dictionary<String, Any> ?? [:]) }.compactMap { $0 },
 		             supplier: MSAgent.from(dict: dict.msValue("supplier")),
 		             country: MSCountry.from(dict: dict.msValue("country")),

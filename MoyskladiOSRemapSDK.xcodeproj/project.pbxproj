@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		350C0EBB21CCF9B700377463 /* MSNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350C0EBA21CCF9B700377463 /* MSNotification.swift */; };
 		359ECCE9221D88A5006CCE1C /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359ECCE8221D88A5006CCE1C /* Functions.swift */; };
+		35A63549232B867F0016F941 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 35A6354B232B867F0016F941 /* Localizable.strings */; };
 		55C05BF61E028F24008F4254 /* MoyskladiOSRemapSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C05BEC1E028F24008F4254 /* MoyskladiOSRemapSDK.framework */; };
 		55C05BFD1E028F24008F4254 /* MoyskaldStructs.h in Headers */ = {isa = PBXBuildFile; fileRef = 55C05BEF1E028F24008F4254 /* MoyskaldStructs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55C05C3F1E028F9B008F4254 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C071E028F9B008F4254 /* Extensions.swift */; };
@@ -88,7 +89,6 @@
 		6E75A1E61EA8A3D200A05A83 /* DataManager+Load.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1E11EA8A3D200A05A83 /* DataManager+Load.swift */; };
 		6E75A1E71EA8A3D200A05A83 /* DataManager+Delete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1E21EA8A3D200A05A83 /* DataManager+Delete.swift */; };
 		6E75A1E81EA8A3D200A05A83 /* DataManager+Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1E31EA8A3D200A05A83 /* DataManager+Update.swift */; };
-		6E75A1EA1EA8A84900A05A83 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6E75A1E91EA8A84900A05A83 /* Localizable.strings */; };
 		6E75A1EC1EA8A88C00A05A83 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1EB1EA8A88C00A05A83 /* Localization.swift */; };
 		6E75A1EE1EA8AA0100A05A83 /* MSGeneralDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1ED1EA8AA0100A05A83 /* MSGeneralDocument.swift */; };
 		6E966D802015FCA400028A12 /* ObjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E966D7F2015FCA400028A12 /* ObjectManager.swift */; };
@@ -158,6 +158,8 @@
 /* Begin PBXFileReference section */
 		350C0EBA21CCF9B700377463 /* MSNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSNotification.swift; sourceTree = "<group>"; };
 		359ECCE8221D88A5006CCE1C /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
+		35A6354A232B867F0016F941 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		35A6354C232B86C30016F941 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55C05BEC1E028F24008F4254 /* MoyskladiOSRemapSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoyskladiOSRemapSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		55C05BEF1E028F24008F4254 /* MoyskaldStructs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoyskaldStructs.h; sourceTree = "<group>"; };
 		55C05BF01E028F24008F4254 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -240,7 +242,6 @@
 		6E75A1E11EA8A3D200A05A83 /* DataManager+Load.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataManager+Load.swift"; sourceTree = "<group>"; };
 		6E75A1E21EA8A3D200A05A83 /* DataManager+Delete.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataManager+Delete.swift"; sourceTree = "<group>"; };
 		6E75A1E31EA8A3D200A05A83 /* DataManager+Update.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataManager+Update.swift"; sourceTree = "<group>"; };
-		6E75A1E91EA8A84900A05A83 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		6E75A1EB1EA8A88C00A05A83 /* Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		6E75A1ED1EA8AA0100A05A83 /* MSGeneralDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSGeneralDocument.swift; sourceTree = "<group>"; };
 		6E966D7F2015FCA400028A12 /* ObjectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectManager.swift; sourceTree = "<group>"; };
@@ -321,7 +322,7 @@
 		55C05BE21E028F24008F4254 = {
 			isa = PBXGroup;
 			children = (
-				6E75A1E91EA8A84900A05A83 /* Localizable.strings */,
+				35A6354B232B867F0016F941 /* Localizable.strings */,
 				55C05BEE1E028F24008F4254 /* MoySkladSDK */,
 				55C05BF91E028F24008F4254 /* MoyskaldStructsTests */,
 				55C05BED1E028F24008F4254 /* Products */,
@@ -655,6 +656,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 55C05BE21E028F24008F4254;
 			productRefGroup = 55C05BED1E028F24008F4254 /* Products */;
@@ -672,7 +674,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E75A1EA1EA8A84900A05A83 /* Localizable.strings in Resources */,
+				35A63549232B867F0016F941 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -840,6 +842,18 @@
 			targetProxy = 55C05BF71E028F24008F4254 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		35A6354B232B867F0016F941 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				35A6354A232B867F0016F941 /* en */,
+				35A6354C232B86C30016F941 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		55C05BFE1E028F24008F4254 /* Debug */ = {

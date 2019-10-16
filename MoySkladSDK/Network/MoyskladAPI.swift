@@ -101,7 +101,11 @@ public struct Auth {
 public enum MSApiRequest : String {
     static var baseUrl: URL {
         guard let url = URL(string: "https://\(UserDefaults.standard.moySkladHost)/api/remap/1.1") else {
-            return URL(string: "https://online.moysklad.ru/api/remap/1.1")!
+            #if US
+                return URL(string: "https://app.mystorehq.com/api/remap/1.1")!
+            #else
+                return URL(string: "https://online.moysklad.ru/api/remap/1.1")!
+            #endif
         }
         return url
     }
@@ -226,14 +230,15 @@ final class HttpClient {
     static let manager: Alamofire.SessionManager = {
         
         let serverTrustPolicies: [String: ServerTrustPolicy] = [
-            "online.moysklad.ru": .disableEvaluation
+            "online.moysklad.ru": .disableEvaluation,
+            "app.mystorehq.com": .disableEvaluation
         ]
         
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = Alamofire.SessionManager.defaultHTTPHeaders
         configuration.requestCachePolicy = .reloadIgnoringCacheData
         configuration.urlCache = nil
-        
+  
         let result = Alamofire.SessionManager(
             configuration: configuration,
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: serverTrustPolicies)

@@ -215,7 +215,14 @@ extension MSProject: MSRequestEntity {
 extension UserDefaults {
     var moySkladHost: String {
         get {
-            guard let host = string(forKey: "moySkladHost") else { return "online.moysklad.ru" }
+            guard let host = string(forKey: "moySkladHost") else {
+                #if US
+                    return "app.mystorehq.com"
+                #else
+                    return "online.moysklad.ru"
+                #endif
+                
+            }
             return host
         }
         set {

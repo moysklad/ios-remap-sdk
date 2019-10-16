@@ -228,11 +228,15 @@ final class HttpClient {
     //static let responseQueue = DispatchQueue(label: "HttpClient.ResponseQueue", qos: .utility)
     
     static let manager: Alamofire.SessionManager = {
-        
-        let serverTrustPolicies: [String: ServerTrustPolicy] = [
-            "online.moysklad.ru": .disableEvaluation,
-            "app.mystorehq.com": .disableEvaluation
-        ]
+        #if US
+            let serverTrustPolicies: [String: ServerTrustPolicy] = [
+                "app.mystorehq.com": .disableEvaluation
+            ]
+        #else
+            let serverTrustPolicies: [String: ServerTrustPolicy] = [
+                "online.moysklad.ru": .disableEvaluation
+            ]
+        #endif
         
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = Alamofire.SessionManager.defaultHTTPHeaders

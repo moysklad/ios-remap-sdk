@@ -101,11 +101,13 @@ public struct Auth {
 public enum MSApiRequest : String {
     static var baseUrl: URL {
         guard let url = URL(string: "https://\(UserDefaults.standard.moySkladHost)/api/remap/1.1") else {
-            #if US
-                return URL(string: "https://app.mystorehq.com/api/remap/1.1")!
-            #else
-                return URL(string: "https://online.moysklad.ru/api/remap/1.1")!
-            #endif
+            
+            var urlString = URL(string: "https://online.moysklad.ru/api/remap/1.1")!
+            
+            if UserDefaults.standard.moySkladHost == "app.mystorehq.com" {
+                urlString = URL(string: "https://app.mystorehq.com/api/remap/1.1")!
+            }
+            return urlString
         }
         return url
     }
@@ -228,15 +230,10 @@ final class HttpClient {
     //static let responseQueue = DispatchQueue(label: "HttpClient.ResponseQueue", qos: .utility)
     
     static let manager: Alamofire.SessionManager = {
-        #if US
-            let serverTrustPolicies: [String: ServerTrustPolicy] = [
-                "app.mystorehq.com": .disableEvaluation
-            ]
-        #else
-            let serverTrustPolicies: [String: ServerTrustPolicy] = [
-                "online.moysklad.ru": .disableEvaluation
-            ]
-        #endif
+        
+        let serverTrustPolicies: [String: ServerTrustPolicy] = [
+            UserDefaults.standard.moySkladHost: .disableEvaluation
+        ]
 
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = Alamofire.SessionManager.defaultHTTPHeaders

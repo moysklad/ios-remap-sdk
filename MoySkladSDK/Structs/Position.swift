@@ -18,7 +18,7 @@ public class MSPosition : Metable {
     public var shipped: Double
 	public var price : Money
 	public var discount : Double
-	public var vat : Int
+	public var vat : Double
     public var gtd : String?
     public var country: MSEntity<MSCountry>?
     public var inTransit: Double
@@ -29,21 +29,21 @@ public class MSPosition : Metable {
     public var cost: Money
     
     public init(meta : MSMeta,
-    id : MSID,
-    assortment : MSEntity<MSAssortment>,
-    quantity : Double,
-    reserve: Double,
-    shipped: Double,
-    price : Money,
-    discount : Double,
-    vat : Int,
-    gtd : String?,
-    country : MSEntity<MSCountry>?,
-    inTransit: Double,
-    correctionAmount: Double,
-    calculatedQuantity: Double,
-    correctionSum: Double,
-    cost: Money) {
+                id : MSID,
+                assortment : MSEntity<MSAssortment>,
+                quantity : Double,
+                reserve: Double,
+                shipped: Double,
+                price : Money,
+                discount : Double,
+                vat : Double,
+                gtd : String?,
+                country : MSEntity<MSCountry>?,
+                inTransit: Double,
+                correctionAmount: Double,
+                calculatedQuantity: Double,
+                correctionSum: Double,
+                cost: Money) {
         self.meta = meta
         self.id = id
         self.assortment = assortment

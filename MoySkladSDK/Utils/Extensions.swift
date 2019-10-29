@@ -277,7 +277,7 @@ public extension Date {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
 //        formatter.locale = Locale(identifier: "ru_RU")
-//        formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
+        formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
         
         return formatter
     }()

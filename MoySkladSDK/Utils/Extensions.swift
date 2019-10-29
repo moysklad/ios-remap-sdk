@@ -276,7 +276,7 @@ public extension Date {
     static var msDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-//        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.locale = Locale(identifier: "ru_RU")
         formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
         
         return formatter

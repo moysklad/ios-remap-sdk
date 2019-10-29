@@ -136,15 +136,5 @@
 
 "objectNotFound" = "Object is not found";
 
-"formatedDay1" = "day";
-"formatedDay2" = "day";
-"formatedDay3" = "days";
-"formatedHour1" = "hour";
-"formatedHour2" = "hour";
-"formatedHour3" = "hours";
-"minutePlu" = "minute";
-"minuteNom" = "minute";
-"minuteGen" = "minutes";
-
 "buyPrice" = "Purchase Price";
 "rub" = "rub";

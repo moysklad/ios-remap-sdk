@@ -708,8 +708,7 @@ public struct MSNotificationSettings {
             }
             if string.count == 0 {
                 string.append(localString)
-            }
-            else {
+            } else {
                 if !localString.isEmpty {
                     string.append(", " + localString)
                 }

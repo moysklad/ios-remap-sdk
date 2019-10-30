@@ -156,4 +156,3 @@ extension ObjectManager: Collection {
     
     public subscript(index: Int) -> Element { get { return filtered[index] } }
 }
-

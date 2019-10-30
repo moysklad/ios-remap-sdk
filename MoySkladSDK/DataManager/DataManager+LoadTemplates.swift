@@ -42,7 +42,7 @@ extension DataManager {
      - parameter meta: Document template metadata
      - returns: Observable sequence with http link to PDF document
      */
-    public static func documentFromTemplate(forDocument documentType: MSDocumentType, parameters: UrlRequestParameters,  id: String, meta: MSMeta) -> Observable<String> {
+    public static func documentFromTemplate(forDocument documentType: MSDocumentType, parameters: UrlRequestParameters, id: String, meta: MSMeta) -> Observable<String> {
         let urlPathComponents: [String] = [id, "export"]
         var body = meta.dictionaryForTemplate()
         body["extension"] = "pdf"

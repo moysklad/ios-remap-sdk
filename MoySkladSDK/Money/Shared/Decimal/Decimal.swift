@@ -174,5 +174,3 @@ CodingProtocol{
         aCoder.encode(value.storage, forKey: "storage")
     }
 }
-
-

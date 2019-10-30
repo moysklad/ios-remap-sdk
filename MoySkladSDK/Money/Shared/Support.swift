@@ -41,4 +41,3 @@ extension Int /*: Boolean*/ {
         self = val ? 1 : 0
     }
 }
-

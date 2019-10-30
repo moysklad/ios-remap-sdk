@@ -518,6 +518,3 @@ public func /<T, V>(lhs: T, rhs: V) -> V where
 public func %<T: DecimalNumberType>(lhs: T, rhs: T) -> T {
     return lhs.remainder(of: rhs)
 }
-
-
-

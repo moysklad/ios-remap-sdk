@@ -31,7 +31,7 @@ class LoginViewController: UIViewController {
     }
     
     private func validateForm(fields: [UITextField]) -> Bool {
-        var isValid = true;
+        var isValid = true
         
         for field in fields {
             if var value = field.text {
@@ -80,4 +80,3 @@ class LoginViewController: UIViewController {
         }
     }
 }
-

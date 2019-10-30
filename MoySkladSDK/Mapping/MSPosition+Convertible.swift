@@ -43,4 +43,3 @@ extension MSPosition : DictConvertable {
                                           cost: (dict.value("cost") ?? 0.0).toMoney()))
     }
 }
-

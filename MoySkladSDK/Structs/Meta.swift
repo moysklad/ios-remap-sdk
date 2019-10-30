@@ -98,4 +98,3 @@ public struct MSRegistrationResult {
         self.accountName = accountName
     }
 }
-

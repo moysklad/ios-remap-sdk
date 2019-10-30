@@ -1,4 +1,4 @@
- //
+//
 //  Bitcoin.swift
 //  Money
 //
@@ -96,5 +96,3 @@ public typealias XBT = _Money<Currency.XBT>
 
 /// The most commonly used Bitcoin MoneyType
 public typealias BTC = _Money<Currency.BTC>
-
-

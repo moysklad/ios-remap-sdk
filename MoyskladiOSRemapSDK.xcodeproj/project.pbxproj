@@ -3,12 +3,17 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		350C0EBB21CCF9B700377463 /* MSNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350C0EBA21CCF9B700377463 /* MSNotification.swift */; };
 		35A63549232B867F0016F941 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 35A6354B232B867F0016F941 /* Localizable.strings */; };
+		540E68E12363427100922AAA /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 540E68E02363427100922AAA /* Alamofire */; };
+		540E68E42363428F00922AAA /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 540E68E32363428F00922AAA /* RxSwift */; };
+		540E68E62363428F00922AAA /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 540E68E52363428F00922AAA /* RxRelay */; };
+		540E68E82363428F00922AAA /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 540E68E72363428F00922AAA /* RxCocoa */; };
+		540E68EA2363428F00922AAA /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 540E68E92363428F00922AAA /* RxBlocking */; };
 		55C05BF61E028F24008F4254 /* MoyskladiOSRemapSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C05BEC1E028F24008F4254 /* MoyskladiOSRemapSDK.framework */; };
 		55C05BFD1E028F24008F4254 /* MoyskaldStructs.h in Headers */ = {isa = PBXBuildFile; fileRef = 55C05BEF1E028F24008F4254 /* MoyskaldStructs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55C05C3F1E028F9B008F4254 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C05C071E028F9B008F4254 /* Extensions.swift */; };
@@ -80,8 +85,6 @@
 		6E75A1D41EA89B9E00A05A83 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1CE1EA89B9E00A05A83 /* Filter.swift */; };
 		6E75A1D51EA89B9E00A05A83 /* HttpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1CF1EA89B9E00A05A83 /* HttpRouter.swift */; };
 		6E75A1D61EA89B9E00A05A83 /* OrderBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1D01EA89B9E00A05A83 /* OrderBy.swift */; };
-		6E75A1DA1EA89C0300A05A83 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E75A1D81EA89C0300A05A83 /* RxSwift.framework */; };
-		6E75A1DB1EA89C0300A05A83 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E75A1D91EA89C0300A05A83 /* Alamofire.framework */; };
 		6E75A1DD1EA89C8E00A05A83 /* MSError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1DC1EA89C8E00A05A83 /* MSError.swift */; };
 		6E75A1E41EA8A3D200A05A83 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1DF1EA8A3D200A05A83 /* DataManager.swift */; };
 		6E75A1E51EA8A3D200A05A83 /* DataManager+Create.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75A1E01EA8A3D200A05A83 /* DataManager+Create.swift */; };
@@ -301,8 +304,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E75A1DA1EA89C0300A05A83 /* RxSwift.framework in Frameworks */,
-				6E75A1DB1EA89C0300A05A83 /* Alamofire.framework in Frameworks */,
+				540E68E62363428F00922AAA /* RxRelay in Frameworks */,
+				540E68E42363428F00922AAA /* RxSwift in Frameworks */,
+				540E68E82363428F00922AAA /* RxCocoa in Frameworks */,
+				540E68E12363427100922AAA /* Alamofire in Frameworks */,
+				540E68EA2363428F00922AAA /* RxBlocking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,6 +607,13 @@
 			dependencies = (
 			);
 			name = MoyskladiOSRemapSDK;
+			packageProductDependencies = (
+				540E68E02363427100922AAA /* Alamofire */,
+				540E68E32363428F00922AAA /* RxSwift */,
+				540E68E52363428F00922AAA /* RxRelay */,
+				540E68E72363428F00922AAA /* RxCocoa */,
+				540E68E92363428F00922AAA /* RxBlocking */,
+			);
 			productName = MoyskaldStructs;
 			productReference = 55C05BEC1E028F24008F4254 /* MoyskladiOSRemapSDK.framework */;
 			productType = "com.apple.product-type.framework";
@@ -656,6 +669,10 @@
 				ru,
 			);
 			mainGroup = 55C05BE21E028F24008F4254;
+			packageReferences = (
+				540E68DF2363427100922AAA /* XCRemoteSwiftPackageReference "Alamofire" */,
+				540E68E22363428F00922AAA /* XCRemoteSwiftPackageReference "RxSwift" */,
+			);
 			productRefGroup = 55C05BED1E028F24008F4254 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -963,7 +980,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_SWIFT_FLAGS = "";
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -981,14 +999,15 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/MoySkladSDK/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.lognex.mobile.ios.mistructs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1006,17 +1025,19 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/MoySkladSDK/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.lognex.mobile.ios.mistructs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -1027,7 +1048,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = 62H9AQJX2F;
 				INFOPLIST_FILE = MoyskaldStructsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.lognex.mobile.ios.mistructs.MoyskaldStructsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -1040,7 +1065,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = 62H9AQJX2F;
 				INFOPLIST_FILE = MoyskaldStructsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.lognex.mobile.ios.mistructs.MoyskaldStructsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -1078,6 +1107,53 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		540E68DF2363427100922AAA /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.9.0;
+			};
+		};
+		540E68E22363428F00922AAA /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		540E68E02363427100922AAA /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 540E68DF2363427100922AAA /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		540E68E32363428F00922AAA /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 540E68E22363428F00922AAA /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		540E68E52363428F00922AAA /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 540E68E22363428F00922AAA /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+		540E68E72363428F00922AAA /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 540E68E22363428F00922AAA /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		540E68E92363428F00922AAA /* RxBlocking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 540E68E22363428F00922AAA /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxBlocking;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 55C05BE31E028F24008F4254 /* Project object */;
 }

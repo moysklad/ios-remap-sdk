@@ -16,7 +16,7 @@ public protocol MSNotificationable {
     /// Признак того, было ли Уведомление прочитано
     var isRead: Bool { get }
     /// Дата и время формирования Уведомления
-    var created: String { get }
+    var created: Date { get }
     /// Краткий текст уведомления
     var title: String { get }
     /// Описание уведомления
@@ -39,7 +39,7 @@ public class BaseNotification: MSNotificationable, Decodable {
     public let id: String
     public let accountId: String
     public let isRead: Bool
-    public let created: String
+    public let created: Date
     public let title: String
     public let description: String
     public let meta: NotificationMeta
@@ -59,7 +59,7 @@ public class BaseNotification: MSNotificationable, Decodable {
         self.id = try container.decode(String.self, forKey: .id)
         self.accountId = try container.decode(String.self, forKey: .accountId)
         self.isRead = try container.decode(Bool.self, forKey: .isRead)
-        self.created = try container.decode(String.self, forKey: .created)
+        self.created = try Date.fromMSDate(container.decode(String.self, forKey: .created)) ?? Date()
         self.title = try container.decode(String.self, forKey: .title)
         self.description = try container.decode(String.self, forKey: .description)
     }

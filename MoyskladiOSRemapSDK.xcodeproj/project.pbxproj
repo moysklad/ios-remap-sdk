@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		350C0EBB21CCF9B700377463 /* MSNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350C0EBA21CCF9B700377463 /* MSNotification.swift */; };
-		359ECCE9221D88A5006CCE1C /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359ECCE8221D88A5006CCE1C /* Functions.swift */; };
 		35A63549232B867F0016F941 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 35A6354B232B867F0016F941 /* Localizable.strings */; };
 		55C05BF61E028F24008F4254 /* MoyskladiOSRemapSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C05BEC1E028F24008F4254 /* MoyskladiOSRemapSDK.framework */; };
 		55C05BFD1E028F24008F4254 /* MoyskaldStructs.h in Headers */ = {isa = PBXBuildFile; fileRef = 55C05BEF1E028F24008F4254 /* MoyskaldStructs.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -157,7 +156,6 @@
 
 /* Begin PBXFileReference section */
 		350C0EBA21CCF9B700377463 /* MSNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSNotification.swift; sourceTree = "<group>"; };
-		359ECCE8221D88A5006CCE1C /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		35A6354A232B867F0016F941 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		35A6354C232B86C30016F941 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55C05BEC1E028F24008F4254 /* MoyskladiOSRemapSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoyskladiOSRemapSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -369,7 +367,6 @@
 				6E75A1DC1EA89C8E00A05A83 /* MSError.swift */,
 				6E75A1EB1EA8A88C00A05A83 /* Localization.swift */,
 				6E966D7F2015FCA400028A12 /* ObjectManager.swift */,
-				359ECCE8221D88A5006CCE1C /* Functions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -750,7 +747,6 @@
 				55C05C6B1E028F9B008F4254 /* NSDecimalExtensions.swift in Sources */,
 				6EF37A341F5409830020BD78 /* MSDocument+Convertable.swift in Sources */,
 				95E886E71F31C9C8009C21F2 /* MSRetailShift.swift in Sources */,
-				359ECCE9221D88A5006CCE1C /* Functions.swift in Sources */,
 				6EE617331EB9FA6B00BF3106 /* Agent+Serialize.swift in Sources */,
 				6ED959E21F31AEB20082AB7A /* MSBankSearchResult+Convertable.swift in Sources */,
 				C9564DD21F56B0DD0051E3BE /* MSExpenseItem.swift in Sources */,

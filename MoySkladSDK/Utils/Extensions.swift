@@ -269,114 +269,25 @@ public extension Date {
         return (lastBottom, lastTop)
     }
     
-    func daysTo(date: Date) -> Int {
-        return Calendar.current.dateComponents([.day], from: self, to: date).day ?? 0
-    }
-    
-    func isWithinWeekRange(with date: Date) -> Bool {
-        return daysTo(date: date) <= 6
-    }
-    
-    func isInSameDay(as other: Date) -> Bool {
-        return Calendar.current.isDate(self, inSameDayAs: other)
-    }
-    
-    func isCurrentYear() -> Bool {
-        return Calendar.current.component(.year, from: Date()) == Calendar.current.component(.year, from: self)
-    }
-    
-    func toLongDateName() -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .medium
-        return formatter.string(from: self)
-    }
-    
     func toLongDate() -> String {
         return Date.msDateFormatter.string(from: self)
     }
-    
-    func toShortDate() -> String {
-        return Date.msShortDateFormatter.string(from: self)
-    }
-    
-    func toShortTime() -> String {
-        return Date.msHourAndMinuteFormatter.string(from: self)
-    }
-    
-    func toShortTimeLetters(_ doesRelative: Bool) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .short
-        formatter.doesRelativeDateFormatting = doesRelative
-        return formatter.string(from: self)
-    }
-    
-    static var msShortDateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
-    }()
-    
-    static var msHourAndMinuteFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .none
-        formatter.timeStyle = .short
-        return formatter
-    }()
-    
-    static var msStringToDateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        formatter.locale = Locale(identifier: "ru_RU")
-        return formatter
-    }()
     
     static var msDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         formatter.locale = Locale(identifier: "ru_RU")
         formatter.timeZone = TimeZone(identifier: "Europe/Moscow")
+        
         return formatter
     }()
-    
-    static func fromMSString(_ value: String) -> Date? {
-        guard value.count > 0 else {
-            return nil
-        }
-        return Date.msStringToDateFormatter.date(from: value)
-    }
-    
+
     static func fromMSDate(_ value: String) -> Date? {
         guard value.count > 0 else {
             return nil
         }
         return Date.msDateFormatter.date(from: value)
     }
-    
-    static var msLongDateTimeFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        return formatter
-    }()
-    
-    /// Date format: dd MMMM yyyy HH:mm
-    func toMSLongDateTime() -> String {
-        return Date.msLongDateTimeFormatter.string(from: self)
-    }
-    
-    func toMSLongDate() -> String {
-        return Date.msLongDateFormatter.string(from: self)
-    }
-    
-    static var msLongDateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
-    }()
     
     static var msCalendar: Calendar = {
         var cal = Calendar(identifier: .gregorian)
@@ -440,36 +351,6 @@ public extension Date {
     
     func endOfLastDay() -> Date {
         return Date.msCalendar.date(bySettingHour: 23, minute: 59, second: 59, of: self.addingTimeInterval(-(24*60*60)))!
-    }
-    
-    static var msStatisticsFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        return formatter
-    }()
-    
-    func toDayAndTime() -> String {
-        return Date.msStatisticsFormatter.string(from: self)
-    }
-    
-    func shiftOpenedInterval(closedDate closed: Date) -> String {
-        
-        let difference = Calendar.current.dateComponents([.day, .hour, .minute], from: self, to: closed)
-        
-        guard let hours = difference.hour, let days = difference.day, let minutes = difference.minute else { return "0 \(LocalizedStrings.minutePlu.value)" }
-        
-        let declinedDay = declineNoun(count: days, nounVariants: (nom: LocalizedStrings.formatedDay1.value, gen: LocalizedStrings.formatedDay2.value, plu: LocalizedStrings.formatedDay3.value))
-        let declinedHour = declineNoun(count: hours, nounVariants: (nom: LocalizedStrings.formatedHour1.value, gen: LocalizedStrings.formatedHour2.value, plu: LocalizedStrings.formatedHour3.value))
-        let declinedMinute = declineNoun(count: minutes, nounVariants: (nom: LocalizedStrings.minuteNom.value, gen: LocalizedStrings.minuteGen.value, plu: LocalizedStrings.minutePlu.value))
-        
-        if days > 0 {
-            return "\(days) \(declinedDay) \(hours) \(declinedHour)"
-        } else if hours > 0 {
-            return "\(hours) \(declinedHour) \(minutes) \(declinedMinute)"
-        } else {
-            return "\(minutes) \(declinedMinute)"
-        }
     }
 }
 
@@ -543,6 +424,10 @@ public extension Double {
 // MARK: current TimeZone Extension
 public extension Date {
     
+    func toRfc5322() -> String {
+        return Date.msRfc5322Formatter.string(from: self)
+    }
+    
     static var msRfc5322Formatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
@@ -550,18 +435,14 @@ public extension Date {
         return formatter
     }()
     
+    func toCurrentLocaleLongDate() -> String {
+        return Date.msCurrentLocaleDateFormatter.string(from: self)
+    }
+    
     static var msCurrentLocaleDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
-    
-    func toRfc5322() -> String {
-        return Date.msRfc5322Formatter.string(from: self)
-    }
-    
-    func toCurrentLocaleLongDate() -> String {
-        return Date.msCurrentLocaleDateFormatter.string(from: self)
-    }
 }

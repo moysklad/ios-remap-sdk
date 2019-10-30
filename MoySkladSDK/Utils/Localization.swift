@@ -142,16 +142,6 @@ enum LocalizedStrings : String {
     case settingsEmail
     case settingsOff
     
-    case formatedDay1
-    case formatedDay2
-    case formatedDay3
-    case formatedHour1
-    case formatedHour2
-    case formatedHour3
-    case minutePlu
-    case minuteNom
-    case minuteGen
-    
     case buyPrice
     case rub
     

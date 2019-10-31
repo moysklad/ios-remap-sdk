@@ -145,5 +145,3 @@ internal extension NSDecimalNumber {
         return result
     }
 }
-
-

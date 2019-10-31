@@ -643,7 +643,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1110;
 				ORGANIZATIONNAME = "Andrey Parshakov";
 				TargetAttributes = {
 					55C05BEB1E028F24008F4254 = {
@@ -1037,7 +1037,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lognex.mobile.ios.mistructs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_COMPILATION_MODE = singlefile;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

@@ -56,10 +56,7 @@ public extension MSBaseDocumentType {
         guard let newDocType = MSDocumentType.fromMSObjectType(type) else { return nil }
         // если будет создаваться платежный документ, то для него связанные документы нужно класть в operations
         switch newDocType {
-        case .cashin: fallthrough
-        case .cashout: fallthrough
-        case .paymentin: fallthrough
-        case .paymentout: return ["operations": [dictionary(metaOnly: true)]]
+        case .cashin, .cashout, .paymentin, .paymentout: return ["operations": [dictionary(metaOnly: true)]]
         case .customerorder, .demand, .invoiceout, .operation, .supply, .invoicein, .purchaseorder, .move, .inventory, .purchasereturn, .salesreturn: break
         case .retaildemand, .retailsalesreturn, .retaildrawercashout, .retaildrawercashin: break
         }

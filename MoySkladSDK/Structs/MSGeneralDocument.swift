@@ -12,4 +12,3 @@ public enum MSTemplateType : String {
     case embeded = "embeddedtemplate"
     case custom = "customtemplate"
 }
-

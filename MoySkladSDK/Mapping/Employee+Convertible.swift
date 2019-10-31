@@ -35,7 +35,7 @@ extension MSEmployee : DictConvertable {
         
         if let image = localImage?.dictionary() {
             dict["image"] = image
-        }  else if image == nil {
+        } else if image == nil {
             dict["image"] = NSNull()
         }
         

@@ -346,7 +346,7 @@ public struct DataManager {
                                   stockStore: StockStore? = nil, 
                                   scope: AssortmentScope? = nil)
         -> Observable<[MSEntity<MSAssortment>]> {
-            return HttpClient.get(.assortment, auth: parameters.auth, urlParameters: parameters.allParametersCollection(stockStore, scope,  StockMomentAssortment(value: Date())))
+            return HttpClient.get(.assortment, auth: parameters.auth, urlParameters: parameters.allParametersCollection(stockStore, scope, StockMomentAssortment(value: Date())))
             .flatMapLatest { result -> Observable<[MSEntity<MSAssortment>]> in
                 guard let result = result?.toDictionary() else {
                     return Observable.error(MSError.genericError(errorText: LocalizedStrings.incorrectAssortmentResponse.value))

@@ -368,7 +368,7 @@ final class HttpClient {
         }
     }
     
-    static func resultCreateFromHeader(_ router: HttpRouter) -> Observable<Dictionary<String,String>?> {
+    static func resultCreateFromHeader(_ router: HttpRouter) -> Observable<Dictionary<String, String>?> {
         return Observable.create { observer -> Disposable in
             #if DEBUG
                 let request = manager.request(router).debugLog()
@@ -451,7 +451,7 @@ final class HttpClient {
                 let json = JSONType.fromRaw(data)
 
                 guard 200..<300 ~= dataResponse.response?.statusCode ?? 0 else {
-                    observer.onError(convertToError(httpCode: dataResponse.response?.statusCode ?? -1, errorDict: json?.toDictionary() ?? [:]));
+                    observer.onError(convertToError(httpCode: dataResponse.response?.statusCode ?? -1, errorDict: json?.toDictionary() ?? [:]))
                     return
                 }
 				

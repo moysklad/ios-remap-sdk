@@ -33,7 +33,7 @@ public protocol DictConvertable {
     associatedtype Element : Metable
     
     static func from(dict : Dictionary<String, Any>) -> MSEntity<Element>?
-    func dictionary(metaOnly: Bool) -> Dictionary<String,Any>
+    func dictionary(metaOnly: Bool) -> Dictionary<String, Any>
 }
 
 extension MSID: Equatable {

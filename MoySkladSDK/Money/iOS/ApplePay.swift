@@ -143,7 +143,7 @@ extension PaymentSummaryItem {
 /**
  Coding adaptor for `PaymentSummaryItem`.
 */
-public final class PaymentSummaryItemCoder<Cost: MoneyType>: NSObject, NSCoding, CodingProtocol,CodedValue where Cost.DecimalStorageType == NSDecimalNumber, Cost.Coder: NSCoding, Cost.Coder.Value == Cost {
+public final class PaymentSummaryItemCoder<Cost: MoneyType>: NSObject, NSCoding, CodingProtocol, CodedValue where Cost.DecimalStorageType == NSDecimalNumber, Cost.Coder: NSCoding, Cost.Coder.Value == Cost {
 
     public let value: PaymentSummaryItem<Cost>
 
@@ -222,4 +222,3 @@ public extension PKPaymentRequest {
 public func ==<Cost>(lhs: PaymentSummaryItem<Cost>, rhs: PaymentSummaryItem<Cost>) -> Bool {
     return lhs.cost == rhs.cost && lhs.label == rhs.label && lhs.type == rhs.type
 }
-

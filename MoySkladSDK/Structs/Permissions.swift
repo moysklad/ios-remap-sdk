@@ -227,7 +227,7 @@ public struct MSPermission {
     }
 
 	public static func noPermissions() -> MSPermission {
-        return MSPermission(view: false, create: false ,update: false ,delete: false, approve: false, print: false, done: false)
+        return MSPermission(view: false, create: false, update: false, delete: false, approve: false, print: false, done: false)
 	}
 	public static func fullPermissions() -> MSPermission {
         return MSPermission(view: true, create: true, update: true, delete: true, approve: true, print: true, done: true)

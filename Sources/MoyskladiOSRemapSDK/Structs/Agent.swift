@@ -17,6 +17,11 @@ public enum MSCompanyType : String {
 public struct MSDiscount: Metable {
     public var meta: MSMeta
     public var personalDiscount: Double
+    
+    public init(meta: MSMeta, personalDiscount: Double) {
+        self.meta = meta
+        self.personalDiscount = personalDiscount
+    }
 }
 
 public class MSAgentInfo {

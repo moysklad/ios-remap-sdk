@@ -146,6 +146,12 @@ enum LocalizedStrings : String {
     case rub
     
     var value: String {
-        return NSLocalizedString(rawValue, tableName: nil, bundle: Bundle(for: MSAssortment.self), value: "", comment: "")
-}
+        if let bundle = Bundle(identifier: "com.lognex.moysklad") {
+            return NSLocalizedString(rawValue, tableName: nil, bundle: bundle, value: "", comment: "")
+        } else if let bundle = Bundle(identifier: "com.lognex.mystore") {
+            return NSLocalizedString(rawValue, tableName: nil, bundle: bundle, value: "", comment: "")
+        } else {
+            return rawValue
+        }
+    }
 }

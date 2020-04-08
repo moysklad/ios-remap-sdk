@@ -14,4 +14,18 @@ public struct MSUOM: Metable {
     public var info : MSInfo
     public var code: String?
     public let externalCode: String?
+    
+    public init(
+        meta: MSMeta,
+        id: MSID,
+        info: MSInfo,
+        code: String?,
+        externalCode: String?) {
+
+        self.meta = meta
+        self.id = id
+        self.info = info
+        self.code = code
+        self.externalCode = externalCode
+    }
 }

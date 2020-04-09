@@ -94,6 +94,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
     public var overhead: MSBundleOverhead?
     // Consignment fields
     public let assortment: MSEntity<MSAssortment>?
+    public let newSalePrices: [NewMSPrice]
     
     public init(meta: MSMeta,
                 id: MSID,
@@ -136,7 +137,8 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                 characteristics: [MSEntity<MSVariantAttribute>]?,
                 components: [MSEntity<MSBundleComponent>],
                 overhead: MSBundleOverhead?,
-                assortment: MSEntity<MSAssortment>?) {
+                assortment: MSEntity<MSAssortment>?,
+                newSalePrices: [NewMSPrice]? = nil) {
         self.meta = meta
         self.id = id
         self.accountId = accountId
@@ -178,6 +180,7 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
         self.components = components
         self.overhead = overhead
         self.assortment = assortment
+        self.newSalePrices = newSalePrices ?? []
         super.init(attributes: attributes)
     }
     
@@ -375,9 +378,8 @@ public class MSPrice {
 	public var currency: MSEntity<MSCurrency>?
     
     public init(priceType: String?,
-    value: Money,
-    currency: MSEntity<MSCurrency>?
-        ) {
+                value: Money,
+                currency: MSEntity<MSCurrency>?) {
         self.priceType = priceType
         self.value = value
         self.currency = currency
@@ -425,5 +427,37 @@ extension MSProductFolder {
         }
         
         return "\(pathName)/\(info.name)"
+    }
+}
+
+public struct NewMSPrice {
+    public let priceType: MSTypePrice?
+    public var value: Money
+    public var currency: MSEntity<MSCurrency>?
+    
+    public init(priceType: MSTypePrice?,
+                value: Money,
+                currency: MSEntity<MSCurrency>?) {
+        self.priceType = priceType
+        self.value = value
+        self.currency = currency
+    }
+}
+
+public struct MSTypePrice {
+    public let meta: MSMeta
+    public let id: String
+    public let name: String
+    public let externalCode: String?
+    
+    public init(meta: MSMeta,
+                id: String,
+                name: String,
+                externalCode: String?){
+        
+        self.meta = meta
+        self.id = id
+        self.name = name
+        self.externalCode = externalCode
     }
 }

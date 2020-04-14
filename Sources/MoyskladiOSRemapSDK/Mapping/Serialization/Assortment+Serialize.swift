@@ -136,9 +136,9 @@ extension MSAlcohol {
         var dict = [String: Any]()
         
         dict["excise"] = excise
-        dict["type"] = type
-        dict["strength"] = strength
-        dict["volume"] = volume
+        dict["type"] = type ?? 0
+        dict["strength"] = strength ?? 0.0
+        dict["volume"] = volume ?? 0.0
         
         return dict
     }

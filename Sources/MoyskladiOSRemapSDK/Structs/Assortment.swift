@@ -226,7 +226,8 @@ public class MSAssortment : MSAttributedEntity, Metable, DictConvertable, MSRequ
                             characteristics: characteristics,
                             components: components,
                             overhead: overhead,
-                            assortment: assortment)
+                            assortment: assortment,
+                            newSalePrices: newSalePrices)
     }
 }
 

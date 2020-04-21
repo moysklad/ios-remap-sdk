@@ -101,6 +101,7 @@ public enum EntityField: String {
     case losses
     case enters
     case demand
+    case deliveryPlannedMoment
 }
 
 public enum FilterOperator : String {
